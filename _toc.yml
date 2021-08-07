@@ -5,6 +5,31 @@ format: jb-book
 root: content/intro
 
 parts:
+  - caption: Course Overview
+    chapters:
+    - file: content/Course_Overview
+  - caption: Getting Started
+    chapters:
+    - file: content/Download_Data
+    - file: content/Install_Software
+    - file: content/Recommended_Reading
+  - caption: Theoretical Background
+    chapters:
+    - file: content/MR_Physics
+    - file: content/fMRI_Sequences
+    - file: content/Signal_Decay
+    - file: content/TE_Dependence
+  - caption: Practical Resources
+    chapters:
+    - file: content/Multi_Echo_Datasets
+    - file: content/Acquiring_Multi_Echo_Data
+    - file: content/Processing_Multi_Echo_Data
+  - caption: Analysis Tutorials
+    chapters:
+    - file: content/01_Optimal_Combination_with_t2smap
+    - file: content/02_Denoising_with_tedana
+    - file: content/03_Dual_Echo_Regression
+    - file: content/04_3dMEPFM
   - caption: Background Information
     chapters:
     - file: content/markdown
