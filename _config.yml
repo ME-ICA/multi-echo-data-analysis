@@ -33,4 +33,5 @@ html:
 
 parse:
   myst_enable_extensions:
+    - linkify
     - colon_fence
