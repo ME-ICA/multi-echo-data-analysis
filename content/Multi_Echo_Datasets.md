@@ -71,3 +71,18 @@ Brief Description: 7 participants with 10 sessions each, with one run of breath-
 The multi-echo fMRI data have five echoes (10.6, 28.69, 46.78, 64.87, 82.96 ms).
 Additional data include T1-weighted anatomical scans and physiological data (chest belt, cardiac, exhaled CO2, exhaled O2)
 acquired concurrently with the fMRI scans.
+
+## Le Petit Prince
+
+Link: https://openneuro.org/datasets/ds003643
+
+Brief Description: 111 participants, with nine runs of an auditory narrative task.
+The multi-echo fMRI data have three echoes, with some participants having TEs of 12.8, 27.5, and 43 ms
+and others having 10, 25, and 38 ms.
+Additional data include T1-weighted anatomical scans.
+
+The auditory narrative task involves listening to Le Petit Prince in nine 10-minute runs, totally around 90 minutes.
+Given the naturalistic nature of this task, it is a good target for functional alignment analyses.
+
+Additionally, the language in which the task was presented differed across participants.
+51 participants listened to the audiobook in English, 35 listened in Chinese, and 30 listened in French.
