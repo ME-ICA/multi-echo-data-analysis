@@ -11,7 +11,12 @@ kernelspec:
   name: python3
 ---
 
-# Multi-Echo (fMRI) Data Analysis
+# 3dMEPFM
 
-```{tableofcontents}
-```
+Requirements:
+
+- abind
+- lars
+- genlasso
+- wavethresh
+- snow

@@ -1,5 +1,6 @@
 # Ignore the data folder for now
 data/
+_build/
 
 .DS_Store
 

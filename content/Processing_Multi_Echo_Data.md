@@ -11,7 +11,4 @@ kernelspec:
   name: python3
 ---
 
-# Multi-Echo (fMRI) Data Analysis
-
-```{tableofcontents}
-```
+# Processing Multi-Echo Data

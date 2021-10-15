@@ -27,10 +27,12 @@ parts:
   - caption: Analysis Tutorials
     chapters:
     - file: content/01_Optimal_Combination_with_t2smap
-    - file: content/02_Denoising_with_tedana
-    - file: content/03_Dual_Echo_Regression
-    - file: content/04_3dMEPFM
+    - file: content/02_Volume-wise_T2star_estimation_with_t2smap
+    - file: content/03_Denoising_with_tedana
+    - file: content/04_Dual_Echo_Denoising
+    - file: content/05_3dMEPFM
   - caption: Background Information
     chapters:
     - file: content/markdown
     - file: content/notebooks
+    - file: content/bibliography.md
