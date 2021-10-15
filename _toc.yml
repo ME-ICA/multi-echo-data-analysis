@@ -31,6 +31,8 @@ parts:
     - file: content/03_Denoising_with_tedana
     - file: content/04_Dual_Echo_Denoising
     - file: content/05_3dMEPFM
+    - file: content/06_Cerebrovascular_Mapping.md
+    - file: content/07_Manual_Classification_with_rica.md
   - caption: Background Information
     chapters:
     - file: content/markdown
