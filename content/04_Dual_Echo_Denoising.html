@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dual-Echo Denoising with nilearn &#8212; Multi-Echo fMRI Data Analysis</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3dMEPFM" href="05_3dMEPFM.html" />
+    <link rel="prev" title="Multi-Echo Denoising with tedana" href="03_Denoising_with_tedana.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Multi-Echo fMRI Data Analysis</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Multi-Echo (fMRI) Data Analysis
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Course Overview
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Course_Overview.html">
+   Course Overview
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Download_Data.html">
+   Download Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Install_Software.html">
+   Install Software
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Recommended_Reading.html">
+   Recommended Reading
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Theoretical Background
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="MR_Physics.html">
+   MR Physics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="fMRI_Sequences.html">
+   Multi-Echo fMRI Sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Signal_Decay.html">
+   Signal Decay
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="TE_Dependence.html">
+   TE Dependence
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Practical Resources
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Multi_Echo_Datasets.html">
+   Open Multi-Echo Datasets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Acquiring_Multi_Echo_Data.html">
+   Acquiring Multi-Echo Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Processing_Multi_Echo_Data.html">
+   Processing Multi-Echo Data
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Analysis Tutorials
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01_Optimal_Combination_with_t2smap.html">
+   Optimal combination in t2smap
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02_Volume-wise_T2star_estimation_with_t2smap.html">
+   Volume-wise T2*/S0 estimation with t2smap
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03_Denoising_with_tedana.html">
+   Multi-Echo Denoising with tedana
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Dual-Echo Denoising with nilearn
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05_3dMEPFM.html">
+   3dMEPFM
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Background Information
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markdown.html">
+   Markdown Files
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks.html">
+   Content with notebooks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bibliography.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        <a class="dropdown-buttons"
+            href="../_sources/content/04_Dual_Echo_Denoising.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/content/04_Dual_Echo_Denoising.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ME-ICA/multi-echo-data-analysis/main?urlpath=tree/content/content/04_Dual_Echo_Denoising.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="dual-echo-denoising-with-nilearn">
+<h1>Dual-Echo Denoising with nilearn<a class="headerlink" href="#dual-echo-denoising-with-nilearn" title="Permalink to this headline">¶</a></h1>
+<p>Dual-echo fMRI leverages one of the same principles motivating multi-echo fMRI; namely, that BOLD contrast increases with echo time, so earlier echoes tend to be more affected by non-BOLD noise than later ones. At an early enough echo time (&lt;5ms for 3T scanners), the signal is almost entirely driven by non-BOLD noise. When it comes to denoising, this means that, if you acquire data with both an early echo time and a more typical echo time (~30ms for 3T), you can simply regress the earlier echo’s time series out of the later echo’s time series, which will remove a lot of non-BOLD noise.</p>
+<p>Additionally, dual-echo fMRI comes at no real cost in terms of temporal or spatial resolution, unlike multi-echo fMRI. For multi-echo denoising to work, you need to have at least one echo time that is <em>later</em> than the typical echo time, which means decreasing your temporal resolution, all else remaining equal. In the case of dual-echo fMRI, you only need a <em>shorter</em> echo time, which occurs in what is essentially “dead time” in the pulse sequence.</p>
+<p>Dual-echo denoising was originally proposed in <a class="reference external" href="https://dx.doi.org/10.1016%2Fj.neuroimage.2012.09.043">Bright &amp; Murphy (2013)</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">image</span><span class="p">,</span> <span class="n">masking</span><span class="p">,</span> <span class="n">plotting</span>
+
+
+<span class="k">def</span> <span class="nf">regress_one_image_out_of_another</span><span class="p">(</span><span class="n">data_img</span><span class="p">,</span> <span class="n">nuis_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">):</span>
+    <span class="c1"># First, mean-center each image over time</span>
+    <span class="n">mean_data_img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">data_img</span><span class="p">)</span>
+    <span class="n">mean_nuis_img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">nuis_img</span><span class="p">)</span>
+
+    <span class="n">data_img_mc</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span>
+        <span class="s2">&quot;img - avg_img[..., None]&quot;</span><span class="p">,</span>
+        <span class="n">img</span><span class="o">=</span><span class="n">data_img</span><span class="p">,</span>
+        <span class="n">avg_img</span><span class="o">=</span><span class="n">mean_data_img</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">nuis_img_mc</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span>
+        <span class="s2">&quot;img - avg_img[..., None]&quot;</span><span class="p">,</span>
+        <span class="n">img</span><span class="o">=</span><span class="n">nuis_img</span><span class="p">,</span>
+        <span class="n">avg_img</span><span class="o">=</span><span class="n">mean_nuis_img</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Now get the masked data in 2D format</span>
+    <span class="n">data_mc</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">data_img_mc</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
+    <span class="n">nuis_mc</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">nuis_img_mc</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
+    <span class="n">nuis_mean</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">mean_nuis_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
+    <span class="n">data_mean</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">mean_data_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
+
+    <span class="c1"># Build beta map by performing regression on each voxel</span>
+    <span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">data_mc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i_voxel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data_mc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">temp_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">data_mc</span><span class="p">[:,</span> <span class="n">i_voxel</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">data_mc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">temp_data</span><span class="p">,</span> <span class="n">nuis_mc</span><span class="p">[:,</span> <span class="n">i_voxel</span><span class="p">],</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Construct denoised time series</span>
+    <span class="n">scaled_nuis</span> <span class="o">=</span> <span class="p">(</span><span class="n">nuis_mc</span> <span class="o">*</span> <span class="n">betas</span><span class="p">)</span>
+    <span class="n">errorts</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_mc</span> <span class="o">-</span> <span class="n">scaled_nuis</span><span class="p">)</span> <span class="o">+</span> <span class="n">data_mean</span>
+    <span class="n">errorts_img</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">errorts</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">errorts_img</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">te1_img</span> <span class="o">=</span> <span class="s2">&quot;../data/sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span>
+<span class="n">te2_img</span> <span class="o">=</span> <span class="s2">&quot;../data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span>
+<span class="n">mask_img</span> <span class="o">=</span> <span class="s2">&quot;../data/sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz&quot;</span>
+<span class="n">denoised_img</span> <span class="o">=</span> <span class="n">regress_one_image_out_of_another</span><span class="p">(</span><span class="n">te2_img</span><span class="p">,</span> <span class="n">te1_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_carpet</span><span class="p">(</span><span class="n">te2_img</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;First Echo (BAD)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_carpet</span><span class="p">(</span><span class="n">te1_img</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Second Echo (GOOD)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_carpet</span><span class="p">(</span><span class="n">denoised_img</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Denoised Data (GREAT)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./content"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="03_Denoising_with_tedana.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Multi-Echo Denoising with tedana</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="05_3dMEPFM.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">3dMEPFM</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The tedana community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
