@@ -1,5 +1,4 @@
+tedana==0.0.11
 jupyter-book~=0.11.2
 matplotlib
-numpy
-tedana
 seaborn

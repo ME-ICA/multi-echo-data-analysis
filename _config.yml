@@ -52,5 +52,5 @@ sphinx:
     bibtex_reference_style: author_year
     intersphinx_mapping:
       tedana:
-        - "https://tedana.readthedocs.io/en/stable/"
+        - "https://tedana.readthedocs.io/en/0.0.11/"
         - null
