@@ -54,6 +54,8 @@ sphinx:
   config:
     bibtex_reference_style: author_year
     bibtex_default_style: unsrt
+    html_js_files:
+    - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
     intersphinx_mapping:
       tedana:
       - "https://tedana.readthedocs.io/en/0.0.11/"
