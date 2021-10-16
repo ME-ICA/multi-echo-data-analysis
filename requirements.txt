@@ -4,3 +4,4 @@ seaborn==0.11.2
 sphinx-inline-tabs
 sphinxcontrib-bibtex
 plotly
+imageio
