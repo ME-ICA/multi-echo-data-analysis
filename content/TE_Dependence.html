@@ -391,8 +391,9 @@
 <div class="section" id="make-figures-and-examples-for-dependence-metric-calculation">
 <h2>Make figures and examples for dependence metric calculation<a class="headerlink" href="#make-figures-and-examples-for-dependence-metric-calculation" title="Permalink to this headline">¶</a></h2>
 <p>This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is leveraged to denoise multi-echo data.</p>
-<p>The equation for how signal is dependent on changes in S0 and T2*:
-$<span class="math notranslate nohighlight">\(S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)\)</span>$</p>
+<p>The equation for how signal is dependent on changes in S0 and T2*:</p>
+<div class="math notranslate nohighlight">
+\[S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">op</span>
