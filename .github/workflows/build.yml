@@ -28,7 +28,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install --upgrade --upgrade-strategy eager -r requirements.txt -e .
+        pip install --upgrade --upgrade-strategy eager -r requirements.txt
 
     # Build the book
     - name: Build the book
