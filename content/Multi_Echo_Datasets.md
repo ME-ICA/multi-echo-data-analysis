@@ -11,6 +11,7 @@ kernelspec:
   name: python3
 ---
 
+(content:open-datasets)=
 # Open Multi-Echo Datasets
 
 A number of multi-echo datasets have been made public so far.
