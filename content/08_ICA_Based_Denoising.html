@@ -366,8 +366,13 @@
                 
   <div class="section" id="denoising-data-with-ica">
 <h1>Denoising Data with ICA<a class="headerlink" href="#denoising-data-with-ica" title="Permalink to this headline">¶</a></h1>
+<p>ICA classification methods like <code class="docutils literal notranslate"><span class="pre">tedana</span></code> will produce two important outputs: component time series and component classifications.
+The component classifications will indicate whether each componet is “good” (accepted) or “bad” (rejected).
+To remove noise from your data, you can regress the “bad” components out of it, though there are multiple methods to accomplish this.</p>
 <div class="section" id="aggressive-denoising">
 <h2>Aggressive Denoising<a class="headerlink" href="#aggressive-denoising" title="Permalink to this headline">¶</a></h2>
+<p>If you regress just nuisance regressors (i.e., rejected components) out of your data,
+then retain the residuals for further analysis, you are doing aggressive denoising.</p>
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">Python</label><div class="tab-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">glm</span>
@@ -383,9 +388,53 @@
 </div>
 <div class="section" id="non-aggressive-denoising">
 <h2>Non-Aggressive Denoising<a class="headerlink" href="#non-aggressive-denoising" title="Permalink to this headline">¶</a></h2>
+<p>If you include both nuisance regressors and regressors of interest in your regression,
+you are doing nonaggressive denoising.</p>
+<div class="tab-set docutils">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">Python</label><div class="tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">glm</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">AFNI</label><div class="tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="component-orthogonalization">
 <h2>Component orthogonalization<a class="headerlink" href="#component-orthogonalization" title="Permalink to this headline">¶</a></h2>
+<p>Independent component analysis decomposes the data into <em>independent</em> components, obviously.
+Unlike principal components analysis, the components from ICA are not orthogonal, so they may explain shared variance.
+If you want to ensure that variance shared between the accepted and rejected components does not contaminate the denoised data,
+you may wish to orthogonalize the rejected components with respect to the accepted components.
+This way, you can regress the rejected components out of the data in the form of, what we call, “pure evil” components.</p>
+<div class="tab-set docutils">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">Python</label><div class="tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">glm</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">AFNI</label><div class="tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once you have these “pure evil” components, you can perform aggressive denoising on the data.</p>
+<div class="tab-set docutils">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">Python</label><div class="tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">glm</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">AFNI</label><div class="tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
