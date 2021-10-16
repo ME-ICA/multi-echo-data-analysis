@@ -30,6 +30,11 @@ then retain the residuals for further analysis, you are doing aggressive denoisi
 from nilearn import glm
 ```
 ````
+````{tab} FSL
+```bash
+3dcalc --input stuff
+```
+````
 ````{tab} AFNI
 ```bash
 3dcalc --input stuff
