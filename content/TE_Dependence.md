@@ -19,6 +19,7 @@ kernelspec:
 This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is leveraged to denoise multi-echo data.
 
 The equation for how signal is dependent on changes in S0 and T2*:
+
 $$S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)$$
 
 ```{code-cell} ipython3
