@@ -11,4 +11,6 @@ kernelspec:
   name: python3
 ---
 
-# Cerebrovascular Mapping
+# Cerebrovascular Reactivity Mapping
+
+Check out {cite:t}`MOIA2021117914` and {cite:t}`cohen2019improving`.
