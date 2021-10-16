@@ -61,7 +61,9 @@ Additional data include T1-weighted anatomical scans, T2-weighted anatomical sca
 diffusion-weighted scans, magnetization transfer scans, one run of single-echo,
 resting-state fMRI, and one run of single-echo, sensorimotor task fMRI.
 
-**Accessing this dataset requires a data access application.**
+```{warning}
+Accessing this dataset requires a data access application.
+```
 
 ## rt-me-fMRI - A task and resting state dataset for real-time, multi-echo fMRI methods development and validation
 
@@ -74,7 +76,9 @@ The multi-echo fMRI data have three echoes (14, 28, 42 ms).
 Additional data include T1-weighted anatomical scans and physiological data (chest belt and cardiac)
 acquired concurrently with the fMRI scans.
 
-**Accessing this dataset requires a data access application.**
+```{warning}
+Accessing this dataset requires a data access application.
+```
 
 ## EuskalIBUR
 
