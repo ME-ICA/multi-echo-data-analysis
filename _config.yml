@@ -9,7 +9,7 @@ title                       : "Multi-Echo fMRI Data Analysis"  # The title of th
 author                      : "The tedana community"  # The author of the book
 copyright                   : "2021"  # Copyright year to be placed in the footer
 logo                        : "logo.png"  # A path to the book logo
-exclude_patterns            : ["README.md"]  # Patterns to skip when building the book. Can be glob-style (e.g. "*skip.ipynb")
+exclude_patterns            : ["README.md", "content/*.py"]  # Patterns to skip when building the book. Can be glob-style (e.g. "*skip.ipynb")
 
 #######################################################################################
 # Execution settings
