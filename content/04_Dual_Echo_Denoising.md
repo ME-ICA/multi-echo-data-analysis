@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Dual-Echo Denoising with nilearn
+# Dual-Echo Denoising with `nilearn`
 
 Dual-echo fMRI leverages one of the same principles motivating multi-echo fMRI; namely, that BOLD contrast increases with echo time, so earlier echoes tend to be more affected by non-BOLD noise than later ones. At an early enough echo time (<5ms for 3T scanners), the signal is almost entirely driven by non-BOLD noise. When it comes to denoising, this means that, if you acquire data with both an early echo time and a more typical echo time (~30ms for 3T), you can simply regress the earlier echo's time series out of the later echo's time series, which will remove a lot of non-BOLD noise.
 

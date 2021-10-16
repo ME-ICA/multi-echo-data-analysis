@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Multi-Echo Denoising with tedana
+# Multi-Echo Denoising with `tedana`
 
 In this analysis tutorial, we will use `tedana` to perform multi-echo denoising.
 
