@@ -17,35 +17,37 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import os
+data_dir = os.path.abspath("../data/")
 
-import imageio
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-from IPython.display import Image
-from nilearn.glm import first_level
-from scipy import signal
+files = sorted(glob(os.path.join(data_dir, "sub-pilot_task-checkerboard_run-2_*_bold.nii.gz")))
+echo_times = np.array([9.58, 21.95, 34.32, 46.69, 59.06, 71.43, 83.8, 96.17])
 
-from book_utils import predict_bold_signal
+img = image.index_img(files[0], 0)
+data = img.get_fdata()
+vmax = np.max(data)
+idx = np.vstack(np.where(data > 1000))
 
-sns.set_style("whitegrid")
-plt.rcParams.update({
-    "text.usetex": True,
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Helvetica"]
-})
+min_x, min_y, min_z = np.min(idx, axis=1)
+max_x, max_y, max_z = np.max(idx, axis=1)
+
+imgs = []
+for f in files:
+    img = image.index_img(f, 0)
+    data = img.get_fdata()
+    data = data[min_x:max_x, min_y:max_y, min_z:max_z]
+    img = nib.Nifti1Image(data, img.affine, img.header)
+    imgs.append(img)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2028/1844205807.py[0m in [0;36m<module>[0;34m[0m
-[1;32m      1[0m [0;32mimport[0m [0mos[0m[0;34m[0m[0;34m[0m[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2056/1903662462.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      1[0m [0mdata_dir[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mabspath[0m[0;34m([0m[0;34m"../data/"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      2[0m [0;34m[0m[0m
-[0;32m----> 3[0;31m [0;32mimport[0m [0mimageio[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      4[0m [0;32mimport[0m [0mmatplotlib[0m[0;34m.[0m[0mpyplot[0m [0;32mas[0m [0mplt[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      5[0m [0;32mimport[0m [0mnumpy[0m [0;32mas[0m [0mnp[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 3[0;31m [0mfiles[0m [0;34m=[0m [0msorted[0m[0;34m([0m[0mglob[0m[0;34m([0m[0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mdata_dir[0m[0;34m,[0m [0;34m"sub-pilot_task-checkerboard_run-2_*_bold.nii.gz"[0m[0;34m)[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      4[0m [0mecho_times[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0marray[0m[0;34m([0m[0;34m[[0m[0;36m9.58[0m[0;34m,[0m [0;36m21.95[0m[0;34m,[0m [0;36m34.32[0m[0;34m,[0m [0;36m46.69[0m[0;34m,[0m [0;36m59.06[0m[0;34m,[0m [0;36m71.43[0m[0;34m,[0m [0;36m83.8[0m[0;34m,[0m [0;36m96.17[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      5[0m [0;34m[0m[0m
 
-[0;31mModuleNotFoundError[0m: No module named 'imageio'
-ModuleNotFoundError: No module named 'imageio'
+[0;31mNameError[0m: name 'glob' is not defined
+NameError: name 'glob' is not defined
 
