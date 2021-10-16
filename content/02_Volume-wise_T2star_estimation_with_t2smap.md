@@ -13,6 +13,8 @@ kernelspec:
 
 # Volume-wise T2*/S0 estimation with `t2smap`
 
+Use `t2smap` {cite-p}`DuPre2021` to calculate volume-wise T2*/S0, as in {cite-t}`power2018ridding` and {cite-t}`HEUNIS2021118244`.
+
 ```{code-cell} ipython3
 import os
 import matplotlib
