@@ -187,22 +187,42 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="01_Optimal_Combination_with_t2smap.html">
-   Optimal combination in t2smap
+   Optimal combination with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     t2smap
+    </span>
+   </code>
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="02_Volume-wise_T2star_estimation_with_t2smap.html">
-   Volume-wise T2*/S0 estimation with t2smap
+   Volume-wise T2*/S0 estimation with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     t2smap
+    </span>
+   </code>
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="03_Denoising_with_tedana.html">
-   Multi-Echo Denoising with tedana
+   Multi-Echo Denoising with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     tedana
+    </span>
+   </code>
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Dual-Echo Denoising with nilearn
+   Dual-Echo Denoising with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     nilearn
+    </span>
+   </code>
   </a>
  </li>
  <li class="toctree-l1">
@@ -217,7 +237,12 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="07_Manual_Classification_with_rica.html">
-   Manual Classification with rica
+   Manual Classification with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     rica
+    </span>
+   </code>
   </a>
  </li>
  <li class="toctree-l1">
@@ -342,7 +367,7 @@
               <div>
                 
   <div class="section" id="dual-echo-denoising-with-nilearn">
-<h1>Dual-Echo Denoising with nilearn<a class="headerlink" href="#dual-echo-denoising-with-nilearn" title="Permalink to this headline">¶</a></h1>
+<h1>Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code><a class="headerlink" href="#dual-echo-denoising-with-nilearn" title="Permalink to this headline">¶</a></h1>
 <p>Dual-echo fMRI leverages one of the same principles motivating multi-echo fMRI; namely, that BOLD contrast increases with echo time, so earlier echoes tend to be more affected by non-BOLD noise than later ones. At an early enough echo time (&lt;5ms for 3T scanners), the signal is almost entirely driven by non-BOLD noise. When it comes to denoising, this means that, if you acquire data with both an early echo time and a more typical echo time (~30ms for 3T), you can simply regress the earlier echo’s time series out of the later echo’s time series, which will remove a lot of non-BOLD noise.</p>
 <p>Additionally, dual-echo fMRI comes at no real cost in terms of temporal or spatial resolution, unlike multi-echo fMRI. For multi-echo denoising to work, you need to have at least one echo time that is <em>later</em> than the typical echo time, which means decreasing your temporal resolution, all else remaining equal. In the case of dual-echo fMRI, you only need a <em>shorter</em> echo time, which occurs in what is essentially “dead time” in the pulse sequence.</p>
 <p>Dual-echo denoising was originally proposed in <a class="reference external" href="https://dx.doi.org/10.1016%2Fj.neuroimage.2012.09.043">Bright &amp; Murphy (2013)</a>.</p>
@@ -457,7 +482,7 @@
             <i class="prevnext-label fas fa-angle-left"></i>
             <div class="prevnext-info">
                 <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Multi-Echo Denoising with tedana</p>
+                <p class="prevnext-title">Multi-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">tedana</span></code></p>
             </div>
         </a>
     </div>

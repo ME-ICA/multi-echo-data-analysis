@@ -11,4 +11,4 @@ kernelspec:
   name: python3
 ---
 
-# Manual Classification with rica
+# Manual Classification with `rica`

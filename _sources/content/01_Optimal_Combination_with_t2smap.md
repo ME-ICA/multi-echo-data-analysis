@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Optimal combination in t2smap
+# Optimal combination with `t2smap`
 
 ```{code-cell} ipython3
 import os
