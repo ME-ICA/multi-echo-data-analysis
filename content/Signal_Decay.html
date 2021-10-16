@@ -43,6 +43,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -306,6 +308,160 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal">
+   The impact of
+   <span class="math notranslate nohighlight">
+    \(T_{2}^{*}\)
+   </span>
+   and
+   <span class="math notranslate nohighlight">
+    \(S_{0}\)
+   </span>
+   fluctuations on BOLD signal
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#simulate-t-2-and-s-0-fluctuations">
+     Simulate
+     <span class="math notranslate nohighlight">
+      \(T_{2}^{*}\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(S_{0}\)
+     </span>
+     fluctuations
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plot-bold-signal-decay-for-a-standard-single-echo-scan">
+       Plot BOLD signal decay for a standard single-echo scan
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-bold-signal-decay-and-bold-contrast">
+     Plot BOLD signal decay and BOLD contrast
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-single-echo-data-resulting-from-s-0-and-t-2-fluctuations">
+     Plot single-echo data resulting from
+     <span class="math notranslate nohighlight">
+      \(S_{0}\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T_{2}^{*}\)
+     </span>
+     fluctuations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-single-echo-data-and-the-curve-resulting-from-s-0-and-t-2-fluctuations">
+     Plot single-echo data and the curve resulting from
+     <span class="math notranslate nohighlight">
+      \(S_{0}\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T_{2}^{*}\)
+     </span>
+     fluctuations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-single-echo-data-the-curve-and-the-s-0-and-t-2-values-resulting-from-s-0-and-t-2-fluctuations">
+     Plot single-echo data, the curve, and the
+     <span class="math notranslate nohighlight">
+      \(S_{0}\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T_{2}^{*}\)
+     </span>
+     values resulting from
+     <span class="math notranslate nohighlight">
+      \(S_{0}\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T_{2}^{*}\)
+     </span>
+     fluctuations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-s-0-and-t-2-fluctuations">
+     Plot
+     <span class="math notranslate nohighlight">
+      \(S_{0}\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T_{2}^{*}\)
+     </span>
+     fluctuations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-s-0-and-t-2-fluctuations-and-resulting-single-echo-data">
+     Plot
+     <span class="math notranslate nohighlight">
+      \(S_{0}\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T_{2}^{*}\)
+     </span>
+     fluctuations and resulting single-echo data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-s-0-and-t-2-fluctuations-and-resulting-multi-echo-data">
+     Plot
+     <span class="math notranslate nohighlight">
+      \(S_{0}\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T_{2}^{*}\)
+     </span>
+     fluctuations and resulting multi-echo data
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plot-t-2-against-bold-signal-from-single-echo-data-te-30ms">
+       Plot
+       <span class="math notranslate nohighlight">
+        \(T_{2}^{*}\)
+       </span>
+       against BOLD signal from single-echo data (TE=30ms)
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plot-s-0-against-bold-signal-from-single-echo-data-te-30ms">
+       Plot
+       <span class="math notranslate nohighlight">
+        \(S_{0}\)
+       </span>
+       against BOLD signal from single-echo data (TE=30ms)
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -316,6 +472,51 @@
                 
   <div class="section" id="signal-decay">
 <h1>Signal Decay<a class="headerlink" href="#signal-decay" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal">
+<h2>The impact of <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> fluctuations on BOLD signal<a class="headerlink" href="#the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="simulate-t-2-and-s-0-fluctuations">
+<h3>Simulate <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> fluctuations<a class="headerlink" href="#simulate-t-2-and-s-0-fluctuations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="plot-bold-signal-decay-for-a-standard-single-echo-scan">
+<h4>Plot BOLD signal decay for a standard single-echo scan<a class="headerlink" href="#plot-bold-signal-decay-for-a-standard-single-echo-scan" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="plot-bold-signal-decay-and-bold-contrast">
+<h3>Plot BOLD signal decay and BOLD contrast<a class="headerlink" href="#plot-bold-signal-decay-and-bold-contrast" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="plot-single-echo-data-resulting-from-s-0-and-t-2-fluctuations">
+<h3>Plot single-echo data resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">¶</a></h3>
+<p>This shows how fMRI data fluctuates over time.</p>
+</div>
+<div class="section" id="plot-single-echo-data-and-the-curve-resulting-from-s-0-and-t-2-fluctuations">
+<h3>Plot single-echo data and the curve resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-and-the-curve-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">¶</a></h3>
+<p>This shows how single-echo data is a sample from a signal decay curve.</p>
+</div>
+<div class="section" id="plot-single-echo-data-the-curve-and-the-s-0-and-t-2-values-resulting-from-s-0-and-t-2-fluctuations">
+<h3>Plot single-echo data, the curve, and the <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> values resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-the-curve-and-the-s-0-and-t-2-values-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">¶</a></h3>
+<p>This shows how changes in fMRI data can be driven by both S0 and T2* fluctuations.</p>
+</div>
+<div class="section" id="plot-s-0-and-t-2-fluctuations">
+<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations" title="Permalink to this headline">¶</a></h3>
+<p>This shows how fluctuations in S0 and T2* produce different patterns in the full signal decay curves.</p>
+</div>
+<div class="section" id="plot-s-0-and-t-2-fluctuations-and-resulting-single-echo-data">
+<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting single-echo data<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations-and-resulting-single-echo-data" title="Permalink to this headline">¶</a></h3>
+<p>This shows how single-echo data, on its own, cannot distinguish between S0 and T2* fluctuations.</p>
+</div>
+<div class="section" id="plot-s-0-and-t-2-fluctuations-and-resulting-multi-echo-data">
+<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting multi-echo data<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations-and-resulting-multi-echo-data" title="Permalink to this headline">¶</a></h3>
+<p>This shows how S0 and T2* fluctuations produce different patterns in multi-echo data.</p>
+<div class="section" id="plot-t-2-against-bold-signal-from-single-echo-data-te-30ms">
+<h4>Plot <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> against BOLD signal from single-echo data (TE=30ms)<a class="headerlink" href="#plot-t-2-against-bold-signal-from-single-echo-data-te-30ms" title="Permalink to this headline">¶</a></h4>
+<p>When the BOLD signal is driven entirely by T2* fluctuations,
+the BOLD signal is very similar to a scaled version of those T2* fluctuations, but there are small differences.</p>
+</div>
+<div class="section" id="plot-s-0-against-bold-signal-from-single-echo-data-te-30ms">
+<h4>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> against BOLD signal from single-echo data (TE=30ms)<a class="headerlink" href="#plot-s-0-against-bold-signal-from-single-echo-data-te-30ms" title="Permalink to this headline">¶</a></h4>
+<p>When the BOLD signal is driven entirely by S0 fluctuations, the BOLD signal ends up being a scaled version of the S0 fluctuations.</p>
+</div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
