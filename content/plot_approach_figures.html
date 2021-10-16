@@ -495,14 +495,8 @@ tedana -d ${dset_dir}/sub-001_task-checkerboard_echo-1_bold.nii.gz \
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>In /Users/tsalo/anaconda/envs/python3/lib/python3.6/site-packages/matplotlib/mpl-data/stylelib/_classic_test.mplstyle: 
-The savefig.frameon rcparam was deprecated in Matplotlib 3.1 and will be removed in 3.3.
-In /Users/tsalo/anaconda/envs/python3/lib/python3.6/site-packages/matplotlib/mpl-data/stylelib/_classic_test.mplstyle: 
-The verbose.level rcparam was deprecated in Matplotlib 3.1 and will be removed in 3.3.
-In /Users/tsalo/anaconda/envs/python3/lib/python3.6/site-packages/matplotlib/mpl-data/stylelib/_classic_test.mplstyle: 
-The verbose.fileo rcparam was deprecated in Matplotlib 3.1 and will be removed in 3.3.
-/Users/tsalo/anaconda/envs/python3/lib/python3.6/site-packages/statsmodels/tools/_testing.py:19: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
-  import pandas.util.testing as tm
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/datasets/__init__.py:96: FutureWarning: Fetchers from the nilearn.datasets module will be updated in version 0.9 to return python strings instead of bytes and Pandas dataframes instead of Numpy arrays.
+  &quot;Numpy arrays.&quot;, FutureWarning)
 </pre></div>
 </div>
 </div>
@@ -576,26 +570,26 @@ The verbose.fileo rcparam was deprecated in Matplotlib 3.1 and will be removed i
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="nn">&lt;ipython-input-5-a80dac6e0d76&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2092</span><span class="o">/</span><span class="mf">3546567671.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">     </span><span class="mi">15</span> 
 <span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">adaptive_mask_file</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TED_DIR</span><span class="p">,</span> <span class="s1">&#39;adaptive_mask.nii&#39;</span><span class="p">)</span>
 <span class="ne">---&gt; </span><span class="mi">17</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">math_img</span><span class="p">(</span><span class="s1">&#39;img &gt;= 3&#39;</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">adaptive_mask_file</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">18</span> 
 <span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="c1"># Optimally combined data</span>
 
-<span class="nn">~/Documents/tsalo/nilearn/nilearn/image/image.py</span> in <span class="ni">math_img</span><span class="nt">(formula, **imgs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">902</span>         <span class="n">niimgs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="g g-Whitespace">    </span><span class="mi">903</span>         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">imgs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-<span class="ne">--&gt; </span><span class="mi">904</span>             <span class="n">niimgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check_niimg</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">905</span>         <span class="n">_check_same_fov</span><span class="p">(</span><span class="o">*</span><span class="n">niimgs</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">906</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/image.py</span> in <span class="ni">math_img</span><span class="nt">(formula, **imgs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">904</span>         <span class="n">niimgs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="g g-Whitespace">    </span><span class="mi">905</span>         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">imgs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">906</span>             <span class="n">niimgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check_niimg</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">907</span>         <span class="n">_check_same_fov</span><span class="p">(</span><span class="o">*</span><span class="n">niimgs</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">908</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
 
-<span class="nn">~/Documents/tsalo/nilearn/nilearn/_utils/niimg_conversions.py</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
-<span class="g g-Whitespace">    </span><span class="mi">249</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">250</span>             <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">251</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">niimg</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">252</span>         <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">niimg</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">253</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">niimg</span><span class="p">)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">270</span>             <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">271</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">niimg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">272</span>         <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">niimg</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">273</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">niimg</span><span class="p">)</span>
 
 <span class="ne">ValueError</span>: (&quot;Input images cannot be compared, you provided &#39;dict_values([&#39;/Users/tsalo/Documents/tsalo/tedana-comparison/sandbox/e8-checkerboard-example/adaptive_mask.nii&#39;])&#39;,&quot;, &quot;File not found: &#39;/Users/tsalo/Documents/tsalo/tedana-comparison/sandbox/e8-checkerboard-example/adaptive_mask.nii&#39;&quot;)
 </pre></div>
