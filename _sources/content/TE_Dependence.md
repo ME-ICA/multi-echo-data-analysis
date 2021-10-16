@@ -1,7 +1,7 @@
 # BOLD, non-BOLD, and TE-dependence with tedana
 
 
-# Make figures and examples for dependence metric calculation
+## Make figures and examples for dependence metric calculation
 
 This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is leveraged to denoise multi-echo data.
 
