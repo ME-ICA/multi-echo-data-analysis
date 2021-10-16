@@ -52,7 +52,8 @@ sphinx:
   - sphinx_inline_tabs
   - sphinxcontrib.bibtex
   config:
-    bibtex_reference_style: apa
+    bibtex_reference_style: author_year
+    bibtex_default_style: unsrt
     intersphinx_mapping:
       tedana:
       - "https://tedana.readthedocs.io/en/0.0.11/"
