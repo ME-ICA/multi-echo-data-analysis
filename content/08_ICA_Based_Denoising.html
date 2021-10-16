@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3dMEPFM &#8212; Multi-Echo fMRI Data Analysis</title>
+    <title>Denoising Data with ICA &#8212; Multi-Echo fMRI Data Analysis</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Cerebrovascular Mapping" href="06_Cerebrovascular_Mapping.html" />
-    <link rel="prev" title="Dual-Echo Denoising with nilearn" href="04_Dual_Echo_Denoising.html" />
+    <link rel="next" title="Markdown Files" href="markdown.html" />
+    <link rel="prev" title="Manual Classification with rica" href="07_Manual_Classification_with_rica.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -205,8 +205,8 @@
    Dual-Echo Denoising with nilearn
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="05_3dMEPFM.html">
    3dMEPFM
   </a>
  </li>
@@ -220,8 +220,8 @@
    Manual Classification with rica
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="08_ICA_Based_Denoising.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    Denoising Data with ICA
   </a>
  </li>
@@ -287,11 +287,11 @@
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
         <a class="dropdown-buttons"
-            href="../_sources/content/05_3dMEPFM.ipynb"><button type="button"
+            href="../_sources/content/08_ICA_Based_Denoising.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/content/05_3dMEPFM.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/content/08_ICA_Based_Denoising.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -316,7 +316,7 @@
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/ME-ICA/multi-echo-data-analysis/main?urlpath=tree/content/content/05_3dMEPFM.md"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/ME-ICA/multi-echo-data-analysis/main?urlpath=tree/content/content/08_ICA_Based_Denoising.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../_static/images/logo_binder.svg"
@@ -333,6 +333,29 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#aggressive-denoising">
+   Aggressive Denoising
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#non-aggressive-denoising">
+   Non-Aggressive Denoising
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#component-orthogonalization">
+   Component orthogonalization
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -341,16 +364,29 @@
         
               <div>
                 
-  <div class="section" id="dmepfm">
-<h1>3dMEPFM<a class="headerlink" href="#dmepfm" title="Permalink to this headline">¶</a></h1>
-<p>Requirements:</p>
-<ul class="simple">
-<li><p>abind</p></li>
-<li><p>lars</p></li>
-<li><p>genlasso</p></li>
-<li><p>wavethresh</p></li>
-<li><p>snow</p></li>
-</ul>
+  <div class="section" id="denoising-data-with-ica">
+<h1>Denoising Data with ICA<a class="headerlink" href="#denoising-data-with-ica" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="aggressive-denoising">
+<h2>Aggressive Denoising<a class="headerlink" href="#aggressive-denoising" title="Permalink to this headline">¶</a></h2>
+<div class="tab-set docutils">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">Python</label><div class="tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">glm</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">AFNI</label><div class="tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="non-aggressive-denoising">
+<h2>Non-Aggressive Denoising<a class="headerlink" href="#non-aggressive-denoising" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="component-orthogonalization">
+<h2>Component orthogonalization<a class="headerlink" href="#component-orthogonalization" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -383,19 +419,19 @@
 <div class='prev-next-bottom'>
     
     <div id="prev">
-        <a class="left-prev" href="04_Dual_Echo_Denoising.html" title="previous page">
+        <a class="left-prev" href="07_Manual_Classification_with_rica.html" title="previous page">
             <i class="prevnext-label fas fa-angle-left"></i>
             <div class="prevnext-info">
                 <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Dual-Echo Denoising with nilearn</p>
+                <p class="prevnext-title">Manual Classification with rica</p>
             </div>
         </a>
     </div>
      <div id="next">
-        <a class="right-next" href="06_Cerebrovascular_Mapping.html" title="next page">
+        <a class="right-next" href="markdown.html" title="next page">
             <div class="prevnext-info">
                 <p class="prevnext-label">next</p>
-                <p class="prevnext-title">Cerebrovascular Mapping</p>
+                <p class="prevnext-title">Markdown Files</p>
             </div>
             <i class="prevnext-label fas fa-angle-right"></i>
         </a>
