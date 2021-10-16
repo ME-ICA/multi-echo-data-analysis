@@ -33,6 +33,7 @@ parts:
     - file: content/05_3dMEPFM
     - file: content/06_Cerebrovascular_Mapping.md
     - file: content/07_Manual_Classification_with_rica.md
+    - file: content/08_ICA_Based_Denoising.md
   - caption: Background Information
     chapters:
     - file: content/markdown
