@@ -11,8 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Volume-wise $T_{2}^{*}$/$S_{0}$ estimation with `t2smap`
-
+# Volume-wise T2*/S0 estimation with `t2smap`
 
 ```{code-cell} ipython3
 import os
