@@ -43,6 +43,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -306,6 +308,61 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   BOLD, non-BOLD, and TE-dependence with tedana
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#make-figures-and-examples-for-dependence-metric-calculation">
+   Make figures and examples for dependence metric calculation
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time">
+     Plot simulations of BOLD and non-BOLD signals as a function of echo time
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#make-design-matrices">
+     Make design matrices
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#te-independence-model">
+     TE-independence model
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#te-dependence-model">
+     TE-dependence model
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fitted-curves-for-s0-perturbed-signal">
+     Fitted curves for S0-perturbed signal
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fitted-curves-for-r2-perturbed-signal">
+     Fitted curves for R2*-perturbed signal
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#now-let-s-apply-this-approach-to-components">
+     Now let’s apply this approach to components
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -316,6 +373,63 @@
                 
   <div class="section" id="bold-non-bold-and-te-dependence-with-tedana">
 <h1>BOLD, non-BOLD, and TE-dependence with tedana<a class="headerlink" href="#bold-non-bold-and-te-dependence-with-tedana" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="make-figures-and-examples-for-dependence-metric-calculation">
+<h1>Make figures and examples for dependence metric calculation<a class="headerlink" href="#make-figures-and-examples-for-dependence-metric-calculation" title="Permalink to this headline">¶</a></h1>
+<p>This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is leveraged to denoise multi-echo data.</p>
+<p>The equation for how signal is dependent on changes in S0 and T2*:
+$<span class="math notranslate nohighlight">\(S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)\)</span>$</p>
+<div class="section" id="plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time">
+<h2>Plot simulations of BOLD and non-BOLD signals as a function of echo time<a class="headerlink" href="#plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="make-design-matrices">
+<h2>Make design matrices<a class="headerlink" href="#make-design-matrices" title="Permalink to this headline">¶</a></h2>
+<p>For TEDPCA and TEDICA, we use regression to get parameter estimates (PEs; not beta values) for component time-series against echo-specific data, and substitute those PEs for <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span>. At some point, I would like to dig into why those parameter estimates are equivalent to <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span> for our purposes.</p>
+</div>
+<div class="section" id="te-independence-model">
+<h2>TE-independence model<a class="headerlink" href="#te-independence-model" title="Permalink to this headline">¶</a></h2>
+<div class="math notranslate nohighlight">
+\[\frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}\]</div>
+<div class="math notranslate nohighlight">
+\[{\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}\]</div>
+<p><span class="math notranslate nohighlight">\(\frac{{\Delta}S_0}{S_0}\)</span> is a scalar (i.e., doesn’t change with TE), so we ignore that, which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span> (mean echo-wise signal).</p>
+<p>Thus,</p>
+<div class="math notranslate nohighlight">
+\[{\Delta}S(TE_k) = {\bar{S}(TE_k)} * X\]</div>
+<p>and for TEDPCA/TEDICA,</p>
+<div class="math notranslate nohighlight">
+\[PE(TE_k) = {\bar{S}(TE_k)} * X\]</div>
+<p>Lastly, we fit X to the data and evaluate model fit.</p>
+</div>
+<div class="section" id="te-dependence-model">
+<h2>TE-dependence model<a class="headerlink" href="#te-dependence-model" title="Permalink to this headline">¶</a></h2>
+<div class="math notranslate nohighlight">
+\[\frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k\]</div>
+<div class="math notranslate nohighlight">
+\[{\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k\]</div>
+<p><span class="math notranslate nohighlight">\(-{\Delta}{R_2^*}\)</span> is a scalar, so we ignore it, which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span> (mean echo-wise-signal) and <span class="math notranslate nohighlight">\(TE_k\)</span> (echo time in milliseconds).</p>
+<p>Thus,</p>
+<div class="math notranslate nohighlight">
+\[{\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
+<p>and for TEDPCA/TEDICA,</p>
+<div class="math notranslate nohighlight">
+\[PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
+<p>Lastly, we fit X to the data and evaluate model fit.</p>
+</div>
+<div class="section" id="fitted-curves-for-s0-perturbed-signal">
+<h2>Fitted curves for S0-perturbed signal<a class="headerlink" href="#fitted-curves-for-s0-perturbed-signal" title="Permalink to this headline">¶</a></h2>
+<p>The predicted curve for the S0 model matches the real curve perfectly!</p>
+</div>
+<div class="section" id="fitted-curves-for-r2-perturbed-signal">
+<h2>Fitted curves for R2*-perturbed signal<a class="headerlink" href="#fitted-curves-for-r2-perturbed-signal" title="Permalink to this headline">¶</a></h2>
+<p>For some reason, the predicted curve for the R2 model doesn’t match the real signal curve.
+What’s with this mismatch?</p>
+<p>It seems like the mismatch increases as the difference between the fluctuating volume’s R2 and the mean R2 increase.
+The fitted curve seems to actually match the mean signal, not the perturbed signal!</p>
+</div>
+<div class="section" id="now-let-s-apply-this-approach-to-components">
+<h2>Now let’s apply this approach to components<a class="headerlink" href="#now-let-s-apply-this-approach-to-components" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
     <script type="text/x-thebe-config">

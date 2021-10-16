@@ -13,12 +13,33 @@ kernelspec:
 
 # Signal Decay
 
+```{code-cell} ipython3
+import os
+
+import imageio
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+from IPython.display import Image
+from nilearn.glm import first_level
+from scipy import signal
+
+from book_utils import predict_bold_signal
+
+sns.set_style("whitegrid")
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Helvetica"]
+})
+```
+
 ## Signal decays as echo time increases
 
 ```{code-cell} ipython3
 data_dir = os.path.abspath("../data/")
 
-files = sorted(glob(op.join(data_dir, "sub-pilot_task-checkerboard_run-2_*_bold.nii.gz")))
+files = sorted(glob(os.path.join(data_dir, "sub-pilot_task-checkerboard_run-2_*_bold.nii.gz")))
 echo_times = np.array([9.58, 21.95, 34.32, 46.69, 59.06, 71.43, 83.8, 96.17])
 
 img = image.index_img(files[0], 0)
@@ -65,28 +86,6 @@ fig.show()
 ```
 
 ## The impact of $T_{2}^{*}$ and $S_{0}$ fluctuations on BOLD signal
-
-```{code-cell} ipython3
-import os
-import os.path as op
-
-import imageio
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-from IPython.display import Image
-from nilearn.glm import first_level
-from scipy import signal
-
-from book_utils import predict_bold_signal
-
-sns.set_style("whitegrid")
-plt.rcParams.update({
-    "text.usetex": True,
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Helvetica"]
-})
-```
 
 ```{code-cell} ipython3
 # Constants
@@ -199,8 +198,8 @@ This shows how single-echo data is a sample from a signal decay curve.
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = op.join(OUT_DIR, "fluctuations_single-echo_with_curve.gif")
-if op.isfile(out_file):
+out_file = os.path.join(OUT_DIR, "fluctuations_single-echo_with_curve.gif")
+if os.path.isfile(out_file):
     os.remove(out_file)
 
 filenames = []
@@ -283,8 +282,8 @@ This shows how changes in fMRI data can be driven by both S0 and T2* fluctuation
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = op.join(OUT_DIR, "fluctuations_single-echo_with_curve_and_t2s_s0.gif")
-if op.isfile(out_file):
+out_file = os.path.join(OUT_DIR, "fluctuations_single-echo_with_curve_and_t2s_s0.gif")
+if os.path.isfile(out_file):
     os.remove(out_file)
 
 filenames = []
@@ -397,8 +396,8 @@ This shows how fluctuations in S0 and T2* produce different patterns in the full
 s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
 t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
 
-out_file = op.join(OUT_DIR, "fluctuations_t2s_s0.gif")
-if op.isfile(out_file):
+out_file = os.path.join(OUT_DIR, "fluctuations_t2s_s0.gif")
+if os.path.isfile(out_file):
     os.remove(out_file)
 
 filenames = []
@@ -476,8 +475,8 @@ t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, M
 s0based_singleecho_signal = s0based_fullcurve_signal[SINGLEECHO_TE, :]
 t2sbased_singleecho_signal = t2sbased_fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = op.join(OUT_DIR, "fluctuations_t2s_s0_single-echo.gif")
-if op.isfile(out_file):
+out_file = os.path.join(OUT_DIR, "fluctuations_t2s_s0_single-echo.gif")
+if os.path.isfile(out_file):
     os.remove(out_file)
 
 filenames = []
@@ -580,8 +579,8 @@ t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, M
 s0based_multiecho_signal = s0based_fullcurve_signal[MULTIECHO_TES, :]
 t2sbased_multiecho_signal = t2sbased_fullcurve_signal[MULTIECHO_TES, :]
 
-out_file = op.join(OUT_DIR, "fluctuations_t2s_s0_multi-echo.gif")
-if op.isfile(out_file):
+out_file = os.path.join(OUT_DIR, "fluctuations_t2s_s0_multi-echo.gif")
+if os.path.isfile(out_file):
     os.remove(out_file)
 
 filenames = []

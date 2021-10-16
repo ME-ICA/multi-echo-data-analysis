@@ -497,13 +497,37 @@
                 
   <div class="section" id="signal-decay">
 <h1>Signal Decay<a class="headerlink" href="#signal-decay" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">nilearn.glm</span> <span class="kn">import</span> <span class="n">first_level</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
+
+<span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">predict_bold_signal</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s2">&quot;text.usetex&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;font.family&quot;</span><span class="p">:</span> <span class="s2">&quot;sans-serif&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;font.sans-serif&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="signal-decays-as-echo-time-increases">
 <h2>Signal decays as echo time increases<a class="headerlink" href="#signal-decays-as-echo-time-increases" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../data/&quot;</span><span class="p">)</span>
 
-<span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;sub-pilot_task-checkerboard_run-2_*_bold.nii.gz&quot;</span><span class="p">)))</span>
+<span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;sub-pilot_task-checkerboard_run-2_*_bold.nii.gz&quot;</span><span class="p">)))</span>
 <span class="n">echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">9.58</span><span class="p">,</span> <span class="mf">21.95</span><span class="p">,</span> <span class="mf">34.32</span><span class="p">,</span> <span class="mf">46.69</span><span class="p">,</span> <span class="mf">59.06</span><span class="p">,</span> <span class="mf">71.43</span><span class="p">,</span> <span class="mf">83.8</span><span class="p">,</span> <span class="mf">96.17</span><span class="p">])</span>
 
 <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">index_img</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
@@ -557,31 +581,6 @@
 </div>
 <div class="section" id="the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal">
 <h2>The impact of <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> fluctuations on BOLD signal<a class="headerlink" href="#the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">op</span>
-
-<span class="kn">import</span> <span class="nn">imageio</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">nilearn.glm</span> <span class="kn">import</span> <span class="n">first_level</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
-
-<span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">predict_bold_signal</span>
-
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-    <span class="s2">&quot;text.usetex&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s2">&quot;font.family&quot;</span><span class="p">:</span> <span class="s2">&quot;sans-serif&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;font.sans-serif&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">]</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-</div>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Constants</span>
@@ -708,8 +707,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fullcurve_signal</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">FULLCURVE_TES</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
 <span class="n">singleecho_signal</span> <span class="o">=</span> <span class="n">fullcurve_signal</span><span class="p">[</span><span class="n">SINGLEECHO_TE</span><span class="p">,</span> <span class="p">:]</span>
 
-<span class="n">out_file</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_single-echo_with_curve.gif&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_single-echo_with_curve.gif&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
 
 <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
@@ -795,8 +794,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fullcurve_signal</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">FULLCURVE_TES</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
 <span class="n">singleecho_signal</span> <span class="o">=</span> <span class="n">fullcurve_signal</span><span class="p">[</span><span class="n">SINGLEECHO_TE</span><span class="p">,</span> <span class="p">:]</span>
 
-<span class="n">out_file</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_single-echo_with_curve_and_t2s_s0.gif&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_single-echo_with_curve_and_t2s_s0.gif&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
 
 <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
@@ -912,8 +911,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s0based_fullcurve_signal</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">FULLCURVE_TES</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">N_VOLS</span><span class="p">,</span> <span class="n">MEAN_T2S</span><span class="p">))</span>
 <span class="n">t2sbased_fullcurve_signal</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">FULLCURVE_TES</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">N_VOLS</span><span class="p">,</span> <span class="n">MEAN_S0</span><span class="p">),</span> <span class="n">t2s_ts</span><span class="p">)</span>
 
-<span class="n">out_file</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_t2s_s0.gif&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_t2s_s0.gif&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
 
 <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
@@ -994,8 +993,8 @@
 <span class="n">s0based_singleecho_signal</span> <span class="o">=</span> <span class="n">s0based_fullcurve_signal</span><span class="p">[</span><span class="n">SINGLEECHO_TE</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">t2sbased_singleecho_signal</span> <span class="o">=</span> <span class="n">t2sbased_fullcurve_signal</span><span class="p">[</span><span class="n">SINGLEECHO_TE</span><span class="p">,</span> <span class="p">:]</span>
 
-<span class="n">out_file</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_t2s_s0_single-echo.gif&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_t2s_s0_single-echo.gif&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
 
 <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1101,8 +1100,8 @@
 <span class="n">s0based_multiecho_signal</span> <span class="o">=</span> <span class="n">s0based_fullcurve_signal</span><span class="p">[</span><span class="n">MULTIECHO_TES</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">t2sbased_multiecho_signal</span> <span class="o">=</span> <span class="n">t2sbased_fullcurve_signal</span><span class="p">[</span><span class="n">MULTIECHO_TES</span><span class="p">,</span> <span class="p">:]</span>
 
-<span class="n">out_file</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_t2s_s0_multi-echo.gif&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">,</span> <span class="s2">&quot;fluctuations_t2s_s0_multi-echo.gif&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
 
 <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
