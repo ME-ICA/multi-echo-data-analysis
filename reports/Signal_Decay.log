@@ -41,7 +41,7 @@ for f in files:
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2056/1903662462.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2006/1903662462.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      1[0m [0mdata_dir[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mabspath[0m[0;34m([0m[0;34m"../data/"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      2[0m [0;34m[0m[0m
 [0;32m----> 3[0;31m [0mfiles[0m [0;34m=[0m [0msorted[0m[0;34m([0m[0mglob[0m[0;34m([0m[0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mdata_dir[0m[0;34m,[0m [0;34m"sub-pilot_task-checkerboard_run-2_*_bold.nii.gz"[0m[0;34m)[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
