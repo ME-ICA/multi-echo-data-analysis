@@ -25,7 +25,6 @@ jobs:
         path: ${{ env.pythonLocation }}
         key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
 
-
     - name: Install dependencies
       run: |
         pip install --upgrade --upgrade-strategy eager -r requirements.txt
