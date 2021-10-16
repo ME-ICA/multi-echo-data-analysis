@@ -13,6 +13,8 @@ kernelspec:
 
 # Optimal combination with `t2smap`
 
+Use `t2smap` {cite-p}`DuPre2021` to combine data.
+
 ```{code-cell} ipython3
 import os
 import matplotlib.pyplot as plt

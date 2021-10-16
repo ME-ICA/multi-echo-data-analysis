@@ -13,7 +13,7 @@ kernelspec:
 
 # Multi-Echo Denoising with `tedana`
 
-In this analysis tutorial, we will use `tedana` to perform multi-echo denoising.
+In this analysis tutorial, we will use `tedana` {cite-p}`DuPre2021` to perform multi-echo denoising.
 
 Specifically, we will use {py:func}`tedana.workflows.tedana_workflow`.
 
