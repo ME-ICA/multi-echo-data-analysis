@@ -21,6 +21,8 @@ This list is not necessarily up to date, so please check out OpenNeuro to potent
 
 **Link**: https://openneuro.org/datasets/ds000210
 
+**Citation**: {cite:t}`dupre2016multi`
+
 **Brief Description**: 31 participants, with one run of resting-state and four runs of cued SGT task.
 The multi-echo fMRI data have three echoes (13, 27, 43 ms).
 Additional data include T1-weighted anatomical scans and physiological data (chest belt and PPG)
@@ -30,6 +32,8 @@ recorded concurrently with the fMRI scans.
 
 **Link**: https://openneuro.org/datasets/ds000258
 
+**Citation**: {cite:t}`Kundu2013-po`
+
 **Brief Description**: 89 participants, with one run of resting-state.
 The multi-echo fMRI data have four echoes (12, 28, 44, 60 ms).
 Additional data include T1-weighted anatomical scans.
@@ -37,6 +41,8 @@ Additional data include T1-weighted anatomical scans.
 ## Multiband multi-echo imaging of simultaneous oxygenation and flow timeseries for resting state connectivity
 
 **Link**: https://openneuro.org/datasets/ds000254
+
+**Citation**: {cite:t}`cohen2019improving`
 
 **Brief Description**: 13 participants, with one run of bilateral finger-tapping task.
 The multi-echo fMRI data have four echoes (9.1, 25, 39.6, 54.3 ms).
@@ -46,6 +52,8 @@ Additional data include T1-weighted anatomical scans and pCASL acquired concurre
 
 **Link**: https://openneuro.org/datasets/ds001491
 
+**Citation**: {cite:t}`DALENBERG2018734`
+
 **Brief Description**: 20 participants, with one run of image-viewing and four runs of flavor-experiencing task.
 The multi-echo fMRI data have three echoes (8.02, 22.03, 36.03 ms).
 Additional data include T1-weighted anatomical scans.
@@ -53,6 +61,8 @@ Additional data include T1-weighted anatomical scans.
 ## Cambridge Centre for Ageing Neuroscience (Cam-CAN)
 
 **Link**: https://camcan-archive.mrc-cbu.cam.ac.uk/dataaccess/
+
+**Citation**: {cite:t}`Shafto2014-lg`
 
 **Brief Description**: The Cam-CAN MRI dataset is part of the much larger Cam-CAN research project.
 649 participants completed the MRI scanning protocol with multi-echo fMRI data.
@@ -70,6 +80,8 @@ Accessing this dataset requires a data access application.
 
 **Link**: https://doi.org/10.34894/R1TNL8
 
+**Citation**: {cite:t}`HEUNIS2021118244`
+
 **Brief Description**: 28 participants, with one run of resting-state,
 one run of emotion-processing task, one run of imagined emotion-processing task,
 one run of finger-tapping task, and one run of imagined finger-tapping task.
@@ -85,6 +97,8 @@ Accessing this dataset requires a data access application.
 
 **Link**: https://openneuro.org/datasets/ds003192
 
+**Citation**: {cite:t}`MOIA2021117914`
+
 **Brief Description**: 7 participants with 10 sessions each, with one run of breath-holding task.
 The multi-echo fMRI data have five echoes (10.6, 28.69, 46.78, 64.87, 82.96 ms).
 Additional data include T1-weighted anatomical scans and physiological data (chest belt, cardiac, exhaled CO2, exhaled O2)
@@ -93,6 +107,8 @@ acquired concurrently with the fMRI scans.
 ## Le Petit Prince
 
 **Link**: https://openneuro.org/datasets/ds003643
+
+**Citation**: {cite:t}`Li2021.10.02.462875`
 
 **Brief Description**: 111 participants, with nine runs of an auditory narrative task.
 The multi-echo fMRI data have three echoes, with some participants having TEs of 12.8, 27.5, and 43 ms
