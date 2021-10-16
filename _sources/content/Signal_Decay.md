@@ -38,43 +38,77 @@ plt.rcParams.update({
 import plotly.graph_objects as go
 import numpy as np
 
-# Create figure
-fig = go.Figure()
 
-# Add traces, one for each slider step
-for step in np.arange(0, 5, 0.1):
-    fig.add_trace(
-        go.Scatter(
-            visible=False,
-            line=dict(color="#00CED1", width=6),
-            name="𝜈 = " + str(step),
-            x=np.arange(0, 10, 0.01),
-            y=np.sin(step * np.arange(0, 10, 0.01))))
+def plot_signal_scatter(x, y):
+    assert x.ndim == 1
+    assert y.ndim == 2
+    assert y.shape[1] == x.shape[0]
+    assert 30 in x
+    te30_idx = list(x).index(30)
 
-# Make 10th trace visible
-fig.data[10].visible = True
-
-# Create and add slider
-steps = []
-for i in range(len(fig.data)):
-    step = dict(
-        method="update",
-        args=[{"visible": [False] * len(fig.data)},
-              {"title": "Slider switched to step: " + str(i)}],  # layout attribute
+    # Create figure
+    fig = go.Figure(
+        layout_yaxis_range=[0, 18000],
+        layout_xaxis_range=[0, 100],
     )
-    step["args"][0]["visible"][i] = True  # Toggle i'th trace to "visible"
-    steps.append(step)
+    fig.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=[15, 30, 45, 60, 75, 90],
+        ),
+    )
 
-sliders = [dict(
-    active=10,
-    currentvalue={"prefix": "Frequency: "},
-    pad={"t": 50},
-    steps=steps
-)]
+    # Add traces, one for each slider step
+    for step in range(y.shape[0]):
+        step_vals = y[step, :]
+        fig.add_trace(
+            go.Scatter(
+                visible=False,
+                x=x,
+                y=step_vals,
+            )
+        )
 
-fig.update_layout(
-    sliders=sliders
-)
+    # Make 10th trace visible
+    fig.data[10].visible = True
+
+    # Create and add slider
+    steps = []
+    for i, val in enumerate(fig.data):
+        step = dict(
+            method="update",
+            args=[
+                {"visible": [False] * len(fig.data)},
+                {"title": f"Signal at TE=30ms: {val['y'][te30_idx]}"},
+            ],  # layout attribute
+        )
+        step["args"][0]["visible"][i] = True  # Toggle i'th trace to "visible"
+        step['label'] = str(val['y'][te30_idx])
+        steps.append(step)
+
+    sliders = [dict(
+        active=10,
+        currentvalue={"prefix": "Signal at TE=30ms: "},
+        steps=steps,
+    )]
+
+    fig.update_layout(sliders=sliders)
+
+    return fig
+```
+
+```{code-cell} ipython3
+y_vals = np.arange(5000, 10001, 100)[:, None]
+x_vals = np.array([30])
+fig = plot_signal_scatter(x_vals, y_vals)
+
+fig.show()
+```
+
+```{code-cell} ipython3
+y_vals = np.arange(5000, 10001, 100)[:, None]
+x_vals = np.array([15, 30, 45, 60, 75, 90])
+fig = plot_signal_scatter(x_vals, y_vals)
 
 fig.show()
 ```

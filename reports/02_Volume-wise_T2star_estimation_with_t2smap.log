@@ -30,7 +30,7 @@ workflows.t2smap_workflow(
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mFileNotFoundError[0m                         Traceback (most recent call last)
-[0;32m/tmp/ipykernel_1721/2204136142.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_1691/2204136142.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      6[0m     [0mprefix[0m[0;34m=[0m[0;34m"sub-04570_task-rest_space-scanner"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      7[0m     [0mfittype[0m[0;34m=[0m[0;34m"loglin"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 8[0;31m     [0mfitmode[0m[0;34m=[0m[0;34m"ts"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m

@@ -30,7 +30,7 @@ workflows.tedana_workflow(
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mFileNotFoundError[0m                         Traceback (most recent call last)
-[0;32m/tmp/ipykernel_1742/4032711658.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_1712/4032711658.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      6[0m     [0mprefix[0m[0;34m=[0m[0;34m"sub-04570_task-rest_space-scanner"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      7[0m     [0mfittype[0m[0;34m=[0m[0;34m"curvefit"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 8[0;31m     [0mtedpca[0m[0;34m=[0m[0;34m"mdl"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
