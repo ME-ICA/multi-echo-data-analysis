@@ -20,7 +20,9 @@ This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is l
 
 The equation for how signal is dependent on changes in S0 and T2*:
 
-$$S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)$$
+$$
+    S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)
+$$ (eq:monoexponential_decay)
 
 ```{code-cell} ipython3
 import os.path as op
@@ -152,40 +154,58 @@ fig.show()
 
 ### Make design matrices
 
-For TEDPCA and TEDICA, we use regression to get parameter estimates (PEs; not beta values) for component time-series against echo-specific data, and substitute those PEs for ${\bar{S}(TE_k)}$. At some point, I would like to dig into why those parameter estimates are equivalent to ${\bar{S}(TE_k)}$ for our purposes.
+For TEDPCA and TEDICA, we use regression to get parameter estimates (PEs; not beta values) for component time-series against echo-specific data, and substitute those PEs for ${\bar{S}(TE_k)}$.
+At some point, I would like to dig into why those parameter estimates are equivalent to ${\bar{S}(TE_k)}$ for our purposes.
 
 ### TE-independence model
 
-$$\frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}$$
-$${\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}$$
+$$
+    \frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}
+$$ (eq:te_independence_model1)
+$$
+    {\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}
+$$ (eq:te_independence_model2)
 
-$\frac{{\Delta}S_0}{S_0}$ is a scalar (i.e., doesn't change with TE), so we ignore that, which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise signal).
+$\frac{{\Delta}S_0}{S_0}$ is a scalar (i.e., doesn't change with TE), so we ignore that,
+which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise signal).
 
 Thus,
 
-$${\Delta}S(TE_k) = {\bar{S}(TE_k)} * X$$
+$$
+    {\Delta}S(TE_k) = {\bar{S}(TE_k)} * X
+$$ (eq:te_independence_model3)
 
 and for TEDPCA/TEDICA,
 
-$$PE(TE_k) = {\bar{S}(TE_k)} * X$$
+$$
+    PE(TE_k) = {\bar{S}(TE_k)} * X
+$$ (eq:te_independence_model4)
 
 Lastly, we fit X to the data and evaluate model fit.
 
 ### TE-dependence model
 
-$$\frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k$$
+$$
+    \frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k
+$$ (eq:te_dependence_model1)
 
-$${\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k$$
+$$
+    {\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k
+$$ (eq:te_dependence_model2)
 
 $-{\Delta}{R_2^*}$ is a scalar, so we ignore it, which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise-signal) and $TE_k$ (echo time in milliseconds).
 
 Thus,
 
-$${\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X$$
+$$
+    {\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X
+$$ (eq:te_dependence_model3)
 
 and for TEDPCA/TEDICA,
 
-$$PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X$$
+$$
+    PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X
+$$ (eq:te_dependence_model4)
 
 Lastly, we fit X to the data and evaluate model fit.
 
@@ -197,6 +217,7 @@ X2 = ((echo_times * mean_sig) / mean_t2s)[:, None]  # Model 2
 ```
 
 ### Fitted curves for S0-perturbed signal
+
 The predicted curve for the S0 model matches the real curve perfectly!
 
 ```{code-cell} ipython3
@@ -229,6 +250,7 @@ print('Delta S0 from results: {}'.format(coeffs_S0[0] * mean_s0))
 ```
 
 ### Fitted curves for R2*-perturbed signal
+
 For some reason, the predicted curve for the R2 model doesn't match the real signal curve.
 What's with this mismatch?
 
