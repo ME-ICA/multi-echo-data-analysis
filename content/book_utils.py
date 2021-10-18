@@ -2,6 +2,32 @@
 import numpy as np
 
 
+def predict_parameters(echo_times, te30_ts, s0=None, t2s=None):
+    """Infer the S0 or T2* time series that produces the TE30 timeseries."""
+    assert (s0 is None) or (t2s is None)
+    assert (s0 is not None) or (t2s is not None)
+    neg_tes = (-1 * echo_times)[None, :]
+    log_te30 = np.log(te30_ts)[:, None]
+
+    if s0 is None:
+        print("Predicting S0")
+        r2s = 1 / t2s
+        intercept = log_te30 - np.dot(r2s, neg_tes)
+        s0 = np.exp(intercept)
+        return s0
+    else:
+        print("Predicting T2*")
+        intercept = np.log(s0)
+        # need to solve for r2s
+        # log_te30 = np.dot(r2s, neg_tes) + intercept
+        temp = log_te30 - intercept
+        print(neg_tes.T.shape)
+        print(temp.T.shape)
+        r2s = np.linalg.lstsq(neg_tes.T, temp.T, rcond=None)[0].T
+        t2s = 1 / r2s
+        return t2s
+
+
 def predict_bold_signal(echo_times, s0, t2s):
     """Predict multi-echo signal according to monoexponential decay model.
 
@@ -21,8 +47,7 @@ def predict_bold_signal(echo_times, s0, t2s):
 
     Notes
     -----
-    This is meant to be a sort of inverse to the code used
-    in tedana.decay.fit_decay
+    This is meant to be a sort of inverse to the code used in tedana.decay.fit_decay
     """
     if not isinstance(t2s, np.ndarray):
         t2s = np.array([t2s])
