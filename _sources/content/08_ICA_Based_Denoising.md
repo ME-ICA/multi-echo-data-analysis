@@ -27,7 +27,39 @@ then retain the residuals for further analysis, you are doing aggressive denoisi
 
 ````{tab} Python
 ```python
-from nilearn import glm
+import numpy as np
+from nilearn import masking
+
+# For this, you need the mixing matrix, the data you're denoising,
+# a brain mask, and an index of "bad" components
+data_file = "preprocessed_data.nii.gz"
+mixing_file = "mixing.tsv"
+mask_file = "mask.nii.gz"
+den_idx = np.array([0, 1, 2, 3, 4, 5])
+
+# Apply the mask to the data image to get a 2d array
+data = masking.apply_mask(data_file, mask_file)
+
+# Transpose to voxels-by-time
+data = data.T
+
+# Load the mixing matrix
+mixing_df = pd.read_table(mixing_file, index_col="component")
+mixing = mixing_df.data
+
+# The first dimension should be time
+assert data.shape[1] == mixing.shape[0]
+
+# Fit GLM to bad components only
+betas = np.linalg.lstsq(motion_components, data, rcond=None)[0]
+
+# Denoise the data with the bad components
+pred_data = np.dot(motion_components, betas)
+data_denoised = data - pred_data
+
+# Save to file
+img_denoised = masking.unmask(data_denoised.T, mask_file)
+img_denoised.to_filename("denoised.nii.gz")
 ```
 ````
 ````{tab} FSL
@@ -48,7 +80,39 @@ you are doing nonaggressive denoising.
 
 ````{tab} Python
 ```python
-from nilearn import glm
+import numpy as np
+from nilearn import masking
+
+# For this, you need the mixing matrix, the data you're denoising,
+# a brain mask, and an index of "bad" components
+data_file = "preprocessed_data.nii.gz"
+mixing_file = "mixing.tsv"
+mask_file = "mask.nii.gz"
+den_idx = np.array([0, 1, 2, 3, 4, 5])
+
+# Apply the mask to the data image to get a 2d array
+data = masking.apply_mask(data_file, mask_file)
+
+# Transpose to voxels-by-time
+data = data.T
+
+# Load the mixing matrix
+mixing_df = pd.read_table(mixing_file, index_col="component")
+mixing = mixing_df.data
+
+# The first dimension should be time
+assert data.shape[1] == mixing.shape[0]
+
+# Fit GLM to all components
+betas = np.linalg.lstsq(mixing, data, rcond=None)[0]
+
+# Denoise the data using the betas from just the bad components
+pred_data = np.dot(motion_components, betas[den_idx, :])
+data_denoised = data - pred_data
+
+# Save to file
+img_denoised = masking.unmask(data_denoised.T, mask_file)
+img_denoised.to_filename("denoised.nii.gz")
 ```
 ````
 ````{tab} AFNI
@@ -67,7 +131,19 @@ This way, you can regress the rejected components out of the data in the form of
 
 ````{tab} Python
 ```python
-from nilearn import glm
+good_idx = np.setdiff1d(np.arange(mixing.shape[1]), den_idx)
+
+# Separate the mixing matrix into "good" and "bad" components
+bad_mixing = mixing[:, den_idx]
+good_mixing = mixing[:, good_idx]
+
+# Regress the good components out of the bad ones
+betas = np.linalg.lstsq(good_mixing, bad_mixing, rcond=None)[0]
+pred_bad_mixing = np.dot(good_mixing, betas)
+orth_motion_components = bad_mixing - pred_bad_mixing
+
+# Replace the old component time series in the mixing matrix with the new ones
+mixing[:, den_idx] = orth_motion_components
 ```
 ````
 ````{tab} AFNI
@@ -80,7 +156,16 @@ Once you have these "pure evil" components, you can perform aggressive denoising
 
 ````{tab} Python
 ```python
-from nilearn import glm
+# Fit GLM to bad components only
+betas = np.linalg.lstsq(orth_motion_components, data, rcond=None)[0]
+
+# Denoise the data with the bad components
+pred_data = np.dot(orth_motion_components, betas)
+data_denoised = data - pred_data
+
+# Save to file.
+img_denoised = masking.unmask(data_denoised.T, mask_file)
+img_denoised.to_filename("denoised.nii.gz")
 ```
 ````
 ````{tab} AFNI
