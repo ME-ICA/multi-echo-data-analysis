@@ -24,7 +24,7 @@ parts:
     - file: content/Multi_Echo_Datasets
     - file: content/Acquiring_Multi_Echo_Data
     - file: content/Processing_Multi_Echo_Data
-  - caption: Analysis Tutorials and Other Things
+  - caption: Analysis Tutorials
     chapters:
     - file: content/01_Optimal_Combination_with_t2smap
     - file: content/02_Volume-wise_T2star_estimation_with_t2smap
