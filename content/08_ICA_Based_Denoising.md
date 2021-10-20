@@ -106,6 +106,11 @@ img_denoised = masking.unmask(data_denoised.T, mask_file)
 img_denoised.to_filename("denoised.nii.gz")
 ```
 ````
+````{tab} FSL
+```bash
+3dcalc --input stuff
+```
+````
 ````{tab} AFNI
 ```bash
 3dcalc --input stuff
@@ -137,6 +142,11 @@ orth_motion_components = bad_mixing - pred_bad_mixing
 mixing[:, den_idx] = orth_motion_components
 ```
 ````
+````{tab} FSL
+```bash
+3dcalc --input stuff
+```
+````
 ````{tab} AFNI
 ```bash
 3dcalc --input stuff
@@ -154,9 +164,14 @@ betas = np.linalg.lstsq(orth_motion_components, data, rcond=None)[0]
 pred_data = np.dot(orth_motion_components, betas)
 data_denoised = data - pred_data
 
-# Save to file.
+# Save to file
 img_denoised = masking.unmask(data_denoised.T, mask_file)
 img_denoised.to_filename("denoised.nii.gz")
+```
+````
+````{tab} FSL
+```bash
+3dcalc --input stuff
 ```
 ````
 ````{tab} AFNI
