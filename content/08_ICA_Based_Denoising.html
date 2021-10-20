@@ -415,12 +415,18 @@ To remove noise from your data, you can regress the “bad” components out of 
 </div>
 </div>
 <input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">FSL</label><div class="tab-content docutils">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">data_file</span><span class="o">=</span>preprocessed_data.nii.gz
+<span class="nv">mixing_file</span><span class="o">=</span>mixing.tsv
+<span class="nv">mask_file</span><span class="o">=</span>mask.nii.gz
+<span class="nv">den_idx</span><span class="o">=(</span><span class="m">0</span>, <span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span>, <span class="m">4</span>, <span class="m">5</span><span class="o">)</span>
 </pre></div>
 </div>
 </div>
 <input class="tab-input" id="tab-set--0-input--3" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--3">AFNI</label><div class="tab-content docutils">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">data_file</span><span class="o">=</span>preprocessed_data.nii.gz
+<span class="nv">mixing_file</span><span class="o">=</span>mixing.tsv
+<span class="nv">mask_file</span><span class="o">=</span>mask.nii.gz
+<span class="nv">den_idx</span><span class="o">=(</span><span class="m">0</span>, <span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span>, <span class="m">4</span>, <span class="m">5</span><span class="o">)</span>
 </pre></div>
 </div>
 </div>

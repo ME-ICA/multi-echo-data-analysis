@@ -48,12 +48,18 @@ assert data.shape[1] == mixing.shape[0]
 ````
 ````{tab} FSL
 ```bash
-3dcalc --input stuff
+data_file=preprocessed_data.nii.gz
+mixing_file=mixing.tsv
+mask_file=mask.nii.gz
+den_idx=(0, 1, 2, 3, 4, 5)
 ```
 ````
 ````{tab} AFNI
 ```bash
-3dcalc --input stuff
+data_file=preprocessed_data.nii.gz
+mixing_file=mixing.tsv
+mask_file=mask.nii.gz
+den_idx=(0, 1, 2, 3, 4, 5)
 ```
 ````
 
