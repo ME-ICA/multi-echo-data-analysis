@@ -2,30 +2,50 @@
 import numpy as np
 
 
-def predict_parameters(echo_times, te30_ts, s0=None, t2s=None):
-    """Infer the S0 or T2* time series that produces the TE30 timeseries."""
+def predict_parameters(timeseries, echo_time, *, s0=None, t2s=None):
+    """Infer the S0 or T2* time series that produces the single-echo timeseries.
+
+    Parameters
+    ----------
+    timeseries : numpy.ndarray of shape (n_timepoints,)
+    echo_time : float
+    s0
+        Mutually exclusive with t2s.
+    t2s
+        Mutually exclusive with s0.
+
+    Returns
+    -------
+    s0 : numpy.ndarray of shape (n_timepoints,)
+    t2s : numpy.ndarray of shape (n_timepoints,)
+    """
+    # Check that only one of s0 or t2s is provided
     assert (s0 is None) or (t2s is None)
     assert (s0 is not None) or (t2s is not None)
-    neg_tes = (-1 * echo_times)[None, :]
-    log_te30 = np.log(te30_ts)[:, None]
+
+    # Convert data for log-linear regression
+    neg_te = np.array([-1 * echo_time])[:, None]
+    log_timeseries = np.log(timeseries)[:, None]
 
     if s0 is None:
         print("Predicting S0")
         r2s = 1 / t2s
-        intercept = log_te30 - np.dot(r2s, neg_tes)
+        r2s = np.atleast_2d(r2s).T
+        intercept = log_timeseries - np.dot(r2s, neg_te)
         s0 = np.exp(intercept)
-        return s0
     else:
         print("Predicting T2*")
         intercept = np.log(s0)
+        intercept = np.atleast_2d(intercept).T
         # need to solve for r2s
-        # log_te30 = np.dot(r2s, neg_tes) + intercept
-        temp = log_te30 - intercept
-        print(neg_tes.T.shape)
-        print(temp.T.shape)
-        r2s = np.linalg.lstsq(neg_tes.T, temp.T, rcond=None)[0].T
+        # log_timeseries = np.dot(r2s, neg_te) + intercept
+        temp = log_timeseries - intercept
+        r2s = np.linalg.lstsq(neg_te.T, temp.T, rcond=None)[0].T
         t2s = 1 / r2s
-        return t2s
+
+    t2s = np.squeeze(t2s)
+    s0 = np.squeeze(s0)
+    return t2s, s0
 
 
 def predict_bold_signal(echo_times, s0, t2s):
