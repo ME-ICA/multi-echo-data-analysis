@@ -25,12 +25,12 @@ denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_1988/2862625900.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_1751/2862625900.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      2[0m [0mte2_img[0m [0;34m=[0m [0;34m"../data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      3[0m [0mmask_img[0m [0;34m=[0m [0;34m"../data/sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 4[0;31m [0mdenoised_img[0m [0;34m=[0m [0mregress_one_image_out_of_another[0m[0;34m([0m[0mte2_img[0m[0;34m,[0m [0mte1_img[0m[0;34m,[0m [0mmask_img[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m
-[0;32m/tmp/ipykernel_1988/2172515877.py[0m in [0;36mregress_one_image_out_of_another[0;34m(data_img, nuis_img, mask_img)[0m
+[0;32m/tmp/ipykernel_1751/2172515877.py[0m in [0;36mregress_one_image_out_of_another[0;34m(data_img, nuis_img, mask_img)[0m
 [1;32m      6[0m [0;32mdef[0m [0mregress_one_image_out_of_another[0m[0;34m([0m[0mdata_img[0m[0;34m,[0m [0mnuis_img[0m[0;34m,[0m [0mmask_img[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      7[0m     [0;31m# First, mean-center each image over time[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 8[0;31m     [0mmean_data_img[0m [0;34m=[0m [0mimage[0m[0;34m.[0m[0mmean_img[0m[0;34m([0m[0mdata_img[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
