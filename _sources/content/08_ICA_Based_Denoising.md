@@ -17,17 +17,12 @@ ICA classification methods like `tedana` will produce two important outputs: com
 The component classifications will indicate whether each componet is "good" (accepted) or "bad" (rejected).
 To remove noise from your data, you can regress the "bad" components out of it, though there are multiple methods to accomplish this.
 
-```{tableofcontents}
-```
-
-## Aggressive Denoising
-
-If you regress just nuisance regressors (i.e., rejected components) out of your data,
-then retain the residuals for further analysis, you are doing aggressive denoising.
+Let's start by loading the necessary data.
 
 ````{tab} Python
 ```python
 import numpy as np
+import pandas as pd
 from nilearn import masking
 
 # For this, you need the mixing matrix, the data you're denoising,
@@ -37,19 +32,38 @@ mixing_file = "mixing.tsv"
 mask_file = "mask.nii.gz"
 den_idx = np.array([0, 1, 2, 3, 4, 5])
 
+# Load the mixing matrix
+mixing_df = pd.read_table(mixing_file, index_col="component")
+mixing = mixing_df.data
+
 # Apply the mask to the data image to get a 2d array
 data = masking.apply_mask(data_file, mask_file)
 
 # Transpose to voxels-by-time
 data = data.T
 
-# Load the mixing matrix
-mixing_df = pd.read_table(mixing_file, index_col="component")
-mixing = mixing_df.data
-
 # The first dimension should be time
 assert data.shape[1] == mixing.shape[0]
+```
+````
+````{tab} FSL
+```bash
+3dcalc --input stuff
+```
+````
+````{tab} AFNI
+```bash
+3dcalc --input stuff
+```
+````
 
+## Aggressive Denoising
+
+If you regress just nuisance regressors (i.e., rejected components) out of your data,
+then retain the residuals for further analysis, you are doing aggressive denoising.
+
+````{tab} Python
+```python
 # Fit GLM to bad components only
 betas = np.linalg.lstsq(motion_components, data, rcond=None)[0]
 
@@ -80,29 +94,6 @@ you are doing nonaggressive denoising.
 
 ````{tab} Python
 ```python
-import numpy as np
-from nilearn import masking
-
-# For this, you need the mixing matrix, the data you're denoising,
-# a brain mask, and an index of "bad" components
-data_file = "preprocessed_data.nii.gz"
-mixing_file = "mixing.tsv"
-mask_file = "mask.nii.gz"
-den_idx = np.array([0, 1, 2, 3, 4, 5])
-
-# Apply the mask to the data image to get a 2d array
-data = masking.apply_mask(data_file, mask_file)
-
-# Transpose to voxels-by-time
-data = data.T
-
-# Load the mixing matrix
-mixing_df = pd.read_table(mixing_file, index_col="component")
-mixing = mixing_df.data
-
-# The first dimension should be time
-assert data.shape[1] == mixing.shape[0]
-
 # Fit GLM to all components
 betas = np.linalg.lstsq(mixing, data, rcond=None)[0]
 
