@@ -475,7 +475,12 @@ you are doing nonaggressive denoising.</p>
 </pre></div>
 </div>
 </div>
-<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">AFNI</label><div class="tab-content docutils">
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">FSL</label><div class="tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--3" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--3">AFNI</label><div class="tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
 </pre></div>
 </div>
@@ -507,7 +512,12 @@ This way, you can regress the rejected components out of the data in the form of
 </pre></div>
 </div>
 </div>
-<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">AFNI</label><div class="tab-content docutils">
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">FSL</label><div class="tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--3" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--3">AFNI</label><div class="tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
 </pre></div>
 </div>
@@ -523,13 +533,18 @@ This way, you can regress the rejected components out of the data in the form of
 <span class="n">pred_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">orth_motion_components</span><span class="p">,</span> <span class="n">betas</span><span class="p">)</span>
 <span class="n">data_denoised</span> <span class="o">=</span> <span class="n">data</span> <span class="o">-</span> <span class="n">pred_data</span>
 
-<span class="c1"># Save to file.</span>
+<span class="c1"># Save to file</span>
 <span class="n">img_denoised</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">data_denoised</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mask_file</span><span class="p">)</span>
 <span class="n">img_denoised</span><span class="o">.</span><span class="n">to_filename</span><span class="p">(</span><span class="s2">&quot;denoised.nii.gz&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">AFNI</label><div class="tab-content docutils">
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">FSL</label><div class="tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--3" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--3">AFNI</label><div class="tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>3dcalc --input stuff
 </pre></div>
 </div>
