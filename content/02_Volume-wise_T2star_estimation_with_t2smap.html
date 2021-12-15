@@ -365,7 +365,9 @@
 <p>Use <code class="docutils literal notranslate"><span class="pre">t2smap</span></code> <span id="id1">[<a class="reference internal" href="bibliography.html#id4">DuPre <em>et al.</em>, 2021</a>]</span> to calculate volume-wise T2*/S0, as in <span id="id2">Power <em>et al.</em> [<a class="reference internal" href="bibliography.html#id2">2018</a>]</span> and <span id="id3">Heunis <em>et al.</em> [<a class="reference internal" href="bibliography.html#id3">2021</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
@@ -382,12 +384,8 @@
 
 <span class="c1"># Download data</span>
 <span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="n">orig_data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orig_data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">directories</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">orig_data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -415,133 +413,66 @@ From: https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx
 To: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/multi-echo-data-analysis.zip
 
   0%|          | 0.00/309M [00:00&lt;?, ?B/s]
-  2%|▏         | 4.72M/309M [00:00&lt;00:09, 32.9MB/s]
+  2%|▏         | 4.72M/309M [00:00&lt;00:11, 25.6MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  3%|▎         | 8.91M/309M [00:00&lt;00:08, 36.3MB/s]
-  6%|▌         | 17.3M/309M [00:00&lt;00:05, 52.3MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4%|▎         | 11.5M/309M [00:00&lt;00:06, 43.8MB/s]
+  6%|▌         | 17.3M/309M [00:00&lt;00:06, 43.6MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8%|▊         | 25.7M/309M [00:00&lt;00:05, 55.5MB/s]
- 11%|█         | 34.1M/309M [00:00&lt;00:04, 60.6MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8%|▊         | 26.2M/309M [00:00&lt;00:04, 57.4MB/s]
+ 11%|█         | 34.1M/309M [00:00&lt;00:04, 63.8MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 14%|█▍        | 42.5M/309M [00:00&lt;00:04, 65.0MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 14%|█▍        | 42.5M/309M [00:00&lt;00:04, 63.7MB/s]
+ 16%|█▋        | 50.9M/309M [00:00&lt;00:04, 62.8MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 16%|█▋        | 50.9M/309M [00:00&lt;00:04, 52.7MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19%|█▉        | 59.2M/309M [00:01&lt;00:04, 58.1MB/s]
+ 22%|██▏       | 67.6M/309M [00:01&lt;00:03, 60.3MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19%|█▉        | 59.2M/309M [00:01&lt;00:06, 37.0MB/s]
- 22%|██▏       | 67.6M/309M [00:01&lt;00:05, 42.8MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 26%|██▌       | 80.2M/309M [00:01&lt;00:02, 76.4MB/s]
+ 29%|██▊       | 88.6M/309M [00:01&lt;00:03, 72.4MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 25%|██▍       | 76.0M/309M [00:01&lt;00:04, 50.0MB/s]
- 27%|██▋       | 84.4M/309M [00:01&lt;00:04, 55.2MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 31%|███▏      | 96.5M/309M [00:01&lt;00:03, 69.2MB/s]
+ 35%|███▌      | 110M/309M [00:01&lt;00:02, 79.7MB/s] 
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 30%|███       | 92.8M/309M [00:01&lt;00:03, 57.3MB/s]
- 33%|███▎      | 101M/309M [00:01&lt;00:03, 59.1MB/s] 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 41%|████      | 125M/309M [00:01&lt;00:01, 99.1MB/s]
+ 45%|████▌     | 139M/309M [00:01&lt;00:01, 109MB/s] 
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 35%|███▌      | 110M/309M [00:02&lt;00:03, 64.4MB/s]
- 41%|████      | 126M/309M [00:02&lt;00:02, 79.2MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 49%|████▊     | 150M/309M [00:02&lt;00:01, 98.9MB/s]
+ 52%|█████▏    | 161M/309M [00:02&lt;00:01, 99.2MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46%|████▋     | 143M/309M [00:02&lt;00:01, 95.4MB/s]
- 51%|█████     | 158M/309M [00:02&lt;00:01, 107MB/s] 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 58%|█████▊    | 178M/309M [00:02&lt;00:01, 117MB/s] 
+ 62%|██████▏   | 192M/309M [00:02&lt;00:00, 124MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 55%|█████▍    | 169M/309M [00:02&lt;00:01, 106MB/s]
- 60%|█████▉    | 185M/309M [00:02&lt;00:01, 118MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 68%|██████▊   | 210M/309M [00:02&lt;00:00, 140MB/s]
+ 74%|███████▍  | 229M/309M [00:02&lt;00:00, 153MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 64%|██████▍   | 197M/309M [00:02&lt;00:00, 115MB/s]
- 68%|██████▊   | 209M/309M [00:02&lt;00:01, 96.3MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 80%|███████▉  | 246M/309M [00:02&lt;00:00, 155MB/s]
+ 86%|████████▋ | 266M/309M [00:02&lt;00:00, 166MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 71%|███████   | 220M/309M [00:03&lt;00:00, 92.6MB/s]
- 76%|███████▋  | 235M/309M [00:03&lt;00:00, 95.9MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 82%|████████▏ | 252M/309M [00:03&lt;00:00, 98.3MB/s]
- 87%|████████▋ | 269M/309M [00:03&lt;00:00, 104MB/s] 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 93%|█████████▎| 286M/309M [00:03&lt;00:00, 105MB/s]
- 97%|█████████▋| 300M/309M [00:03&lt;00:00, 113MB/s]
-100%|██████████| 309M/309M [00:03&lt;00:00, 80.8MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 92%|█████████▏| 284M/309M [00:02&lt;00:00, 158MB/s]
+ 98%|█████████▊| 301M/309M [00:02&lt;00:00, 163MB/s]
+100%|██████████| 309M/309M [00:03&lt;00:00, 103MB/s]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: Extracting ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip ...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: running /usr/bin/7z x -y -o./../data/multi-echo-data-analysis -- ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip
+patool: running /usr/bin/7z x -y -o./../data/multi-echo-data-analysis -- ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: ... ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip extracted to `./../data/multi-echo-data-analysis&#39;.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info : multi-echo-data-analysis.zip Decompressed
-/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data
-./../data/multi-echo-data-analysis/data_requirement.json
-./../data/multi-echo-data-analysis/data/.DS_Store
-./../data/multi-echo-data-analysis/data/sub-04570/.DS_Store
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_from-scanner_to-T1w_mode-image_xfm.txt
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_desc-confounds_timeseries.tsv
-./../data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_desc-confounds_timeseries.json
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_label-WM_probseg.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_space-MNI152NLin2009cAsym_res-2_desc-preproc_T1w.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_space-MNI152NLin2009cAsym_res-2_dseg.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_space-MNI152NLin2009cAsym_res-2_desc-preproc_T1w.json
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_label-CSF_probseg.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_space-MNI152NLin2009cAsym_res-2_desc-brain_mask.json
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_desc-preproc_T1w.json
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_desc-brain_mask.json
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_space-MNI152NLin2009cAsym_res-2_label-GM_probseg.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_space-MNI152NLin2009cAsym_res-2_label-WM_probseg.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_space-MNI152NLin2009cAsym_res-2_desc-brain_mask.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_space-MNI152NLin2009cAsym_res-2_label-CSF_probseg.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_from-T1w_to-MNI152NLin2009cAsym_mode-image_xfm.h5
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_desc-brain_mask.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_dseg.nii.gz
-./../data/multi-echo-data-analysis/data/sub-04570/anat/sub-04570_label-GM_probseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/._.DS_Store
-./../data/multi-echo-data-analysis/__MACOSX/data/._sub-04570
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/._.DS_Store
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_from-scanner_to-T1w_mode-image_xfm.txt
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_desc-confounds_timeseries.json
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_desc-confounds_timeseries.tsv
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/func/._sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_label-GM_probseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_space-MNI152NLin2009cAsym_res-2_label-WM_probseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_desc-brain_mask.json
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_label-WM_probseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_dseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_from-T1w_to-MNI152NLin2009cAsym_mode-image_xfm.h5
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_space-MNI152NLin2009cAsym_res-2_dseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_desc-preproc_T1w.json
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_space-MNI152NLin2009cAsym_res-2_label-GM_probseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_space-MNI152NLin2009cAsym_res-2_desc-preproc_T1w.json
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_label-CSF_probseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_desc-brain_mask.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_space-MNI152NLin2009cAsym_res-2_desc-preproc_T1w.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_space-MNI152NLin2009cAsym_res-2_desc-brain_mask.json
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_space-MNI152NLin2009cAsym_res-2_label-CSF_probseg.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_space-MNI152NLin2009cAsym_res-2_desc-brain_mask.nii.gz
-./../data/multi-echo-data-analysis/__MACOSX/data/sub-04570/anat/._sub-04570_desc-preproc_T1w.nii.gz
 </pre></div>
 </div>
 </div>
@@ -665,7 +596,7 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x7f0194e76f10&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x7f4046e00850&gt;
 </pre></div>
 </div>
 </div>
@@ -682,7 +613,7 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x7f017e3588d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x7f4043405bd0&gt;
 </pre></div>
 </div>
 </div>
