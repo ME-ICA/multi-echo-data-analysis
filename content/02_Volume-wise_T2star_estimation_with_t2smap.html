@@ -366,12 +366,12 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
 <span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">image</span><span class="p">,</span> <span class="n">plotting</span>
 <span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">workflows</span>
 
@@ -411,43 +411,48 @@ From: https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx
 To: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/multi-echo-data-analysis.zip
 
   0%|          | 0.00/309M [00:00&lt;?, ?B/s]
-  3%|▎         | 8.91M/309M [00:00&lt;00:05, 51.5MB/s]
+  2%|▏         | 4.72M/309M [00:00&lt;00:08, 34.8MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8%|▊         | 25.7M/309M [00:00&lt;00:03, 87.4MB/s]
- 11%|█▏        | 35.1M/309M [00:00&lt;00:03, 88.4MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  3%|▎         | 8.91M/309M [00:00&lt;00:08, 36.0MB/s]
+  6%|▌         | 17.3M/309M [00:00&lt;00:05, 49.2MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 16%|█▋        | 50.3M/309M [00:00&lt;00:02, 109MB/s] 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8%|▊         | 25.7M/309M [00:00&lt;00:05, 55.6MB/s]
+ 11%|█         | 34.1M/309M [00:00&lt;00:04, 57.6MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 20%|██        | 61.9M/309M [00:00&lt;00:04, 60.8MB/s]
- 25%|██▍       | 76.0M/309M [00:01&lt;00:03, 71.9MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 14%|█▍        | 42.5M/309M [00:00&lt;00:04, 55.5MB/s]
+ 17%|█▋        | 51.4M/309M [00:00&lt;00:04, 64.0MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 30%|███       | 92.8M/309M [00:01&lt;00:02, 84.7MB/s]
- 35%|███▌      | 110M/309M [00:01&lt;00:02, 92.3MB/s] 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 20%|█▉        | 60.8M/309M [00:01&lt;00:03, 71.9MB/s]
+ 25%|██▍       | 76.0M/309M [00:01&lt;00:02, 88.2MB/s]
+ 30%|██▉       | 91.2M/309M [00:01&lt;00:02, 105MB/s] 
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 41%|████      | 126M/309M [00:01&lt;00:01, 104MB/s] 
- 49%|████▊     | 150M/309M [00:01&lt;00:01, 135MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 35%|███▌      | 110M/309M [00:01&lt;00:01, 120MB/s] 
+ 40%|███▉      | 122M/309M [00:01&lt;00:01, 121MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 54%|█████▎    | 166M/309M [00:01&lt;00:01, 128MB/s]
- 60%|█████▉    | 185M/309M [00:01&lt;00:00, 142MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46%|████▋     | 143M/309M [00:01&lt;00:01, 141MB/s]
+ 51%|█████▏    | 158M/309M [00:01&lt;00:01, 143MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 66%|██████▌   | 204M/309M [00:01&lt;00:00, 154MB/s]
- 73%|███████▎  | 225M/309M [00:01&lt;00:00, 169MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 56%|█████▌    | 173M/309M [00:01&lt;00:01, 123MB/s]
+ 63%|██████▎   | 193M/309M [00:01&lt;00:00, 128MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 79%|███████▉  | 244M/309M [00:02&lt;00:00, 155MB/s]
- 86%|████████▌ | 265M/309M [00:02&lt;00:00, 170MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 69%|██████▊   | 212M/309M [00:02&lt;00:00, 141MB/s]
+ 76%|███████▋  | 235M/309M [00:02&lt;00:00, 154MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 93%|█████████▎| 286M/309M [00:02&lt;00:00, 176MB/s]
- 99%|█████████▊| 304M/309M [00:02&lt;00:00, 175MB/s]
-100%|██████████| 309M/309M [00:02&lt;00:00, 126MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 83%|████████▎ | 256M/309M [00:02&lt;00:00, 166MB/s]
+ 90%|█████████ | 278M/309M [00:02&lt;00:00, 177MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 99%|█████████▊| 304M/309M [00:02&lt;00:00, 199MB/s]
+100%|██████████| 309M/309M [00:02&lt;00:00, 122MB/s]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: Extracting ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip ...
@@ -564,44 +569,67 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;figure_carpets&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="figure align-center" id="figure-carpets">
+<div class="cell_output docutils container">
+<img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_5_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_5_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Carpet plots of things!</span><a class="headerlink" href="#figure-carpets" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
     <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_T2starmap.nii.gz&quot;</span><span class="p">)),</span>
     <span class="n">vmax</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
     <span class="n">draw_cross</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">bg_img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
+    <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;figure_carpet2&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x7fa4d1ff47d0&gt;
-</pre></div>
 </div>
 </div>
+<div class="figure align-center" id="figure-carpet2">
+<div class="cell_output docutils container">
+<img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_7_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_7_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Carpet plots of things!</span><a class="headerlink" href="#figure-carpet2" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
     <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_S0map.nii.gz&quot;</span><span class="p">)),</span>
     <span class="n">vmax</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span>
     <span class="n">draw_cross</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">bg_img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
+    <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;figure_carpet3&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays.OrthoSlicer at 0x7fa4dfd49710&gt;
-</pre></div>
 </div>
 </div>
+<div class="figure align-center" id="figure-carpet3">
+<div class="cell_output docutils container">
+<img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_9_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_9_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Carpet plots of things!</span><a class="headerlink" href="#figure-carpet3" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -646,10 +674,18 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
     <span class="n">display_mode</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">,</span>
     <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;figure_carpets4&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="figure align-center" id="figure-carpets4">
+<div class="cell_output docutils container">
+<img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_11_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_11_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Carpet plots of things!</span><a class="headerlink" href="#figure-carpets4" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -688,7 +724,7 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
     <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
 <span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Optimal Combination TSNR&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;figure_carpets6&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -702,6 +738,12 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 </div>
 </div>
 </div>
+<div class="figure align-center" id="figure-carpets6">
+<div class="cell_output docutils container">
+<img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_13_2.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_13_2.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Carpet plots of things!</span><a class="headerlink" href="#figure-carpets6" title="Permalink to this image">¶</a></p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -709,10 +751,18 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
     <span class="n">data_files</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
     <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;figure_carpet7&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="figure align-center" id="figure-carpet7">
+<div class="cell_output docutils container">
+<img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_15_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_15_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Carpet plots of things!</span><a class="headerlink" href="#figure-carpet7" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -721,10 +771,18 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;</span><span class="p">),</span>
     <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;figure_carpet8&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="figure align-center" id="figure-carpet8">
+<div class="cell_output docutils container">
+<img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_17_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_17_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Carpet plots of things!</span><a class="headerlink" href="#figure-carpet8" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 
