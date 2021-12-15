@@ -33,8 +33,12 @@ DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 
 # Download data
 repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.join(data_path[0], "data")
+orig_data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(orig_data_path[0], "data"))
+print(data_path)
+for path, directories, files in os.walk(orig_data_path[0]):
+    for f in files:
+        print(os.path.join(path, f))
 ```
 
 ```{code-cell} ipython3
