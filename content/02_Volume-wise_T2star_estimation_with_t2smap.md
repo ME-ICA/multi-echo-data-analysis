@@ -17,12 +17,12 @@ Use `t2smap` {cite:p}`DuPre2021` to calculate volume-wise T2*/S0, as in {cite:t}
 
 ```{code-cell} ipython3
 import os
-import matplotlib
 import matplotlib.pyplot as plt
 from glob import glob
 
 import numpy as np
 import pandas as pd
+from myst_nb import glue
 from nilearn import image, plotting
 from tedana import workflows
 
@@ -96,25 +96,55 @@ axes[1].xaxis.set_visible(False)
 axes[0].spines["bottom"].set_visible(False)
 axes[1].spines["bottom"].set_visible(False)
 fig.tight_layout()
-fig.show()
+
+glue("figure_carpets", fig, display=False)
+```
+
+```{glue:figure} figure_carpets
+:name: "figure_carpets"
+:align: center
+
+Carpet plots of things!
 ```
 
 ```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
     image.mean_img(os.path.join(out_dir, "sub-04570_task-rest_space-scanner_T2starmap.nii.gz")),
     vmax=0.6,
     draw_cross=False,
     bg_img=None,
+    figure=fig,
+    axes=ax,
 )
+glue("figure_carpet2", fig, display=False)
+```
+
+```{glue:figure} figure_carpet2
+:name: "figure_carpet2"
+:align: center
+
+Carpet plots of things!
 ```
 
 ```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
     image.mean_img(os.path.join(out_dir, "sub-04570_task-rest_space-scanner_S0map.nii.gz")),
     vmax=8000,
     draw_cross=False,
     bg_img=None,
+    figure=fig,
+    axes=ax,
 )
+glue("figure_carpet3", fig, display=False)
+```
+
+```{glue:figure} figure_carpet3
+:name: "figure_carpet3"
+:align: center
+
+Carpet plots of things!
 ```
 
 ```{code-cell} ipython3
@@ -159,7 +189,14 @@ plotting.plot_epi(
     display_mode="z",
     axes=axes[4],
 )
-fig.show()
+glue("figure_carpets4", fig, display=False)
+```
+
+```{glue:figure} figure_carpets4
+:name: "figure_carpets4"
+:align: center
+
+Carpet plots of things!
 ```
 
 ```{code-cell} ipython3
@@ -198,7 +235,14 @@ plotting.plot_stat_map(
     axes=axes[1],
 )
 axes[1].set_title("Optimal Combination TSNR", fontsize=16)
-fig.show()
+glue("figure_carpets6", fig, display=False)
+```
+
+```{glue:figure} figure_carpets6
+:name: "figure_carpets6"
+:align: center
+
+Carpet plots of things!
 ```
 
 ```{code-cell} ipython3
@@ -207,7 +251,14 @@ plotting.plot_carpet(
     data_files[1],
     axes=ax,
 )
-fig.show()
+glue("figure_carpet7", fig, display=False)
+```
+
+```{glue:figure} figure_carpet7
+:name: "figure_carpet7"
+:align: center
+
+Carpet plots of things!
 ```
 
 ```{code-cell} ipython3
@@ -216,5 +267,12 @@ plotting.plot_carpet(
     os.path.join(out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
     axes=ax,
 )
-fig.show()
+glue("figure_carpet8", fig, display=False)
+```
+
+```{glue:figure} figure_carpet8
+:name: "figure_carpet8"
+:align: center
+
+Carpet plots of things!
 ```
