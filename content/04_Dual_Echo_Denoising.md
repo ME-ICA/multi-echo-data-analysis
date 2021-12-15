@@ -21,6 +21,8 @@ Dual-echo denoising was originally proposed in [Bright & Murphy (2013)](https://
 
 
 ```{code-cell} ipython3
+import os
+
 import matplotlib.pyplot as plt
 import numpy as np
 from nilearn import image, masking, plotting
@@ -79,7 +81,6 @@ mask_img = os.path.join(data_path, "sub-04570/func/sub-04570_task-rest_space-sca
 denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 ```
 
-
 ```{code-cell} ipython3
 fig, axes = plt.subplots(figsize=(16, 16), nrows=3)
 
@@ -94,5 +95,12 @@ axes[1].xaxis.set_visible(False)
 axes[0].spines["bottom"].set_visible(False)
 axes[1].spines["bottom"].set_visible(False)
 fig.tight_layout()
-fig.show()
+glue("figure_dual_echo_results", fig, display=False)
+```
+
+```{glue:figure} figure_dual_echo_results
+:name: "figure_dual_echo_results"
+:align: center
+
+Results of dual-echo regression.
 ```

@@ -69,21 +69,43 @@ print("\n".join(out_files))
 ```
 
 ```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
     os.path.join(out_dir, "sub-04570_task-rest_space-scanner_T2starmap.nii.gz"),
     vmax=0.6,
     draw_cross=False,
     bg_img=None,
+    figure=fig,
+    axes=ax,
 )
+glue("figure_t2starmap", fig, display=False)
+```
+
+```{glue:figure} figure_t2starmap
+:name: "figure_t2starmap"
+:align: center
+
+T2* map estimated from multi-echo data using tedana's :func:`~tedana.workflows.t2smap_workflow`.
 ```
 
 ```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
     os.path.join(out_dir, "sub-04570_task-rest_space-scanner_S0map.nii.gz"),
     vmax=8000,
     draw_cross=False,
     bg_img=None,
+    figure=fig,
+    axes=ax,
 )
+glue("figure_s0map", fig, display=False)
+```
+
+```{glue:figure} figure_s0map
+:name: "figure_s0map"
+:align: center
+
+S0 map estimated from multi-echo data using tedana's :func:`~tedana.workflows.t2smap_workflow`.
 ```
 
 ```{code-cell} ipython3
@@ -94,6 +116,7 @@ plotting.plot_epi(
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
     display_mode="z",
+    figure=fig,
     axes=axes[0],
 )
 plotting.plot_epi(
@@ -102,6 +125,7 @@ plotting.plot_epi(
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
     display_mode="z",
+    figure=fig,
     axes=axes[1],
 )
 plotting.plot_epi(
@@ -110,6 +134,7 @@ plotting.plot_epi(
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
     display_mode="z",
+    figure=fig,
     axes=axes[2],
 )
 plotting.plot_epi(
@@ -118,6 +143,7 @@ plotting.plot_epi(
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
     display_mode="z",
+    figure=fig,
     axes=axes[3],
 )
 plotting.plot_epi(
@@ -126,9 +152,17 @@ plotting.plot_epi(
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
     display_mode="z",
+    figure=fig,
     axes=axes[4],
 )
-fig.show()
+glue("figure_t2smap_epi_plots", fig, display=False)
+```
+
+```{glue:figure} figure_t2smap_epi_plots
+:name: "figure_t2smap_epi_plots"
+:align: center
+
+Mean map of each of the echoes in the original data, along with the mean map of the optimally combined data.
 ```
 
 ```{code-cell} ipython3
@@ -153,6 +187,7 @@ plotting.plot_stat_map(
     cut_coords=[0, 10, 10],
     vmax=vmax,
     symmetric_cbar=False,
+    figure=fig,
     axes=axes[0],
 )
 axes[0].set_title("TE30 TSNR", fontsize=16)
@@ -164,19 +199,35 @@ plotting.plot_stat_map(
     cut_coords=[0, 10, 10],
     vmax=vmax,
     symmetric_cbar=False,
+    figure=fig,
     axes=axes[1],
 )
 axes[1].set_title("Optimal Combination TSNR", fontsize=16)
-fig.show()
+glue("figure_t2smap_t2snr", fig, display=False)
+```
+
+```{glue:figure} figure_t2smap_t2snr
+:name: "figure_t2smap_t2snr"
+:align: center
+
+TSNR map of each of the echoes in the original data, along with the TSNR map of the optimally combined data.
 ```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_carpet(
     data_files[1],
+    figure=fig,
     axes=ax,
 )
-fig.show()
+glue("figure_echo2_carpet", fig, display=False)
+```
+
+```{glue:figure} figure_echo2_carpet
+:name: "figure_echo2_carpet"
+:align: center
+
+Carpet plot of the second echo's data.
 ```
 
 ```{code-cell} ipython3
@@ -185,5 +236,12 @@ plotting.plot_carpet(
     os.path.join(out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
     axes=ax,
 )
-fig.show()
+glue("figure_optcom_carpet", fig, display=False)
+```
+
+```{glue:figure} figure_optcom_carpet
+:name: "figure_optcom_carpet"
+:align: center
+
+Carpet plot of the optimally combined data.
 ```

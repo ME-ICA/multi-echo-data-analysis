@@ -10,7 +10,7 @@ parts:
     - file: content/Course_Overview
   - caption: Getting Started
     chapters:
-    - file: content/Download_Data
+    - file: content/00_Download_Data
     - file: content/Install_Software
     - file: content/Recommended_Reading
   - caption: Theoretical Background
