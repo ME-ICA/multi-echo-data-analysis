@@ -13,7 +13,7 @@ kernelspec:
 
 # Volume-wise T2*/S0 estimation with `t2smap`
 
-Use `t2smap` {cite:p}`DuPre2021` to calculate volume-wise T2*/S0, as in {cite:t}`power2018ridding` and {cite:t}`HEUNIS2021118244`.
+Use {py:func}`tedana.workflows.t2smap_workflow` {cite:p}`DuPre2021` to calculate volume-wise T2*/S0, as in {cite:t}`power2018ridding` and {cite:t}`HEUNIS2021118244`.
 
 ```{code-cell} ipython3
 import os
@@ -97,14 +97,14 @@ axes[0].spines["bottom"].set_visible(False)
 axes[1].spines["bottom"].set_visible(False)
 fig.tight_layout()
 
-glue("figure_carpets", fig, display=False)
+glue("figure_volumewise_t2ss0_carpets", fig, display=False)
 ```
 
-```{glue:figure} figure_carpets
-:name: "figure_carpets"
+```{glue:figure} figure_volumewise_t2ss0_carpets
+:name: "figure_volumewise_t2ss0_carpets"
 :align: center
 
-Carpet plots of things!
+Carpet plots of optimally combined data, along with volume-wise T2* and S0 estimates.
 ```
 
 ```{code-cell} ipython3
@@ -117,14 +117,14 @@ plotting.plot_stat_map(
     figure=fig,
     axes=ax,
 )
-glue("figure_carpet2", fig, display=False)
+glue("figure_mean_volumewise_t2s", fig, display=False)
 ```
 
-```{glue:figure} figure_carpet2
-:name: "figure_carpet2"
+```{glue:figure} figure_mean_volumewise_t2s
+:name: "figure_mean_volumewise_t2s"
 :align: center
 
-Carpet plots of things!
+Mean map from the volume-wise T2* estimation.
 ```
 
 ```{code-cell} ipython3
@@ -137,14 +137,14 @@ plotting.plot_stat_map(
     figure=fig,
     axes=ax,
 )
-glue("figure_carpet3", fig, display=False)
+glue("figure_mean_volumewise_s0", fig, display=False)
 ```
 
-```{glue:figure} figure_carpet3
-:name: "figure_carpet3"
+```{glue:figure} figure_mean_volumewise_s0
+:name: "figure_mean_volumewise_s0"
 :align: center
 
-Carpet plots of things!
+Mean map from the volume-wise S0 estimation.
 ```
 
 ```{code-cell} ipython3
@@ -189,14 +189,14 @@ plotting.plot_epi(
     display_mode="z",
     axes=axes[4],
 )
-glue("figure_carpets4", fig, display=False)
+glue("figure_mean_echos_and_optcom", fig, display=False)
 ```
 
-```{glue:figure} figure_carpets4
-:name: "figure_carpets4"
+```{glue:figure} figure_mean_echos_and_optcom
+:name: "figure_mean_echos_and_optcom"
 :align: center
 
-Carpet plots of things!
+Mean images of the echo-wise data and the optimally combined data.
 ```
 
 ```{code-cell} ipython3
@@ -235,14 +235,14 @@ plotting.plot_stat_map(
     axes=axes[1],
 )
 axes[1].set_title("Optimal Combination TSNR", fontsize=16)
-glue("figure_carpets6", fig, display=False)
+glue("figure_t2snr_te30_and_optcom", fig, display=False)
 ```
 
-```{glue:figure} figure_carpets6
-:name: "figure_carpets6"
+```{glue:figure} figure_t2snr_te30_and_optcom
+:name: "figure_t2snr_te30_and_optcom"
 :align: center
 
-Carpet plots of things!
+TSNR map of the second echo (TE30) and the optimally combined data.
 ```
 
 ```{code-cell} ipython3
@@ -251,14 +251,14 @@ plotting.plot_carpet(
     data_files[1],
     axes=ax,
 )
-glue("figure_carpet7", fig, display=False)
+glue("figure_echo3_carpet", fig, display=False)
 ```
 
-```{glue:figure} figure_carpet7
-:name: "figure_carpet7"
+```{glue:figure} figure_echo3_carpet
+:name: "figure_echo3_carpet"
 :align: center
 
-Carpet plots of things!
+Carpet plot of the third echo.
 ```
 
 ```{code-cell} ipython3
@@ -267,12 +267,12 @@ plotting.plot_carpet(
     os.path.join(out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
     axes=ax,
 )
-glue("figure_carpet8", fig, display=False)
+glue("figure_carpet_optcom", fig, display=False)
 ```
 
-```{glue:figure} figure_carpet8
-:name: "figure_carpet8"
+```{glue:figure} figure_carpet_optcom
+:name: "figure_carpet_optcom"
 :align: center
 
-Carpet plots of things!
+Carpet plot of the optimally combined data.
 ```

@@ -535,8 +535,10 @@ You can see the spreadsheet of publications at
 
 <span class="c1"># TODO: deal with the issue that the plot doesn&#39;t regenerate (ie isn&#39;t alive)</span>
 <span class="c1"># Unless the code is updated.</span>
-<span class="n">metable</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/export?gid=0&amp;format=csv&#39;</span><span class="p">,</span>
-                        <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">metable</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s1">&#39;https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/export?gid=0&amp;format=csv&#39;</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">TEs</span> <span class="o">=</span> <span class="p">[</span><span class="n">metable</span><span class="o">.</span><span class="n">TE1</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">metable</span><span class="o">.</span><span class="n">TE2</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">metable</span><span class="o">.</span><span class="n">TE3</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">metable</span><span class="o">.</span><span class="n">TE4</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">metable</span><span class="o">.</span><span class="n">TE5</span><span class="o">.</span><span class="n">mean</span><span class="p">()]</span>
 <span class="n">TE_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TE1&#39;</span><span class="p">,</span> <span class="s1">&#39;TE2&#39;</span><span class="p">,</span> <span class="s1">&#39;TE3&#39;</span><span class="p">,</span> <span class="s1">&#39;TE4&#39;</span><span class="p">,</span> <span class="s1">&#39;TE5&#39;</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">TEs</span><span class="p">)</span>
@@ -547,13 +549,11 @@ You can see the spreadsheet of publications at
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Echo Time (ms)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">metable</span><span class="o">.</span><span class="n">TR</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Repetition Times&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Repetition Time (s)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
 
 <span class="n">x_vox</span> <span class="o">=</span> <span class="n">metable</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 <span class="n">y_vox</span> <span class="o">=</span> <span class="n">metable</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>

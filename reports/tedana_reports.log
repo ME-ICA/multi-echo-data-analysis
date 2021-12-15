@@ -31,7 +31,7 @@ report_data = report_data.replace("./figures", figures_dir)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mFileNotFoundError[0m                         Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2206/3729724842.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2431/3729724842.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      5[0m [0;34m[0m[0m
 [1;32m      6[0m [0mreport[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mtedana_dir[0m[0;34m,[0m [0;34m"tedana_report.html"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 7[0;31m [0;32mwith[0m [0mopen[0m[0;34m([0m[0mreport[0m[0;34m,[0m [0;34m"r"[0m[0;34m)[0m [0;32mas[0m [0mfo[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m

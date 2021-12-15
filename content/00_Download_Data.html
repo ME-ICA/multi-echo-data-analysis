@@ -367,7 +367,9 @@ we will use partially-preprocessed data from two open multi-echo datasets: Euska
 For more information about these datasets, see <a class="reference internal" href="Multi_Echo_Datasets.html#content-open-datasets"><span class="std std-ref">Open Multi-Echo Datasets</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
 
 <span class="c1"># Install the data if running locally, or points to cached data if running on neurolibre</span>
 <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
@@ -380,16 +382,77 @@ For more information about these datasets, see <a class="reference internal" hre
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1636</span><span class="o">/</span><span class="mf">318284703.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Install the data if running locally, or points to cached data if running on neurolibre</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Download data</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
+/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/repo2data
+Config from file :
+../binder/data_requirement.json
+Destination:
+./../data/multi-echo-data-analysis
 
-<span class="ne">NameError</span>: name &#39;os&#39; is not defined
+Info : Starting to download from Google drive https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx ...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
+From: https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx
+To: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/multi-echo-data-analysis.zip
+
+  0%|          | 0.00/309M [00:00&lt;?, ?B/s]
+  2%|▏         | 4.72M/309M [00:00&lt;00:06, 44.8MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  5%|▍         | 14.2M/309M [00:00&lt;00:04, 70.7MB/s]
+  8%|▊         | 25.7M/309M [00:00&lt;00:03, 74.8MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 11%|█▏        | 35.1M/309M [00:00&lt;00:03, 81.3MB/s]
+ 16%|█▌        | 49.3M/309M [00:00&lt;00:02, 101MB/s] 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19%|█▉        | 59.8M/309M [00:00&lt;00:03, 73.0MB/s]
+ 24%|██▎       | 72.9M/309M [00:00&lt;00:02, 87.0MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 27%|██▋       | 84.4M/309M [00:00&lt;00:02, 93.8MB/s]
+ 32%|███▏      | 97.5M/309M [00:01&lt;00:02, 103MB/s] 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 35%|███▌      | 109M/309M [00:01&lt;00:01, 99.9MB/s]
+ 39%|███▉      | 120M/309M [00:01&lt;00:02, 88.1MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 44%|████▍     | 135M/309M [00:01&lt;00:01, 103MB/s] 
+ 49%|████▉     | 152M/309M [00:01&lt;00:01, 115MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 55%|█████▍    | 168M/309M [00:01&lt;00:01, 119MB/s]
+ 60%|█████▉    | 185M/309M [00:01&lt;00:00, 128MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 65%|██████▌   | 201M/309M [00:01&lt;00:00, 135MB/s]
+ 70%|██████▉   | 215M/309M [00:02&lt;00:00, 124MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 74%|███████▍  | 228M/309M [00:02&lt;00:00, 120MB/s]
+ 78%|███████▊  | 241M/309M [00:02&lt;00:00, 112MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 82%|████████▏ | 252M/309M [00:02&lt;00:00, 108MB/s]
+ 87%|████████▋ | 269M/309M [00:02&lt;00:00, 118MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 93%|█████████▎| 286M/309M [00:02&lt;00:00, 127MB/s]
+ 97%|█████████▋| 299M/309M [00:02&lt;00:00, 121MB/s]
+100%|██████████| 309M/309M [00:02&lt;00:00, 108MB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: Extracting ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: running /usr/bin/7z x -y -o./../data/multi-echo-data-analysis -- ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: ... ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip extracted to `./../data/multi-echo-data-analysis&#39;.
+Info : multi-echo-data-analysis.zip Decompressed
 </pre></div>
 </div>
 </div>

@@ -18,6 +18,8 @@ we will use partially-preprocessed data from two open multi-echo datasets: Euska
 For more information about these datasets, see {ref}`content:open-datasets`.
 
 ```{code-cell} ipython3
+import os
+
 from repo2data.repo2data import Repo2Data
 
 # Install the data if running locally, or points to cached data if running on neurolibre
