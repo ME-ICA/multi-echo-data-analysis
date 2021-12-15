@@ -5,3 +5,4 @@ sphinx-inline-tabs
 sphinxcontrib-bibtex
 plotly
 imageio
+repo2data==2.4.4

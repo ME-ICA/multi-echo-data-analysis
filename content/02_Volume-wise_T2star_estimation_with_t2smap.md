@@ -25,11 +25,20 @@ import numpy as np
 import pandas as pd
 from nilearn import image, plotting
 from tedana import workflows
+
+from repo2data.repo2data import Repo2Data
+
+# Install the data if running locally, or points to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.join(data_path[0], "data")
 ```
 
 ```{code-cell} ipython3
-data_dir = os.path.abspath("../data")
-func_dir = os.path.join(data_dir, "sub-04570/func/")
+func_dir = os.path.join(data_path, "sub-04570/func/")
 data_files = [
     os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
     os.path.join(func_dir, "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"),
@@ -40,7 +49,7 @@ echo_times = [12., 28., 44., 60.]
 mask_file = os.path.join(func_dir, "sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz")
 confounds_file = os.path.join(func_dir, "sub-04570_task-rest_desc-confounds_timeseries.tsv")
 
-out_dir = os.path.join(data_dir, "fit")
+out_dir = os.path.join(data_path, "fit")
 ```
 
 ```{code-cell} ipython3
