@@ -82,7 +82,7 @@ pal = sns.color_palette('cubehelix', n_echoes)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2159/3546567671.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2158/3546567671.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     15[0m [0;34m[0m[0m
 [1;32m     16[0m [0madaptive_mask_file[0m [0;34m=[0m [0mop[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mTED_DIR[0m[0;34m,[0m [0;34m'adaptive_mask.nii'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 17[0;31m [0mmask[0m [0;34m=[0m [0mmath_img[0m[0;34m([0m[0;34m'img >= 3'[0m[0;34m,[0m [0mimg[0m[0;34m=[0m[0madaptive_mask_file[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m

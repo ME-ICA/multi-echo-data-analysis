@@ -17,29 +17,26 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-fig, axes = plt.subplots(figsize=(16, 16), nrows=3)
+from repo2data.repo2data import Repo2Data
 
-plotting.plot_carpet(te2_img, axes=axes[0], figure=fig)
-axes[0].set_title("First Echo (BAD)", fontsize=20)
-plotting.plot_carpet(te1_img, axes=axes[1], figure=fig)
-axes[1].set_title("Second Echo (GOOD)", fontsize=20)
-plotting.plot_carpet(denoised_img, axes=axes[2], figure=fig)
-axes[2].set_title("Denoised Data (GREAT)", fontsize=20)
-axes[0].xaxis.set_visible(False)
-axes[1].xaxis.set_visible(False)
-axes[0].spines["bottom"].set_visible(False)
-axes[1].spines["bottom"].set_visible(False)
-fig.tight_layout()
-glue("figure_dual_echo_results", fig, display=False)
+# Install the data if running locally, or points to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_1856/178694892.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     12[0m [0maxes[0m[0;34m[[0m[0;36m1[0m[0;34m][0m[0;34m.[0m[0mspines[0m[0;34m[[0m[0;34m"bottom"[0m[0;34m][0m[0;34m.[0m[0mset_visible[0m[0;34m([0m[0;32mFalse[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     13[0m [0mfig[0m[0;34m.[0m[0mtight_layout[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 14[0;31m [0mglue[0m[0;34m([0m[0;34m"figure_dual_echo_results"[0m[0;34m,[0m [0mfig[0m[0;34m,[0m [0mdisplay[0m[0;34m=[0m[0;32mFalse[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m
-[0;31mNameError[0m: name 'glue' is not defined
-NameError: name 'glue' is not defined
+[0;32m/tmp/ipykernel_1637/318284703.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      2[0m [0;34m[0m[0m
+[1;32m      3[0m [0;31m# Install the data if running locally, or points to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 4[0;31m [0mDATA_REQ_FILE[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0;34m"../binder/data_requirement.json"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      5[0m [0;34m[0m[0m
+[1;32m      6[0m [0;31m# Download data[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mNameError[0m: name 'os' is not defined
+NameError: name 'os' is not defined
 
