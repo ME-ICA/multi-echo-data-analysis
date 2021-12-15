@@ -25,6 +25,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 from nilearn import image, masking, plotting
 
+from repo2data.repo2data import Repo2Data
+
+# Install the data if running locally, or points to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+
 
 def regress_one_image_out_of_another(data_img, nuis_img, mask_img):
     # First, mean-center each image over time
@@ -63,9 +73,9 @@ def regress_one_image_out_of_another(data_img, nuis_img, mask_img):
 ```
 
 ```{code-cell} ipython3
-te1_img = "../data/sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"
-te2_img = "../data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"
-mask_img = "../data/sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
+te1_img = os.path.join(data_path, "sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz")
+te2_img = os.path.join(data_path, "sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz")
+mask_img = os.path.join(data_path, "sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz")
 denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 ```
 
