@@ -16,6 +16,8 @@ kernelspec:
 Use `t2smap` {cite:p}`DuPre2021` to calculate volume-wise T2*/S0, as in {cite:t}`power2018ridding` and {cite:t}`HEUNIS2021118244`.
 
 ```{code-cell} ipython3
+%matplotlib inline
+
 import os
 import matplotlib
 import matplotlib.pyplot as plt
@@ -33,12 +35,8 @@ DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 
 # Download data
 repo2data = Repo2Data(DATA_REQ_FILE)
-orig_data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(orig_data_path[0], "data"))
-print(data_path)
-for path, directories, files in os.walk(orig_data_path[0]):
-    for f in files:
-        print(os.path.join(path, f))
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 ```
 
 ```{code-cell} ipython3
