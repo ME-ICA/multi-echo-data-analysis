@@ -17,40 +17,66 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-te1_img = "../data/sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"
-te2_img = "../data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"
-mask_img = "../data/sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
-denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
+import matplotlib.pyplot as plt
+import numpy as np
+from nilearn import image, masking, plotting
+
+from repo2data.repo2data import Repo2Data
+
+# Install the data if running locally, or points to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+
+
+def regress_one_image_out_of_another(data_img, nuis_img, mask_img):
+    # First, mean-center each image over time
+    mean_data_img = image.mean_img(data_img)
+    mean_nuis_img = image.mean_img(nuis_img)
+
+    data_img_mc = image.math_img(
+        "img - avg_img[..., None]",
+        img=data_img,
+        avg_img=mean_data_img,
+    )
+    nuis_img_mc = image.math_img(
+        "img - avg_img[..., None]",
+        img=nuis_img,
+        avg_img=mean_nuis_img,
+    )
+
+    # Now get the masked data in 2D format
+    data_mc = masking.apply_mask(data_img_mc, mask_img)
+    nuis_mc = masking.apply_mask(nuis_img_mc, mask_img)
+    nuis_mean = masking.apply_mask(mean_nuis_img, mask_img)
+    data_mean = masking.apply_mask(mean_data_img, mask_img)
+
+    # Build beta map by performing regression on each voxel
+    betas = np.zeros(data_mc.shape[1])
+    for i_voxel in range(data_mc.shape[1]):
+        temp_data = np.stack((data_mc[:, i_voxel], np.ones(data_mc.shape[0])), -1)
+        betas = np.linalg.lstsq(temp_data, nuis_mc[:, i_voxel], rcond=None)[0][0]
+
+    # Construct denoised time series
+    scaled_nuis = (nuis_mc * betas)
+    errorts = (data_mc - scaled_nuis) + data_mean
+    errorts_img = masking.unmask(errorts, mask_img)
+
+    return errorts_img
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_1747/2862625900.py[0m in [0;36m<module>[0;34m[0m
-[1;32m      2[0m [0mte2_img[0m [0;34m=[0m [0;34m"../data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      3[0m [0mmask_img[0m [0;34m=[0m [0;34m"../data/sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"[0m[0;34m[0m[0;34m[0m[0m
-[0;32m----> 4[0;31m [0mdenoised_img[0m [0;34m=[0m [0mregress_one_image_out_of_another[0m[0;34m([0m[0mte2_img[0m[0;34m,[0m [0mte1_img[0m[0;34m,[0m [0mmask_img[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m
-[0;32m/tmp/ipykernel_1747/2172515877.py[0m in [0;36mregress_one_image_out_of_another[0;34m(data_img, nuis_img, mask_img)[0m
-[1;32m      6[0m [0;32mdef[0m [0mregress_one_image_out_of_another[0m[0;34m([0m[0mdata_img[0m[0;34m,[0m [0mnuis_img[0m[0;34m,[0m [0mmask_img[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      7[0m     [0;31m# First, mean-center each image over time[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[0;32m----> 8[0;31m     [0mmean_data_img[0m [0;34m=[0m [0mimage[0m[0;34m.[0m[0mmean_img[0m[0;34m([0m[0mdata_img[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      9[0m     [0mmean_nuis_img[0m [0;34m=[0m [0mimage[0m[0;34m.[0m[0mmean_img[0m[0;34m([0m[0mnuis_img[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     10[0m [0;34m[0m[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m/tmp/ipykernel_1848/619823406.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      6[0m [0;34m[0m[0m
+[1;32m      7[0m [0;31m# Install the data if running locally, or points to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 8[0;31m [0mDATA_REQ_FILE[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0;34m"../binder/data_requirement.json"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      9[0m [0;34m[0m[0m
+[1;32m     10[0m [0;31m# Download data[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/image.py[0m in [0;36mmean_img[0;34m(imgs, target_affine, target_shape, verbose, n_jobs)[0m
-[1;32m    549[0m [0;34m[0m[0m
-[1;32m    550[0m     [0mimgs_iter[0m [0;34m=[0m [0miter[0m[0;34m([0m[0mimgs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 551[0;31m     [0mfirst_img[0m [0;34m=[0m [0mcheck_niimg[0m[0;34m([0m[0mnext[0m[0;34m([0m[0mimgs_iter[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    552[0m [0;34m[0m[0m
-[1;32m    553[0m     [0;31m# Compute the first mean to retrieve the reference[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py[0m in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
-[1;32m    269[0m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0mmessage[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    270[0m             [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 271[0;31m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    272[0m         [0;32melif[0m [0;32mnot[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mexists[0m[0;34m([0m[0mniimg[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    273[0m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-
-[0;31mValueError[0m: File not found: '../data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz'
-ValueError: File not found: '../data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz'
+[0;31mNameError[0m: name 'os' is not defined
+NameError: name 'os' is not defined
 
