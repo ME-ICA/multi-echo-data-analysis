@@ -1,19 +1,19 @@
 Traceback (most recent call last):
   File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
     record_timing=False,
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 1117, in execute
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 1093, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 78, in wrapped
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
     return just_run(coro(*args, **kwargs))
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 57, in just_run
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
     return loop.run_until_complete(coro)
   File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
     return future.result()
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 559, in async_execute
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 560, in async_execute
     cell, index, execution_count=self.code_cells_executed + 1
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in async_execute_cell
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 854, in async_execute_cell
     self._check_raise_for_error(cell, exec_reply)
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 765, in _check_raise_for_error
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 756, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
@@ -29,20 +29,48 @@ workflows.tedana_workflow(
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mFileNotFoundError[0m                         Traceback (most recent call last)
-[0;32m/tmp/ipykernel_1787/4032711658.py[0m in [0;36m<module>[0;34m[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/tmp/ipykernel_1760/4032711658.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      6[0m     [0mprefix[0m[0;34m=[0m[0;34m"sub-04570_task-rest_space-scanner"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      7[0m     [0mfittype[0m[0;34m=[0m[0;34m"curvefit"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 8[0;31m     [0mtedpca[0m[0;34m=[0m[0;34m"mdl"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [0m[1;32m      9[0m )
 
 [0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/workflows/tedana.py[0m in [0;36mtedana_workflow[0;34m(data, tes, out_dir, mask, convention, prefix, fittype, combmode, tedpca, fixed_seed, maxit, maxrestart, tedort, gscontrol, no_reports, png_cmap, verbose, low_mem, debug, quiet, t2smap, mixm, ctab, manacc)[0m
-[1;32m    430[0m     [0mout_dir[0m [0;34m=[0m [0mop[0m[0;34m.[0m[0mabspath[0m[0;34m([0m[0mout_dir[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    431[0m     [0;32mif[0m [0;32mnot[0m [0mop[0m[0;34m.[0m[0misdir[0m[0;34m([0m[0mout_dir[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 432[0;31m         [0mos[0m[0;34m.[0m[0mmkdir[0m[0;34m([0m[0mout_dir[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    433[0m [0;34m[0m[0m
-[1;32m    434[0m     [0;31m# boilerplate[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    466[0m [0;34m[0m[0m
+[1;32m    467[0m     [0mLGR[0m[0;34m.[0m[0minfo[0m[0;34m([0m[0;34m"Loading input data: {}"[0m[0;34m.[0m[0mformat[0m[0;34m([0m[0;34m[[0m[0mf[0m [0;32mfor[0m [0mf[0m [0;32min[0m [0mdata[0m[0;34m][0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 468[0;31m     [0mcatd[0m[0;34m,[0m [0mref_img[0m [0;34m=[0m [0mio[0m[0;34m.[0m[0mload_data[0m[0;34m([0m[0mdata[0m[0;34m,[0m [0mn_echos[0m[0;34m=[0m[0mn_echos[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    469[0m     io_generator = io.OutputGenerator(
+[1;32m    470[0m         [0mref_img[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 
-[0;31mFileNotFoundError[0m: [Errno 2] No such file or directory: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/tedana'
-FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/tedana'
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/io.py[0m in [0;36mload_data[0;34m(data, n_echos)[0m
+[1;32m    590[0m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34mf"Cannot run `tedana` with only two echos: {data}"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    591[0m         [0;32melse[0m[0;34m:[0m  [0;31m# individual echo files were provided (surface or volumetric)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 592[0;31m             [0mfdata[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mstack[0m[0;34m([0m[0;34m[[0m[0mutils[0m[0;34m.[0m[0mreshape_niimg[0m[0;34m([0m[0mf[0m[0;34m)[0m [0;32mfor[0m [0mf[0m [0;32min[0m [0mdata[0m[0;34m][0m[0;34m,[0m [0maxis[0m[0;34m=[0m[0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    593[0m             [0mref_img[0m [0;34m=[0m [0mcheck_niimg[0m[0;34m([0m[0mdata[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    594[0m             [0mref_img[0m[0;34m.[0m[0mheader[0m[0;34m.[0m[0mextensions[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/io.py[0m in [0;36m<listcomp>[0;34m(.0)[0m
+[1;32m    590[0m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34mf"Cannot run `tedana` with only two echos: {data}"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    591[0m         [0;32melse[0m[0;34m:[0m  [0;31m# individual echo files were provided (surface or volumetric)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 592[0;31m             [0mfdata[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mstack[0m[0;34m([0m[0;34m[[0m[0mutils[0m[0;34m.[0m[0mreshape_niimg[0m[0;34m([0m[0mf[0m[0;34m)[0m [0;32mfor[0m [0mf[0m [0;32min[0m [0mdata[0m[0;34m][0m[0;34m,[0m [0maxis[0m[0;34m=[0m[0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    593[0m             [0mref_img[0m [0;34m=[0m [0mcheck_niimg[0m[0;34m([0m[0mdata[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    594[0m             [0mref_img[0m[0;34m.[0m[0mheader[0m[0;34m.[0m[0mextensions[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/utils.py[0m in [0;36mreshape_niimg[0;34m(data)[0m
+[1;32m     32[0m     """
+[1;32m     33[0m     [0;32mif[0m [0misinstance[0m[0;34m([0m[0mdata[0m[0;34m,[0m [0;34m([0m[0mstr[0m[0;34m,[0m [0mnib[0m[0;34m.[0m[0mspatialimages[0m[0;34m.[0m[0mSpatialImage[0m[0;34m)[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 34[0;31m         [0mdata[0m [0;34m=[0m [0mcheck_niimg[0m[0;34m([0m[0mdata[0m[0;34m)[0m[0;34m.[0m[0mget_fdata[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     35[0m     [0;32melif[0m [0;32mnot[0m [0misinstance[0m[0;34m([0m[0mdata[0m[0;34m,[0m [0mnp[0m[0;34m.[0m[0mndarray[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     36[0m         [0;32mraise[0m [0mTypeError[0m[0;34m([0m[0;34mf"Unsupported type {type(data)}"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py[0m in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+[1;32m    269[0m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0mmessage[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    270[0m             [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 271[0;31m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    272[0m         [0;32melif[0m [0;32mnot[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mexists[0m[0;34m([0m[0mniimg[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    273[0m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz'
+ValueError: File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz'
 

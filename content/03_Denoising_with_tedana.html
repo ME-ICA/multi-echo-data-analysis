@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Multi-Echo Denoising with tedana &#8212; Multi-Echo fMRI Data Analysis</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet" />
-  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -58,7 +58,10 @@
     <link rel="next" title="Dual-Echo Denoising with nilearn" href="04_Dual_Echo_Denoising.html" />
     <link rel="prev" title="Volume-wise T2*/S0 estimation with t2smap" href="02_Volume-wise_T2star_estimation_with_t2smap.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -422,22 +425,56 @@ Module `duecredit` not successfully imported due to &quot;No module named &#39;d
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     tedana:tedana_workflow:454 Using output directory: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/tedana
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     tedana:tedana_workflow:467 Loading input data: [&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&#39;]
+</pre></div>
+</div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1787</span><span class="o">/</span><span class="mf">4032711658.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1760</span><span class="o">/</span><span class="mf">4032711658.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;sub-04570_task-rest_space-scanner&quot;</span><span class="p">,</span>
 <span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="n">fittype</span><span class="o">=</span><span class="s2">&quot;curvefit&quot;</span><span class="p">,</span>
 <span class="ne">----&gt; </span><span class="mi">8</span>     <span class="n">tedpca</span><span class="o">=</span><span class="s2">&quot;mdl&quot;</span><span class="p">,</span>
 <span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="p">)</span>
 
 <span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/workflows/tedana.py</span> in <span class="ni">tedana_workflow</span><span class="nt">(data, tes, out_dir, mask, convention, prefix, fittype, combmode, tedpca, fixed_seed, maxit, maxrestart, tedort, gscontrol, no_reports, png_cmap, verbose, low_mem, debug, quiet, t2smap, mixm, ctab, manacc)</span>
-<span class="g g-Whitespace">    </span><span class="mi">430</span>     <span class="n">out_dir</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">431</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">op</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">432</span>         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">433</span> 
-<span class="g g-Whitespace">    </span><span class="mi">434</span>     <span class="c1"># boilerplate</span>
+<span class="g g-Whitespace">    </span><span class="mi">466</span> 
+<span class="g g-Whitespace">    </span><span class="mi">467</span>     <span class="n">LGR</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading input data: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]))</span>
+<span class="ne">--&gt; </span><span class="mi">468</span>     <span class="n">catd</span><span class="p">,</span> <span class="n">ref_img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_echos</span><span class="o">=</span><span class="n">n_echos</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">469</span>     <span class="n">io_generator</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">OutputGenerator</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">470</span>         <span class="n">ref_img</span><span class="p">,</span>
 
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/tedana&#39;
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/io.py</span> in <span class="ni">load_data</span><span class="nt">(data, n_echos)</span>
+<span class="g g-Whitespace">    </span><span class="mi">590</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot run `tedana` with only two echos: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">591</span>         <span class="k">else</span><span class="p">:</span>  <span class="c1"># individual echo files were provided (surface or volumetric)</span>
+<span class="ne">--&gt; </span><span class="mi">592</span>             <span class="n">fdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">utils</span><span class="o">.</span><span class="n">reshape_niimg</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">593</span>             <span class="n">ref_img</span> <span class="o">=</span> <span class="n">check_niimg</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="g g-Whitespace">    </span><span class="mi">594</span>             <span class="n">ref_img</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/io.py</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">    </span><span class="mi">590</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot run `tedana` with only two echos: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">591</span>         <span class="k">else</span><span class="p">:</span>  <span class="c1"># individual echo files were provided (surface or volumetric)</span>
+<span class="ne">--&gt; </span><span class="mi">592</span>             <span class="n">fdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">utils</span><span class="o">.</span><span class="n">reshape_niimg</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">593</span>             <span class="n">ref_img</span> <span class="o">=</span> <span class="n">check_niimg</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="g g-Whitespace">    </span><span class="mi">594</span>             <span class="n">ref_img</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/utils.py</span> in <span class="ni">reshape_niimg</span><span class="nt">(data)</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>     <span class="s2">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span><span class="s2">     if isinstance(data, (str, nib.spatialimages.SpatialImage)):</span>
+<span class="ne">---&gt; </span><span class="mi">34</span><span class="s2">         data = check_niimg(data).get_fdata()</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span><span class="s2">     elif not isinstance(data, np.ndarray):</span>
+<span class="g g-Whitespace">     </span><span class="mi">36</span><span class="s2">         raise TypeError(f&quot;Unsupported type {type(data)}&quot;)</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span><span class="s2">                 raise ValueError(message)</span>
+<span class="g g-Whitespace">    </span><span class="mi">270</span><span class="s2">             else:</span>
+<span class="ne">--&gt; </span><span class="mi">271</span><span class="s2">                 raise ValueError(&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot; % niimg)</span>
+<span class="g g-Whitespace">    </span><span class="mi">272</span><span class="s2">         elif not os.path.exists(niimg):</span>
+<span class="g g-Whitespace">    </span><span class="mi">273</span><span class="s2">             raise ValueError(&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot; % niimg)</span>
+
+<span class="ne">ValueError</span>: File not found: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&#39;
 </pre></div>
 </div>
 </div>
@@ -505,31 +542,22 @@ Module `duecredit` not successfully imported due to &quot;No module named &#39;d
               </div>
               
         
-            
-
-
-
-<div class='prev-next-bottom'>
-    
-    <div id="prev">
-        <a class="left-prev" href="02_Volume-wise_T2star_estimation_with_t2smap.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Volume-wise T2*/S0 estimation with <code class="docutils literal notranslate"><span class="pre">t2smap</span></code></p>
-            </div>
-        </a>
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="02_Volume-wise_T2star_estimation_with_t2smap.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Volume-wise T2*/S0 estimation with <code class="docutils literal notranslate"><span class="pre">t2smap</span></code></p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="04_Dual_Echo_Denoising.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></p>
     </div>
-     <div id="next">
-        <a class="right-next" href="04_Dual_Echo_Denoising.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
-
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
         
         </div>
@@ -550,8 +578,7 @@ Module `duecredit` not successfully imported due to &quot;No module named &#39;d
       </div>
     </div>
   
-  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
-  
   </body>
 </html>
