@@ -23,6 +23,7 @@ Dual-echo denoising was originally proposed in [Bright & Murphy (2013)](https://
 ```{code-cell} ipython3
 import os
 
+from myst_nb import glue
 import matplotlib.pyplot as plt
 import numpy as np
 from nilearn import image, masking, plotting

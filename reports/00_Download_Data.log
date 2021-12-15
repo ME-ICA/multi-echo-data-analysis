@@ -30,7 +30,7 @@ data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_1637/318284703.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_1636/318284703.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      2[0m [0;34m[0m[0m
 [1;32m      3[0m [0;31m# Install the data if running locally, or points to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 4[0;31m [0mDATA_REQ_FILE[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0;34m"../binder/data_requirement.json"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m

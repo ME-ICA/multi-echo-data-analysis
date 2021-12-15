@@ -22,6 +22,7 @@ import os
 import matplotlib.pyplot as plt
 from glob import glob
 
+from myst_nb import glue
 import numpy as np
 import pandas as pd
 from nilearn import image, plotting
