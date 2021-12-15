@@ -86,7 +86,7 @@ glue("figure_t2starmap", fig, display=False)
 :name: "figure_t2starmap"
 :align: center
 
-T2* map estimated from multi-echo data using tedana's :func:`~tedana.workflows.t2smap_workflow`.
+T2* map estimated from multi-echo data using tedana's {py:func}`~tedana.workflows.t2smap_workflow`.
 ```
 
 ```{code-cell} ipython3
@@ -106,7 +106,7 @@ glue("figure_s0map", fig, display=False)
 :name: "figure_s0map"
 :align: center
 
-S0 map estimated from multi-echo data using tedana's :func:`~tedana.workflows.t2smap_workflow`.
+S0 map estimated from multi-echo data using tedana's {py:func}`~tedana.workflows.t2smap_workflow`.
 ```
 
 ```{code-cell} ipython3
