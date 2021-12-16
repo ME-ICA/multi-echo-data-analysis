@@ -25,10 +25,11 @@ import os
 
 from myst_nb import glue
 import matplotlib.pyplot as plt
-import numpy as np
-from nilearn import image, masking, plotting
+from nilearn import plotting
 
 from repo2data.repo2data import Repo2Data
+
+from book_utils import regress_one_image_out_of_another
 
 # Install the data if running locally, or points to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
@@ -37,42 +38,6 @@ DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 repo2data = Repo2Data(DATA_REQ_FILE)
 data_path = repo2data.install()
 data_path = os.path.abspath(os.path.join(data_path[0], "data"))
-
-
-def regress_one_image_out_of_another(data_img, nuis_img, mask_img):
-    # First, mean-center each image over time
-    mean_data_img = image.mean_img(data_img)
-    mean_nuis_img = image.mean_img(nuis_img)
-
-    data_img_mc = image.math_img(
-        "img - avg_img[..., None]",
-        img=data_img,
-        avg_img=mean_data_img,
-    )
-    nuis_img_mc = image.math_img(
-        "img - avg_img[..., None]",
-        img=nuis_img,
-        avg_img=mean_nuis_img,
-    )
-
-    # Now get the masked data in 2D format
-    data_mc = masking.apply_mask(data_img_mc, mask_img)
-    nuis_mc = masking.apply_mask(nuis_img_mc, mask_img)
-    nuis_mean = masking.apply_mask(mean_nuis_img, mask_img)
-    data_mean = masking.apply_mask(mean_data_img, mask_img)
-
-    # Build beta map by performing regression on each voxel
-    betas = np.zeros(data_mc.shape[1])
-    for i_voxel in range(data_mc.shape[1]):
-        temp_data = np.stack((data_mc[:, i_voxel], np.ones(data_mc.shape[0])), -1)
-        betas = np.linalg.lstsq(temp_data, nuis_mc[:, i_voxel], rcond=None)[0][0]
-
-    # Construct denoised time series
-    scaled_nuis = (nuis_mc * betas)
-    errorts = (data_mc - scaled_nuis) + data_mean
-    errorts_img = masking.unmask(errorts, mask_img)
-
-    return errorts_img
 ```
 
 ```{code-cell} ipython3

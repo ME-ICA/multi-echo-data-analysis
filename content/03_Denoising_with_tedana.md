@@ -91,7 +91,22 @@ pprint(reduced_data)
 ```
 
 ```{code-cell} ipython3
+tags: [output-scroll]
+
 df = pd.DataFrame.from_dict(data, orient="index")
 df = df.fillna("n/a")
 display(HTML(df.to_html()))
+```
+
+```{code-cell} ipython3
+report = os.path.join(out_dir, "tedana_report.html")
+with open(report, "r") as fo:
+    report_data = fo.read()
+
+report_data = report_data.replace(
+    "./figures",
+    os.path.join(out_dir, "figures"),
+)
+
+display(HTML(report_data))
 ```
