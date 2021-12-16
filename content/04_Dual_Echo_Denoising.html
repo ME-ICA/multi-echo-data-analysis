@@ -371,10 +371,11 @@
 
 <span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">image</span><span class="p">,</span> <span class="n">masking</span><span class="p">,</span> <span class="n">plotting</span>
+<span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">plotting</span>
 
 <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
+
+<span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">regress_one_image_out_of_another</span>
 
 <span class="c1"># Install the data if running locally, or points to cached data if running on neurolibre</span>
 <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
@@ -383,42 +384,6 @@
 <span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
-
-
-<span class="k">def</span> <span class="nf">regress_one_image_out_of_another</span><span class="p">(</span><span class="n">data_img</span><span class="p">,</span> <span class="n">nuis_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">):</span>
-    <span class="c1"># First, mean-center each image over time</span>
-    <span class="n">mean_data_img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">data_img</span><span class="p">)</span>
-    <span class="n">mean_nuis_img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">nuis_img</span><span class="p">)</span>
-
-    <span class="n">data_img_mc</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span>
-        <span class="s2">&quot;img - avg_img[..., None]&quot;</span><span class="p">,</span>
-        <span class="n">img</span><span class="o">=</span><span class="n">data_img</span><span class="p">,</span>
-        <span class="n">avg_img</span><span class="o">=</span><span class="n">mean_data_img</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">nuis_img_mc</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span>
-        <span class="s2">&quot;img - avg_img[..., None]&quot;</span><span class="p">,</span>
-        <span class="n">img</span><span class="o">=</span><span class="n">nuis_img</span><span class="p">,</span>
-        <span class="n">avg_img</span><span class="o">=</span><span class="n">mean_nuis_img</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="c1"># Now get the masked data in 2D format</span>
-    <span class="n">data_mc</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">data_img_mc</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
-    <span class="n">nuis_mc</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">nuis_img_mc</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
-    <span class="n">nuis_mean</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">mean_nuis_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
-    <span class="n">data_mean</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">mean_data_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
-
-    <span class="c1"># Build beta map by performing regression on each voxel</span>
-    <span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">data_mc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">for</span> <span class="n">i_voxel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data_mc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="n">temp_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">data_mc</span><span class="p">[:,</span> <span class="n">i_voxel</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">data_mc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">temp_data</span><span class="p">,</span> <span class="n">nuis_mc</span><span class="p">[:,</span> <span class="n">i_voxel</span><span class="p">],</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># Construct denoised time series</span>
-    <span class="n">scaled_nuis</span> <span class="o">=</span> <span class="p">(</span><span class="n">nuis_mc</span> <span class="o">*</span> <span class="n">betas</span><span class="p">)</span>
-    <span class="n">errorts</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_mc</span> <span class="o">-</span> <span class="n">scaled_nuis</span><span class="p">)</span> <span class="o">+</span> <span class="n">data_mean</span>
-    <span class="n">errorts_img</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">errorts</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">errorts_img</span>
 </pre></div>
 </div>
 </div>

@@ -664,7 +664,7 @@ sub-04570_task-rest_space-scanner_desc-optcomRejected_bold.nii.gz
 sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 sub-04570_task-rest_space-scanner_desc-tedana_metrics.json
 sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv
-tedana_2021-12-15T213539.tsv
+tedana_2021-12-16T214133.tsv
 tedana_report.html
 </pre></div>
 </div>
@@ -1734,152 +1734,44 @@ tedana_report.html
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tags</span><span class="p">:</span> <span class="p">[</span><span class="n">output</span><span class="o">-</span><span class="n">scroll</span><span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;n/a&quot;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Description</th>
-      <th>LongName</th>
-      <th>Levels</th>
-      <th>Units</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Component</th>
-      <td>The unique identifier of each component. This identifier matches column names in the mixing matrix TSV file.</td>
-      <td>Component identifier</td>
-      <td>n/a</td>
-      <td>n/a</td>
-    </tr>
-    <tr>
-      <th>classification</th>
-      <td>Classification from the manual classification procedure.</td>
-      <td>Component classification</td>
-      <td>{'accepted': 'A BOLD-like component included in denoised and high-Kappa data.', 'ignored': 'A low-variance component included in denoised, but excluded from high-Kappa data.', 'rejected': 'A non-BOLD component excluded from denoised and high-Kappa data.'}</td>
-      <td>n/a</td>
-    </tr>
-    <tr>
-      <th>countnoise</th>
-      <td>Number of 'noise' voxels (voxels highly weighted for component, but not from clusters) from each component.</td>
-      <td>Noise voxel count</td>
-      <td>n/a</td>
-      <td>voxel</td>
-    </tr>
-    <tr>
-      <th>countsigFS0</th>
-      <td>Number of significant voxels from the cluster-extent thresholded S0 model F-statistic map for each component.</td>
-      <td>S0 model F-statistic map significant voxel count</td>
-      <td>n/a</td>
-      <td>voxel</td>
-    </tr>
-    <tr>
-      <th>countsigFT2</th>
-      <td>Number of significant voxels from the cluster-extent thresholded T2 model F-statistic map for each component.</td>
-      <td>T2 model F-statistic map significant voxel count</td>
-      <td>n/a</td>
-      <td>voxel</td>
-    </tr>
-    <tr>
-      <th>d_table_score</th>
-      <td>Summary score compiled from five metrics, with smaller values (i.e., higher ranks) indicating more BOLD dependence and less noise.</td>
-      <td>Decision table score</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>d_table_score_scrub</th>
-      <td>Summary score compiled from five metrics and computed from a subset of components, with smaller values (i.e., higher ranks) indicating more BOLD dependence and less noise.</td>
-      <td>Updated decision table score</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>dice_FS0</th>
-      <td>Dice value of cluster-extent thresholded maps of S0-model betas and F-statistics.</td>
-      <td>S0 model beta map-F-statistic map Dice similarity index</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>dice_FT2</th>
-      <td>Dice value of cluster-extent thresholded maps of T2-model betas and F-statistics.</td>
-      <td>T2 model beta map-F-statistic map Dice similarity index</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>kappa</th>
-      <td>A pseudo-F-statistic indicating TE-dependence of the component. This metric is calculated by computing fit to the TE-dependence model at each voxel, and then performing a weighted average based on the voxel-wise weights of the component.</td>
-      <td>Kappa</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>kappa ratio</th>
-      <td>Ratio score calculated by dividing range of kappa values by range of variance explained values.</td>
-      <td>Kappa ratio</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>normalized variance explained</th>
-      <td>Normalized variance explained in the optimally combined data of each component.On a scale from 0 to 1.</td>
-      <td>Normalized variance explained</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>optimal sign</th>
-      <td>Optimal sign determined based on skew direction of component parameter estimates across the brain. In cases where components were left-skewed (-1), the component time series is flipped prior to metric calculation.</td>
-      <td>Optimal component sign</td>
-      <td>{'-1': 'Component is flipped prior to metric calculation.', '1': 'Component is not flipped prior to metric calculation.'}</td>
-      <td>n/a</td>
-    </tr>
-    <tr>
-      <th>rationale</th>
-      <td>The reason for the original classification. Please see tedana's documentation for information about possible rationales.</td>
-      <td>Rationale for component classification</td>
-      <td>n/a</td>
-      <td>n/a</td>
-    </tr>
-    <tr>
-      <th>rho</th>
-      <td>A pseudo-F-statistic indicating TE-independence of the component. This metric is calculated by computing fit to the TE-independence model at each voxel, and then performing a weighted average based on the voxel-wise weights of the component.</td>
-      <td>Rho</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>signal-noise_p</th>
-      <td>P-value for two-sample t-test of F-statistics from 'signal' voxels (voxels in clusters) against 'noise' voxels (voxels not in clusters) for T2 model.</td>
-      <td>Signal &gt; noise p-value</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>signal-noise_t</th>
-      <td>T-statistic for two-sample t-test of F-statistics from 'signal' voxels (voxels in clusters) against 'noise' voxels (voxels not in clusters) for T2 model.</td>
-      <td>Signal &gt; noise t-statistic</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-    <tr>
-      <th>variance explained</th>
-      <td>Variance explained in the optimally combined data of each component. On a scale from 0 to 100.</td>
-      <td>Variance explained</td>
-      <td>n/a</td>
-      <td>arbitrary</td>
-    </tr>
-  </tbody>
-</table></div></div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1930</span><span class="o">/</span><span class="mf">2707592605.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">tags</span><span class="p">:</span> <span class="p">[</span><span class="n">output</span><span class="o">-</span><span class="n">scroll</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;n/a&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">()))</span>
+
+<span class="ne">NameError</span>: name &#39;output&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;tedana_report.html&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+    <span class="n">report_data</span> <span class="o">=</span> <span class="n">fo</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="n">report_data</span> <span class="o">=</span> <span class="n">report_data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+    <span class="s2">&quot;./figures&quot;</span><span class="p">,</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;figures&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">report_data</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
