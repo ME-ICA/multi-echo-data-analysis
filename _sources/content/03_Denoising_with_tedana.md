@@ -59,6 +59,8 @@ out_dir = os.path.join(data_path, "tedana")
 
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 workflows.tedana_workflow(
     data_files,
     echo_times,
@@ -70,6 +72,8 @@ workflows.tedana_workflow(
 )
 ```
 
+The tedana workflow writes out a number of files.
+
 ```{code-cell} ipython3
 out_files = sorted(glob(os.path.join(out_dir, "*")))
 out_files = [os.path.basename(f) for f in out_files]
@@ -78,7 +82,16 @@ print("\n".join(out_files))
 
 ```{code-cell} ipython3
 metrics = pd.read_table(os.path.join(out_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"))
-metrics
+```
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+def color_rejected_red(series):
+    """Color rejected components red."""
+    return [f"color: red" if series["classification"] == "rejected" else '' for v in series]
+
+metrics.style.apply(color_rejected_red, axis=1)
 ```
 
 ```{code-cell} ipython3
@@ -91,7 +104,7 @@ pprint(reduced_data)
 ```
 
 ```{code-cell} ipython3
-:tags: [output-scroll]
+:tags: [output_scroll]
 
 df = pd.DataFrame.from_dict(data, orient="index")
 df = df.fillna("n/a")
@@ -103,7 +116,7 @@ report = os.path.join(out_dir, "tedana_report.html")
 with open(report, "r") as fo:
     report_data = fo.read()
 
-figures_dir = figures_dir = os.path.relpath(os.path.join(out_dir, "figures"), os.getcwd())
+figures_dir = os.path.relpath(os.path.join(out_dir, "figures"), os.getcwd())
 report_data = report_data.replace("./figures", figures_dir)
 
 display(HTML(report_data))
