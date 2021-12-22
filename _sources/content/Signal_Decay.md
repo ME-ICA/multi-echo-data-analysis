@@ -677,7 +677,7 @@ ax0_line_plot = axes[0].plot(
     zorder=0,
 )[0]
 ax0_scatter_plot = axes[0].scatter(
-    i_vol,
+    0,
     ts[0],
     color="purple",
     s=150,
