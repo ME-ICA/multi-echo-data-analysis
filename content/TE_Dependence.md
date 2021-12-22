@@ -32,8 +32,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import signal, stats
-from nistats import hemodynamic_models
-from statsmodels.api import add_constant
+from nilearn.glm import first_level
 ```
 
 ```{code-cell} ipython3
@@ -334,7 +333,7 @@ print(coeffs_R2)
 ```{code-cell} ipython3
 # Simulate data
 # We'll convolve with HRF just for smoothness
-hrf = hemodynamic_models.spm_hrf(1, oversampling=1)
+hrf = first_level.spm_hrf(1, oversampling=1)
 
 n_trs = 300
 
@@ -421,7 +420,8 @@ fig.show()
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 4))
 
-comp_X = add_constant(component, prepend=False)
+# Add a constant term to the array
+comp_X = np.hstack((component, np.ones((component.shape[0], 1))))
 pes, _, _, _ = np.linalg.lstsq(comp_X, multiecho_signal.T, rcond=None)
 pes = pes[0, :]
 

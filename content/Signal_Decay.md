@@ -13,6 +13,8 @@ kernelspec:
 
 # Signal Decay
 
+In this chapter, we use simulated data to show how BOLD signal decays and how we can glean useful information from that decay rate.
+
 ```{code-cell} ipython3
 import os
 
@@ -23,6 +25,7 @@ import seaborn as sns
 from IPython.display import Image
 from nilearn.glm import first_level
 from scipy import signal
+from repo2data.repo2data import Repo2Data
 
 from book_utils import predict_bold_signal
 
@@ -32,6 +35,14 @@ plt.rcParams.update({
     "font.family": "sans-serif",
     "font.sans-serif": ["Helvetica"]
 })
+
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 ```
 
 ## Signal decays as echo time increases
