@@ -17,92 +17,55 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
-singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
+s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
+t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
 
-out_file = os.path.join(out_dir, "fluctuations_single-echo_with_curve_and_t2s_s0.gif")
+out_file = os.path.join(out_dir, "fluctuations_t2s_s0.gif")
 if os.path.isfile(out_file):
     os.remove(out_file)
 
 filenames = []
 
 for i_vol in range(N_VOLS):
-    filename = f"se_{i_vol}.png"
+    filename = f"total_{i_vol}.png"
     fig, axes = plt.subplots(
         nrows=2,
         figsize=(14, 10),
         gridspec_kw={"height_ratios": [1, 3]}
     )
 
-    axes[0].plot(
-        singleecho_signal[0, :],
-        color="black",
-        zorder=0,
-    )
+    axes[0].plot(ts, color="black")
     axes[0].scatter(
         i_vol,
-        singleecho_signal[:, i_vol],
-        color="orange",
+        ts[i_vol],
+        color="purple",
         s=150,
-        label="Single-Echo Signal",
-        zorder=1,
     )
-    axes[0].set_ylabel("Signal", fontsize=24)
+    axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
     axes[0].set_xlabel("Volume", fontsize=24)
     axes[0].set_xlim(0, N_VOLS - 1)
     axes[0].tick_params(axis="both", which="major", labelsize=14)
 
-    axes[1].scatter(
-        SINGLEECHO_TE,
-        singleecho_signal[:, i_vol],
-        color="orange",
-        s=150,
-        alpha=1.,
-        label="Single-Echo Signal",
-        zorder=3,
-    )
-
     axes[1].plot(
         FULLCURVE_TES,
-        fullcurve_signal[:, i_vol],
-        alpha=0.5,
-        color="black",
-        zorder=0,
-    )
-
-    t2s_value = predict_bold_signal(
-        np.array([t2s_ts[i_vol]]),
-        np.array([s0_ts[i_vol]]),
-        np.array([t2s_ts[i_vol]])
-    )[0]
-    axes[1].scatter(
-        t2s_ts[i_vol],
-        t2s_value,
-        marker="*",
-        color="blue",
-        s=500,
-        alpha=0.5,
-        label="$T_{2}^{*}$",
-        zorder=1,
-    )
-    axes[1].scatter(
-        0,
-        s0_ts[i_vol],
-        marker="*",
+        s0based_fullcurve_signal[:, i_vol],
         color="red",
-        s=500,
         alpha=0.5,
-        label="$S_{0}$",
-        clip_on=False,
-        zorder=2,
+        label="$S_0$-Driven Decay Curve",
     )
-
+    axes[1].plot(
+        FULLCURVE_TES,
+        t2sbased_fullcurve_signal[:, i_vol],
+        color="blue",
+        alpha=0.5,
+        label="$T_{2}^{*}$-Driven Decay Curve",
+    )
     axes[1].legend(loc="upper right", fontsize=20)
 
     axes[1].set_ylabel("Signal", fontsize=24)
     axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
     axes[1].set_xticks(MULTIECHO_TES)
-    axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
+    axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
     axes[1].set_xlim(0, np.max(FULLCURVE_TES))
     axes[1].tick_params(axis="both", which="major", labelsize=14)
     fig.tight_layout()
@@ -128,10 +91,10 @@ with open(out_file, "rb") as file:
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2409/1858382473.py[0m in [0;36m<module>[0;34m[0m
-[1;32m    105[0m [0;34m[0m[0m
-[1;32m    106[0m [0;32mwith[0m [0mopen[0m[0;34m([0m[0mout_file[0m[0;34m,[0m [0;34m"rb"[0m[0;34m)[0m [0;32mas[0m [0mfile[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 107[0;31m     [0mdisplay[0m[0;34m([0m[0mdisplay[0m[0;34m.[0m[0mImage[0m[0;34m([0m[0mfile[0m[0;34m.[0m[0mread[0m[0;34m([0m[0;34m)[0m[0;34m,[0m [0mwidth[0m[0;34m=[0m[0;36m600[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/tmp/ipykernel_2162/140298799.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     68[0m [0;34m[0m[0m
+[1;32m     69[0m [0;32mwith[0m [0mopen[0m[0;34m([0m[0mout_file[0m[0;34m,[0m [0;34m"rb"[0m[0;34m)[0m [0;32mas[0m [0mfile[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 70[0;31m     [0mdisplay[0m[0;34m([0m[0mdisplay[0m[0;34m.[0m[0mImage[0m[0;34m([0m[0mfile[0m[0;34m.[0m[0mread[0m[0;34m([0m[0;34m)[0m[0;34m,[0m [0mwidth[0m[0;34m=[0m[0;36m600[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m
 [0;31mTypeError[0m: 'module' object is not callable
 TypeError: 'module' object is not callable
