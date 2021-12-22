@@ -33,11 +33,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import signal, stats
 from nilearn.glm import first_level
-```
+from repo2data.repo2data import Repo2Data
 
-```{code-cell} ipython3
-# Constants
-OUT_DIR = '../docs/_static/'
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+
+out_dir = os.path.join(data_path, "te-dependence")
+os.makedirs(out_dir, exist_ok=True)
 ```
 
 ```{code-cell} ipython3
