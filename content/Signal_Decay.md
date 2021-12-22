@@ -21,9 +21,12 @@ import os
 import imageio
 import matplotlib.pyplot as plt
 import numpy as np
+import nibabel as nib
 import seaborn as sns
-from IPython.display import Image
+from IPython import display
+from matplotlib.animation import FuncAnimation
 from nilearn.glm import first_level
+from nilearn import image, plotting
 from scipy import signal
 from repo2data.repo2data import Repo2Data
 
@@ -212,80 +215,75 @@ This shows how single-echo data is a sample from a signal decay curve.
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = os.path.join(out_dir, "fluctuations_single-echo_with_curve.gif")
-if os.path.isfile(out_file):
-    os.remove(out_file)
+fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
 
-filenames = []
+# Set constant params for figure
+axes[0].set_ylabel("Signal", fontsize=24)
+axes[0].set_xlabel("Volume", fontsize=24)
+axes[0].set_xlim(0, N_VOLS - 1)
+axes[0].tick_params(axis="both", which="major", labelsize=14)
+axes[1].set_ylabel("Signal", fontsize=24)
+axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
+axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
+axes[1].set_xlim(0, np.max(FULLCURVE_TES))
+axes[1].tick_params(axis="both", which="major", labelsize=14)
+fig.tight_layout()
 
-for i_vol in range(N_VOLS):
-    filename = f"se_{i_vol}.png"
-    fig, axes = plt.subplots(
-        nrows=2,
-        figsize=(14, 10),
-        gridspec_kw={"height_ratios": [1, 3]}
+ax0_line_plot = axes[0].plot(
+    singleecho_signal[0, :],
+    color="black",
+    zorder=0
+)
+ax0_scatter_plot = axes[0].scatter(
+    i_vol,
+    singleecho_signal[:, 0],
+    color="orange",
+    s=150,
+    label="Single-Echo Signal",
+    zorder=1,
+)
+ax1_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    fullcurve_signal[:, 0],
+    alpha=0.5,
+    color="black",
+    zorder=0,
+)
+ax1_scatter_plot = axes[1].scatter(
+    SINGLEECHO_TE,
+    singleecho_signal[:, 0],
+    color="orange",
+    s=150,
+    alpha=1.,
+    label="Single-Echo Signal",
+    zorder=1,
+)
+
+def AnimationFunction(frame):
+    """Function takes frame as an input."""
+    ax0_scatter_plot.set_data(
+        frame,
+        singleecho_signal[:, frame],
     )
 
-    axes[0].plot(
-        singleecho_signal[0, :],
-        color="black",
-        zorder=0
-    )
-    axes[0].scatter(
-        i_vol,
-        singleecho_signal[:, i_vol],
-        color="orange",
-        s=150,
-        label="Single-Echo Signal",
-        zorder=1,
-    )
-    axes[0].set_ylabel("Signal", fontsize=24)
-    axes[0].set_xlabel("Volume", fontsize=24)
-    axes[0].set_xlim(0, N_VOLS - 1)
-    axes[0].tick_params(axis="both", which="major", labelsize=14)
-
-    axes[1].plot(
+    ax1_line_plot.set_data(
         FULLCURVE_TES,
-        fullcurve_signal[:, i_vol],
-        alpha=0.5,
-        color="black",
-        zorder=0,
+        fullcurve_signal[:, frame],
     )
-    axes[1].scatter(
+    ax1_scatter_plot.set_data(
         SINGLEECHO_TE,
-        singleecho_signal[:, i_vol],
-        color="orange",
-        s=150,
-        alpha=1.,
-        label="Single-Echo Signal",
-        zorder=1,
+        singleecho_signal[:, frame],
     )
 
-    axes[1].set_ylabel("Signal", fontsize=24)
-    axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-    axes[1].set_xticks(MULTIECHO_TES)
-    axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
-    axes[1].set_xlim(0, np.max(FULLCURVE_TES))
-    axes[1].tick_params(axis="both", which="major", labelsize=14)
-    fig.tight_layout()
+anim_created = FuncAnimation(Figure, AnimationFunction, frames=20, interval=25)
 
-    # save frame
-    fig.savefig(filename)
-    plt.close(fig)
-    filenames.append(filename)
+video = anim_created.to_html5_video()
+html = display.HTML(video)
+display.display(html)
 
-# build gif
-with imageio.get_writer(out_file, mode="I") as writer:
-    for filename in filenames:
-        image = imageio.imread(filename)
-        writer.append_data(image)
-
-# Remove temporary files
-for filename in filenames:
-    os.remove(filename)
-
-with open(out_file, "rb") as file:
-    display(Image(file.read(), width=600))
+# good practice to close the plt object.
+fig.close()
 ```
 
 ### Plot single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
@@ -399,7 +397,7 @@ for filename in filenames:
     os.remove(filename)
 
 with open(out_file, "rb") as file:
-    display(Image(file.read(), width=600))
+    display(display.Image(file.read(), width=600))
 ```
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations
@@ -476,7 +474,7 @@ for filename in filenames:
     os.remove(filename)
 
 with open(out_file, "rb") as file:
-    display(Image(file.read(), width=600))
+    display(display.Image(file.read(), width=600))
 ```
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
@@ -580,7 +578,7 @@ for filename in filenames:
     os.remove(filename)
 
 with open(out_file, "rb") as file:
-    display(Image(file.read(), width=600))
+    display(display.Image(file.read(), width=600))
 ```
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
@@ -684,7 +682,7 @@ for filename in filenames:
     os.remove(filename)
 
 with open(out_file, "rb") as file:
-    display(Image(file.read(), width=600))
+    display(display.Image(file.read(), width=600))
 ```
 
 #### Plot $T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
