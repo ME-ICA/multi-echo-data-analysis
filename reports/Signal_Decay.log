@@ -17,29 +17,37 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-y_vals = np.arange(5000, 10001, 100)[:, None]
-x_vals = np.array([15, 30, 45, 60, 75, 90])
-fig = plot_signal_scatter(x_vals, y_vals)
+data_dir = os.path.abspath("../data/")
 
-fig.show()
+files = sorted(glob(os.path.join(data_dir, "sub-pilot_task-checkerboard_run-2_*_bold.nii.gz")))
+echo_times = np.array([9.58, 21.95, 34.32, 46.69, 59.06, 71.43, 83.8, 96.17])
+
+img = image.index_img(files[0], 0)
+data = img.get_fdata()
+vmax = np.max(data)
+idx = np.vstack(np.where(data > 1000))
+
+min_x, min_y, min_z = np.min(idx, axis=1)
+max_x, max_y, max_z = np.max(idx, axis=1)
+
+imgs = []
+for f in files:
+    img = image.index_img(f, 0)
+    data = img.get_fdata()
+    data = data[min_x:max_x, min_y:max_y, min_z:max_z]
+    img = nib.Nifti1Image(data, img.affine, img.header)
+    imgs.append(img)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mAssertionError[0m                            Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2254/396456994.py[0m in [0;36m<module>[0;34m[0m
-[1;32m      1[0m [0my_vals[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0marange[0m[0;34m([0m[0;36m5000[0m[0;34m,[0m [0;36m10001[0m[0;34m,[0m [0;36m100[0m[0;34m)[0m[0;34m[[0m[0;34m:[0m[0;34m,[0m [0;32mNone[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-[1;32m      2[0m [0mx_vals[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0marray[0m[0;34m([0m[0;34m[[0m[0;36m15[0m[0;34m,[0m [0;36m30[0m[0;34m,[0m [0;36m45[0m[0;34m,[0m [0;36m60[0m[0;34m,[0m [0;36m75[0m[0;34m,[0m [0;36m90[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m----> 3[0;31m [0mfig[0m [0;34m=[0m [0mplot_signal_scatter[0m[0;34m([0m[0mx_vals[0m[0;34m,[0m [0my_vals[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      4[0m [0;34m[0m[0m
-[1;32m      5[0m [0mfig[0m[0;34m.[0m[0mshow[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2204/1903662462.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      1[0m [0mdata_dir[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mabspath[0m[0;34m([0m[0;34m"../data/"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      2[0m [0;34m[0m[0m
+[0;32m----> 3[0;31m [0mfiles[0m [0;34m=[0m [0msorted[0m[0;34m([0m[0mglob[0m[0;34m([0m[0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mdata_dir[0m[0;34m,[0m [0;34m"sub-pilot_task-checkerboard_run-2_*_bold.nii.gz"[0m[0;34m)[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      4[0m [0mecho_times[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0marray[0m[0;34m([0m[0;34m[[0m[0;36m9.58[0m[0;34m,[0m [0;36m21.95[0m[0;34m,[0m [0;36m34.32[0m[0;34m,[0m [0;36m46.69[0m[0;34m,[0m [0;36m59.06[0m[0;34m,[0m [0;36m71.43[0m[0;34m,[0m [0;36m83.8[0m[0;34m,[0m [0;36m96.17[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      5[0m [0;34m[0m[0m
 
-[0;32m/tmp/ipykernel_2254/1365333246.py[0m in [0;36mplot_signal_scatter[0;34m(x, y)[0m
-[1;32m      6[0m     [0;32massert[0m [0mx[0m[0;34m.[0m[0mndim[0m [0;34m==[0m [0;36m1[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      7[0m     [0;32massert[0m [0my[0m[0;34m.[0m[0mndim[0m [0;34m==[0m [0;36m2[0m[0;34m[0m[0;34m[0m[0m
-[0;32m----> 8[0;31m     [0;32massert[0m [0my[0m[0;34m.[0m[0mshape[0m[0;34m[[0m[0;36m1[0m[0;34m][0m [0;34m==[0m [0mx[0m[0;34m.[0m[0mshape[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      9[0m     [0;32massert[0m [0;36m30[0m [0;32min[0m [0mx[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     10[0m     [0mte30_idx[0m [0;34m=[0m [0mlist[0m[0;34m([0m[0mx[0m[0;34m)[0m[0;34m.[0m[0mindex[0m[0;34m([0m[0;36m30[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-
-[0;31mAssertionError[0m: 
-AssertionError: 
+[0;31mNameError[0m: name 'glob' is not defined
+NameError: name 'glob' is not defined
 
