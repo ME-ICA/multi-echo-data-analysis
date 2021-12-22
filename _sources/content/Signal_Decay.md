@@ -529,98 +529,103 @@ t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, M
 s0based_singleecho_signal = s0based_fullcurve_signal[SINGLEECHO_TE, :]
 t2sbased_singleecho_signal = t2sbased_fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = os.path.join(out_dir, "fluctuations_t2s_s0_single-echo.gif")
-if os.path.isfile(out_file):
-    os.remove(out_file)
+fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
 
-filenames = []
+ax0_line_plot = axes[0].plot(
+    ts,
+    color="black",
+    zorder=0
+)
+ax0_scatter_plot = axes[0].scatter(
+    0,
+    ts[0],
+    color="purple",
+    s=150,
+    zorder=1,
+)
+ax1_s0_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    s0based_fullcurve_signal[:, 0],
+    color="red",
+    alpha=0.5,
+    label="$S_0$-Driven Decay Curve",
+    zorder=0,
+)[0]
+ax1_t2s_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    t2sbased_fullcurve_signal[:, 0],
+    color="blue",
+    alpha=0.5,
+    label="$T_{2}^{*}$-Driven Decay Curve",
+    zorder=1,
+)[0]
+ax1_s0_scatter_plot = axes[1].scatter(
+    SINGLEECHO_TE,
+    s0based_singleecho_signal[:, 0],
+    color="red",
+    s=150,
+    alpha=1.,
+    label="$S_0$-Driven Single-Echo Signal",
+    zorder=2,
+)
+ax1_t2s_scatter_plot = axes[1].scatter(
+    SINGLEECHO_TE,
+    t2sbased_singleecho_signal[:, 0],
+    color="blue",
+    s=150,
+    alpha=1.,
+    label="$T_{2}^{*}$-Driven Single-Echo Signal",
+    zorder=3,
+)
 
-for i_vol in range(N_VOLS):
-    filename = f"total_{i_vol}.png"
-    fig, axes = plt.subplots(
-        nrows=2,
-        figsize=(14, 10),
-        gridspec_kw={"height_ratios": [1, 3]}
+# Set constant params for figure
+axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
+axes[0].set_xlabel("Volume", fontsize=24)
+axes[0].set_xlim(0, N_VOLS - 1)
+axes[0].tick_params(axis="both", which="major", labelsize=14)
+axes[1].legend(loc="upper right", fontsize=20)
+axes[1].set_ylabel("Signal", fontsize=24)
+axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
+axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
+axes[1].set_xlim(0, np.max(FULLCURVE_TES))
+axes[1].tick_params(axis="both", which="major", labelsize=14)
+fig.tight_layout()
+
+
+def AnimationFunction(frame):
+    """Function takes frame as an input."""
+    ax0_scatter_plot.set_offsets(
+        np.column_stack((
+            frame,
+            ts[frame],
+        ))
     )
 
-    axes[0].plot(
-        ts,
-        color="black",
-        zorder=0,
-    )
-    axes[0].scatter(
-        i_vol,
-        ts[i_vol],
-        color="purple",
-        s=150,
-        zorder=1,
-    )
-    axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
-    axes[0].set_xlabel("Volume", fontsize=24)
-    axes[0].set_xlim(0, N_VOLS - 1)
-    axes[0].tick_params(axis="both", which="major", labelsize=14)
-
-    axes[1].plot(
+    ax1_s0_line_plot.set_data((
         FULLCURVE_TES,
-        s0based_fullcurve_signal[:, i_vol],
-        color="red",
-        alpha=0.5,
-        label="$S_0$-Driven Decay Curve",
-        zorder=0,
-    )
-    axes[1].plot(
+        s0based_fullcurve_signal[:, frame],
+    ))
+    ax1_t2s_line_plot.set_data((
         FULLCURVE_TES,
-        t2sbased_fullcurve_signal[:, i_vol],
-        color="blue",
-        alpha=0.5,
-        label="$T_{2}^{*}$-Driven Decay Curve",
-        zorder=1,
+        t2sbased_fullcurve_signal[:, frame],
+    ))
+    ax1_s0_scatter_plot.set_offsets(
+        np.column_stack((
+            SINGLEECHO_TE,
+            s0based_singleecho_signal[:, frame],
+        ))
     )
-    axes[1].scatter(
-        SINGLEECHO_TE,
-        s0based_singleecho_signal[:, i_vol],
-        color="red",
-        s=150,
-        alpha=1.,
-        label="$S_0$-Driven Single-Echo Signal",
-        zorder=2,
+    ax1_t2s_scatter_plot.set_offsets(
+        np.column_stack((
+            SINGLEECHO_TE,
+            t2sbased_singleecho_signal[:, frame],
+        ))
     )
-    axes[1].scatter(
-        SINGLEECHO_TE,
-        t2sbased_singleecho_signal[:, i_vol],
-        color="blue",
-        s=150,
-        alpha=1.,
-        label="$T_{2}^{*}$-Driven Single-Echo Signal",
-        zorder=3,
-    )
-    axes[1].legend(loc="upper right", fontsize=20)
 
-    axes[1].set_ylabel("Signal", fontsize=24)
-    axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-    axes[1].set_xticks(MULTIECHO_TES)
-    axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
-    axes[1].set_xlim(0, np.max(FULLCURVE_TES))
-    axes[1].tick_params(axis="both", which="major", labelsize=14)
-    fig.tight_layout()
-
-    # save frame
-    fig.savefig(filename)
-    plt.close(fig)
-    filenames.append(filename)
-
-# build gif
-with imageio.get_writer(out_file, mode="I") as writer:
-    for filename in filenames:
-        image = imageio.imread(filename)
-        writer.append_data(image)
-
-# Remove temporary files
-for filename in filenames:
-    os.remove(filename)
-
-with open(out_file, "rb") as file:
-    display(display.Image(file.read(), width=600))
+anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
+html = display.HTML(anim_created.to_jshtml())
+glue("fig_signal_decay4", html, display=False)
 ```
 
 ```{glue:figure} fig_signal_decay4
@@ -640,98 +645,102 @@ t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, M
 s0based_multiecho_signal = s0based_fullcurve_signal[MULTIECHO_TES, :]
 t2sbased_multiecho_signal = t2sbased_fullcurve_signal[MULTIECHO_TES, :]
 
-out_file = os.path.join(out_dir, "fluctuations_t2s_s0_multi-echo.gif")
-if os.path.isfile(out_file):
-    os.remove(out_file)
+fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
 
-filenames = []
+ax0_line_plot = axes[0].plot(
+    ts,
+    color="black",
+    zorder=0,
+)[0]
+ax0_scatter_plot = axes[0].scatter(
+    i_vol,
+    ts[0],
+    color="purple",
+    s=150,
+    zorder=1,
+)
+ax1_s0_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    s0based_fullcurve_signal[:, 0],
+    color="red",
+    alpha=0.5,
+    label="$S_0$-Driven Decay Curve",
+    zorder=0,
+)[0]
+ax1_t2s_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    t2sbased_fullcurve_signal[:, 0],
+    color="blue",
+    alpha=0.5,
+    label="$T_{2}^{*}$-Driven Decay Curve",
+    zorder=1,
+)[0]
+ax1_s0_scatter_plot = axes[1].scatter(
+    MULTIECHO_TES,
+    s0based_multiecho_signal[:, 0],
+    color="red",
+    s=150,
+    alpha=1.,
+    label="$S_0$-Driven Multi-Echo Signal",
+    zorder=2,
+)
+ax1_t2s_scatter_plot = axes[1].scatter(
+    MULTIECHO_TES,
+    t2sbased_multiecho_signal[:, 0],
+    color="blue",
+    s=150,
+    alpha=1.,
+    label="$T_{2}^{*}$-Driven Multi-Echo Signal",
+    zorder=3,
+)
 
-for i_vol in range(N_VOLS):
-    filename = f"total_{i_vol}.png"
-    fig, axes = plt.subplots(
-        nrows=2,
-        figsize=(14, 10),
-        gridspec_kw={"height_ratios": [1, 3]}
+axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
+axes[0].set_xlabel("Volume", fontsize=24)
+axes[0].set_xlim(0, N_VOLS - 1)
+axes[0].tick_params(axis="both", which="major", labelsize=14)
+axes[1].legend(loc="upper right", fontsize=20)
+axes[1].set_ylabel("Signal", fontsize=24)
+axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
+axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
+axes[1].set_xlim(0, np.max(FULLCURVE_TES))
+axes[1].tick_params(axis="both", which="major", labelsize=14)
+fig.tight_layout()
+
+
+def AnimationFunction(frame):
+    """Function takes frame as an input."""
+    ax0_scatter_plot.set_offsets(
+        np.column_stack((
+            frame,
+            ts[frame],
+        ))
     )
 
-    axes[0].plot(
-        ts,
-        color="black",
-        zorder=0,
-    )
-    axes[0].scatter(
-        i_vol,
-        ts[i_vol],
-        color="purple",
-        s=150,
-        zorder=1,
-    )
-    axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
-    axes[0].set_xlabel("Volume", fontsize=24)
-    axes[0].set_xlim(0, N_VOLS - 1)
-    axes[0].tick_params(axis="both", which="major", labelsize=14)
-
-    axes[1].plot(
+    ax1_s0_line_plot.set_data((
         FULLCURVE_TES,
-        s0based_fullcurve_signal[:, i_vol],
-        color="red",
-        alpha=0.5,
-        label="$S_0$-Driven Decay Curve",
-        zorder=0,
-    )
-    axes[1].plot(
+        s0based_fullcurve_signal[:, frame],
+    ))
+    ax1_t2s_line_plot.set_data((
         FULLCURVE_TES,
-        t2sbased_fullcurve_signal[:, i_vol],
-        color="blue",
-        alpha=0.5,
-        label="$T_{2}^{*}$-Driven Decay Curve",
-        zorder=1,
+        t2sbased_fullcurve_signal[:, frame],
+    ))
+    ax1_s0_scatter_plot.set_offsets(
+        np.column_stack((
+            MULTIECHO_TES,
+            s0based_multiecho_signal[:, frame],
+        ))
     )
-    axes[1].scatter(
-        MULTIECHO_TES,
-        s0based_multiecho_signal[:, i_vol],
-        color="red",
-        s=150,
-        alpha=1.,
-        label="$S_0$-Driven Multi-Echo Signal",
-        zorder=2,
+    ax1_t2s_scatter_plot.set_offsets(
+        np.column_stack((
+            MULTIECHO_TES,
+            t2sbased_multiecho_signal[:, frame],
+        ))
     )
-    axes[1].scatter(
-        MULTIECHO_TES,
-        t2sbased_multiecho_signal[:, i_vol],
-        color="blue",
-        s=150,
-        alpha=1.,
-        label="$T_{2}^{*}$-Driven Multi-Echo Signal",
-        zorder=3,
-    )
-    axes[1].legend(loc="upper right", fontsize=20)
 
-    axes[1].set_ylabel("Signal", fontsize=24)
-    axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-    axes[1].set_xticks(MULTIECHO_TES)
-    axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
-    axes[1].set_xlim(0, np.max(FULLCURVE_TES))
-    axes[1].tick_params(axis="both", which="major", labelsize=14)
-    fig.tight_layout()
-
-    # save frame
-    fig.savefig(filename)
-    plt.close(fig)
-    filenames.append(filename)
-
-# build gif
-with imageio.get_writer(out_file, mode="I") as writer:
-    for filename in filenames:
-        image = imageio.imread(filename)
-        writer.append_data(image)
-
-# Remove temporary files
-for filename in filenames:
-    os.remove(filename)
-
-with open(out_file, "rb") as file:
-    display(display.Image(file.read(), width=600))
+anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
+html = display.HTML(anim_created.to_jshtml())
+glue("fig_signal_decay5", html, display=False)
 ```
 
 ```{glue:figure} fig_signal_decay5

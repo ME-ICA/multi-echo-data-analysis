@@ -19,110 +19,116 @@ nbclient.exceptions.CellExecutionError: An error occurred while executing the fo
 ------------------
 s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
 t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
-s0based_singleecho_signal = s0based_fullcurve_signal[SINGLEECHO_TE, :]
-t2sbased_singleecho_signal = t2sbased_fullcurve_signal[SINGLEECHO_TE, :]
+s0based_multiecho_signal = s0based_fullcurve_signal[MULTIECHO_TES, :]
+t2sbased_multiecho_signal = t2sbased_fullcurve_signal[MULTIECHO_TES, :]
 
-out_file = os.path.join(out_dir, "fluctuations_t2s_s0_single-echo.gif")
-if os.path.isfile(out_file):
-    os.remove(out_file)
+fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
 
-filenames = []
+ax0_line_plot = axes[0].plot(
+    ts,
+    color="black",
+    zorder=0,
+)[0]
+ax0_scatter_plot = axes[0].scatter(
+    i_vol,
+    ts[0],
+    color="purple",
+    s=150,
+    zorder=1,
+)
+ax1_s0_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    s0based_fullcurve_signal[:, 0],
+    color="red",
+    alpha=0.5,
+    label="$S_0$-Driven Decay Curve",
+    zorder=0,
+)[0]
+ax1_t2s_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    t2sbased_fullcurve_signal[:, 0],
+    color="blue",
+    alpha=0.5,
+    label="$T_{2}^{*}$-Driven Decay Curve",
+    zorder=1,
+)[0]
+ax1_s0_scatter_plot = axes[1].scatter(
+    MULTIECHO_TES,
+    s0based_multiecho_signal[:, 0],
+    color="red",
+    s=150,
+    alpha=1.,
+    label="$S_0$-Driven Multi-Echo Signal",
+    zorder=2,
+)
+ax1_t2s_scatter_plot = axes[1].scatter(
+    MULTIECHO_TES,
+    t2sbased_multiecho_signal[:, 0],
+    color="blue",
+    s=150,
+    alpha=1.,
+    label="$T_{2}^{*}$-Driven Multi-Echo Signal",
+    zorder=3,
+)
 
-for i_vol in range(N_VOLS):
-    filename = f"total_{i_vol}.png"
-    fig, axes = plt.subplots(
-        nrows=2,
-        figsize=(14, 10),
-        gridspec_kw={"height_ratios": [1, 3]}
+axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
+axes[0].set_xlabel("Volume", fontsize=24)
+axes[0].set_xlim(0, N_VOLS - 1)
+axes[0].tick_params(axis="both", which="major", labelsize=14)
+axes[1].legend(loc="upper right", fontsize=20)
+axes[1].set_ylabel("Signal", fontsize=24)
+axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
+axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
+axes[1].set_xlim(0, np.max(FULLCURVE_TES))
+axes[1].tick_params(axis="both", which="major", labelsize=14)
+fig.tight_layout()
+
+
+def AnimationFunction(frame):
+    """Function takes frame as an input."""
+    ax0_scatter_plot.set_offsets(
+        np.column_stack((
+            frame,
+            ts[frame],
+        ))
     )
 
-    axes[0].plot(
-        ts,
-        color="black",
-        zorder=0,
-    )
-    axes[0].scatter(
-        i_vol,
-        ts[i_vol],
-        color="purple",
-        s=150,
-        zorder=1,
-    )
-    axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
-    axes[0].set_xlabel("Volume", fontsize=24)
-    axes[0].set_xlim(0, N_VOLS - 1)
-    axes[0].tick_params(axis="both", which="major", labelsize=14)
-
-    axes[1].plot(
+    ax1_s0_line_plot.set_data((
         FULLCURVE_TES,
-        s0based_fullcurve_signal[:, i_vol],
-        color="red",
-        alpha=0.5,
-        label="$S_0$-Driven Decay Curve",
-        zorder=0,
-    )
-    axes[1].plot(
+        s0based_fullcurve_signal[:, frame],
+    ))
+    ax1_t2s_line_plot.set_data((
         FULLCURVE_TES,
-        t2sbased_fullcurve_signal[:, i_vol],
-        color="blue",
-        alpha=0.5,
-        label="$T_{2}^{*}$-Driven Decay Curve",
-        zorder=1,
+        t2sbased_fullcurve_signal[:, frame],
+    ))
+    ax1_s0_scatter_plot.set_offsets(
+        np.column_stack((
+            MULTIECHO_TES,
+            s0based_multiecho_signal[:, frame],
+        ))
     )
-    axes[1].scatter(
-        SINGLEECHO_TE,
-        s0based_singleecho_signal[:, i_vol],
-        color="red",
-        s=150,
-        alpha=1.,
-        label="$S_0$-Driven Single-Echo Signal",
-        zorder=2,
+    ax1_t2s_scatter_plot.set_offsets(
+        np.column_stack((
+            MULTIECHO_TES,
+            t2sbased_multiecho_signal[:, frame],
+        ))
     )
-    axes[1].scatter(
-        SINGLEECHO_TE,
-        t2sbased_singleecho_signal[:, i_vol],
-        color="blue",
-        s=150,
-        alpha=1.,
-        label="$T_{2}^{*}$-Driven Single-Echo Signal",
-        zorder=3,
-    )
-    axes[1].legend(loc="upper right", fontsize=20)
 
-    axes[1].set_ylabel("Signal", fontsize=24)
-    axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-    axes[1].set_xticks(MULTIECHO_TES)
-    axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
-    axes[1].set_xlim(0, np.max(FULLCURVE_TES))
-    axes[1].tick_params(axis="both", which="major", labelsize=14)
-    fig.tight_layout()
-
-    # save frame
-    fig.savefig(filename)
-    plt.close(fig)
-    filenames.append(filename)
-
-# build gif
-with imageio.get_writer(out_file, mode="I") as writer:
-    for filename in filenames:
-        image = imageio.imread(filename)
-        writer.append_data(image)
-
-# Remove temporary files
-for filename in filenames:
-    os.remove(filename)
-
-with open(out_file, "rb") as file:
-    display(display.Image(file.read(), width=600))
+anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
+html = display.HTML(anim_created.to_jshtml())
+glue("fig_signal_decay5", html, display=False)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2153/841610563.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     95[0m [0;34m[0m[0m
-[1;32m     96[0m [0;32mwith[0m [0mopen[0m[0;34m([0m[0mout_file[0m[0;34m,[0m [0;34m"rb"[0m[0;34m)[0m [0;32mas[0m [0mfile[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 97[0;31m     [0mdisplay[0m[0;34m([0m[0mdisplay[0m[0;34m.[0m[0mImage[0m[0;34m([0m[0mfile[0m[0;34m.[0m[0mread[0m[0;34m([0m[0;34m)[0m[0;34m,[0m [0mwidth[0m[0;34m=[0m[0;36m600[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m
-[0;31mTypeError[0m: 'module' object is not callable
-TypeError: 'module' object is not callable
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2239/4112951749.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     12[0m )[0]
+[1;32m     13[0m ax0_scatter_plot = axes[0].scatter(
+[0;32m---> 14[0;31m     [0mi_vol[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     15[0m     [0mts[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     16[0m     [0mcolor[0m[0;34m=[0m[0;34m"purple"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mNameError[0m: name 'i_vol' is not defined
+NameError: name 'i_vol' is not defined
 
