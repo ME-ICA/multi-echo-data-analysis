@@ -40,7 +40,7 @@ os.makedirs(out_dir, exist_ok=True)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2138/646422064.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2278/646422064.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      9[0m [0;34m[0m[0m
 [1;32m     10[0m [0;31m# Install the data if running locally, or point to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 11[0;31m [0mDATA_REQ_FILE[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0;34m"../binder/data_requirement.json"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
