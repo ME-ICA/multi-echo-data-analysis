@@ -50,6 +50,7 @@ bibtex_bibfiles:
 sphinx:
   extra_extensions:
   - sphinx_inline_tabs
+  - sphinx_proof
   - sphinxcontrib.bibtex
   config:
     bibtex_reference_style: author_year
