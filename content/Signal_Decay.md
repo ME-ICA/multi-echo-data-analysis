@@ -109,6 +109,8 @@ fig.show()
 ## The impact of $T_{2}^{*}$ and $S_{0}$ fluctuations on BOLD signal
 
 ```{code-cell} ipython3
+plt.style.use("default")
+
 # Simulate data
 MULTIECHO_TES = np.array([15, 30, 45, 60, 75, 90])
 SINGLEECHO_TE = np.array([30])
@@ -212,9 +214,11 @@ This shows how fMRI data fluctuates over time.
 This shows how single-echo data is a sample from a signal decay curve.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
+# gif code based on https://www.geeksforgeeks.org/create-an-animated-gif-using-python-matplotlib/
 fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
 
 # Set constant params for figure
@@ -236,7 +240,7 @@ ax0_line_plot = axes[0].plot(
     zorder=0
 )
 ax0_scatter_plot = axes[0].scatter(
-    i_vol,
+    0,
     singleecho_signal[:, 0],
     color="orange",
     s=150,
@@ -249,7 +253,7 @@ ax1_line_plot = axes[1].plot(
     alpha=0.5,
     color="black",
     zorder=0,
-)
+)[0]
 ax1_scatter_plot = axes[1].scatter(
     SINGLEECHO_TE,
     singleecho_signal[:, 0],
@@ -262,28 +266,38 @@ ax1_scatter_plot = axes[1].scatter(
 
 def AnimationFunction(frame):
     """Function takes frame as an input."""
-    ax0_scatter_plot.set_data(
-        frame,
-        singleecho_signal[:, frame],
+    ax0_scatter_plot.set_offsets(
+        np.column_stack((
+            frame,
+            singleecho_signal[:, frame],
+        ))
     )
 
-    ax1_line_plot.set_data(
+    ax1_line_plot.set_data((
         FULLCURVE_TES,
         fullcurve_signal[:, frame],
+    ))
+    ax1_scatter_plot.set_offsets(
+        np.column_stack((
+            SINGLEECHO_TE,
+            singleecho_signal[:, frame],
+        ))
     )
-    ax1_scatter_plot.set_data(
-        SINGLEECHO_TE,
-        singleecho_signal[:, frame],
-    )
 
-anim_created = FuncAnimation(Figure, AnimationFunction, frames=20, interval=25)
+anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
 
-video = anim_created.to_html5_video()
-html = display.HTML(video)
-display.display(html)
+html = display.HTML(anim_created.to_jshtml())
+#display.display(html)
 
-# good practice to close the plt object.
-fig.close()
+from myst_nb import glue
+glue("fig_signal_decay", html, display=False)
+```
+
+```{glue:figure} fig_signal_decay
+:name: fig_signal_decay
+:align: center
+
+Check it out.
 ```
 
 ### Plot single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
