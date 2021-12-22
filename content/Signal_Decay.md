@@ -438,73 +438,85 @@ This shows how fluctuations in S0 and T2* produce different patterns in the full
 s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
 t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
 
-out_file = os.path.join(out_dir, "fluctuations_t2s_s0.gif")
-if os.path.isfile(out_file):
-    os.remove(out_file)
+fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
 
-filenames = []
+t2s_value = predict_bold_signal(
+    np.array([t2s_ts[0]]),
+    np.array([s0_ts[0]]),
+    np.array([t2s_ts[0]])
+)[0]
 
-for i_vol in range(N_VOLS):
-    filename = f"total_{i_vol}.png"
-    fig, axes = plt.subplots(
-        nrows=2,
-        figsize=(14, 10),
-        gridspec_kw={"height_ratios": [1, 3]}
+ax0_line_plot = axes[0].plot(
+    ts,
+    color="black",
+    zorder=0
+)
+ax0_scatter_plot = axes[0].scatter(
+    0,
+    ts[0],
+    color="purple",
+    s=150,
+    label="Single-Echo Signal",
+    zorder=1,
+)
+ax1_s0_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    s0based_fullcurve_signal[:, 0],
+    alpha=0.5,
+    color="red",
+    label="$S_0$-Driven Decay Curve",
+)[0]
+ax1_t2s_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    t2sbased_fullcurve_signal[:, 0],
+    alpha=0.5,
+    color="blue",
+    label="$T_{2}^{*}$-Driven Decay Curve",
+)[0]
+
+# Set constant params for figure
+axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
+axes[0].set_xlabel("Volume", fontsize=24)
+axes[0].set_xlim(0, N_VOLS - 1)
+axes[0].tick_params(axis="both", which="major", labelsize=14)
+axes[1].legend(loc="upper right", fontsize=20)
+axes[1].set_ylabel("Signal", fontsize=24)
+axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
+axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
+axes[1].set_xlim(0, np.max(FULLCURVE_TES))
+axes[1].tick_params(axis="both", which="major", labelsize=14)
+fig.tight_layout()
+
+
+def AnimationFunction(frame):
+    """Function takes frame as an input."""
+    ax0_scatter_plot.set_offsets(
+        np.column_stack((
+            frame,
+            ts[frame],
+        ))
     )
 
-    axes[0].plot(ts, color="black")
-    axes[0].scatter(
-        i_vol,
-        ts[i_vol],
-        color="purple",
-        s=150,
-    )
-    axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
-    axes[0].set_xlabel("Volume", fontsize=24)
-    axes[0].set_xlim(0, N_VOLS - 1)
-    axes[0].tick_params(axis="both", which="major", labelsize=14)
-
-    axes[1].plot(
+    ax1_t2s_line_plot.set_data((
         FULLCURVE_TES,
-        s0based_fullcurve_signal[:, i_vol],
-        color="red",
-        alpha=0.5,
-        label="$S_0$-Driven Decay Curve",
-    )
-    axes[1].plot(
+        t2sbased_fullcurve_signal[:, frame],
+    ))
+    ax1_s0_line_plot.set_data((
         FULLCURVE_TES,
-        t2sbased_fullcurve_signal[:, i_vol],
-        color="blue",
-        alpha=0.5,
-        label="$T_{2}^{*}$-Driven Decay Curve",
-    )
-    axes[1].legend(loc="upper right", fontsize=20)
+        s0based_fullcurve_signal[:, frame],
+    ))
 
-    axes[1].set_ylabel("Signal", fontsize=24)
-    axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-    axes[1].set_xticks(MULTIECHO_TES)
-    axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
-    axes[1].set_xlim(0, np.max(FULLCURVE_TES))
-    axes[1].tick_params(axis="both", which="major", labelsize=14)
-    fig.tight_layout()
+anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
+html = display.HTML(anim_created.to_jshtml())
+glue("fig_signal_decay3", html, display=False)
+```
 
-    # save frame
-    fig.savefig(filename)
-    plt.close(fig)
-    filenames.append(filename)
+```{glue:figure} fig_signal_decay3
+:name: fig_signal_decay3
+:align: center
 
-# build gif
-with imageio.get_writer(out_file, mode="I") as writer:
-    for filename in filenames:
-        image = imageio.imread(filename)
-        writer.append_data(image)
-
-# Remove temporary files
-for filename in filenames:
-    os.remove(filename)
-
-with open(out_file, "rb") as file:
-    display(display.Image(file.read(), width=600))
+Check it out.
 ```
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
@@ -611,6 +623,13 @@ with open(out_file, "rb") as file:
     display(display.Image(file.read(), width=600))
 ```
 
+```{glue:figure} fig_signal_decay4
+:name: fig_signal_decay4
+:align: center
+
+Check it out.
+```
+
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 
 This shows how S0 and T2* fluctuations produce different patterns in multi-echo data.
@@ -713,6 +732,13 @@ for filename in filenames:
 
 with open(out_file, "rb") as file:
     display(display.Image(file.read(), width=600))
+```
+
+```{glue:figure} fig_signal_decay5
+:name: fig_signal_decay5
+:align: center
+
+Check it out.
 ```
 
 #### Plot $T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
