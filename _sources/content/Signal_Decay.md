@@ -82,6 +82,7 @@ for f in data_files:
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 plt.style.use("dark_background")
 
 fig, axes = plt.subplots(figsize=(26, 4), ncols=len(data_files))
@@ -104,14 +105,22 @@ for i_echo, img in enumerate(imgs):
     )
     axes[i_echo].set_title(f"TE={te}ms", fontsize=20, pad=0)
 
-fig.show()
+glue("fig_brain_decay", fig, display=False)
+
+# Reset the style
+plt.style.use("default")
+```
+
+```{glue:figure} fig_brain_decay
+:name: fig_brain_decay
+:align: center
+
+Signal decay in the brain.
 ```
 
 ## The impact of $T_{2}^{*}$ and $S_{0}$ fluctuations on BOLD signal
 
 ```{code-cell} ipython3
-plt.style.use("default")
-
 # Simulate data
 MULTIECHO_TES = np.array([15, 30, 45, 60, 75, 90])
 SINGLEECHO_TE = np.array([30])
@@ -151,6 +160,7 @@ s0_ts = (ts * MEAN_S0) + MEAN_S0
 #### Plot BOLD signal decay for a standard single-echo scan
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [30])
 
 fig, ax = plt.subplots(figsize=(14, 7.5))
@@ -167,14 +177,20 @@ ax.set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 ax.set_xlim(0, np.max(FULLCURVE_TES))
 ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
+glue("fig_signal_decay_single-echo", fig, display=False)
+```
 
-# save frame
-fig.show()
+```{glue:figure} fig_signal_decay_single-echo
+:name: fig_signal_decay_single-echo
+:align: center
+
+BOLD signal decay for a standard single-echo scan
 ```
 
 ### Plot BOLD signal decay and BOLD contrast
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 fullcurve_signal_active = predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [40])
 fullcurve_signal_inactive = predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [20])
 
@@ -201,9 +217,14 @@ ax.set_xlim(0, np.max(FULLCURVE_TES))
 ax.legend(fontsize=20)
 ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
+glue("fig_signal_decay_contrast", fig, display=False)
+```
 
-# save frame
-fig.show()
+```{glue:figure} fig_signal_decay_contrast
+:name: fig_signal_decay_contrast
+:align: center
+
+BOLD signal decay and BOLD contrast
 ```
 
 ### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
@@ -215,7 +236,7 @@ This shows how fMRI data fluctuates over time.
 This shows how single-echo data is a sample from a signal decay curve.
 
 ```{code-cell} ipython3
-:tags: [hide-output]
+:tags: [hide-cell]
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
@@ -294,7 +315,7 @@ glue("fig_signal_decay", html, display=False)
 :name: fig_signal_decay
 :align: center
 
-Check it out.
+Single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 ```
 
 ### Plot single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
@@ -302,7 +323,7 @@ Check it out.
 This shows how changes in fMRI data can be driven by both S0 and T2* fluctuations.
 
 ```{code-cell} ipython3
-:tags: [hide-output]
+:tags: [hide-cell]
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
@@ -427,7 +448,7 @@ glue("fig_signal_decay2", html, display=False)
 :name: fig_signal_decay2
 :align: center
 
-Check it out.
+Single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 ```
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations
@@ -435,6 +456,7 @@ Check it out.
 This shows how fluctuations in S0 and T2* produce different patterns in the full signal decay curves.
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
 t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
 
@@ -516,7 +538,7 @@ glue("fig_signal_decay3", html, display=False)
 :name: fig_signal_decay3
 :align: center
 
-Check it out.
+$S_{0}$ and $T_{2}^{*}$ fluctuations
 ```
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
@@ -524,6 +546,7 @@ Check it out.
 This shows how single-echo data, on its own, cannot distinguish between S0 and T2* fluctuations.
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
 t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
 s0based_singleecho_signal = s0based_fullcurve_signal[SINGLEECHO_TE, :]
@@ -632,7 +655,7 @@ glue("fig_signal_decay4", html, display=False)
 :name: fig_signal_decay4
 :align: center
 
-Check it out.
+$S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 ```
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
@@ -640,6 +663,7 @@ Check it out.
 This shows how S0 and T2* fluctuations produce different patterns in multi-echo data.
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
 t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
 s0based_multiecho_signal = s0based_fullcurve_signal[MULTIECHO_TES, :]
@@ -747,7 +771,7 @@ glue("fig_signal_decay5", html, display=False)
 :name: fig_signal_decay5
 :align: center
 
-Check it out.
+$S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 ```
 
 #### Plot $T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
@@ -756,6 +780,7 @@ When the BOLD signal is driven entirely by T2* fluctuations,
 the BOLD signal is very similar to a scaled version of those T2* fluctuations, but there are small differences.
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(16, 4))
 
 scalar = np.linalg.lstsq(
@@ -775,7 +800,14 @@ ax.plot(
 )
 ax.set_xlim(0, N_VOLS - 1)
 leg = ax.legend()
-fig.show()
+glue("fig_t2s_bold_single-echo", fig, display=False)
+```
+
+```{glue:figure} fig_t2s_bold_single-echo
+:name: fig_t2s_bold_single-echo
+:align: center
+
+$T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
 ```
 
 #### Plot $S_{0}$ against BOLD signal from single-echo data (TE=30ms)
@@ -783,6 +815,7 @@ fig.show()
 When the BOLD signal is driven entirely by S0 fluctuations, the BOLD signal ends up being a scaled version of the S0 fluctuations.
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(16, 4))
 
 scalar = np.linalg.lstsq(
@@ -802,5 +835,12 @@ ax.plot(
 )
 ax.set_xlim(0, N_VOLS - 1)
 leg = ax.legend()
-fig.show()
+glue("fig_s0_bold_single-echo", fig, display=False)
+```
+
+```{glue:figure} fig_s0_bold_single-echo
+:name: fig_s0_bold_single-echo
+:align: center
+
+$S_{0}$ against BOLD signal from single-echo data (TE=30ms)
 ```

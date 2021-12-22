@@ -122,7 +122,7 @@ glue("fig_signal_decay5", html, display=False)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2239/4112951749.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2358/4112951749.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     12[0m )[0]
 [1;32m     13[0m ax0_scatter_plot = axes[0].scatter(
 [0;32m---> 14[0;31m     [0mi_vol[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
