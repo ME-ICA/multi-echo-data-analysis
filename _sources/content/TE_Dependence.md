@@ -26,7 +26,7 @@ S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{
 ```
 
 ```{code-cell} ipython3
-import os.path as op
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt

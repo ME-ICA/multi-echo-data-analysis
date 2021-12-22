@@ -91,7 +91,7 @@ with open(out_file, "rb") as file:
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2162/140298799.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2124/140298799.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     68[0m [0;34m[0m[0m
 [1;32m     69[0m [0;32mwith[0m [0mopen[0m[0;34m([0m[0mout_file[0m[0;34m,[0m [0;34m"rb"[0m[0;34m)[0m [0;32mas[0m [0mfile[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 70[0;31m     [0mdisplay[0m[0;34m([0m[0mdisplay[0m[0;34m.[0m[0mImage[0m[0;34m([0m[0mfile[0m[0;34m.[0m[0mread[0m[0;34m([0m[0;34m)[0m[0;34m,[0m [0mwidth[0m[0;34m=[0m[0;36m600[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
