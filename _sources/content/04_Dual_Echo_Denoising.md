@@ -31,7 +31,7 @@ from repo2data.repo2data import Repo2Data
 
 from book_utils import regress_one_image_out_of_another
 
-# Install the data if running locally, or points to cached data if running on neurolibre
+# Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 
 # Download data

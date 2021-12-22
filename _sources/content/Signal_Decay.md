@@ -13,6 +13,8 @@ kernelspec:
 
 # Signal Decay
 
+In this chapter, we use simulated data to show how BOLD signal decays and how we can glean useful information from that decay rate.
+
 ```{code-cell} ipython3
 import os
 
@@ -23,6 +25,7 @@ import seaborn as sns
 from IPython.display import Image
 from nilearn.glm import first_level
 from scipy import signal
+from repo2data.repo2data import Repo2Data
 
 from book_utils import predict_bold_signal
 
@@ -32,17 +35,32 @@ plt.rcParams.update({
     "font.family": "sans-serif",
     "font.sans-serif": ["Helvetica"]
 })
+
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+
+out_dir = os.path.join(data_path, "signal-decay")
+os.makedirs(out_dir, exist_ok=True)
 ```
 
 ## Signal decays as echo time increases
 
 ```{code-cell} ipython3
-data_dir = os.path.abspath("../data/")
+func_dir = os.path.join(data_path, "sub-04570/func/")
+data_files = [
+    os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(func_dir, "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(func_dir, "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(func_dir, "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz"),
+]
+echo_times = [12., 28., 44., 60.]
 
-files = sorted(glob(os.path.join(data_dir, "sub-pilot_task-checkerboard_run-2_*_bold.nii.gz")))
-echo_times = np.array([9.58, 21.95, 34.32, 46.69, 59.06, 71.43, 83.8, 96.17])
-
-img = image.index_img(files[0], 0)
+img = image.index_img(data_files[0], 0)
 data = img.get_fdata()
 vmax = np.max(data)
 idx = np.vstack(np.where(data > 1000))
@@ -51,7 +69,7 @@ min_x, min_y, min_z = np.min(idx, axis=1)
 max_x, max_y, max_z = np.max(idx, axis=1)
 
 imgs = []
-for f in files:
+for f in data_files:
     img = image.index_img(f, 0)
     data = img.get_fdata()
     data = data[min_x:max_x, min_y:max_y, min_z:max_z]
@@ -62,7 +80,7 @@ for f in files:
 ```{code-cell} ipython3
 plt.style.use("dark_background")
 
-fig, axes = plt.subplots(figsize=(26, 4), ncols=len(files))
+fig, axes = plt.subplots(figsize=(26, 4), ncols=len(data_files))
 for i_echo, img in enumerate(imgs):
     te = echo_times[i_echo]
     if i_echo == 0:
@@ -88,10 +106,6 @@ fig.show()
 ## The impact of $T_{2}^{*}$ and $S_{0}$ fluctuations on BOLD signal
 
 ```{code-cell} ipython3
-# Constants
-OUT_DIR = "figures/"
-os.makedirs(OUT_DIR, exist_ok=True)
-
 # Simulate data
 MULTIECHO_TES = np.array([15, 30, 45, 60, 75, 90])
 SINGLEECHO_TE = np.array([30])
@@ -198,7 +212,7 @@ This shows how single-echo data is a sample from a signal decay curve.
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = os.path.join(OUT_DIR, "fluctuations_single-echo_with_curve.gif")
+out_file = os.path.join(out_dir, "fluctuations_single-echo_with_curve.gif")
 if os.path.isfile(out_file):
     os.remove(out_file)
 
@@ -266,7 +280,7 @@ with imageio.get_writer(out_file, mode="I") as writer:
         image = imageio.imread(filename)
         writer.append_data(image)
 
-# Remove files
+# Remove temporary files
 for filename in filenames:
     os.remove(filename)
 
@@ -282,7 +296,7 @@ This shows how changes in fMRI data can be driven by both S0 and T2* fluctuation
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = os.path.join(OUT_DIR, "fluctuations_single-echo_with_curve_and_t2s_s0.gif")
+out_file = os.path.join(out_dir, "fluctuations_single-echo_with_curve_and_t2s_s0.gif")
 if os.path.isfile(out_file):
     os.remove(out_file)
 
@@ -380,7 +394,7 @@ with imageio.get_writer(out_file, mode="I") as writer:
         image = imageio.imread(filename)
         writer.append_data(image)
 
-# Remove files
+# Remove temporary files
 for filename in filenames:
     os.remove(filename)
 
@@ -396,7 +410,7 @@ This shows how fluctuations in S0 and T2* produce different patterns in the full
 s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
 t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
 
-out_file = os.path.join(OUT_DIR, "fluctuations_t2s_s0.gif")
+out_file = os.path.join(out_dir, "fluctuations_t2s_s0.gif")
 if os.path.isfile(out_file):
     os.remove(out_file)
 
@@ -457,7 +471,7 @@ with imageio.get_writer(out_file, mode="I") as writer:
         image = imageio.imread(filename)
         writer.append_data(image)
 
-# Remove files
+# Remove temporary files
 for filename in filenames:
     os.remove(filename)
 
@@ -475,7 +489,7 @@ t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, M
 s0based_singleecho_signal = s0based_fullcurve_signal[SINGLEECHO_TE, :]
 t2sbased_singleecho_signal = t2sbased_fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = os.path.join(OUT_DIR, "fluctuations_t2s_s0_single-echo.gif")
+out_file = os.path.join(out_dir, "fluctuations_t2s_s0_single-echo.gif")
 if os.path.isfile(out_file):
     os.remove(out_file)
 
@@ -561,7 +575,7 @@ with imageio.get_writer(out_file, mode="I") as writer:
         image = imageio.imread(filename)
         writer.append_data(image)
 
-# Remove files
+# Remove temporary files
 for filename in filenames:
     os.remove(filename)
 
@@ -579,7 +593,7 @@ t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, M
 s0based_multiecho_signal = s0based_fullcurve_signal[MULTIECHO_TES, :]
 t2sbased_multiecho_signal = t2sbased_fullcurve_signal[MULTIECHO_TES, :]
 
-out_file = os.path.join(OUT_DIR, "fluctuations_t2s_s0_multi-echo.gif")
+out_file = os.path.join(out_dir, "fluctuations_t2s_s0_multi-echo.gif")
 if os.path.isfile(out_file):
     os.remove(out_file)
 
@@ -665,7 +679,7 @@ with imageio.get_writer(out_file, mode="I") as writer:
         image = imageio.imread(filename)
         writer.append_data(image)
 
-# Remove files
+# Remove temporary files
 for filename in filenames:
     os.remove(filename)
 

@@ -32,13 +32,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import signal, stats
-from nistats import hemodynamic_models
-from statsmodels.api import add_constant
-```
+from nilearn.glm import first_level
+from repo2data.repo2data import Repo2Data
 
-```{code-cell} ipython3
-# Constants
-OUT_DIR = '../docs/_static/'
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+
+out_dir = os.path.join(data_path, "te-dependence")
+os.makedirs(out_dir, exist_ok=True)
 ```
 
 ```{code-cell} ipython3
@@ -334,7 +340,7 @@ print(coeffs_R2)
 ```{code-cell} ipython3
 # Simulate data
 # We'll convolve with HRF just for smoothness
-hrf = hemodynamic_models.spm_hrf(1, oversampling=1)
+hrf = first_level.spm_hrf(1, oversampling=1)
 
 n_trs = 300
 
@@ -421,7 +427,8 @@ fig.show()
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 4))
 
-comp_X = add_constant(component, prepend=False)
+# Add a constant term to the array
+comp_X = np.hstack((component, np.ones((component.shape[0], 1))))
 pes, _, _, _ = np.linalg.lstsq(comp_X, multiecho_signal.T, rcond=None)
 pes = pes[0, :]
 
