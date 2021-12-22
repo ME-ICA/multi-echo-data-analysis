@@ -20,15 +20,15 @@ import os
 
 import imageio
 import matplotlib.pyplot as plt
-import numpy as np
 import nibabel as nib
+import numpy as np
 import seaborn as sns
 from IPython import display
 from matplotlib.animation import FuncAnimation
-from nilearn.glm import first_level
 from nilearn import image, plotting
-from scipy import signal
+from nilearn.glm import first_level
 from repo2data.repo2data import Repo2Data
+from scipy import signal
 
 from book_utils import predict_bold_signal
 

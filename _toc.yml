@@ -37,3 +37,4 @@ parts:
   - caption: Final Thoughts
     chapters:
     - file: content/bibliography.md
+    - file: content/build_information.md
