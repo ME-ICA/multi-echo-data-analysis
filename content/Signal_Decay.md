@@ -25,6 +25,7 @@ import numpy as np
 import seaborn as sns
 from IPython import display
 from matplotlib.animation import FuncAnimation
+from myst_nb import glue
 from nilearn import image, plotting
 from nilearn.glm import first_level
 from repo2data.repo2data import Repo2Data
@@ -285,11 +286,7 @@ def AnimationFunction(frame):
     )
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
-
 html = display.HTML(anim_created.to_jshtml())
-#display.display(html)
-
-from myst_nb import glue
 glue("fig_signal_decay", html, display=False)
 ```
 
@@ -305,113 +302,132 @@ Check it out.
 This shows how changes in fMRI data can be driven by both S0 and T2* fluctuations.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
-out_file = os.path.join(out_dir, "fluctuations_single-echo_with_curve_and_t2s_s0.gif")
-if os.path.isfile(out_file):
-    os.remove(out_file)
+fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
 
-filenames = []
+t2s_value = predict_bold_signal(
+    np.array([t2s_ts[0]]),
+    np.array([s0_ts[0]]),
+    np.array([t2s_ts[0]])
+)[0]
 
-for i_vol in range(N_VOLS):
-    filename = f"se_{i_vol}.png"
-    fig, axes = plt.subplots(
-        nrows=2,
-        figsize=(14, 10),
-        gridspec_kw={"height_ratios": [1, 3]}
-    )
+ax0_line_plot = axes[0].plot(
+    singleecho_signal[0, :],
+    color="black",
+    zorder=0
+)
+ax0_scatter_plot = axes[0].scatter(
+    0,
+    singleecho_signal[:, 0],
+    color="orange",
+    s=150,
+    label="Single-Echo Signal",
+    zorder=1,
+)
+ax1_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    fullcurve_signal[:, 0],
+    alpha=0.5,
+    color="black",
+    zorder=0,
+)[0]
+ax1_scatter_plot = axes[1].scatter(
+    SINGLEECHO_TE,
+    singleecho_signal[:, 0],
+    color="orange",
+    s=150,
+    alpha=1.,
+    label="Single-Echo Signal",
+    zorder=1,
+)
+ax1_t2s_scatter_plot = axes[1].scatter(
+    t2s_ts[0],
+    t2s_value,
+    marker="*",
+    color="blue",
+    s=500,
+    alpha=0.5,
+    label="$T_{2}^{*}$",
+    zorder=1,
+)
+ax1_s0_scatter_plot = axes[1].scatter(
+    0,
+    s0_ts[0],
+    marker="*",
+    color="red",
+    s=500,
+    alpha=0.5,
+    label="$S_{0}$",
+    clip_on=False,
+    zorder=2,
+)
 
-    axes[0].plot(
-        singleecho_signal[0, :],
-        color="black",
-        zorder=0,
-    )
-    axes[0].scatter(
-        i_vol,
-        singleecho_signal[:, i_vol],
-        color="orange",
-        s=150,
-        label="Single-Echo Signal",
-        zorder=1,
-    )
-    axes[0].set_ylabel("Signal", fontsize=24)
-    axes[0].set_xlabel("Volume", fontsize=24)
-    axes[0].set_xlim(0, N_VOLS - 1)
-    axes[0].tick_params(axis="both", which="major", labelsize=14)
+# Set constant params for figure
+axes[0].set_ylabel("Signal", fontsize=24)
+axes[0].set_xlabel("Volume", fontsize=24)
+axes[0].set_xlim(0, N_VOLS - 1)
+axes[0].tick_params(axis="both", which="major", labelsize=14)
+axes[1].legend(loc="upper right", fontsize=20)
+axes[1].set_ylabel("Signal", fontsize=24)
+axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
+axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
+axes[1].set_xlim(0, np.max(FULLCURVE_TES))
+axes[1].tick_params(axis="both", which="major", labelsize=14)
+fig.tight_layout()
 
-    axes[1].scatter(
-        SINGLEECHO_TE,
-        singleecho_signal[:, i_vol],
-        color="orange",
-        s=150,
-        alpha=1.,
-        label="Single-Echo Signal",
-        zorder=3,
-    )
 
-    axes[1].plot(
-        FULLCURVE_TES,
-        fullcurve_signal[:, i_vol],
-        alpha=0.5,
-        color="black",
-        zorder=0,
-    )
-
+def AnimationFunction(frame):
+    """Function takes frame as an input."""
     t2s_value = predict_bold_signal(
-        np.array([t2s_ts[i_vol]]),
-        np.array([s0_ts[i_vol]]),
-        np.array([t2s_ts[i_vol]])
+        np.array([t2s_ts[frame]]),
+        np.array([s0_ts[frame]]),
+        np.array([t2s_ts[frame]])
     )[0]
-    axes[1].scatter(
-        t2s_ts[i_vol],
-        t2s_value,
-        marker="*",
-        color="blue",
-        s=500,
-        alpha=0.5,
-        label="$T_{2}^{*}$",
-        zorder=1,
-    )
-    axes[1].scatter(
-        0,
-        s0_ts[i_vol],
-        marker="*",
-        color="red",
-        s=500,
-        alpha=0.5,
-        label="$S_{0}$",
-        clip_on=False,
-        zorder=2,
+
+    ax0_scatter_plot.set_offsets(
+        np.column_stack((
+            frame,
+            singleecho_signal[:, frame],
+        ))
     )
 
-    axes[1].legend(loc="upper right", fontsize=20)
+    ax1_line_plot.set_data((
+        FULLCURVE_TES,
+        fullcurve_signal[:, frame],
+    ))
+    ax1_scatter_plot.set_offsets(
+        np.column_stack((
+            SINGLEECHO_TE,
+            singleecho_signal[:, frame],
+        ))
+    )
+    ax1_t2s_scatter_plot.set_offsets(
+        np.column_stack((
+            t2s_ts[frame],
+            t2s_value,
+        ))
+    )
+    ax1_s0_scatter_plot.set_offsets(
+        np.column_stack((
+            0,
+            s0_ts[frame],
+        ))
+    )
 
-    axes[1].set_ylabel("Signal", fontsize=24)
-    axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-    axes[1].set_xticks(MULTIECHO_TES)
-    axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
-    axes[1].set_xlim(0, np.max(FULLCURVE_TES))
-    axes[1].tick_params(axis="both", which="major", labelsize=14)
-    fig.tight_layout()
+anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
+html = display.HTML(anim_created.to_jshtml())
+glue("fig_signal_decay2", html, display=False)
+```
 
-    # save frame
-    fig.savefig(filename)
-    plt.close(fig)
-    filenames.append(filename)
+```{glue:figure} fig_signal_decay2
+:name: fig_signal_decay2
+:align: center
 
-# build gif
-with imageio.get_writer(out_file, mode="I") as writer:
-    for filename in filenames:
-        image = imageio.imread(filename)
-        writer.append_data(image)
-
-# Remove temporary files
-for filename in filenames:
-    os.remove(filename)
-
-with open(out_file, "rb") as file:
-    display(display.Image(file.read(), width=600))
+Check it out.
 ```
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations
