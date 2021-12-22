@@ -29,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
@@ -418,10 +419,8 @@
 <h2>Make figures and examples for dependence metric calculation<a class="headerlink" href="#make-figures-and-examples-for-dependence-metric-calculation" title="Permalink to this headline">¶</a></h2>
 <p>This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is leveraged to denoise multi-echo data.</p>
 <p>The equation for how signal is dependent on changes in S0 and T2*:</p>
-<div class="math notranslate nohighlight" id="equation-eq-monoexponential-decay">
-<span class="eqno">(1)<a class="headerlink" href="#equation-eq-monoexponential-decay" title="Permalink to this equation">¶</a></span>\[
-    S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)
-\]</div>
+<div class="math notranslate nohighlight" id="equation-monoexponential-decay">
+<span class="eqno">(1)<a class="headerlink" href="#equation-monoexponential-decay" title="Permalink to this equation">¶</a></span>\[S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">op</span>
@@ -438,7 +437,7 @@
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2151</span><span class="o">/</span><span class="mf">4247695361.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2278</span><span class="o">/</span><span class="mf">4247695361.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span><span class="p">,</span> <span class="n">stats</span>
 <span class="ne">----&gt; </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">nistats</span> <span class="kn">import</span> <span class="n">hemodynamic_models</span>
@@ -583,49 +582,33 @@ At some point, I would like to dig into why those parameter estimates are equiva
 </div>
 <div class="section" id="te-independence-model">
 <h3>TE-independence model<a class="headerlink" href="#te-independence-model" title="Permalink to this headline">¶</a></h3>
-<div class="math notranslate nohighlight" id="equation-eq-te-independence-model1">
-<span class="eqno">(2)<a class="headerlink" href="#equation-eq-te-independence-model1" title="Permalink to this equation">¶</a></span>\[
-    \frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}
-\]</div>
-<div class="math notranslate nohighlight" id="equation-eq-te-independence-model2">
-<span class="eqno">(3)<a class="headerlink" href="#equation-eq-te-independence-model2" title="Permalink to this equation">¶</a></span>\[
-    {\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}
-\]</div>
+<div class="math notranslate nohighlight" id="equation-te-independence-model1">
+<span class="eqno">(2)<a class="headerlink" href="#equation-te-independence-model1" title="Permalink to this equation">¶</a></span>\[\frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}\]</div>
+<div class="math notranslate nohighlight" id="equation-te-independence-model2">
+<span class="eqno">(3)<a class="headerlink" href="#equation-te-independence-model2" title="Permalink to this equation">¶</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}\]</div>
 <p><span class="math notranslate nohighlight">\(\frac{{\Delta}S_0}{S_0}\)</span> is a scalar (i.e., doesn’t change with TE), so we ignore that,
 which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span> (mean echo-wise signal).</p>
 <p>Thus,</p>
-<div class="math notranslate nohighlight" id="equation-eq-te-independence-model3">
-<span class="eqno">(4)<a class="headerlink" href="#equation-eq-te-independence-model3" title="Permalink to this equation">¶</a></span>\[
-    {\Delta}S(TE_k) = {\bar{S}(TE_k)} * X
-\]</div>
+<div class="math notranslate nohighlight" id="equation-te-independence-model3">
+<span class="eqno">(4)<a class="headerlink" href="#equation-te-independence-model3" title="Permalink to this equation">¶</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)} * X\]</div>
 <p>and for TEDPCA/TEDICA,</p>
-<div class="math notranslate nohighlight" id="equation-eq-te-independence-model4">
-<span class="eqno">(5)<a class="headerlink" href="#equation-eq-te-independence-model4" title="Permalink to this equation">¶</a></span>\[
-    PE(TE_k) = {\bar{S}(TE_k)} * X
-\]</div>
+<div class="math notranslate nohighlight" id="equation-te-independence-model4">
+<span class="eqno">(5)<a class="headerlink" href="#equation-te-independence-model4" title="Permalink to this equation">¶</a></span>\[PE(TE_k) = {\bar{S}(TE_k)} * X\]</div>
 <p>Lastly, we fit X to the data and evaluate model fit.</p>
 </div>
 <div class="section" id="te-dependence-model">
 <h3>TE-dependence model<a class="headerlink" href="#te-dependence-model" title="Permalink to this headline">¶</a></h3>
-<div class="math notranslate nohighlight" id="equation-eq-te-dependence-model1">
-<span class="eqno">(6)<a class="headerlink" href="#equation-eq-te-dependence-model1" title="Permalink to this equation">¶</a></span>\[
-    \frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k
-\]</div>
-<div class="math notranslate nohighlight" id="equation-eq-te-dependence-model2">
-<span class="eqno">(7)<a class="headerlink" href="#equation-eq-te-dependence-model2" title="Permalink to this equation">¶</a></span>\[
-    {\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k
-\]</div>
+<div class="math notranslate nohighlight" id="equation-te-dependence-model1">
+<span class="eqno">(6)<a class="headerlink" href="#equation-te-dependence-model1" title="Permalink to this equation">¶</a></span>\[\frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k\]</div>
+<div class="math notranslate nohighlight" id="equation-te-dependence-model2">
+<span class="eqno">(7)<a class="headerlink" href="#equation-te-dependence-model2" title="Permalink to this equation">¶</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k\]</div>
 <p><span class="math notranslate nohighlight">\(-{\Delta}{R_2^*}\)</span> is a scalar, so we ignore it, which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span> (mean echo-wise-signal) and <span class="math notranslate nohighlight">\(TE_k\)</span> (echo time in milliseconds).</p>
 <p>Thus,</p>
-<div class="math notranslate nohighlight" id="equation-eq-te-dependence-model3">
-<span class="eqno">(8)<a class="headerlink" href="#equation-eq-te-dependence-model3" title="Permalink to this equation">¶</a></span>\[
-    {\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X
-\]</div>
+<div class="math notranslate nohighlight" id="equation-te-dependence-model3">
+<span class="eqno">(8)<a class="headerlink" href="#equation-te-dependence-model3" title="Permalink to this equation">¶</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
 <p>and for TEDPCA/TEDICA,</p>
-<div class="math notranslate nohighlight" id="equation-eq-te-dependence-model4">
-<span class="eqno">(9)<a class="headerlink" href="#equation-eq-te-dependence-model4" title="Permalink to this equation">¶</a></span>\[
-    PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X
-\]</div>
+<div class="math notranslate nohighlight" id="equation-te-dependence-model4">
+<span class="eqno">(9)<a class="headerlink" href="#equation-te-dependence-model4" title="Permalink to this equation">¶</a></span>\[PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
 <p>Lastly, we fit X to the data and evaluate model fit.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

@@ -20,9 +20,10 @@ This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is l
 
 The equation for how signal is dependent on changes in S0 and T2*:
 
-$$
-    S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)
-$$ (eq:monoexponential_decay)
+```{math}
+:label: monoexponential_decay
+S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)
+```
 
 ```{code-cell} ipython3
 import os.path as op
@@ -159,53 +160,62 @@ At some point, I would like to dig into why those parameter estimates are equiva
 
 ### TE-independence model
 
-$$
-    \frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}
-$$ (eq:te_independence_model1)
-$$
-    {\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}
-$$ (eq:te_independence_model2)
+```{math}
+:label: te_independence_model1
+\frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}
+```
+
+```{math}
+:label: te_independence_model2
+{\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}
+```
 
 $\frac{{\Delta}S_0}{S_0}$ is a scalar (i.e., doesn't change with TE), so we ignore that,
 which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise signal).
 
 Thus,
 
-$$
-    {\Delta}S(TE_k) = {\bar{S}(TE_k)} * X
-$$ (eq:te_independence_model3)
+```{math}
+:label: te_independence_model3
+{\Delta}S(TE_k) = {\bar{S}(TE_k)} * X
+```
 
 and for TEDPCA/TEDICA,
 
-$$
-    PE(TE_k) = {\bar{S}(TE_k)} * X
-$$ (eq:te_independence_model4)
+```{math}
+:label: te_independence_model4
+PE(TE_k) = {\bar{S}(TE_k)} * X
+```
 
 Lastly, we fit X to the data and evaluate model fit.
 
 ### TE-dependence model
 
-$$
-    \frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k
-$$ (eq:te_dependence_model1)
+```{math}
+:label: te_dependence_model1
+\frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k
+```
 
-$$
-    {\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k
-$$ (eq:te_dependence_model2)
+```{math}
+:label: te_dependence_model2
+{\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k
+```
 
 $-{\Delta}{R_2^*}$ is a scalar, so we ignore it, which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise-signal) and $TE_k$ (echo time in milliseconds).
 
 Thus,
 
-$$
-    {\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X
-$$ (eq:te_dependence_model3)
+```{math}
+:label: te_dependence_model3
+{\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X
+```
 
 and for TEDPCA/TEDICA,
 
-$$
-    PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X
-$$ (eq:te_dependence_model4)
+```{math}
+:label: te_dependence_model4
+PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X
+```
 
 Lastly, we fit X to the data and evaluate model fit.
 
