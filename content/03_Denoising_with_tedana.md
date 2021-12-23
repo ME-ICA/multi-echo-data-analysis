@@ -57,7 +57,6 @@ confounds_file = os.path.join(func_dir, "sub-04570_task-rest_desc-confounds_time
 out_dir = os.path.join(data_path, "tedana")
 ```
 
-
 ```{code-cell} ipython3
 :tags: [hide-output]
 
@@ -69,6 +68,7 @@ workflows.tedana_workflow(
     prefix="sub-04570_task-rest_space-scanner",
     fittype="curvefit",
     tedpca="mdl",
+    verbose=True,
 )
 ```
 
