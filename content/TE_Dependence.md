@@ -35,7 +35,7 @@ from scipy import signal, stats
 from nilearn.glm import first_level
 from repo2data.repo2data import Repo2Data
 
-from book_utils import predict_bold_signal
+from book_utils import predict_bold_signal, compute_te_dependence_statistics
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
