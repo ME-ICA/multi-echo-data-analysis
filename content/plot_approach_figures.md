@@ -14,7 +14,7 @@ kernelspec:
 # Generate tedana walkthrough figures
 
 ```{code-cell} ipython3
-%matplotlib inline
+:tags: [hide-input]
 import os
 from glob import glob
 
@@ -44,6 +44,7 @@ ted_dir = os.path.join(data_path, "tedana")
 
 ## Load data
 ```{code-cell} ipython3
+:tags: [hide-input]
 func_dir = os.path.join(data_path, "sub-04570/func/")
 data_files = [
     os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
@@ -184,6 +185,7 @@ pal = sns.color_palette("cubehelix", n_echoes)
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 # Prepare data for model
 log_data = np.log(np.abs(ts_1d) + 1)
 # log_data = np.log(ts_1d)  # in a perfect world...
@@ -216,6 +218,7 @@ oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
 ### Echo-specific timeseries
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
@@ -232,6 +235,7 @@ fig.show()
 ### Echo-specific data and echo time
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 values = [i[0] for i in ts]
 for i_echo in range(n_echoes):
@@ -257,16 +261,13 @@ When $T_{2}^*$ and $S_{0}$ are calculated below, each voxel's values are only ca
 where $n$ is the value for that voxel in the adaptive mask.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 mask_img = compute_epi_mask(data_files[0])
 data, img = load_data(data_files, len(echo_times))
 mask, adaptive_mask = make_adaptive_mask(data, mask=mask_img, getsum=True)
-```
 
-```{code-cell} ipython3
 adaptive_mask_img = new_nii_like(img, adaptive_mask)
-```
 
-```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 4))
 palette = sns.color_palette("BuGn_r", 10)
 plotting.plot_stat_map(
@@ -288,6 +289,7 @@ fig.show()
 ### Log-linear transformation
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = -1 * np.ones(n_trs) * echo_times[i_echo]
@@ -337,6 +339,7 @@ B_{0}\end{pmatrix}
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = -1 * np.ones(n_trs) * echo_times[i_echo]
@@ -377,6 +380,7 @@ T_{2}^{*} = \frac{1}{B_{1}}
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
@@ -404,6 +408,7 @@ fig.show()
 ### T2*
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
@@ -429,6 +434,7 @@ fig.show()
 ### Optimal combination weights
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots()
 sns.barplot(echo_times, alpha, ax=ax, palette=pal)
 ax.set_ylabel("Weight", fontsize=16)
@@ -441,6 +447,7 @@ fig.show()
 ### Optimally combined timeseries
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
@@ -470,6 +477,7 @@ fig.show()
 ### Optimally combined timeseries
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(n_echoes+1, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
@@ -494,6 +502,7 @@ The PCA components are selected according to one of multiple possible approaches
 Two possible approaches are a decision tree and a threshold using the percentage of variance explained by each component.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
 
 i = 0
@@ -522,6 +531,7 @@ fig.show()
 The selected components from the PCA are recombined to produce a whitened version of the optimally combined data.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 ax.plot(oc_red[:, voxel_idx], label="Dimensionally reduced timeseries", zorder=1.)
 ax.plot(oc_z[:, voxel_idx], label="Original timeseries", alpha=0.5, zorder=0., linewidth=3)
@@ -540,6 +550,7 @@ in order to reflect the true dimensionality of the data.
 ICA produces a mixing matrix (i.e., timeseries for each component).
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
 
 comps_to_plot = [high_kappa_comp, low_kappa_comp, "ICA_00"]
@@ -576,6 +587,7 @@ Note that the values here are for a single voxel (the highest-weighted one for t
 but $\kappa$ and $\rho$ are averaged across voxels.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 9))
 axes[-1].set_xticks(echo_times)
 axes[-1].tick_params(axis="both", which="major", labelsize=12)
@@ -616,6 +628,7 @@ The ME-HK dataset is constructed just from the accepted (BOLD) components.
 This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 dn_data_z = (dn_data - np.mean(dn_data, axis=0)) / np.std(dn_data, axis=0)
 hk_data_z = (hk_data - np.mean(hk_data, axis=0)) / np.std(hk_data, axis=0)
 
@@ -650,6 +663,7 @@ Methods which have been employed in the past include global signal regression (G
 Go Decomposition (GODEC), and robust PCA.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 dn_t1c_data_z = (dn_t1c_data - np.mean(dn_t1c_data, axis=0)) / np.std(dn_t1c_data, axis=0)
 hk_t1c_data_z = (hk_t1c_data - np.mean(hk_t1c_data, axis=0)) / np.std(hk_t1c_data, axis=0)
 
