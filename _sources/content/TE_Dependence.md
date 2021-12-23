@@ -434,7 +434,7 @@ comp_X = np.hstack((component[:, None], np.ones((component.shape[0], 1))))
 pes, _, _, _ = np.linalg.lstsq(comp_X, multiecho_signal.T, rcond=None)
 pes = pes[0, :]
 
-F_S0, F_R2, pred_S0, pred_R2 = compute_metrics(multiecho_signal, pes, echo_times)
+F_S0, F_R2, pred_S0, pred_R2 = compute_te_dependence_statistics(multiecho_signal, pes, echo_times)
 ax.plot(echo_times, pred_R2, label='Predicted T2* model values', c='blue')
 ax.plot(echo_times, pred_S0, label='Predicted S0 model values', c='red')
 ax.plot(echo_times, pes, label='Component PEs', alpha=0.5, linewidth=5, c='black')

@@ -24,7 +24,7 @@ comp_X = np.hstack((component[:, None], np.ones((component.shape[0], 1))))
 pes, _, _, _ = np.linalg.lstsq(comp_X, multiecho_signal.T, rcond=None)
 pes = pes[0, :]
 
-F_S0, F_R2, pred_S0, pred_R2 = compute_metrics(multiecho_signal, pes, echo_times)
+F_S0, F_R2, pred_S0, pred_R2 = compute_te_dependence_statistics(multiecho_signal, pes, echo_times)
 ax.plot(echo_times, pred_R2, label='Predicted T2* model values', c='blue')
 ax.plot(echo_times, pred_S0, label='Predicted S0 model values', c='red')
 ax.plot(echo_times, pes, label='Component PEs', alpha=0.5, linewidth=5, c='black')
@@ -39,13 +39,13 @@ fig.show()
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2168/2811476624.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2334/3856495562.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      6[0m [0mpes[0m [0;34m=[0m [0mpes[0m[0;34m[[0m[0;36m0[0m[0;34m,[0m [0;34m:[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
 [1;32m      7[0m [0;34m[0m[0m
-[0;32m----> 8[0;31m [0mF_S0[0m[0;34m,[0m [0mF_R2[0m[0;34m,[0m [0mpred_S0[0m[0;34m,[0m [0mpred_R2[0m [0;34m=[0m [0mcompute_metrics[0m[0;34m([0m[0mmultiecho_signal[0m[0;34m,[0m [0mpes[0m[0;34m,[0m [0mecho_times[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 8[0;31m [0mF_S0[0m[0;34m,[0m [0mF_R2[0m[0;34m,[0m [0mpred_S0[0m[0;34m,[0m [0mpred_R2[0m [0;34m=[0m [0mcompute_te_dependence_statistics[0m[0;34m([0m[0mmultiecho_signal[0m[0;34m,[0m [0mpes[0m[0;34m,[0m [0mecho_times[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m[1;32m      9[0m [0max[0m[0;34m.[0m[0mplot[0m[0;34m([0m[0mecho_times[0m[0;34m,[0m [0mpred_R2[0m[0;34m,[0m [0mlabel[0m[0;34m=[0m[0;34m'Predicted T2* model values'[0m[0;34m,[0m [0mc[0m[0;34m=[0m[0;34m'blue'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     10[0m [0max[0m[0;34m.[0m[0mplot[0m[0;34m([0m[0mecho_times[0m[0;34m,[0m [0mpred_S0[0m[0;34m,[0m [0mlabel[0m[0;34m=[0m[0;34m'Predicted S0 model values'[0m[0;34m,[0m [0mc[0m[0;34m=[0m[0;34m'red'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 
-[0;31mNameError[0m: name 'compute_metrics' is not defined
-NameError: name 'compute_metrics' is not defined
+[0;31mNameError[0m: name 'compute_te_dependence_statistics' is not defined
+NameError: name 'compute_te_dependence_statistics' is not defined
 
