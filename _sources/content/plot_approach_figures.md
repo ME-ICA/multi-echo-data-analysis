@@ -15,7 +15,7 @@ kernelspec:
 
 ```{code-cell} ipython3
 %matplotlib inline
-import os.path as op
+import os
 from glob import glob
 
 import numpy as np
@@ -49,59 +49,59 @@ data_files = [
 ]
 echo_times = [12., 28., 44., 60.]
 
-adaptive_mask_file = op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz")
+adaptive_mask_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz")
 mask = math_img('img >= 3', img=adaptive_mask_file)
 
 # Optimally combined data
-oc = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"), mask)
+oc = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"), mask)
 oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
 # Results from MEPCA
-mepca_mmix = np.loadtxt(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"))
-oc_red = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"), mask)
+mepca_mmix = np.loadtxt(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"))
+oc_red = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"), mask)
 
 # Results from MEICA
-meica_mmix = np.loadtxt(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"))
-norm_weights = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"), mask)
+meica_mmix = np.loadtxt(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"))
+norm_weights = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"), mask)
 meica_betas = masking.apply_mask(
     [
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz"),
     ],
     mask,
 )
 r2_pred_betas = masking.apply_mask(
     [
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz"),
     ],
     mask,
 )
 s0_pred_betas = masking.apply_mask(
     [
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz"),
-        op.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz"),
     ],
     mask,
 )
 
 # Component betas
-betas_file = op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz")
+betas_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz")
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Multi-echo denoised data
-dn_data = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"), mask)
-hk_data = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
+dn_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"), mask)
+hk_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
 
 # Post-processed data
-dn_t1c_data = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"), mask)
-hk_t1c_data = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
+dn_t1c_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"), mask)
+hk_t1c_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
 
 # Get voxel index for most related to first component (checkerboard)
 voxel_idx = np.where(beta_maps[0, :] == np.max(beta_maps[0, :]))[0][0]
@@ -116,7 +116,7 @@ n_trs = data[0].shape[0]
 
 # Component table
 df = pd.read_table(
-    op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
     index_col="component",
 )
 

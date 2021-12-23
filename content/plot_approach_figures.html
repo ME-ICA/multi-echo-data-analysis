@@ -504,7 +504,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">op</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -529,20 +529,18 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/datasets/__init__.py:96: FutureWarning: Fetchers from the nilearn.datasets module will be updated in version 0.9 to return python strings instead of bytes and Pandas dataframes instead of Numpy arrays.
-  &quot;Numpy arrays.&quot;, FutureWarning)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
+/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/repo2data
+Config from file :
+../binder/data_requirement.json
+Destination:
+./../data/multi-echo-data-analysis
+
+Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2356</span><span class="o">/</span><span class="mf">2619228700.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> 
-<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> 
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Download data</span>
-
-<span class="ne">NameError</span>: name &#39;os&#39; is not defined
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/datasets/__init__.py:96: FutureWarning: Fetchers from the nilearn.datasets module will be updated in version 0.9 to return python strings instead of bytes and Pandas dataframes instead of Numpy arrays.
+  &quot;Numpy arrays.&quot;, FutureWarning)
 </pre></div>
 </div>
 </div>
@@ -561,59 +559,59 @@
 <span class="p">]</span>
 <span class="n">echo_times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">28.</span><span class="p">,</span> <span class="mf">44.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">]</span>
 
-<span class="n">adaptive_mask_file</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz&quot;</span><span class="p">)</span>
+<span class="n">adaptive_mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz&quot;</span><span class="p">)</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">math_img</span><span class="p">(</span><span class="s1">&#39;img &gt;= 3&#39;</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">adaptive_mask_file</span><span class="p">)</span>
 
 <span class="c1"># Optimally combined data</span>
-<span class="n">oc</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">oc</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
 <span class="n">oc_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">oc</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">oc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">oc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Results from MEPCA</span>
-<span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">))</span>
-<span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">))</span>
+<span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
 
 <span class="c1"># Results from MEICA</span>
-<span class="n">meica_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv&quot;</span><span class="p">))</span>
-<span class="n">norm_weights</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">meica_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv&quot;</span><span class="p">))</span>
+<span class="n">norm_weights</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
 <span class="n">meica_betas</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
     <span class="p">[</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
     <span class="p">],</span>
     <span class="n">mask</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">r2_pred_betas</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
     <span class="p">[</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
     <span class="p">],</span>
     <span class="n">mask</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">s0_pred_betas</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
     <span class="p">[</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">),</span>
     <span class="p">],</span>
     <span class="n">mask</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Component betas</span>
-<span class="n">betas_file</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz&quot;</span><span class="p">)</span>
+<span class="n">betas_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz&quot;</span><span class="p">)</span>
 <span class="n">beta_maps</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">betas_file</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
 
 <span class="c1"># Multi-echo denoised data</span>
-<span class="n">dn_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
-<span class="n">hk_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">dn_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">hk_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
 
 <span class="c1"># Post-processed data</span>
-<span class="n">dn_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
-<span class="n">hk_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">dn_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">hk_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
 
 <span class="c1"># Get voxel index for most related to first component (checkerboard)</span>
 <span class="n">voxel_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -628,11 +626,53 @@
 
 <span class="c1"># Component table</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
-    <span class="n">op</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv&quot;</span><span class="p">),</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv&quot;</span><span class="p">),</span>
     <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">pal</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;cubehelix&#39;</span><span class="p">,</span> <span class="n">n_echoes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2277</span><span class="o">/</span><span class="mf">425716020.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> 
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Results from MEPCA</span>
+<span class="ne">---&gt; </span><span class="mi">18</span> <span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> 
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py</span> in <span class="ni">loadtxt</span><span class="nt">(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows, like)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1146</span>         <span class="c1"># converting the data</span>
+<span class="g g-Whitespace">   </span><span class="mi">1147</span>         <span class="n">X</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">-&gt; </span><span class="mi">1148</span>         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">read_data</span><span class="p">(</span><span class="n">_loadtxt_chunksize</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1149</span>             <span class="k">if</span> <span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1150</span>                 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py</span> in <span class="ni">read_data</span><span class="nt">(chunk_size)</span>
+<span class="g g-Whitespace">    </span><span class="mi">997</span> 
+<span class="g g-Whitespace">    </span><span class="mi">998</span>             <span class="c1"># Convert each value according to its column and store</span>
+<span class="ne">--&gt; </span><span class="mi">999</span>             <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">conv</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">conv</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">converters</span><span class="p">,</span> <span class="n">vals</span><span class="p">)]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1000</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1001</span>             <span class="c1"># Then pack it according to the dtype&#39;s nesting</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">    </span><span class="mi">997</span> 
+<span class="g g-Whitespace">    </span><span class="mi">998</span>             <span class="c1"># Convert each value according to its column and store</span>
+<span class="ne">--&gt; </span><span class="mi">999</span>             <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">conv</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">conv</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">converters</span><span class="p">,</span> <span class="n">vals</span><span class="p">)]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1000</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1001</span>             <span class="c1"># Then pack it according to the dtype&#39;s nesting</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py</span> in <span class="ni">floatconv</span><span class="nt">(x)</span>
+<span class="g g-Whitespace">    </span><span class="mi">734</span>         <span class="k">if</span> <span class="s1">&#39;0x&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">735</span>             <span class="k">return</span> <span class="nb">float</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">736</span>         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">737</span> 
+<span class="g g-Whitespace">    </span><span class="mi">738</span>     <span class="n">typ</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span>
+
+<span class="ne">ValueError</span>: could not convert string to float: &#39;pca_00&#39;
 </pre></div>
 </div>
 </div>

@@ -17,39 +17,126 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-%matplotlib inline
-import os.path as op
-from glob import glob
+func_dir = os.path.join(data_path, "sub-04570/func/")
+data_files = [
+    os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(func_dir, "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(func_dir, "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(func_dir, "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz"),
+]
+echo_times = [12., 28., 44., 60.]
 
-import numpy as np
-import nibabel as nib
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from nilearn import plotting, masking
-from nilearn.image import math_img
-from repo2data.repo2data import Repo2Data
+adaptive_mask_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz")
+mask = math_img('img >= 3', img=adaptive_mask_file)
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+# Optimally combined data
+oc = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"), mask)
+oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+# Results from MEPCA
+mepca_mmix = np.loadtxt(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"))
+oc_red = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"), mask)
 
-ted_dir = os.path.join(data_path, "tedana")
+# Results from MEICA
+meica_mmix = np.loadtxt(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"))
+norm_weights = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"), mask)
+meica_betas = masking.apply_mask(
+    [
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz"),
+    ],
+    mask,
+)
+r2_pred_betas = masking.apply_mask(
+    [
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz"),
+    ],
+    mask,
+)
+s0_pred_betas = masking.apply_mask(
+    [
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz"),
+        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz"),
+    ],
+    mask,
+)
+
+# Component betas
+betas_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz")
+beta_maps = masking.apply_mask(betas_file, mask)
+
+# Multi-echo denoised data
+dn_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"), mask)
+hk_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
+
+# Post-processed data
+dn_t1c_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"), mask)
+hk_t1c_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
+
+# Get voxel index for most related to first component (checkerboard)
+voxel_idx = np.where(beta_maps[0, :] == np.max(beta_maps[0, :]))[0][0]
+
+# load data
+data = [masking.apply_mask(f, mask) for f in data_files]
+ts = [d[:, voxel_idx] for d in data]
+ts_1d = np.hstack(ts)
+
+n_echoes = len(data)
+n_trs = data[0].shape[0]
+
+# Component table
+df = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    index_col="component",
+)
+
+pal = sns.color_palette('cubehelix', n_echoes)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2356/2619228700.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     13[0m [0;34m[0m[0m
-[1;32m     14[0m [0;31m# Install the data if running locally, or point to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 15[0;31m [0mDATA_REQ_FILE[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0;34m"../binder/data_requirement.json"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     16[0m [0;34m[0m[0m
-[1;32m     17[0m [0;31m# Download data[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2277/425716020.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     16[0m [0;34m[0m[0m
+[1;32m     17[0m [0;31m# Results from MEPCA[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 18[0;31m [0mmepca_mmix[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mloadtxt[0m[0;34m([0m[0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     19[0m [0moc_red[0m [0;34m=[0m [0mmasking[0m[0;34m.[0m[0mapply_mask[0m[0;34m([0m[0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"[0m[0;34m)[0m[0;34m,[0m [0mmask[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     20[0m [0;34m[0m[0m
 
-[0;31mNameError[0m: name 'os' is not defined
-NameError: name 'os' is not defined
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py[0m in [0;36mloadtxt[0;34m(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows, like)[0m
+[1;32m   1146[0m         [0;31m# converting the data[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1147[0m         [0mX[0m [0;34m=[0m [0;32mNone[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1148[0;31m         [0;32mfor[0m [0mx[0m [0;32min[0m [0mread_data[0m[0;34m([0m[0m_loadtxt_chunksize[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1149[0m             [0;32mif[0m [0mX[0m [0;32mis[0m [0;32mNone[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1150[0m                 [0mX[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0marray[0m[0;34m([0m[0mx[0m[0;34m,[0m [0mdtype[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py[0m in [0;36mread_data[0;34m(chunk_size)[0m
+[1;32m    997[0m [0;34m[0m[0m
+[1;32m    998[0m             [0;31m# Convert each value according to its column and store[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 999[0;31m             [0mitems[0m [0;34m=[0m [0;34m[[0m[0mconv[0m[0;34m([0m[0mval[0m[0;34m)[0m [0;32mfor[0m [0;34m([0m[0mconv[0m[0;34m,[0m [0mval[0m[0;34m)[0m [0;32min[0m [0mzip[0m[0;34m([0m[0mconverters[0m[0;34m,[0m [0mvals[0m[0;34m)[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1000[0m [0;34m[0m[0m
+[1;32m   1001[0m             [0;31m# Then pack it according to the dtype's nesting[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py[0m in [0;36m<listcomp>[0;34m(.0)[0m
+[1;32m    997[0m [0;34m[0m[0m
+[1;32m    998[0m             [0;31m# Convert each value according to its column and store[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 999[0;31m             [0mitems[0m [0;34m=[0m [0;34m[[0m[0mconv[0m[0;34m([0m[0mval[0m[0;34m)[0m [0;32mfor[0m [0;34m([0m[0mconv[0m[0;34m,[0m [0mval[0m[0;34m)[0m [0;32min[0m [0mzip[0m[0;34m([0m[0mconverters[0m[0;34m,[0m [0mvals[0m[0;34m)[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1000[0m [0;34m[0m[0m
+[1;32m   1001[0m             [0;31m# Then pack it according to the dtype's nesting[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py[0m in [0;36mfloatconv[0;34m(x)[0m
+[1;32m    734[0m         [0;32mif[0m [0;34m'0x'[0m [0;32min[0m [0mx[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    735[0m             [0;32mreturn[0m [0mfloat[0m[0;34m.[0m[0mfromhex[0m[0;34m([0m[0mx[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 736[0;31m         [0;32mreturn[0m [0mfloat[0m[0;34m([0m[0mx[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    737[0m [0;34m[0m[0m
+[1;32m    738[0m     [0mtyp[0m [0;34m=[0m [0mdtype[0m[0;34m.[0m[0mtype[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: could not convert string to float: 'pca_00'
+ValueError: could not convert string to float: 'pca_00'
 
