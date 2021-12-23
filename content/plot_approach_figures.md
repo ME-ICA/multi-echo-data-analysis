@@ -573,25 +573,15 @@ Two possible approaches are a decision tree and a threshold using the percentage
 ```{code-cell} ipython3
 :tags: [hide-input]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
+axes[-1].set_xlim(0, mepca_mmix.shape[0]-1)
+axes[-1].set_xticks([])
+axes[-1].set_xlabel("Time", fontsize=16)
 
-i = 0
-axes[0].plot(mepca_mmix[:, i])
-axes[0].set_title(f"PCA Component {i}", fontsize=16)
+for comp_to_plot in [0, 1, 2]:
+    axes[comp_to_plot].plot(mepca_mmix[:, comp_to_plot])
+    axes[comp_to_plot].set_title(f"PCA Component {comp_to_plot}", fontsize=16)
+    axes[comp_to_plot].tick_params(axis="both", which="major", labelsize=12)
 
-i = 1
-axes[1].plot(mepca_mmix[:, i])
-axes[1].set_title(f"PCA Component {i}", fontsize=16)
-
-i = 2
-axes[2].plot(mepca_mmix[:, i])
-axes[2].set_title(f"PCA Component {i}", fontsize=16)
-
-axes[2].set_xlim(0, mepca_mmix.shape[0]-1)
-axes[2].set_xticks([])
-axes[2].set_xlabel("Time", fontsize=16)
-axes[0].tick_params(axis="both", which="major", labelsize=12)
-axes[1].tick_params(axis="both", which="major", labelsize=12)
-axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
 glue("fig_pca_timeseries", fig, display=False)
 ```
