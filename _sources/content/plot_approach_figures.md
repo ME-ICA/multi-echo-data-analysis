@@ -14,7 +14,7 @@ kernelspec:
 # Generate tedana walkthrough figures
 
 ```{code-cell} ipython3
-%matplotlib inline
+:tags: [hide-input]
 import os
 from glob import glob
 
@@ -44,6 +44,7 @@ ted_dir = os.path.join(data_path, "tedana")
 
 ## Load data
 ```{code-cell} ipython3
+:tags: [hide-input]
 func_dir = os.path.join(data_path, "sub-04570/func/")
 data_files = [
     os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
@@ -184,6 +185,7 @@ pal = sns.color_palette("cubehelix", n_echoes)
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 # Prepare data for model
 log_data = np.log(np.abs(ts_1d) + 1)
 # log_data = np.log(ts_1d)  # in a perfect world...
@@ -216,6 +218,7 @@ oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
 ### Echo-specific timeseries
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
@@ -226,12 +229,20 @@ for i_echo in range(n_echoes):
 axes[-1].set_xlabel("Time", fontsize=16)
 axes[-1].set_xlim(0, len(ts[i_echo])-1)
 fig.tight_layout()
-fig.show()
+glue("fig_echo_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_echo_timeseries
+:name: fig_echo_timeseries
+:align: center
+
+Time series from a voxel for each echo.
 ```
 
 ### Echo-specific data and echo time
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 values = [i[0] for i in ts]
 for i_echo in range(n_echoes):
@@ -245,7 +256,14 @@ ax.tick_params(axis="both", which="major", labelsize=14)
 ax.set_xlim(0, 70)
 ax.set_ylim(0, 3000)
 fig.tight_layout()
-fig.show()
+glue("fig_echo_scatter", fig, display=False)
+```
+
+```{glue:figure} fig_echo_scatter
+:name: fig_echo_scatter
+:align: center
+
+Scatter plot of voxel's values by echo time.
 ```
 
 ### Adaptive mask
@@ -257,16 +275,13 @@ When $T_{2}^*$ and $S_{0}$ are calculated below, each voxel's values are only ca
 where $n$ is the value for that voxel in the adaptive mask.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 mask_img = compute_epi_mask(data_files[0])
 data, img = load_data(data_files, len(echo_times))
 mask, adaptive_mask = make_adaptive_mask(data, mask=mask_img, getsum=True)
-```
 
-```{code-cell} ipython3
 adaptive_mask_img = new_nii_like(img, adaptive_mask)
-```
 
-```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 4))
 palette = sns.color_palette("BuGn_r", 10)
 plotting.plot_stat_map(
@@ -282,12 +297,20 @@ plotting.plot_stat_map(
     figure=fig,
     axes=ax,
 )
-fig.show()
+glue("fig_adaptive_mask", fig, display=False)
+```
+
+```{glue:figure} fig_adaptive_mask
+:name: fig_adaptive_mask
+:align: center
+
+Adaptive mask.
 ```
 
 ### Log-linear transformation
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = -1 * np.ones(n_trs) * echo_times[i_echo]
@@ -302,7 +325,14 @@ ax.set_ylim(4, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
 
 fig.tight_layout()
-fig.show()
+glue("fig_loglin_scatter", fig, display=False)
+```
+
+```{glue:figure} fig_loglin_scatter
+:name: fig_loglin_scatter
+:align: center
+
+Scatter plot of voxel's signal for each echo, after log-linear transformation.
 ```
 
 ### Log-linear model
@@ -337,6 +367,7 @@ B_{0}\end{pmatrix}
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = -1 * np.ones(n_trs) * echo_times[i_echo]
@@ -360,7 +391,14 @@ ax.annotate(
 )
 
 fig.tight_layout()
-fig.show()
+glue("fig_loglin_scatter_with_line", fig, display=False)
+```
+
+```{glue:figure} fig_loglin_scatter_with_line
+:name: fig_loglin_scatter_with_line
+:align: center
+
+Scatter plot of voxel's signal for each echo, after log-linear transformation, with fitted line.
 ```
 
 ## Monoexponential decay model
@@ -377,6 +415,7 @@ T_{2}^{*} = \frac{1}{B_{1}}
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
@@ -398,12 +437,20 @@ ax.annotate(
 )
 
 fig.tight_layout()
-fig.show()
+glue("fig_loglin_scatter_with_t2s", fig, display=False)
+```
+
+```{glue:figure} fig_loglin_scatter_with_t2s
+:name: fig_loglin_scatter_with_t2s
+:align: center
+
+Scatter plot of voxel's signal for each echo, after log-linear transformation, with fitted line and T2* estimate.
 ```
 
 ### T2*
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
@@ -423,24 +470,39 @@ ax.xaxis.get_major_ticks()[-1].set_pad(20)
 legend = ax.legend(frameon=True, fontsize=16)
 
 fig.tight_layout()
-fig.show()
+glue("fig_scatter_with_t2s", fig, display=False)
 ```
 
+```{glue:figure} fig_scatter_with_t2s
+:name: fig_scatter_with_t2s
+:align: center
+
+Scatter plot of voxel's signal for each echo with T2* estimate.
+```
 ### Optimal combination weights
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots()
 sns.barplot(echo_times, alpha, ax=ax, palette=pal)
 ax.set_ylabel("Weight", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
-fig.show()
+glue("fig_optcom_weights", fig, display=False)
+```
+
+```{glue:figure} fig_optcom_weights
+:name: fig_optcom_weights
+:align: center
+
+Averaging weights for optimal combination.
 ```
 
 ### Optimally combined timeseries
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
     rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
@@ -464,12 +526,20 @@ ax.xaxis.get_major_ticks()[-1].set_pad(20)
 legend = ax.legend(frameon=True, fontsize=16)
 
 fig.tight_layout()
-fig.show()
+glue("fig_scatter_with_optcom", fig, display=False)
+```
+
+```{glue:figure} fig_scatter_with_optcom
+:name: fig_scatter_with_optcom
+:align: center
+
+Scatter plot of voxel's signal for each echo with optimally combined signal as well.
 ```
 
 ### Optimally combined timeseries
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(n_echoes+1, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
@@ -485,7 +555,14 @@ axes[-1].set_xticks([])
 axes[-1].set_xlim(0, len(ts[i_echo])-1)
 ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
-fig.show()
+glue("fig_echo_timeseries_with_optcom", fig, display=False)
+```
+
+```{glue:figure} fig_echo_timeseries_with_optcom
+:name: fig_echo_timeseries_with_optcom
+:align: center
+
+Echo-wise time series for a voxel, including the optimally combined time series.
 ```
 
 ### Multi-Echo Principal Components Analysis
@@ -494,6 +571,7 @@ The PCA components are selected according to one of multiple possible approaches
 Two possible approaches are a decision tree and a threshold using the percentage of variance explained by each component.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
 
 i = 0
@@ -515,13 +593,21 @@ axes[0].tick_params(axis="both", which="major", labelsize=12)
 axes[1].tick_params(axis="both", which="major", labelsize=12)
 axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
-fig.show()
+glue("fig_pca_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_pca_timeseries
+:name: fig_pca_timeseries
+:align: center
+
+Time series of three PCA components.
 ```
 
 ## Data Whitening
 The selected components from the PCA are recombined to produce a whitened version of the optimally combined data.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, ax = plt.subplots(figsize=(14, 6))
 ax.plot(oc_red[:, voxel_idx], label="Dimensionally reduced timeseries", zorder=1.)
 ax.plot(oc_z[:, voxel_idx], label="Original timeseries", alpha=0.5, zorder=0., linewidth=3)
@@ -530,7 +616,14 @@ ax.set_xlim(0, oc_z.shape[0]-1)
 ax.set_xticks([])
 ax.set_xlabel("Time", fontsize=16)
 ax.tick_params(axis="both", which="major", labelsize=14)
-fig.show()
+glue("fig_optcom_reduced_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_optcom_reduced_timeseries
+:name: fig_optcom_reduced_timeseries
+:align: center
+
+Time series of optimally combined data from a voxel, before and after dimensionality reduction with PCA.
 ```
 
 ### Multi-Echo Independent Components Analysis
@@ -540,6 +633,7 @@ in order to reflect the true dimensionality of the data.
 ICA produces a mixing matrix (i.e., timeseries for each component).
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
 
 comps_to_plot = [high_kappa_comp, low_kappa_comp, "ICA_00"]
@@ -562,7 +656,14 @@ axes[0].tick_params(axis="both", which="major", labelsize=12)
 axes[1].tick_params(axis="both", which="major", labelsize=12)
 axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
-fig.show()
+glue("fig_ica_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_ica_timeseries
+:name: fig_ica_timeseries
+:align: center
+
+Time series of three ICA components.
 ```
 
 ## $R_2$ and $S_0$ Model Fit
@@ -576,6 +677,7 @@ Note that the values here are for a single voxel (the highest-weighted one for t
 but $\kappa$ and $\rho$ are averaged across voxels.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 9))
 axes[-1].set_xticks(echo_times)
 axes[-1].tick_params(axis="both", which="major", labelsize=12)
@@ -600,7 +702,14 @@ for i_comp, comp in enumerate(comps_to_plot):  # only generate plots for a few c
     axes[i_comp].set_title(f"ICA Component {comp}", fontsize=16)
 
 fig.tight_layout()
-fig.show()
+glue("fig_ica_weights", fig, display=False)
+```
+
+```{glue:figure} fig_ica_weights
+:name: fig_ica_weights
+:align: center
+
+Echo-wise model weights for three ICA components.
 ```
 
 ## ICA Component Selection and Multi-Echo Denoising
@@ -616,6 +725,7 @@ The ME-HK dataset is constructed just from the accepted (BOLD) components.
 This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 dn_data_z = (dn_data - np.mean(dn_data, axis=0)) / np.std(dn_data, axis=0)
 hk_data_z = (hk_data - np.mean(hk_data, axis=0)) / np.std(hk_data, axis=0)
 
@@ -637,7 +747,14 @@ axes[1].tick_params(axis="both", which="major", labelsize=12)
 axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
 
-fig.show()
+glue("fig_medn_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_medn_timeseries
+:name: fig_medn_timeseries
+:align: center
+
+Time series for optimally combined, denoised, and high-kappa data for a single voxel.
 ```
 
 ## Post-processing to remove spatially diffuse noise
@@ -650,6 +767,7 @@ Methods which have been employed in the past include global signal regression (G
 Go Decomposition (GODEC), and robust PCA.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 dn_t1c_data_z = (dn_t1c_data - np.mean(dn_t1c_data, axis=0)) / np.std(dn_t1c_data, axis=0)
 hk_t1c_data_z = (hk_t1c_data - np.mean(hk_t1c_data, axis=0)) / np.std(hk_t1c_data, axis=0)
 
@@ -669,5 +787,12 @@ axes[1].set_xlabel("Time", fontsize=16)
 axes[0].tick_params(axis="both", which="major", labelsize=12)
 axes[1].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
-fig.show()
+glue("fig_mir_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_mir_timeseries
+:name: fig_mir_timeseries
+:align: center
+
+Time series from a voxel before and after minimum image regression.
 ```
