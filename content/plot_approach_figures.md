@@ -58,7 +58,7 @@ oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 # Results from MEPCA
 mepca_mmix = pd.read_table(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
-)
+).values
 oc_red = masking.apply_mask(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"),
     mask,
@@ -67,7 +67,7 @@ oc_red = masking.apply_mask(
 # Results from MEICA
 meica_mmix = pd.read_table(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
-)
+).values
 norm_weights = masking.apply_mask(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"),
     mask,
@@ -138,7 +138,7 @@ n_trs = data[0].shape[0]
 # Component table
 df = pd.read_table(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
-    index_col="component",
+    index_col="Component",
 )
 
 pal = sns.color_palette("cubehelix", n_echoes)
