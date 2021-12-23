@@ -17,38 +17,46 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import os
+fig, ax = plt.subplots(figsize=(16, 4))
 
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from scipy import signal, stats
-from nilearn.glm import first_level
-from repo2data.repo2data import Repo2Data
+# Add a constant term to the array
+comp_X = np.hstack((component, np.ones((component.shape[0], 1))))
+pes, _, _, _ = np.linalg.lstsq(comp_X, multiecho_signal.T, rcond=None)
+pes = pes[0, :]
 
-from book_utils import pred_bold_signal
-
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(data_path[0], "data"))
-
-out_dir = os.path.join(data_path, "te-dependence")
-os.makedirs(out_dir, exist_ok=True)
+F_S0, F_R2, pred_S0, pred_R2 = compute_metrics(multiecho_signal, pes, echo_times)
+ax.plot(echo_times, pred_R2, label='Predicted T2* model values', c='blue')
+ax.plot(echo_times, pred_S0, label='Predicted S0 model values', c='red')
+ax.plot(echo_times, pes, label='Component PEs', alpha=0.5, linewidth=5, c='black')
+ax.plot(echo_times, pred_R2, label=r'$\kappa$ = {:.02f}'.format(F_R2[0]), alpha=0)
+ax.plot(echo_times, pred_S0, label=r'$\rho$ = {:.02f}'.format(F_S0[0]), alpha=0)
+ax.set_xlim(0, np.max(echo_times))
+ax.set_xlabel('Echo time (ms)')
+leg = ax.legend(fontsize=14, ncol=2)
+#ax.set_xticks(echo_times)
+fig.show()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mImportError[0m                               Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2387/385783001.py[0m in [0;36m<module>[0;34m[0m
-[1;32m      8[0m [0;32mfrom[0m [0mrepo2data[0m[0;34m.[0m[0mrepo2data[0m [0;32mimport[0m [0mRepo2Data[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      9[0m [0;34m[0m[0m
-[0;32m---> 10[0;31m [0;32mfrom[0m [0mbook_utils[0m [0;32mimport[0m [0mpred_bold_signal[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     11[0m [0;34m[0m[0m
-[1;32m     12[0m [0;31m# Install the data if running locally, or point to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2205/1952282756.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      2[0m [0;34m[0m[0m
+[1;32m      3[0m [0;31m# Add a constant term to the array[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 4[0;31m [0mcomp_X[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mhstack[0m[0;34m([0m[0;34m([0m[0mcomponent[0m[0;34m,[0m [0mnp[0m[0;34m.[0m[0mones[0m[0;34m([0m[0;34m([0m[0mcomponent[0m[0;34m.[0m[0mshape[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m,[0m [0;36m1[0m[0;34m)[0m[0;34m)[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      5[0m [0mpes[0m[0;34m,[0m [0m_[0m[0;34m,[0m [0m_[0m[0;34m,[0m [0m_[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mlinalg[0m[0;34m.[0m[0mlstsq[0m[0;34m([0m[0mcomp_X[0m[0;34m,[0m [0mmultiecho_signal[0m[0;34m.[0m[0mT[0m[0;34m,[0m [0mrcond[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      6[0m [0mpes[0m [0;34m=[0m [0mpes[0m[0;34m[[0m[0;36m0[0m[0;34m,[0m [0;34m:[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
 
-[0;31mImportError[0m: cannot import name 'pred_bold_signal' from 'book_utils' (/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py)
-ImportError: cannot import name 'pred_bold_signal' from 'book_utils' (/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py)
+[0;32m<__array_function__ internals>[0m in [0;36mhstack[0;34m(*args, **kwargs)[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/core/shape_base.py[0m in [0;36mhstack[0;34m(tup)[0m
+[1;32m    341[0m     [0;31m# As a special case, dimension 0 of 1-dimensional arrays is "horizontal"[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    342[0m     [0;32mif[0m [0marrs[0m [0;32mand[0m [0marrs[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mndim[0m [0;34m==[0m [0;36m1[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 343[0;31m         [0;32mreturn[0m [0m_nx[0m[0;34m.[0m[0mconcatenate[0m[0;34m([0m[0marrs[0m[0;34m,[0m [0;36m0[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    344[0m     [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    345[0m         [0;32mreturn[0m [0m_nx[0m[0;34m.[0m[0mconcatenate[0m[0;34m([0m[0marrs[0m[0;34m,[0m [0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m<__array_function__ internals>[0m in [0;36mconcatenate[0;34m(*args, **kwargs)[0m
+
+[0;31mValueError[0m: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
+ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
 

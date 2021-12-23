@@ -453,7 +453,7 @@
 <span class="kn">from</span> <span class="nn">nilearn.glm</span> <span class="kn">import</span> <span class="n">first_level</span>
 <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
 
-<span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">pred_bold_signal</span>
+<span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">predict_bold_signal</span>
 
 <span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
 <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
@@ -469,22 +469,20 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
+/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/repo2data
+Config from file :
+../binder/data_requirement.json
+Destination:
+./../data/multi-echo-data-analysis
+
+Info : ./../data/multi-echo-data-analysis already downloaded
+</pre></div>
+</div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/datasets/__init__.py:96: FutureWarning: Fetchers from the nilearn.datasets module will be updated in version 0.9 to return python strings instead of bytes and Pandas dataframes instead of Numpy arrays.
   &quot;Numpy arrays.&quot;, FutureWarning)
 /opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/glm/__init__.py:56: FutureWarning: The nilearn.glm module is experimental. It may change in any future release of Nilearn.
   &#39;It may change in any future release of Nilearn.&#39;, FutureWarning)
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2387</span><span class="o">/</span><span class="mf">385783001.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> 
-<span class="ne">---&gt; </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">pred_bold_signal</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> 
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-
-<span class="ne">ImportError</span>: cannot import name &#39;pred_bold_signal&#39; from &#39;book_utils&#39; (/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py)
 </pre></div>
 </div>
 </div>
@@ -511,15 +509,15 @@
 <span class="n">s02</span> <span class="o">=</span> <span class="n">mean_s0</span> <span class="o">+</span> <span class="p">(</span><span class="n">mean_s0</span> <span class="o">*</span> <span class="n">frac</span><span class="p">)</span>
 <span class="n">t2s2</span> <span class="o">=</span> <span class="n">mean_t2s</span> <span class="o">+</span> <span class="p">(</span><span class="n">mean_t2s</span> <span class="o">*</span> <span class="n">frac</span><span class="p">)</span>
 
-<span class="n">mean_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
+<span class="n">mean_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
 
 <span class="c1"># Signal with fluctuating S0</span>
-<span class="n">sig2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s02</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
+<span class="n">sig2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s02</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
 <span class="n">d_sig2</span> <span class="o">=</span> <span class="n">sig2</span> <span class="o">-</span> <span class="n">mean_sig</span>
 <span class="n">dt_sig2</span> <span class="o">=</span> <span class="n">d_sig2</span> <span class="o">/</span> <span class="p">((</span><span class="n">sig2</span> <span class="o">+</span> <span class="n">mean_sig</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span>
 
 <span class="c1"># Signal with fluctuating T2*</span>
-<span class="n">sig3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">t2s2</span><span class="p">))</span>
+<span class="n">sig3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">t2s2</span><span class="p">))</span>
 <span class="n">d_sig3</span> <span class="o">=</span> <span class="n">sig3</span> <span class="o">-</span> <span class="n">mean_sig</span>
 <span class="n">dt_sig3</span> <span class="o">=</span> <span class="n">d_sig3</span> <span class="o">/</span> <span class="p">((</span><span class="n">sig3</span> <span class="o">+</span> <span class="n">mean_sig</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span>
 </pre></div>
@@ -606,6 +604,9 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/TE_Dependence_4_0.png" src="../_images/TE_Dependence_4_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="make-design-matrices">
@@ -688,6 +689,15 @@ which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rho: 4.467769094175043e+32
+Kappa: 187.14447409804956
+
+Real delta S0: 3200.0
+Delta S0 from results: 3200.000000000006
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="fitted-curves-for-r2-perturbed-signal">
@@ -719,6 +729,12 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rho: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F_S0</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Kappa: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F_R2</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rho: 156.88794104788448
+Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
@@ -756,6 +772,9 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/TE_Dependence_11_0.png" src="../_images/TE_Dependence_11_0.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -763,6 +782,12 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 <span class="n">x</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">sing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">X2</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">coeffs_R2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.19006077]
+[0.19006077]
 </pre></div>
 </div>
 </div>
@@ -800,9 +825,9 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 <span class="n">mean_t2s_ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">mean_t2s</span>
 
 <span class="c1"># Simulate signal for each echo time</span>
-<span class="n">t2s_signal</span> <span class="o">=</span> <span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
-<span class="n">s0_signal</span> <span class="o">=</span> <span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">mean_t2s_ts</span><span class="p">)</span>
-<span class="n">multiecho_signal</span> <span class="o">=</span> <span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
+<span class="n">t2s_signal</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
+<span class="n">s0_signal</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">mean_t2s_ts</span><span class="p">)</span>
+<span class="n">multiecho_signal</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
 
 <span class="c1"># Normalize to get component time series</span>
 <span class="n">t2s_ts_z</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">t2s_ts</span><span class="p">)</span>
@@ -820,6 +845,9 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/TE_Dependence_14_0.png" src="../_images/TE_Dependence_14_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -840,6 +868,9 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/TE_Dependence_15_0.png" src="../_images/TE_Dependence_15_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -865,6 +896,9 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/TE_Dependence_16_0.png" src="../_images/TE_Dependence_16_0.png" />
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -888,6 +922,32 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2205</span><span class="o">/</span><span class="mf">1952282756.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Add a constant term to the array</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">comp_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">component</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))))</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">pes</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">comp_X</span><span class="p">,</span> <span class="n">multiecho_signal</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">pes</span> <span class="o">=</span> <span class="n">pes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+
+<span class="nn">&lt;__array_function__ internals&gt;</span> in <span class="ni">hstack</span><span class="nt">(*args, **kwargs)</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/core/shape_base.py</span> in <span class="ni">hstack</span><span class="nt">(tup)</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span>     <span class="c1"># As a special case, dimension 0 of 1-dimensional arrays is &quot;horizontal&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>     <span class="k">if</span> <span class="n">arrs</span> <span class="ow">and</span> <span class="n">arrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">343</span>         <span class="k">return</span> <span class="n">_nx</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">344</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">345</span>         <span class="k">return</span> <span class="n">_nx</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="nn">&lt;__array_function__ internals&gt;</span> in <span class="ni">concatenate</span><span class="nt">(*args, **kwargs)</span>
+
+<span class="ne">ValueError</span>: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
+</pre></div>
+</div>
+<img alt="../_images/TE_Dependence_17_1.png" src="../_images/TE_Dependence_17_1.png" />
 </div>
 </div>
 </div>
