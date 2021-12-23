@@ -17,55 +17,114 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-# Prepare data for model
-log_data = np.log(np.abs(ts_1d) + 1)
-# log_data = np.log(ts_1d)  # in a perfect world...
-x = np.column_stack([np.ones(n_echoes), -1 * echo_times])
-X = np.repeat(x, n_trs, axis=0)  # T * E
+fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
+i = 0
+k = df.loc[i, "kappa"]
+r = df.loc[i, "rho"]
+c = df.loc[i, "classification"]
+axes[0].plot(meica_mmix[:, i])
+axes[0].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
-# Model fit
-betas = np.linalg.lstsq(X, log_data, rcond=None)[0]
-s0 = np.exp(betas[0])
-r2s = betas[1]
-t2s = 1. / r2s
+i = 1
+k = df.loc[i, "kappa"]
+r = df.loc[i, "rho"]
+c = df.loc[i, "classification"]
+axes[1].plot(meica_mmix[:, i])
+axes[1].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
-# Values for plots
-# Values from log-linear model
-log_x = np.arange(-1000, 0, .01)
-log_y = betas[0] + log_x*betas[1]
+i = 2
+k = df.loc[i, "kappa"]
+r = df.loc[i, "rho"]
+c = df.loc[i, "classification"]
+axes[2].plot(meica_mmix[:, i])
+axes[2].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
-# Values from monoexponential decay model
-mono_x = np.arange(0, 1000, .01)
-mono_y = np.exp(-1*betas[1]*mono_x) * s0
-
-# Get weights for optimal combination
-alpha = echo_times * np.exp(-echo_times / t2s)
-alpha = alpha / np.sum(alpha)  # unnecessary but good for bar plot below
-
-# Combine data across echoes
-oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
+axes[0].set_xlim(0, meica_mmix.shape[0]-1)
+axes[2].set_xticks([])
+axes[2].set_xlabel("Time", fontsize=16)
+axes[0].tick_params(axis="both", which="major", labelsize=12)
+axes[1].tick_params(axis="both", which="major", labelsize=12)
+axes[2].tick_params(axis="both", which="major", labelsize=12)
+fig.tight_layout()
+fig.show()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2400/522350095.py[0m in [0;36m<module>[0;34m[0m
-[1;32m      2[0m [0mlog_data[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mlog[0m[0;34m([0m[0mnp[0m[0;34m.[0m[0mabs[0m[0;34m([0m[0mts_1d[0m[0;34m)[0m [0;34m+[0m [0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      3[0m [0;31m# log_data = np.log(ts_1d)  # in a perfect world...[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[0;32m----> 4[0;31m [0mx[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mcolumn_stack[0m[0;34m([0m[0;34m[[0m[0mnp[0m[0;34m.[0m[0mones[0m[0;34m([0m[0mn_echoes[0m[0;34m)[0m[0;34m,[0m [0;34m-[0m[0;36m1[0m [0;34m*[0m [0mecho_times[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      5[0m [0mX[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mrepeat[0m[0;34m([0m[0mx[0m[0;34m,[0m [0mn_trs[0m[0;34m,[0m [0maxis[0m[0;34m=[0m[0;36m0[0m[0;34m)[0m  [0;31m# T * E[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      6[0m [0;34m[0m[0m
+[0;31mKeyError[0m                                  Traceback (most recent call last)
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/core/indexes/base.py[0m in [0;36mget_loc[0;34m(self, key, method, tolerance)[0m
+[1;32m   3360[0m             [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 3361[0;31m                 [0;32mreturn[0m [0mself[0m[0;34m.[0m[0m_engine[0m[0;34m.[0m[0mget_loc[0m[0;34m([0m[0mcasted_key[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   3362[0m             [0;32mexcept[0m [0mKeyError[0m [0;32mas[0m [0merr[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m<__array_function__ internals>[0m in [0;36mcolumn_stack[0;34m(*args, **kwargs)[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/_libs/index.pyx[0m in [0;36mpandas._libs.index.IndexEngine.get_loc[0;34m()[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/shape_base.py[0m in [0;36mcolumn_stack[0;34m(tup)[0m
-[1;32m    654[0m             [0marr[0m [0;34m=[0m [0marray[0m[0;34m([0m[0marr[0m[0;34m,[0m [0mcopy[0m[0;34m=[0m[0;32mFalse[0m[0;34m,[0m [0msubok[0m[0;34m=[0m[0;32mTrue[0m[0;34m,[0m [0mndmin[0m[0;34m=[0m[0;36m2[0m[0;34m)[0m[0;34m.[0m[0mT[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    655[0m         [0marrays[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0marr[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 656[0;31m     [0;32mreturn[0m [0m_nx[0m[0;34m.[0m[0mconcatenate[0m[0;34m([0m[0marrays[0m[0;34m,[0m [0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    657[0m [0;34m[0m[0m
-[1;32m    658[0m [0;34m[0m[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/_libs/index.pyx[0m in [0;36mpandas._libs.index.IndexEngine.get_loc[0;34m()[0m
 
-[0;32m<__array_function__ internals>[0m in [0;36mconcatenate[0;34m(*args, **kwargs)[0m
+[0;32mpandas/_libs/hashtable_class_helper.pxi[0m in [0;36mpandas._libs.hashtable.PyObjectHashTable.get_item[0;34m()[0m
 
-[0;31mValueError[0m: all the input array dimensions for the concatenation axis must match exactly, but along dimension 0, the array at index 0 has size 4 and the array at index 1 has size 0
-ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 0, the array at index 0 has size 4 and the array at index 1 has size 0
+[0;32mpandas/_libs/hashtable_class_helper.pxi[0m in [0;36mpandas._libs.hashtable.PyObjectHashTable.get_item[0;34m()[0m
+
+[0;31mKeyError[0m: 0
+
+The above exception was the direct cause of the following exception:
+
+[0;31mKeyError[0m                                  Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2501/1373405733.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      1[0m [0mfig[0m[0;34m,[0m [0maxes[0m [0;34m=[0m [0mplt[0m[0;34m.[0m[0msubplots[0m[0;34m([0m[0;36m3[0m[0;34m,[0m [0msharex[0m[0;34m=[0m[0;32mTrue[0m[0;34m,[0m [0mfigsize[0m[0;34m=[0m[0;34m([0m[0;36m14[0m[0;34m,[0m [0;36m6[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      2[0m [0mi[0m [0;34m=[0m [0;36m0[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 3[0;31m [0mk[0m [0;34m=[0m [0mdf[0m[0;34m.[0m[0mloc[0m[0;34m[[0m[0mi[0m[0;34m,[0m [0;34m"kappa"[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      4[0m [0mr[0m [0;34m=[0m [0mdf[0m[0;34m.[0m[0mloc[0m[0;34m[[0m[0mi[0m[0;34m,[0m [0;34m"rho"[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m      5[0m [0mc[0m [0;34m=[0m [0mdf[0m[0;34m.[0m[0mloc[0m[0;34m[[0m[0mi[0m[0;34m,[0m [0;34m"classification"[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/core/indexing.py[0m in [0;36m__getitem__[0;34m(self, key)[0m
+[1;32m    923[0m                 [0;32mwith[0m [0msuppress[0m[0;34m([0m[0mKeyError[0m[0;34m,[0m [0mIndexError[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    924[0m                     [0;32mreturn[0m [0mself[0m[0;34m.[0m[0mobj[0m[0;34m.[0m[0m_get_value[0m[0;34m([0m[0;34m*[0m[0mkey[0m[0;34m,[0m [0mtakeable[0m[0;34m=[0m[0mself[0m[0;34m.[0m[0m_takeable[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 925[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0m_getitem_tuple[0m[0;34m([0m[0mkey[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    926[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    927[0m             [0;31m# we by definition only have the 0th axis[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/core/indexing.py[0m in [0;36m_getitem_tuple[0;34m(self, tup)[0m
+[1;32m   1098[0m     [0;32mdef[0m [0m_getitem_tuple[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mtup[0m[0;34m:[0m [0mtuple[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1099[0m         [0;32mwith[0m [0msuppress[0m[0;34m([0m[0mIndexingError[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1100[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0m_getitem_lowerdim[0m[0;34m([0m[0mtup[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1101[0m [0;34m[0m[0m
+[1;32m   1102[0m         [0;31m# no multi-index, so validate all of the indexers[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/core/indexing.py[0m in [0;36m_getitem_lowerdim[0;34m(self, tup)[0m
+[1;32m    836[0m                 [0;31m# We don't need to check for tuples here because those are[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    837[0m                 [0;31m#  caught by the _is_nested_tuple_indexer check above.[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 838[0;31m                 [0msection[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_getitem_axis[0m[0;34m([0m[0mkey[0m[0;34m,[0m [0maxis[0m[0;34m=[0m[0mi[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    839[0m [0;34m[0m[0m
+[1;32m    840[0m                 [0;31m# We should never have a scalar section here, because[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/core/indexing.py[0m in [0;36m_getitem_axis[0;34m(self, key, axis)[0m
+[1;32m   1162[0m         [0;31m# fall thru to straight lookup[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1163[0m         [0mself[0m[0;34m.[0m[0m_validate_key[0m[0;34m([0m[0mkey[0m[0;34m,[0m [0maxis[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1164[0;31m         [0;32mreturn[0m [0mself[0m[0;34m.[0m[0m_get_label[0m[0;34m([0m[0mkey[0m[0;34m,[0m [0maxis[0m[0;34m=[0m[0maxis[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1165[0m [0;34m[0m[0m
+[1;32m   1166[0m     [0;32mdef[0m [0m_get_slice_axis[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mslice_obj[0m[0;34m:[0m [0mslice[0m[0;34m,[0m [0maxis[0m[0;34m:[0m [0mint[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/core/indexing.py[0m in [0;36m_get_label[0;34m(self, label, axis)[0m
+[1;32m   1111[0m     [0;32mdef[0m [0m_get_label[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mlabel[0m[0;34m,[0m [0maxis[0m[0;34m:[0m [0mint[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1112[0m         [0;31m# GH#5667 this will fail if the label is not present in the axis.[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1113[0;31m         [0;32mreturn[0m [0mself[0m[0;34m.[0m[0mobj[0m[0;34m.[0m[0mxs[0m[0;34m([0m[0mlabel[0m[0;34m,[0m [0maxis[0m[0;34m=[0m[0maxis[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1114[0m [0;34m[0m[0m
+[1;32m   1115[0m     [0;32mdef[0m [0m_handle_lowerdim_multi_index_axis0[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mtup[0m[0;34m:[0m [0mtuple[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/core/generic.py[0m in [0;36mxs[0;34m(self, key, axis, level, drop_level)[0m
+[1;32m   3774[0m                 [0;32mraise[0m [0mTypeError[0m[0;34m([0m[0;34mf"Expected label or tuple of labels, got {key}"[0m[0;34m)[0m [0;32mfrom[0m [0me[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   3775[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 3776[0;31m             [0mloc[0m [0;34m=[0m [0mindex[0m[0;34m.[0m[0mget_loc[0m[0;34m([0m[0mkey[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   3777[0m [0;34m[0m[0m
+[1;32m   3778[0m             [0;32mif[0m [0misinstance[0m[0;34m([0m[0mloc[0m[0;34m,[0m [0mnp[0m[0;34m.[0m[0mndarray[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/core/indexes/base.py[0m in [0;36mget_loc[0;34m(self, key, method, tolerance)[0m
+[1;32m   3361[0m                 [0;32mreturn[0m [0mself[0m[0;34m.[0m[0m_engine[0m[0;34m.[0m[0mget_loc[0m[0;34m([0m[0mcasted_key[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   3362[0m             [0;32mexcept[0m [0mKeyError[0m [0;32mas[0m [0merr[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 3363[0;31m                 [0;32mraise[0m [0mKeyError[0m[0;34m([0m[0mkey[0m[0;34m)[0m [0;32mfrom[0m [0merr[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   3364[0m [0;34m[0m[0m
+[1;32m   3365[0m         [0;32mif[0m [0mis_scalar[0m[0;34m([0m[0mkey[0m[0;34m)[0m [0;32mand[0m [0misna[0m[0;34m([0m[0mkey[0m[0;34m)[0m [0;32mand[0m [0;32mnot[0m [0mself[0m[0;34m.[0m[0mhasnans[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mKeyError[0m: 0
+KeyError: 0
 

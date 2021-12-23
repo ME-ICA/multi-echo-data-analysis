@@ -90,7 +90,7 @@ metrics = pd.read_table(os.path.join(out_dir, "sub-04570_task-rest_space-scanner
 
 def color_rejected_red(series):
     """Color rejected components red."""
-    return [f"color: red" if series["classification"] == "rejected" else '' for v in series]
+    return [f"color: red" if series["classification"] == "rejected" else "" for v in series]
 
 metrics.style.apply(color_rejected_red, axis=1)
 ```
