@@ -20,11 +20,16 @@ from glob import glob
 
 import matplotlib.pyplot as plt
 import nibabel as nib
+import nitransforms as nit
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from nilearn import image, masking, plotting
 from repo2data.repo2data import Repo2Data
+
+from tedana.io import load_data, new_nii_like
+from tedana.utils import make_adaptive_mask
+from nilearn.masking import compute_epi_mask
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
@@ -48,6 +53,16 @@ data_files = [
 ]
 echo_times = np.array([12., 28., 44., 60.])
 
+# Background anatomical image
+xfm = os.path.join(func_dir, "sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt")
+xfm = nit.linear.load(xfm, fmt="itk")
+t1_file = os.path.join(data_path, "sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz")
+bg_img = xfm.apply(
+    spatialimage=t1_file,
+    reference=data_files[0],
+)
+
+# Tedana outputs
 adaptive_mask_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz")
 mask = image.math_img("img >= 3", img=adaptive_mask_file)
 
@@ -142,8 +157,20 @@ hk_t1c_data = masking.apply_mask(
     mask,
 )
 
-# Get voxel index for most related to first component (checkerboard)
-voxel_idx = np.where(beta_maps[0, :] == np.max(beta_maps[0, :]))[0][0]
+# Component table
+comp_tbl = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    index_col="Component",
+)
+
+# Get voxel index for voxel most related to component with highest kappa value
+acc_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "accepted"]
+high_kappa_comp = acc_comp_tbl.sort_values(by="kappa", ascending=False).index.values[0]
+high_kappa_comp_val = int(high_kappa_comp.split("_")[1])
+voxel_idx = np.where(beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :]))[0][0]
+
+rej_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "rejected"]
+low_kappa_comp = rej_comp_tbl.sort_values(by="rho", ascending=False).index.values[0]
 
 # load data
 data = [masking.apply_mask(f, mask) for f in data_files]
@@ -152,12 +179,6 @@ ts_1d = np.hstack(ts)
 
 n_echoes = len(echo_times)
 n_trs = data[0].shape[0]
-
-# Component table
-df = pd.read_table(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
-    index_col="Component",
-)
 
 pal = sns.color_palette("cubehelix", n_echoes)
 ```
@@ -221,8 +242,8 @@ ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
 ax.tick_params(axis="both", which="major", labelsize=14)
-ax.set_xlim(0, 100)
-ax.set_ylim(0, 16000)
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
 fig.tight_layout()
 fig.show()
 ```
@@ -236,10 +257,6 @@ When $T_{2}^*$ and $S_{0}$ are calculated below, each voxel's values are only ca
 where $n$ is the value for that voxel in the adaptive mask.
 
 ```{code-cell} ipython3
-from tedana.io import load_data, new_nii_like
-from tedana.utils import make_adaptive_mask
-from nilearn.masking import compute_epi_mask
-
 mask_img = compute_epi_mask(data_files[0])
 data, img = load_data(data_files, len(echo_times))
 mask, adaptive_mask = make_adaptive_mask(data, mask=mask_img, getsum=True)
@@ -250,13 +267,21 @@ adaptive_mask_img = new_nii_like(img, adaptive_mask)
 ```
 
 ```{code-cell} ipython3
-import seaborn as sns
 fig, ax = plt.subplots(figsize=(10, 4))
 palette = sns.color_palette("BuGn_r", 10)
-plotting.plot_epi(adaptive_mask_img, vmax=8, alpha=1,
-                  draw_cross=False, colorbar=True,
-                  cmap="Blues", black_bg=False,
-                  annotate=False, bg_img=None, figure=fig, axes=ax)
+plotting.plot_stat_map(
+    adaptive_mask_img,
+    vmax=n_echoes,
+    # alpha=0.5,
+    threshold=1.,
+    draw_cross=False,
+    colorbar=True,
+    cmap="Blues",
+    annotate=False,
+    bg_img=bg_img,
+    figure=fig,
+    axes=ax,
+)
 fig.show()
 ```
 
@@ -272,8 +297,8 @@ for i_echo in range(n_echoes):
 ax.set_ylabel("log(BOLD signal)", fontsize=16)
 ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
 ax.set_xticks(-1 * echo_times)
-ax.set_xlim(-100, 0)
-ax.set_ylim(7, 10)
+ax.set_xlim(-70, 0)
+ax.set_ylim(4, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
 
 fig.tight_layout()
@@ -323,13 +348,16 @@ ax.plot(log_x, log_y)
 ax.set_ylabel("log(BOLD signal)", fontsize=16)
 ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
 ax.set_xticks(-1 * echo_times)
-ax.set_xlim(-100, 0)
-ax.set_ylim(7, 10)
+ax.set_xlim(-70, 0)
+ax.set_ylim(5, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
 
-ax.annotate("$B_0$: {0:.02f}\n$B_1$: {1:.02f}".format(betas[0], betas[1]),
-            xy=(-70, 9.5), fontsize=16,
-            bbox=dict(fc="white", ec="black", lw=1))
+ax.annotate(
+    "$B_0$: {0:.02f}\n$B_1$: {1:.02f}".format(betas[0], betas[1]),
+    xy=(-70, 9.5),
+    fontsize=16,
+    bbox=dict(fc="white", ec="black", lw=1),
+)
 
 fig.tight_layout()
 fig.show()
@@ -359,12 +387,15 @@ ax.plot(mono_x, mono_y)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
-ax.set_xlim(0, 100)
-ax.set_ylim(0, 16000)
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
 ax.tick_params(axis="both", which="major", labelsize=14)
-ax.annotate("$S_0$: {0:.02f}\n$T_2^*$: {1:.02f}".format(s0, t2s),
-            xy=(86.5, 13500), fontsize=16,
-            bbox=dict(fc="white", ec="black", lw=1))
+ax.annotate(
+    "$S_0$: {0:.02f}\n$T_2^*$: {1:.02f}".format(s0, t2s),
+    xy=(86.5, 13500),
+    fontsize=16,
+    bbox=dict(fc="white", ec="black", lw=1),
+)
 
 fig.tight_layout()
 fig.show()
@@ -384,8 +415,8 @@ ax.axvline(t2s, 0, 1, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
-ax.set_xlim(0, 100)
-ax.set_ylim(0, 16000)
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.xaxis.get_major_ticks()[-1].set_pad(20)
 
@@ -419,14 +450,14 @@ ax.plot(mono_x, mono_y)
 
 # Optimal combination
 rep_t2s = np.ones(n_trs) * t2s
-ax.scatter(rep_t2s, oc_manual, alpha=1, color="red", label="Optimally\ncombined\ndata")
+ax.scatter(rep_t2s, oc_manual, alpha=0.9, color="red", label="Optimally\ncombined\ndata")
 
 ax.axvline(t2s, 0, 20000, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
-ax.set_xlim(0, 100)
-ax.set_ylim(0, 16000)
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.xaxis.get_major_ticks()[-1].set_pad(20)
 
@@ -510,26 +541,19 @@ ICA produces a mixing matrix (i.e., timeseries for each component).
 
 ```{code-cell} ipython3
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
-i = 0
-k = df.loc[i, "kappa"]
-r = df.loc[i, "rho"]
-c = df.loc[i, "classification"]
-axes[0].plot(meica_mmix[:, i])
-axes[0].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
-i = 1
-k = df.loc[i, "kappa"]
-r = df.loc[i, "rho"]
-c = df.loc[i, "classification"]
-axes[1].plot(meica_mmix[:, i])
-axes[1].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
+comps_to_plot = [high_kappa_comp, low_kappa_comp, "ICA_00"]
 
-i = 2
-k = df.loc[i, "kappa"]
-r = df.loc[i, "rho"]
-c = df.loc[i, "classification"]
-axes[2].plot(meica_mmix[:, i])
-axes[2].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
+for i_comp, comp_to_plot in enumerate(comps_to_plot):
+    idx = int(comp_to_plot.split("_")[1])
+    k = comp_tbl.loc[comp_to_plot, "kappa"]
+    r = comp_tbl.loc[comp_to_plot, "rho"]
+    c = comp_tbl.loc[comp_to_plot, "classification"]
+    axes[i_comp].plot(meica_mmix[:, idx])
+    axes[i_comp].set_title(
+        "ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(comp_to_plot, k, r, c),
+        fontsize=16,
+    )
 
 axes[0].set_xlim(0, meica_mmix.shape[0]-1)
 axes[2].set_xticks([])
@@ -552,28 +576,31 @@ Note that the values here are for a single voxel (the highest-weighted one for t
 but $\kappa$ and $\rho$ are averaged across voxels.
 
 ```{code-cell} ipython3
-components = [0, 1, 2]
-for i, comp in enumerate(components):  # only generate plots for a few components
-    comp_voxel_idx = np.where(beta_maps[comp, :] == np.max(beta_maps[comp, :]))[0][0]
-    # Use weight map to average as fitmodels_direct does
-    comp_weights = meica_betas[comp, :, comp_voxel_idx]
-    r2_pred_weights = r2_pred_betas[comp, :, comp_voxel_idx]
-    s0_pred_weights = s0_pred_betas[comp, :, comp_voxel_idx]
+fig, axes = plt.subplots(3, sharex=True, figsize=(14, 9))
+axes[-1].set_xticks(echo_times)
+axes[-1].tick_params(axis="both", which="major", labelsize=12)
+axes[-1].set_xlabel("Echo Time (ms)", fontsize=16)
 
-    fig, ax = plt.subplots(figsize=(16, 4))
-    ax.plot(echo_times, comp_weights, c="black", alpha=0.5, linewidth=5, label="Component PEs")
-    ax.plot(echo_times, r2_pred_weights, c="blue", label="Predicted T2* model values")
-    ax.plot(echo_times, s0_pred_weights, c="red", label="Predicted S0 model values")
-    ax.set_xticks(echo_times)
-    ax.tick_params(axis="both", which="major", labelsize=12)
-    ax.set_xlabel("Echo Time (ms)", fontsize=16)
+for i_comp, comp in enumerate(comps_to_plot):  # only generate plots for a few components
+    comp_voxel_idx = np.where(beta_maps[i_comp, :] == np.max(beta_maps[i_comp, :]))[0][0]
+    # Use weight map to average as fitmodels_direct does
+    comp_weights = meica_betas[comp_voxel_idx, :, i_comp]
+    r2_pred_weights = r2_pred_betas[comp_voxel_idx, :, i_comp]
+    s0_pred_weights = s0_pred_betas[comp_voxel_idx, :, i_comp]
+
+    axes[i_comp].plot(echo_times, comp_weights, c="black", alpha=0.5, linewidth=5, label="Component PEs")
+    axes[i_comp].plot(echo_times, r2_pred_weights, c="blue", label="Predicted T2* model values")
+    axes[i_comp].plot(echo_times, s0_pred_weights, c="red", label="Predicted S0 model values")
+
+    # Set yticklabels
     temp = np.hstack((comp_weights, s0_pred_weights, r2_pred_weights))
     lim = np.mean(temp) * .05
-    ax.set_ylim(np.floor(np.min(temp)) - lim, np.ceil(np.max(temp)) + lim)
-    legend = ax.legend(frameon=True, fontsize=14, ncol=3)
-    ax.set_title(f"ICA Component {comp}", fontsize=16)
-    fig.tight_layout()
-    fig.show()
+    axes[i_comp].set_ylim(np.floor(np.min(temp)) - lim, np.ceil(np.max(temp)) + lim)
+    legend = axes[i_comp].legend(frameon=True, fontsize=14, ncol=3)
+    axes[i_comp].set_title(f"ICA Component {comp}", fontsize=16)
+
+fig.tight_layout()
+fig.show()
 ```
 
 ## ICA Component Selection and Multi-Echo Denoising
