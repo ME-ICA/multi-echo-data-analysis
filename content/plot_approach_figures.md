@@ -46,7 +46,7 @@ data_files = [
     os.path.join(func_dir, "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz"),
     os.path.join(func_dir, "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz"),
 ]
-echo_times = [12., 28., 44., 60.]
+echo_times = np.array([12., 28., 44., 60.])
 
 adaptive_mask_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz")
 mask = image.math_img("img >= 3", img=adaptive_mask_file)
@@ -72,14 +72,14 @@ norm_weights = masking.apply_mask(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"),
     mask,
 )
-meica_betas = np.dstack(
+meica_betas = np.dstack((
     masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"), mask).T,
     masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz"), mask).T,
     masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz"), mask).T,
     masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz"), mask).T,
-)
-meica_betas = np.swap_axes(meica_betas, 1, 2)
-r2_pred_betas = np.dstack(
+))
+meica_betas = np.swapaxes(meica_betas, 1, 2)
+r2_pred_betas = np.dstack((
     masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz"),
         mask,
@@ -96,9 +96,9 @@ r2_pred_betas = np.dstack(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz"),
         mask,
     ).T,
-)
-r2_pred_betas = np.swap_axes(r2_pred_betas, 1, 2)
-s0_pred_betas = np.dstack(
+))
+r2_pred_betas = np.swapaxes(r2_pred_betas, 1, 2)
+s0_pred_betas = np.dstack((
     masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz"),
         mask,
@@ -115,10 +115,10 @@ s0_pred_betas = np.dstack(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz"),
         mask,
     ).T,
-)
-s0_pred_betas = np.swap_axes(s0_pred_betas, 1, 2)
+))
+s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
 
-# Component betas
+# Component parameter estimates
 betas_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz")
 beta_maps = masking.apply_mask(betas_file, mask)
 
@@ -150,7 +150,7 @@ data = [masking.apply_mask(f, mask) for f in data_files]
 ts = [d[:, voxel_idx] for d in data]
 ts_1d = np.hstack(ts)
 
-n_echoes = len(data)
+n_echoes = len(echo_times)
 n_trs = data[0].shape[0]
 
 # Component table
@@ -469,11 +469,11 @@ i = 0
 axes[0].plot(mepca_mmix[:, i])
 axes[0].set_title(f"PCA Component {i}", fontsize=16)
 
-i = 3
+i = 1
 axes[1].plot(mepca_mmix[:, i])
 axes[1].set_title(f"PCA Component {i}", fontsize=16)
 
-i = 100
+i = 2
 axes[2].plot(mepca_mmix[:, i])
 axes[2].set_title(f"PCA Component {i}", fontsize=16)
 
@@ -517,14 +517,14 @@ c = df.loc[i, "classification"]
 axes[0].plot(meica_mmix[:, i])
 axes[0].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
-i = 3
+i = 1
 k = df.loc[i, "kappa"]
 r = df.loc[i, "rho"]
 c = df.loc[i, "classification"]
 axes[1].plot(meica_mmix[:, i])
 axes[1].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
-i = 44
+i = 2
 k = df.loc[i, "kappa"]
 r = df.loc[i, "rho"]
 c = df.loc[i, "classification"]
@@ -552,7 +552,7 @@ Note that the values here are for a single voxel (the highest-weighted one for t
 but $\kappa$ and $\rho$ are averaged across voxels.
 
 ```{code-cell} ipython3
-components = [0, 3, 44]
+components = [0, 1, 2]
 for i, comp in enumerate(components):  # only generate plots for a few components
     comp_voxel_idx = np.where(beta_maps[comp, :] == np.max(beta_maps[comp, :]))[0][0]
     # Use weight map to average as fitmodels_direct does
