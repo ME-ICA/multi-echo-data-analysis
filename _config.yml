@@ -18,6 +18,7 @@ execute:
   cache                     : ""  # A path to the jupyter cache that will be used to store execution artifacs. Defaults to `_build/.jupyter_cache/`
   exclude_patterns          : []  # A list of patterns to *skip* in execution (e.g. a notebook that takes a really long time)
   timeout                   : -1  # remove restriction on execution time
+
 #######################################################################################
 # HTML-specific settings
 html:
@@ -30,6 +31,14 @@ html:
   google_analytics_id       : ""  # A GA id that can be used to track book views.
   home_page_in_navbar       : true  # Whether to include your home page in the left Navigation Bar
   baseurl                   : ""  # The base URL where your book will be hosted. Used for creating image previews and social links. e.g.: https://mypage.com/mybook/
+  comments:
+    hypothesis              : false
+
+#######################################################################################
+# LaTeX-specific settings
+latex:
+  latex_engine              : pdflatex  # one of 'pdflatex', 'xelatex' (recommended for unicode), 'luatex', 'platex', 'uplatex'
+  use_jupyterbook_latex     : true # use sphinx-jupyterbook-latex for pdf builds as default
 
 #######################################################################################
 # Launch button settings
@@ -62,3 +71,4 @@ sphinx:
       tedana:
       - "https://tedana.readthedocs.io/en/0.0.11/"
       - null
+    language: en
