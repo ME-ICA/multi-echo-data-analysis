@@ -20,7 +20,7 @@ nbclient.exceptions.CellExecutionError: An error occurred while executing the fo
 fig, ax = plt.subplots(figsize=(16, 4))
 
 # Add a constant term to the array
-comp_X = np.hstack((component, np.ones((component.shape[0], 1))))
+comp_X = np.hstack((component[:, None], np.ones((component.shape[0], 1))))
 pes, _, _, _ = np.linalg.lstsq(comp_X, multiecho_signal.T, rcond=None)
 pes = pes[0, :]
 
@@ -38,25 +38,14 @@ fig.show()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2205/1952282756.py[0m in [0;36m<module>[0;34m[0m
-[1;32m      2[0m [0;34m[0m[0m
-[1;32m      3[0m [0;31m# Add a constant term to the array[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[0;32m----> 4[0;31m [0mcomp_X[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mhstack[0m[0;34m([0m[0;34m([0m[0mcomponent[0m[0;34m,[0m [0mnp[0m[0;34m.[0m[0mones[0m[0;34m([0m[0;34m([0m[0mcomponent[0m[0;34m.[0m[0mshape[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m,[0m [0;36m1[0m[0;34m)[0m[0;34m)[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      5[0m [0mpes[0m[0;34m,[0m [0m_[0m[0;34m,[0m [0m_[0m[0;34m,[0m [0m_[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mlinalg[0m[0;34m.[0m[0mlstsq[0m[0;34m([0m[0mcomp_X[0m[0;34m,[0m [0mmultiecho_signal[0m[0;34m.[0m[0mT[0m[0;34m,[0m [0mrcond[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2168/2811476624.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      6[0m [0mpes[0m [0;34m=[0m [0mpes[0m[0;34m[[0m[0;36m0[0m[0;34m,[0m [0;34m:[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m      7[0m [0;34m[0m[0m
+[0;32m----> 8[0;31m [0mF_S0[0m[0;34m,[0m [0mF_R2[0m[0;34m,[0m [0mpred_S0[0m[0;34m,[0m [0mpred_R2[0m [0;34m=[0m [0mcompute_metrics[0m[0;34m([0m[0mmultiecho_signal[0m[0;34m,[0m [0mpes[0m[0;34m,[0m [0mecho_times[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      9[0m [0max[0m[0;34m.[0m[0mplot[0m[0;34m([0m[0mecho_times[0m[0;34m,[0m [0mpred_R2[0m[0;34m,[0m [0mlabel[0m[0;34m=[0m[0;34m'Predicted T2* model values'[0m[0;34m,[0m [0mc[0m[0;34m=[0m[0;34m'blue'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     10[0m [0max[0m[0;34m.[0m[0mplot[0m[0;34m([0m[0mecho_times[0m[0;34m,[0m [0mpred_S0[0m[0;34m,[0m [0mlabel[0m[0;34m=[0m[0;34m'Predicted S0 model values'[0m[0;34m,[0m [0mc[0m[0;34m=[0m[0;34m'red'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m<__array_function__ internals>[0m in [0;36mhstack[0;34m(*args, **kwargs)[0m
-
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/core/shape_base.py[0m in [0;36mhstack[0;34m(tup)[0m
-[1;32m    341[0m     [0;31m# As a special case, dimension 0 of 1-dimensional arrays is "horizontal"[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    342[0m     [0;32mif[0m [0marrs[0m [0;32mand[0m [0marrs[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mndim[0m [0;34m==[0m [0;36m1[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 343[0;31m         [0;32mreturn[0m [0m_nx[0m[0;34m.[0m[0mconcatenate[0m[0;34m([0m[0marrs[0m[0;34m,[0m [0;36m0[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    344[0m     [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    345[0m         [0;32mreturn[0m [0m_nx[0m[0;34m.[0m[0mconcatenate[0m[0;34m([0m[0marrs[0m[0;34m,[0m [0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-
-[0;32m<__array_function__ internals>[0m in [0;36mconcatenate[0;34m(*args, **kwargs)[0m
-
-[0;31mValueError[0m: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
-ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
+[0;31mNameError[0m: name 'compute_metrics' is not defined
+NameError: name 'compute_metrics' is not defined
 
