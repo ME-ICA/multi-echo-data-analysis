@@ -32,7 +32,7 @@ glue("fig_echo_timeseries", fig, display=False)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2373/1601315681.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2401/1601315681.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      9[0m [0maxes[0m[0;34m[[0m[0;34m-[0m[0;36m1[0m[0;34m][0m[0;34m.[0m[0mset_xlim[0m[0;34m([0m[0;36m0[0m[0;34m,[0m [0mlen[0m[0;34m([0m[0mts[0m[0;34m[[0m[0mi_echo[0m[0;34m][0m[0;34m)[0m[0;34m-[0m[0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     10[0m [0mfig[0m[0;34m.[0m[0mtight_layout[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 11[0;31m [0mglue[0m[0;34m([0m[0;34m"fig_echo_timeseries"[0m[0;34m,[0m [0mfig[0m[0;34m,[0m [0mdisplay[0m[0;34m=[0m[0;32mFalse[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
