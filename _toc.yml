@@ -38,3 +38,4 @@ parts:
     chapters:
     - file: content/bibliography.md
     - file: content/build_information.md
+    - file: content/plot_approach_figures.md
