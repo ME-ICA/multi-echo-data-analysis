@@ -507,6 +507,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
 <span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">image</span><span class="p">,</span> <span class="n">masking</span><span class="p">,</span> <span class="n">plotting</span>
 <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
 
@@ -741,20 +742,13 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2401</span><span class="o">/</span><span class="mf">1601315681.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_echo_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;glue&#39; is not defined
-</pre></div>
-</div>
 <img alt="../_images/plot_approach_figures_6_1.png" src="../_images/plot_approach_figures_6_1.png" />
 </div>
 </div>
 <div class="figure align-center" id="fig-echo-timeseries">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_6_0.png" src="../_images/plot_approach_figures_6_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 25 </span><span class="caption-text">Time series from a voxel for each echo.</span><a class="headerlink" href="#fig-echo-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -779,8 +773,14 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_8_1.png" src="../_images/plot_approach_figures_8_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-echo-scatter">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_8_0.png" src="../_images/plot_approach_figures_8_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">Scatter plot of voxel’s values by echo time.</span><a class="headerlink" href="#fig-echo-scatter" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -819,8 +819,18 @@ where <span class="math notranslate nohighlight">\(n\)</span> is the value for t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/resampling.py:531: UserWarning: Casting data from int32 to float32
+  warnings.warn(&quot;Casting data from %s to %s&quot; % (data.dtype.name, aux))
+</pre></div>
+</div>
+<img alt="../_images/plot_approach_figures_10_2.png" src="../_images/plot_approach_figures_10_2.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-adaptive-mask">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_10_1.png" src="../_images/plot_approach_figures_10_1.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 27 </span><span class="caption-text">Adaptive mask.</span><a class="headerlink" href="#fig-adaptive-mask" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -846,8 +856,14 @@ where <span class="math notranslate nohighlight">\(n\)</span> is the value for t
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_12_1.png" src="../_images/plot_approach_figures_12_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_12_0.png" src="../_images/plot_approach_figures_12_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 28 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation.</span><a class="headerlink" href="#fig-loglin-scatter" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -907,8 +923,14 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_14_1.png" src="../_images/plot_approach_figures_14_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter-with-line">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_14_0.png" src="../_images/plot_approach_figures_14_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 29 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation, with fitted line.</span><a class="headerlink" href="#fig-loglin-scatter-with-line" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -947,8 +969,14 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_16_1.png" src="../_images/plot_approach_figures_16_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter-with-t2s">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_16_0.png" src="../_images/plot_approach_figures_16_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 30 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation, with fitted line and T2* estimate.</span><a class="headerlink" href="#fig-loglin-scatter-with-t2s" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="t2">
@@ -978,8 +1006,14 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_18_1.png" src="../_images/plot_approach_figures_18_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-scatter-with-t2s">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_18_0.png" src="../_images/plot_approach_figures_18_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 31 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo with T2* estimate.</span><a class="headerlink" href="#fig-scatter-with-t2s" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -997,8 +1031,18 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/seaborn/_decorators.py:43: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  FutureWarning
+</pre></div>
+</div>
+<img alt="../_images/plot_approach_figures_20_2.png" src="../_images/plot_approach_figures_20_2.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-optcom-weights">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_20_1.png" src="../_images/plot_approach_figures_20_1.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 32 </span><span class="caption-text">Averaging weights for optimal combination.</span><a class="headerlink" href="#fig-optcom-weights" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1033,8 +1077,14 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_22_1.png" src="../_images/plot_approach_figures_22_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-scatter-with-optcom">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_22_0.png" src="../_images/plot_approach_figures_22_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 33 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo with optimally combined signal as well.</span><a class="headerlink" href="#fig-scatter-with-optcom" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1061,8 +1111,14 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_24_1.png" src="../_images/plot_approach_figures_24_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-echo-timeseries-with-optcom">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_24_0.png" src="../_images/plot_approach_figures_24_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 34 </span><span class="caption-text">Echo-wise time series for a voxel, including the optimally combined time series.</span><a class="headerlink" href="#fig-echo-timeseries-with-optcom" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1088,8 +1144,14 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_26_1.png" src="../_images/plot_approach_figures_26_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-pca-timeseries">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_26_0.png" src="../_images/plot_approach_figures_26_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 35 </span><span class="caption-text">Time series of three PCA components.</span><a class="headerlink" href="#fig-pca-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1111,8 +1173,14 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_28_1.png" src="../_images/plot_approach_figures_28_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-optcom-reduced-timeseries">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_28_0.png" src="../_images/plot_approach_figures_28_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 36 </span><span class="caption-text">Time series of optimally combined data from a voxel, before and after dimensionality reduction with PCA.</span><a class="headerlink" href="#fig-optcom-reduced-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="multi-echo-independent-components-analysis">
@@ -1149,8 +1217,14 @@ ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_30_1.png" src="../_images/plot_approach_figures_30_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-ica-timeseries">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_30_0.png" src="../_images/plot_approach_figures_30_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 37 </span><span class="caption-text">Time series of three ICA components.</span><a class="headerlink" href="#fig-ica-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1193,8 +1267,14 @@ but <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_32_1.png" src="../_images/plot_approach_figures_32_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-ica-weights">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_32_0.png" src="../_images/plot_approach_figures_32_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 38 </span><span class="caption-text">Echo-wise model weights for three ICA components.</span><a class="headerlink" href="#fig-ica-weights" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1235,8 +1315,14 @@ This means that ignored components and residual variance not explained by the IC
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_34_1.png" src="../_images/plot_approach_figures_34_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-medn-timeseries">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_34_0.png" src="../_images/plot_approach_figures_34_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 39 </span><span class="caption-text">Time series for optimally combined, denoised, and high-kappa data for a single voxel.</span><a class="headerlink" href="#fig-medn-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1273,8 +1359,14 @@ Go Decomposition (GODEC), and robust PCA.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_36_1.png" src="../_images/plot_approach_figures_36_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-mir-timeseries">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_36_0.png" src="../_images/plot_approach_figures_36_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 40 </span><span class="caption-text">Time series from a voxel before and after minimum image regression.</span><a class="headerlink" href="#fig-mir-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>

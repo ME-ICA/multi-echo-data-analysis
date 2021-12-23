@@ -24,6 +24,7 @@ import nitransforms as nit
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from myst_nb import glue
 from nilearn import image, masking, plotting
 from repo2data.repo2data import Repo2Data
 
