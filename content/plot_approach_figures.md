@@ -72,33 +72,51 @@ norm_weights = masking.apply_mask(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"),
     mask,
 )
-meica_betas = masking.apply_mask(
-    [
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz"),
-    ],
-    mask,
+meica_betas = np.dstack(
+    masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"), mask).T,
+    masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz"), mask).T,
+    masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz"), mask).T,
+    masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz"), mask).T,
 )
-r2_pred_betas = masking.apply_mask(
-    [
+meica_betas = np.swap_axes(meica_betas, 1, 2)
+r2_pred_betas = np.dstack(
+    masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz"),
+        mask,
+    ).T,
+    masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz"),
+        mask,
+    ).T,
+    masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz"),
+        mask,
+    ).T,
+    masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz"),
-    ],
-    mask,
+        mask,
+    ).T,
 )
-s0_pred_betas = masking.apply_mask(
-    [
+r2_pred_betas = np.swap_axes(r2_pred_betas, 1, 2)
+s0_pred_betas = np.dstack(
+    masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz"),
+        mask,
+    ).T,
+    masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz"),
+        mask,
+    ).T,
+    masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz"),
+        mask,
+    ).T,
+    masking.apply_mask(
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz"),
-    ],
-    mask,
+        mask,
+    ).T,
 )
+s0_pred_betas = np.swap_axes(s0_pred_betas, 1, 2)
 
 # Component betas
 betas_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz")
