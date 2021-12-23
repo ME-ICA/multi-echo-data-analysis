@@ -229,7 +229,14 @@ for i_echo in range(n_echoes):
 axes[-1].set_xlabel("Time", fontsize=16)
 axes[-1].set_xlim(0, len(ts[i_echo])-1)
 fig.tight_layout()
-fig.show()
+glue("fig_echo_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_echo_timeseries
+:name: fig_echo_timeseries
+:align: center
+
+Time series from a voxel for each echo.
 ```
 
 ### Echo-specific data and echo time
@@ -249,7 +256,14 @@ ax.tick_params(axis="both", which="major", labelsize=14)
 ax.set_xlim(0, 70)
 ax.set_ylim(0, 3000)
 fig.tight_layout()
-fig.show()
+glue("fig_echo_scatter", fig, display=False)
+```
+
+```{glue:figure} fig_echo_scatter
+:name: fig_echo_scatter
+:align: center
+
+Scatter plot of voxel's values by echo time.
 ```
 
 ### Adaptive mask
@@ -283,7 +297,14 @@ plotting.plot_stat_map(
     figure=fig,
     axes=ax,
 )
-fig.show()
+glue("fig_adaptive_mask", fig, display=False)
+```
+
+```{glue:figure} fig_adaptive_mask
+:name: fig_adaptive_mask
+:align: center
+
+Adaptive mask.
 ```
 
 ### Log-linear transformation
@@ -304,7 +325,14 @@ ax.set_ylim(4, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
 
 fig.tight_layout()
-fig.show()
+glue("fig_loglin_scatter", fig, display=False)
+```
+
+```{glue:figure} fig_loglin_scatter
+:name: fig_loglin_scatter
+:align: center
+
+Scatter plot of voxel's signal for each echo, after log-linear transformation.
 ```
 
 ### Log-linear model
@@ -363,7 +391,14 @@ ax.annotate(
 )
 
 fig.tight_layout()
-fig.show()
+glue("fig_loglin_scatter_with_line", fig, display=False)
+```
+
+```{glue:figure} fig_loglin_scatter_with_line
+:name: fig_loglin_scatter_with_line
+:align: center
+
+Scatter plot of voxel's signal for each echo, after log-linear transformation, with fitted line.
 ```
 
 ## Monoexponential decay model
@@ -402,7 +437,14 @@ ax.annotate(
 )
 
 fig.tight_layout()
-fig.show()
+glue("fig_loglin_scatter_with_t2s", fig, display=False)
+```
+
+```{glue:figure} fig_loglin_scatter_with_t2s
+:name: fig_loglin_scatter_with_t2s
+:align: center
+
+Scatter plot of voxel's signal for each echo, after log-linear transformation, with fitted line and T2* estimate.
 ```
 
 ### T2*
@@ -428,9 +470,15 @@ ax.xaxis.get_major_ticks()[-1].set_pad(20)
 legend = ax.legend(frameon=True, fontsize=16)
 
 fig.tight_layout()
-fig.show()
+glue("fig_scatter_with_t2s", fig, display=False)
 ```
 
+```{glue:figure} fig_scatter_with_t2s
+:name: fig_scatter_with_t2s
+:align: center
+
+Scatter plot of voxel's signal for each echo with T2* estimate.
+```
 ### Optimal combination weights
 
 ```{code-cell} ipython3
@@ -441,7 +489,14 @@ ax.set_ylabel("Weight", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
-fig.show()
+glue("fig_optcom_weights", fig, display=False)
+```
+
+```{glue:figure} fig_optcom_weights
+:name: fig_optcom_weights
+:align: center
+
+Averaging weights for optimal combination.
 ```
 
 ### Optimally combined timeseries
@@ -471,7 +526,14 @@ ax.xaxis.get_major_ticks()[-1].set_pad(20)
 legend = ax.legend(frameon=True, fontsize=16)
 
 fig.tight_layout()
-fig.show()
+glue("fig_scatter_with_optcom", fig, display=False)
+```
+
+```{glue:figure} fig_scatter_with_optcom
+:name: fig_scatter_with_optcom
+:align: center
+
+Scatter plot of voxel's signal for each echo with optimally combined signal as well.
 ```
 
 ### Optimally combined timeseries
@@ -493,7 +555,14 @@ axes[-1].set_xticks([])
 axes[-1].set_xlim(0, len(ts[i_echo])-1)
 ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
-fig.show()
+glue("fig_echo_timeseries_with_optcom", fig, display=False)
+```
+
+```{glue:figure} fig_echo_timeseries_with_optcom
+:name: fig_echo_timeseries_with_optcom
+:align: center
+
+Echo-wise time series for a voxel, including the optimally combined time series.
 ```
 
 ### Multi-Echo Principal Components Analysis
@@ -524,7 +593,14 @@ axes[0].tick_params(axis="both", which="major", labelsize=12)
 axes[1].tick_params(axis="both", which="major", labelsize=12)
 axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
-fig.show()
+glue("fig_pca_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_pca_timeseries
+:name: fig_pca_timeseries
+:align: center
+
+Time series of three PCA components.
 ```
 
 ## Data Whitening
@@ -540,7 +616,14 @@ ax.set_xlim(0, oc_z.shape[0]-1)
 ax.set_xticks([])
 ax.set_xlabel("Time", fontsize=16)
 ax.tick_params(axis="both", which="major", labelsize=14)
-fig.show()
+glue("fig_optcom_reduced_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_optcom_reduced_timeseries
+:name: fig_optcom_reduced_timeseries
+:align: center
+
+Time series of optimally combined data from a voxel, before and after dimensionality reduction with PCA.
 ```
 
 ### Multi-Echo Independent Components Analysis
@@ -573,7 +656,14 @@ axes[0].tick_params(axis="both", which="major", labelsize=12)
 axes[1].tick_params(axis="both", which="major", labelsize=12)
 axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
-fig.show()
+glue("fig_ica_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_ica_timeseries
+:name: fig_ica_timeseries
+:align: center
+
+Time series of three ICA components.
 ```
 
 ## $R_2$ and $S_0$ Model Fit
@@ -612,7 +702,14 @@ for i_comp, comp in enumerate(comps_to_plot):  # only generate plots for a few c
     axes[i_comp].set_title(f"ICA Component {comp}", fontsize=16)
 
 fig.tight_layout()
-fig.show()
+glue("fig_ica_weights", fig, display=False)
+```
+
+```{glue:figure} fig_ica_weights
+:name: fig_ica_weights
+:align: center
+
+Echo-wise model weights for three ICA components.
 ```
 
 ## ICA Component Selection and Multi-Echo Denoising
@@ -650,7 +747,14 @@ axes[1].tick_params(axis="both", which="major", labelsize=12)
 axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
 
-fig.show()
+glue("fig_medn_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_medn_timeseries
+:name: fig_medn_timeseries
+:align: center
+
+Time series for optimally combined, denoised, and high-kappa data for a single voxel.
 ```
 
 ## Post-processing to remove spatially diffuse noise
@@ -683,5 +787,12 @@ axes[1].set_xlabel("Time", fontsize=16)
 axes[0].tick_params(axis="both", which="major", labelsize=12)
 axes[1].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
-fig.show()
+glue("fig_mir_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_mir_timeseries
+:name: fig_mir_timeseries
+:align: center
+
+Time series from a voxel before and after minimum image regression.
 ```
