@@ -35,6 +35,8 @@ from scipy import signal, stats
 from nilearn.glm import first_level
 from repo2data.repo2data import Repo2Data
 
+from book_utils import pred_bold_signal
+
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 
@@ -68,15 +70,15 @@ frac = 0.2
 s02 = mean_s0 + (mean_s0 * frac)
 t2s2 = mean_t2s + (mean_t2s * frac)
 
-mean_sig = np.squeeze(pred_signal(echo_times, mean_s0, mean_t2s))
+mean_sig = np.squeeze(pred_bold_signal(echo_times, mean_s0, mean_t2s))
 
 # Signal with fluctuating S0
-sig2 = np.squeeze(pred_signal(echo_times, s02, mean_t2s))
+sig2 = np.squeeze(pred_bold_signal(echo_times, s02, mean_t2s))
 d_sig2 = sig2 - mean_sig
 dt_sig2 = d_sig2 / ((sig2 + mean_sig) / 2.)
 
 # Signal with fluctuating T2*
-sig3 = np.squeeze(pred_signal(echo_times, mean_s0, t2s2))
+sig3 = np.squeeze(pred_bold_signal(echo_times, mean_s0, t2s2))
 d_sig3 = sig3 - mean_sig
 dt_sig3 = d_sig3 / ((sig3 + mean_sig) / 2.)
 ```
@@ -366,9 +368,9 @@ mean_s0_ts = np.ones(n_trs) * mean_s0
 mean_t2s_ts = np.ones(n_trs) * mean_t2s
 
 # Simulate signal for each echo time
-t2s_signal = pred_signal(echo_times, mean_s0_ts, t2s_ts)
-s0_signal = pred_signal(echo_times, s0_ts, mean_t2s_ts)
-multiecho_signal = pred_signal(echo_times, s0_ts, t2s_ts)
+t2s_signal = pred_bold_signal(echo_times, mean_s0_ts, t2s_ts)
+s0_signal = pred_bold_signal(echo_times, s0_ts, mean_t2s_ts)
+multiecho_signal = pred_bold_signal(echo_times, s0_ts, t2s_ts)
 
 # Normalize to get component time series
 t2s_ts_z = stats.zscore(t2s_ts)

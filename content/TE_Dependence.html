@@ -453,6 +453,8 @@
 <span class="kn">from</span> <span class="nn">nilearn.glm</span> <span class="kn">import</span> <span class="n">first_level</span>
 <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
 
+<span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">pred_bold_signal</span>
+
 <span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
 <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
 
@@ -467,20 +469,22 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/repo2data
-Config from file :
-../binder/data_requirement.json
-Destination:
-./../data/multi-echo-data-analysis
-
-Info : ./../data/multi-echo-data-analysis already downloaded
-</pre></div>
-</div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/datasets/__init__.py:96: FutureWarning: Fetchers from the nilearn.datasets module will be updated in version 0.9 to return python strings instead of bytes and Pandas dataframes instead of Numpy arrays.
   &quot;Numpy arrays.&quot;, FutureWarning)
 /opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/glm/__init__.py:56: FutureWarning: The nilearn.glm module is experimental. It may change in any future release of Nilearn.
   &#39;It may change in any future release of Nilearn.&#39;, FutureWarning)
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2387</span><span class="o">/</span><span class="mf">385783001.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> 
+<span class="ne">---&gt; </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">pred_bold_signal</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> 
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
+
+<span class="ne">ImportError</span>: cannot import name &#39;pred_bold_signal&#39; from &#39;book_utils&#39; (/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py)
 </pre></div>
 </div>
 </div>
@@ -507,31 +511,17 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <span class="n">s02</span> <span class="o">=</span> <span class="n">mean_s0</span> <span class="o">+</span> <span class="p">(</span><span class="n">mean_s0</span> <span class="o">*</span> <span class="n">frac</span><span class="p">)</span>
 <span class="n">t2s2</span> <span class="o">=</span> <span class="n">mean_t2s</span> <span class="o">+</span> <span class="p">(</span><span class="n">mean_t2s</span> <span class="o">*</span> <span class="n">frac</span><span class="p">)</span>
 
-<span class="n">mean_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
+<span class="n">mean_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
 
 <span class="c1"># Signal with fluctuating S0</span>
-<span class="n">sig2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s02</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
+<span class="n">sig2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s02</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
 <span class="n">d_sig2</span> <span class="o">=</span> <span class="n">sig2</span> <span class="o">-</span> <span class="n">mean_sig</span>
 <span class="n">dt_sig2</span> <span class="o">=</span> <span class="n">d_sig2</span> <span class="o">/</span> <span class="p">((</span><span class="n">sig2</span> <span class="o">+</span> <span class="n">mean_sig</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span>
 
 <span class="c1"># Signal with fluctuating T2*</span>
-<span class="n">sig3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">t2s2</span><span class="p">))</span>
+<span class="n">sig3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">t2s2</span><span class="p">))</span>
 <span class="n">d_sig3</span> <span class="o">=</span> <span class="n">sig3</span> <span class="o">-</span> <span class="n">mean_sig</span>
 <span class="n">dt_sig3</span> <span class="o">=</span> <span class="n">d_sig3</span> <span class="o">/</span> <span class="p">((</span><span class="n">sig3</span> <span class="o">+</span> <span class="n">mean_sig</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2177</span><span class="o">/</span><span class="mf">407992990.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="n">t2s2</span> <span class="o">=</span> <span class="n">mean_t2s</span> <span class="o">+</span> <span class="p">(</span><span class="n">mean_t2s</span> <span class="o">*</span> <span class="n">frac</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> 
-<span class="ne">---&gt; </span><span class="mi">21</span> <span class="n">mean_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">pred_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0</span><span class="p">,</span> <span class="n">mean_t2s</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> 
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="c1"># Signal with fluctuating S0</span>
-
-<span class="ne">NameError</span>: name &#39;pred_signal&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -810,9 +800,9 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 <span class="n">mean_t2s_ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">mean_t2s</span>
 
 <span class="c1"># Simulate signal for each echo time</span>
-<span class="n">t2s_signal</span> <span class="o">=</span> <span class="n">pred_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
-<span class="n">s0_signal</span> <span class="o">=</span> <span class="n">pred_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">mean_t2s_ts</span><span class="p">)</span>
-<span class="n">multiecho_signal</span> <span class="o">=</span> <span class="n">pred_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
+<span class="n">t2s_signal</span> <span class="o">=</span> <span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">mean_s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
+<span class="n">s0_signal</span> <span class="o">=</span> <span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">mean_t2s_ts</span><span class="p">)</span>
+<span class="n">multiecho_signal</span> <span class="o">=</span> <span class="n">pred_bold_signal</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_ts</span><span class="p">,</span> <span class="n">t2s_ts</span><span class="p">)</span>
 
 <span class="c1"># Normalize to get component time series</span>
 <span class="n">t2s_ts_z</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">t2s_ts</span><span class="p">)</span>

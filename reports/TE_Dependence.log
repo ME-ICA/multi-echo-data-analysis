@@ -17,48 +17,38 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-# Simulate data
-# For a nice, smooth curve
-echo_times = np.arange(0, 201, 1)
+import os
 
-# logan's TEs
-#echo_times = np.array([9.58, 21.95, 34.32, 46.69, 59.06, 71.43, 83.8, 96.17])
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import signal, stats
+from nilearn.glm import first_level
+from repo2data.repo2data import Repo2Data
 
-# dan's TEs
-#echo_times = np.array([15.4, 29.7, 44.0, 58.3, 72.6])
+from book_utils import pred_bold_signal
 
-n_echoes = len(echo_times)
-pal = sns.color_palette('cubehelix', 8)
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 
-mean_s0 = 16000
-mean_t2s = 30
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 
-frac = 0.2
-s02 = mean_s0 + (mean_s0 * frac)
-t2s2 = mean_t2s + (mean_t2s * frac)
-
-mean_sig = np.squeeze(pred_signal(echo_times, mean_s0, mean_t2s))
-
-# Signal with fluctuating S0
-sig2 = np.squeeze(pred_signal(echo_times, s02, mean_t2s))
-d_sig2 = sig2 - mean_sig
-dt_sig2 = d_sig2 / ((sig2 + mean_sig) / 2.)
-
-# Signal with fluctuating T2*
-sig3 = np.squeeze(pred_signal(echo_times, mean_s0, t2s2))
-d_sig3 = sig3 - mean_sig
-dt_sig3 = d_sig3 / ((sig3 + mean_sig) / 2.)
+out_dir = os.path.join(data_path, "te-dependence")
+os.makedirs(out_dir, exist_ok=True)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2177/407992990.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     19[0m [0mt2s2[0m [0;34m=[0m [0mmean_t2s[0m [0;34m+[0m [0;34m([0m[0mmean_t2s[0m [0;34m*[0m [0mfrac[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     20[0m [0;34m[0m[0m
-[0;32m---> 21[0;31m [0mmean_sig[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0msqueeze[0m[0;34m([0m[0mpred_signal[0m[0;34m([0m[0mecho_times[0m[0;34m,[0m [0mmean_s0[0m[0;34m,[0m [0mmean_t2s[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     22[0m [0;34m[0m[0m
-[1;32m     23[0m [0;31m# Signal with fluctuating S0[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;31mImportError[0m                               Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2387/385783001.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      8[0m [0;32mfrom[0m [0mrepo2data[0m[0;34m.[0m[0mrepo2data[0m [0;32mimport[0m [0mRepo2Data[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      9[0m [0;34m[0m[0m
+[0;32m---> 10[0;31m [0;32mfrom[0m [0mbook_utils[0m [0;32mimport[0m [0mpred_bold_signal[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     11[0m [0;34m[0m[0m
+[1;32m     12[0m [0;31m# Install the data if running locally, or point to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
 
-[0;31mNameError[0m: name 'pred_signal' is not defined
-NameError: name 'pred_signal' is not defined
+[0;31mImportError[0m: cannot import name 'pred_bold_signal' from 'book_utils' (/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py)
+ImportError: cannot import name 'pred_bold_signal' from 'book_utils' (/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py)
 
