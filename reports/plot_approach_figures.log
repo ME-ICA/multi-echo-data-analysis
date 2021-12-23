@@ -17,92 +17,39 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-# Load data
-DATA_DIR = '/Users/tsalo/Documents/dsets/logans_dset/sub-001/func/'
-TED_DIR = '/Users/tsalo/Documents/tsalo/tedana-comparison/sandbox/e8-checkerboard-example/'
-OUT_DIR = '../docs/_static/'
-FILES = ['sub-001_task-checkerboard_echo-1_bold.nii.gz',
-         'sub-001_task-checkerboard_echo-2_bold.nii.gz',
-         'sub-001_task-checkerboard_echo-3_bold.nii.gz',
-         'sub-001_task-checkerboard_echo-4_bold.nii.gz',
-         'sub-001_task-checkerboard_echo-5_bold.nii.gz',
-         'sub-001_task-checkerboard_echo-6_bold.nii.gz',
-         'sub-001_task-checkerboard_echo-7_bold.nii.gz',
-         'sub-001_task-checkerboard_echo-8_bold.nii.gz']
-files = [op.join(DATA_DIR, f) for f in FILES]
-echo_times = np.array([9.58, 21.95, 34.32, 46.69, 59.06, 71.43, 83.8, 96.17])
+%matplotlib inline
+import os.path as op
+from glob import glob
 
-adaptive_mask_file = op.join(TED_DIR, 'adaptive_mask.nii')
-mask = math_img('img >= 3', img=adaptive_mask_file)
+import numpy as np
+import nibabel as nib
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from nilearn import plotting, masking
+from nilearn.image import math_img
+from repo2data.repo2data import Repo2Data
 
-# Optimally combined data
-oc = masking.apply_mask(op.join(TED_DIR, 'ts_OC.nii'), mask)
-oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 
-# Results from MEPCA
-mepca_mmix = np.loadtxt(op.join(TED_DIR, 'mepca_mix.1D'))
-oc_red = masking.apply_mask(op.join(TED_DIR, 'ts_OC_whitened.nii'), mask)
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 
-# Results from MEICA
-meica_mmix = np.loadtxt(op.join(TED_DIR, 'meica_mix.1D'))
-norm_weights = masking.apply_mask(op.join(TED_DIR, 'meica_metric_weights.nii'), mask)
-meica_betas = masking.apply_mask(op.join(TED_DIR, 'meica_betas_catd.nii'), mask)
-r2_pred_betas = masking.apply_mask(op.join(TED_DIR, 'meica_R2_pred.nii'), mask)
-s0_pred_betas = masking.apply_mask(op.join(TED_DIR, 'meica_S0_pred.nii'), mask)
-
-# Component betas
-betas_file = op.join(TED_DIR, 'betas_OC.nii')
-beta_maps = masking.apply_mask(betas_file, mask)
-
-# Multi-echo denoised data
-dn_data = masking.apply_mask(op.join(TED_DIR, 'dn_ts_OC.nii'), mask)
-hk_data = masking.apply_mask(op.join(TED_DIR, 'hik_ts_OC.nii'), mask)
-
-# Post-processed data
-dn_t1c_data = masking.apply_mask(op.join(TED_DIR, 'dn_ts_OC_T1c.nii'), mask)
-hk_t1c_data = masking.apply_mask(op.join(TED_DIR, 'hik_ts_OC_T1c.nii'), mask)
-
-# Get voxel index for most related to first component (checkerboard)
-voxel_idx = np.where(beta_maps[0, :] == np.max(beta_maps[0, :]))[0][0]
-
-# load data
-data = [masking.apply_mask(f, mask) for f in files]
-ts = [d[:, voxel_idx] for d in data]
-ts_1d = np.hstack(ts)
-
-n_echoes = len(data)
-n_trs = data[0].shape[0]
-
-# Component table
-df = pd.read_csv(op.join(TED_DIR, 'comp_table_ica.tsv'),
-                 sep='\t', index_col='component')
-
-pal = sns.color_palette('cubehelix', n_echoes)
+ted_dir = os.path.join(data_path, "tedana")
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2283/3546567671.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     15[0m [0;34m[0m[0m
-[1;32m     16[0m [0madaptive_mask_file[0m [0;34m=[0m [0mop[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mTED_DIR[0m[0;34m,[0m [0;34m'adaptive_mask.nii'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 17[0;31m [0mmask[0m [0;34m=[0m [0mmath_img[0m[0;34m([0m[0;34m'img >= 3'[0m[0;34m,[0m [0mimg[0m[0;34m=[0m[0madaptive_mask_file[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     18[0m [0;34m[0m[0m
-[1;32m     19[0m [0;31m# Optimally combined data[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2200/2619228700.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     13[0m [0;34m[0m[0m
+[1;32m     14[0m [0;31m# Install the data if running locally, or point to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 15[0;31m [0mDATA_REQ_FILE[0m [0;34m=[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0;34m"../binder/data_requirement.json"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     16[0m [0;34m[0m[0m
+[1;32m     17[0m [0;31m# Download data[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/image.py[0m in [0;36mmath_img[0;34m(formula, **imgs)[0m
-[1;32m    904[0m         [0mniimgs[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-[1;32m    905[0m         [0;32mfor[0m [0mimage[0m [0;32min[0m [0mimgs[0m[0;34m.[0m[0mvalues[0m[0;34m([0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 906[0;31m             [0mniimgs[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mcheck_niimg[0m[0;34m([0m[0mimage[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    907[0m         [0m_check_same_fov[0m[0;34m([0m[0;34m*[0m[0mniimgs[0m[0;34m,[0m [0mraise_error[0m[0;34m=[0m[0;32mTrue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    908[0m     [0;32mexcept[0m [0mException[0m [0;32mas[0m [0mexc[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py[0m in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
-[1;32m    269[0m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0mmessage[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    270[0m             [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 271[0;31m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    272[0m         [0;32melif[0m [0;32mnot[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mexists[0m[0;34m([0m[0mniimg[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    273[0m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-
-[0;31mValueError[0m: ("Input images cannot be compared, you provided 'dict_values(['/Users/tsalo/Documents/tsalo/tedana-comparison/sandbox/e8-checkerboard-example/adaptive_mask.nii'])',", "File not found: '/Users/tsalo/Documents/tsalo/tedana-comparison/sandbox/e8-checkerboard-example/adaptive_mask.nii'")
-ValueError: ("Input images cannot be compared, you provided 'dict_values(['/Users/tsalo/Documents/tsalo/tedana-comparison/sandbox/e8-checkerboard-example/adaptive_mask.nii'])',", "File not found: '/Users/tsalo/Documents/tsalo/tedana-comparison/sandbox/e8-checkerboard-example/adaptive_mask.nii'")
+[0;31mNameError[0m: name 'os' is not defined
+NameError: name 'os' is not defined
 
