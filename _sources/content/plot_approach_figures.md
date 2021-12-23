@@ -18,13 +18,12 @@ kernelspec:
 import os
 from glob import glob
 
-import numpy as np
+import matplotlib.pyplot as plt
 import nibabel as nib
+import numpy as np
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
-from nilearn import plotting, masking
-from nilearn.image import math_img
+from nilearn import image, masking, plotting
 from repo2data.repo2data import Repo2Data
 
 # Install the data if running locally, or point to cached data if running on neurolibre
@@ -50,7 +49,7 @@ data_files = [
 echo_times = [12., 28., 44., 60.]
 
 adaptive_mask_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz")
-mask = math_img('img >= 3', img=adaptive_mask_file)
+mask = image.math_img("img >= 3", img=adaptive_mask_file)
 
 # Optimally combined data
 oc = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"), mask)
@@ -59,7 +58,7 @@ oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 # Results from MEPCA
 mepca_mmix = pd.read_table(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
-)
+).values
 oc_red = masking.apply_mask(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"),
     mask,
@@ -68,7 +67,7 @@ oc_red = masking.apply_mask(
 # Results from MEICA
 meica_mmix = pd.read_table(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
-)
+).values
 norm_weights = masking.apply_mask(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"),
     mask,
@@ -139,10 +138,10 @@ n_trs = data[0].shape[0]
 # Component table
 df = pd.read_table(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
-    index_col="component",
+    index_col="Component",
 )
 
-pal = sns.color_palette('cubehelix', n_echoes)
+pal = sns.color_palette("cubehelix", n_echoes)
 ```
 
 ```{code-cell} ipython3
@@ -181,11 +180,11 @@ oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
 fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
-    axes[i_echo].set_ylabel('{0}ms'.format(echo_times[i_echo]), rotation=0, va='center', ha='right', fontsize=14)
+    axes[i_echo].set_ylabel(f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14)
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
 
-axes[-1].set_xlabel('Time', fontsize=16)
+axes[-1].set_xlabel("Time", fontsize=16)
 axes[-1].set_xlim(0, len(ts[i_echo])-1)
 fig.tight_layout()
 fig.show()
@@ -200,10 +199,10 @@ for i_echo in range(n_echoes):
     rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
     ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
-ax.set_ylabel('BOLD signal', fontsize=16)
-ax.set_xlabel('Echo Time (ms)', fontsize=16)
+ax.set_ylabel("BOLD signal", fontsize=16)
+ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
-ax.tick_params(axis='both', which='major', labelsize=14)
+ax.tick_params(axis="both", which="major", labelsize=14)
 ax.set_xlim(0, 100)
 ax.set_ylim(0, 16000)
 fig.tight_layout()
@@ -238,7 +237,7 @@ fig, ax = plt.subplots(figsize=(10, 4))
 palette = sns.color_palette("BuGn_r", 10)
 plotting.plot_epi(adaptive_mask_img, vmax=8, alpha=1,
                   draw_cross=False, colorbar=True,
-                  cmap='Blues', black_bg=False,
+                  cmap="Blues", black_bg=False,
                   annotate=False, bg_img=None, figure=fig, axes=ax)
 fig.show()
 ```
@@ -252,12 +251,12 @@ for i_echo in range(n_echoes):
     log_echo_data = np.log((np.abs(ts[i_echo]) + 1))
     ax.scatter(rep_echo_times, log_echo_data, alpha=0.05, color=pal[i_echo])
 
-ax.set_ylabel('log(BOLD signal)', fontsize=16)
-ax.set_xlabel('Negative Echo Time (ms)', fontsize=16)
+ax.set_ylabel("log(BOLD signal)", fontsize=16)
+ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
 ax.set_xticks(-1 * echo_times)
 ax.set_xlim(-100, 0)
 ax.set_ylim(7, 10)
-ax.tick_params(axis='both', which='major', labelsize=14)
+ax.tick_params(axis="both", which="major", labelsize=14)
 
 fig.tight_layout()
 fig.show()
@@ -268,7 +267,9 @@ Let $S$ be the BOLD signal for a given echo.
 
 Let $TE$ be the echo time in milliseconds.
 
-$$\log_{e}(\left|\begin{pmatrix}
+```{math}
+:label: log_linear_model
+\log_{e}(\left|\begin{pmatrix}
 S(TE_{1}) \\
 S(TE_{2}) \\
 \vdots \\
@@ -289,7 +290,8 @@ S(TE_{n})\end{pmatrix}\right|
 B_{0} \\
 B_{0} \\
 \vdots \\
-B_{0}\end{pmatrix}$$
+B_{0}\end{pmatrix}
+```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -300,14 +302,14 @@ for i_echo in range(n_echoes):
 
 ax.plot(log_x, log_y)
 
-ax.set_ylabel('log(BOLD signal)', fontsize=16)
-ax.set_xlabel('Negative Echo Time (ms)', fontsize=16)
+ax.set_ylabel("log(BOLD signal)", fontsize=16)
+ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
 ax.set_xticks(-1 * echo_times)
 ax.set_xlim(-100, 0)
 ax.set_ylim(7, 10)
-ax.tick_params(axis='both', which='major', labelsize=14)
+ax.tick_params(axis="both", which="major", labelsize=14)
 
-ax.annotate('$B_0$: {0:.02f}\n$B_1$: {1:.02f}'.format(betas[0], betas[1]),
+ax.annotate("$B_0$: {0:.02f}\n$B_1$: {1:.02f}".format(betas[0], betas[1]),
             xy=(-70, 9.5), fontsize=16,
             bbox=dict(fc="white", ec="black", lw=1))
 
@@ -317,9 +319,16 @@ fig.show()
 
 ## Monoexponential decay model
 Calculation of $S_{0}$ and $T_{2}^{*}$
-$$S_{0} = e^{B_{0}}$$
 
-$$T_{2}^{*} = \frac{1}{B_{1}}$$
+```{math}
+:label: monoexponential_decay_s0
+S_{0} = e^{B_{0}}
+```
+
+```{math}
+:label: monoexponential_decay_t2s
+T_{2}^{*} = \frac{1}{B_{1}}
+```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -329,13 +338,13 @@ for i_echo in range(n_echoes):
 
 ax.plot(mono_x, mono_y)
 
-ax.set_ylabel('BOLD signal', fontsize=16)
-ax.set_xlabel('Echo Time (ms)', fontsize=16)
+ax.set_ylabel("BOLD signal", fontsize=16)
+ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
 ax.set_xlim(0, 100)
 ax.set_ylim(0, 16000)
-ax.tick_params(axis='both', which='major', labelsize=14)
-ax.annotate('$S_0$: {0:.02f}\n$T_2^*$: {1:.02f}'.format(s0, t2s),
+ax.tick_params(axis="both", which="major", labelsize=14)
+ax.annotate("$S_0$: {0:.02f}\n$T_2^*$: {1:.02f}".format(s0, t2s),
             xy=(86.5, 13500), fontsize=16,
             bbox=dict(fc="white", ec="black", lw=1))
 
@@ -353,13 +362,13 @@ for i_echo in range(n_echoes):
 
 ax.plot(mono_x, mono_y)
 
-ax.axvline(t2s, 0, 1, label='$T_2^*$', color='black', linestyle='--', alpha=0.5)
-ax.set_ylabel('BOLD signal', fontsize=16)
-ax.set_xlabel('Echo Time (ms)', fontsize=16)
+ax.axvline(t2s, 0, 1, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
+ax.set_ylabel("BOLD signal", fontsize=16)
+ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
 ax.set_xlim(0, 100)
 ax.set_ylim(0, 16000)
-ax.tick_params(axis='both', which='major', labelsize=14)
+ax.tick_params(axis="both", which="major", labelsize=14)
 ax.xaxis.get_major_ticks()[-1].set_pad(20)
 
 legend = ax.legend(frameon=True, fontsize=16)
@@ -373,9 +382,9 @@ fig.show()
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 sns.barplot(echo_times, alpha, ax=ax, palette=pal)
-ax.set_ylabel('Weight', fontsize=16)
-ax.set_xlabel('Echo Time (ms)', fontsize=16)
-ax.tick_params(axis='both', which='major', labelsize=14)
+ax.set_ylabel("Weight", fontsize=16)
+ax.set_xlabel("Echo Time (ms)", fontsize=16)
+ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
 fig.show()
 ```
@@ -392,15 +401,15 @@ ax.plot(mono_x, mono_y)
 
 # Optimal combination
 rep_t2s = np.ones(n_trs) * t2s
-ax.scatter(rep_t2s, oc_manual, alpha=1, color='red', label='Optimally\ncombined\ndata')
+ax.scatter(rep_t2s, oc_manual, alpha=1, color="red", label="Optimally\ncombined\ndata")
 
-ax.axvline(t2s, 0, 20000, label='$T_2^*$', color='black', linestyle='--', alpha=0.5)
-ax.set_ylabel('BOLD signal', fontsize=16)
-ax.set_xlabel('Echo Time (ms)', fontsize=16)
+ax.axvline(t2s, 0, 20000, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
+ax.set_ylabel("BOLD signal", fontsize=16)
+ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
 ax.set_xlim(0, 100)
 ax.set_ylim(0, 16000)
-ax.tick_params(axis='both', which='major', labelsize=14)
+ax.tick_params(axis="both", which="major", labelsize=14)
 ax.xaxis.get_major_ticks()[-1].set_pad(20)
 
 legend = ax.legend(frameon=True, fontsize=16)
@@ -415,17 +424,17 @@ fig.show()
 fig, axes = plt.subplots(n_echoes+1, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
-    axes[i_echo].set_ylabel('{0}ms'.format(echo_times[i_echo]), rotation=0, va='center', ha='right', fontsize=14)
+    axes[i_echo].set_ylabel(f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14)
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
 
-axes[-1].plot(oc_manual, color='red')
-axes[-1].set_ylabel('Optimally\ncombined\ndata', rotation=0, va='center', ha='right', fontsize=14)
-axes[-1].set_xlabel('Time', fontsize=16)
+axes[-1].plot(oc_manual, color="red")
+axes[-1].set_ylabel("Optimally\ncombined\ndata", rotation=0, va="center", ha="right", fontsize=14)
+axes[-1].set_xlabel("Time", fontsize=16)
 axes[-1].set_yticks([])
 axes[-1].set_xticks([])
 axes[-1].set_xlim(0, len(ts[i_echo])-1)
-ax.tick_params(axis='both', which='major', labelsize=14)
+ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
 fig.show()
 ```
@@ -440,22 +449,22 @@ fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
 
 i = 0
 axes[0].plot(mepca_mmix[:, i])
-axes[0].set_title('PCA Component {}'.format(i), fontsize=16)
+axes[0].set_title(f"PCA Component {i}", fontsize=16)
 
 i = 3
 axes[1].plot(mepca_mmix[:, i])
-axes[1].set_title('PCA Component {}'.format(i), fontsize=16)
+axes[1].set_title(f"PCA Component {i}", fontsize=16)
 
 i = 100
 axes[2].plot(mepca_mmix[:, i])
-axes[2].set_title('PCA Component {}'.format(i), fontsize=16)
+axes[2].set_title(f"PCA Component {i}", fontsize=16)
 
 axes[2].set_xlim(0, mepca_mmix.shape[0]-1)
 axes[2].set_xticks([])
-axes[2].set_xlabel('Time', fontsize=16)
-axes[0].tick_params(axis='both', which='major', labelsize=12)
-axes[1].tick_params(axis='both', which='major', labelsize=12)
-axes[2].tick_params(axis='both', which='major', labelsize=12)
+axes[2].set_xlabel("Time", fontsize=16)
+axes[0].tick_params(axis="both", which="major", labelsize=12)
+axes[1].tick_params(axis="both", which="major", labelsize=12)
+axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
 fig.show()
 ```
@@ -465,13 +474,13 @@ The selected components from the PCA are recombined to produce a whitened versio
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
-ax.plot(oc_red[:, voxel_idx], label='Dimensionally reduced timeseries', zorder=1.)
-ax.plot(oc_z[:, voxel_idx], label='Original timeseries', alpha=0.5, zorder=0., linewidth=3)
-legend = ax.legend(frameon=True, fontsize=16, loc='upper right', framealpha=1)
+ax.plot(oc_red[:, voxel_idx], label="Dimensionally reduced timeseries", zorder=1.)
+ax.plot(oc_z[:, voxel_idx], label="Original timeseries", alpha=0.5, zorder=0., linewidth=3)
+legend = ax.legend(frameon=True, fontsize=16, loc="upper right", framealpha=1)
 ax.set_xlim(0, oc_z.shape[0]-1)
 ax.set_xticks([])
-ax.set_xlabel('Time', fontsize=16)
-ax.tick_params(axis='both', which='major', labelsize=14)
+ax.set_xlabel("Time", fontsize=16)
+ax.tick_params(axis="both", which="major", labelsize=14)
 fig.show()
 ```
 
@@ -484,32 +493,32 @@ ICA produces a mixing matrix (i.e., timeseries for each component).
 ```{code-cell} ipython3
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
 i = 0
-k = df.loc[i, 'kappa']
-r = df.loc[i, 'rho']
-c = df.loc[i, 'classification']
+k = df.loc[i, "kappa"]
+r = df.loc[i, "rho"]
+c = df.loc[i, "classification"]
 axes[0].plot(meica_mmix[:, i])
-axes[0].set_title('ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}'.format(i, k, r, c), fontsize=16)
+axes[0].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
 i = 3
-k = df.loc[i, 'kappa']
-r = df.loc[i, 'rho']
-c = df.loc[i, 'classification']
+k = df.loc[i, "kappa"]
+r = df.loc[i, "rho"]
+c = df.loc[i, "classification"]
 axes[1].plot(meica_mmix[:, i])
-axes[1].set_title('ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}'.format(i, k, r, c), fontsize=16)
+axes[1].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
 i = 44
-k = df.loc[i, 'kappa']
-r = df.loc[i, 'rho']
-c = df.loc[i, 'classification']
+k = df.loc[i, "kappa"]
+r = df.loc[i, "rho"]
+c = df.loc[i, "classification"]
 axes[2].plot(meica_mmix[:, i])
-axes[2].set_title('ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}'.format(i, k, r, c), fontsize=16)
+axes[2].set_title("ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(i, k, r, c), fontsize=16)
 
 axes[0].set_xlim(0, meica_mmix.shape[0]-1)
 axes[2].set_xticks([])
-axes[2].set_xlabel('Time', fontsize=16)
-axes[0].tick_params(axis='both', which='major', labelsize=12)
-axes[1].tick_params(axis='both', which='major', labelsize=12)
-axes[2].tick_params(axis='both', which='major', labelsize=12)
+axes[2].set_xlabel("Time", fontsize=16)
+axes[0].tick_params(axis="both", which="major", labelsize=12)
+axes[1].tick_params(axis="both", which="major", labelsize=12)
+axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
 fig.show()
 ```
@@ -534,17 +543,17 @@ for i, comp in enumerate(components):  # only generate plots for a few component
     s0_pred_weights = s0_pred_betas[comp, :, comp_voxel_idx]
 
     fig, ax = plt.subplots(figsize=(16, 4))
-    ax.plot(echo_times, comp_weights, c='black', alpha=0.5, linewidth=5, label='Component PEs')
-    ax.plot(echo_times, r2_pred_weights, c='blue', label='Predicted T2* model values')
-    ax.plot(echo_times, s0_pred_weights, c='red', label='Predicted S0 model values')
+    ax.plot(echo_times, comp_weights, c="black", alpha=0.5, linewidth=5, label="Component PEs")
+    ax.plot(echo_times, r2_pred_weights, c="blue", label="Predicted T2* model values")
+    ax.plot(echo_times, s0_pred_weights, c="red", label="Predicted S0 model values")
     ax.set_xticks(echo_times)
-    ax.tick_params(axis='both', which='major', labelsize=12)
-    ax.set_xlabel('Echo Time (ms)', fontsize=16)
+    ax.tick_params(axis="both", which="major", labelsize=12)
+    ax.set_xlabel("Echo Time (ms)", fontsize=16)
     temp = np.hstack((comp_weights, s0_pred_weights, r2_pred_weights))
     lim = np.mean(temp) * .05
     ax.set_ylim(np.floor(np.min(temp)) - lim, np.ceil(np.max(temp)) + lim)
     legend = ax.legend(frameon=True, fontsize=14, ncol=3)
-    ax.set_title('ICA Component {}'.format(comp), fontsize=16)
+    ax.set_title(f"ICA Component {comp}", fontsize=16)
     fig.tight_layout()
     fig.show()
 ```
@@ -566,21 +575,21 @@ dn_data_z = (dn_data - np.mean(dn_data, axis=0)) / np.std(dn_data, axis=0)
 hk_data_z = (hk_data - np.mean(hk_data, axis=0)) / np.std(hk_data, axis=0)
 
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
-axes[0].plot(oc_z[:, voxel_idx], label='Optimally combined')
-axes[0].set_title('Optimally combined', fontsize=16)
+axes[0].plot(oc_z[:, voxel_idx], label="Optimally combined")
+axes[0].set_title("Optimally combined", fontsize=16)
 
-axes[1].plot(dn_data_z[:, voxel_idx], label='ME-DN')
-axes[1].set_title('ME-DN', fontsize=16)
+axes[1].plot(dn_data_z[:, voxel_idx], label="ME-DN")
+axes[1].set_title("ME-DN", fontsize=16)
 
 axes[2].plot(hk_data_z[:, voxel_idx])
-axes[2].set_title('ME-HK', fontsize=16)
+axes[2].set_title("ME-HK", fontsize=16)
 legend = ax.legend(frameon=True)
 axes[0].set_xlim(0, oc_z.shape[0]-1)
 axes[2].set_xticks([])
-axes[2].set_xlabel('Time', fontsize=16)
-axes[0].tick_params(axis='both', which='major', labelsize=12)
-axes[1].tick_params(axis='both', which='major', labelsize=12)
-axes[2].tick_params(axis='both', which='major', labelsize=12)
+axes[2].set_xlabel("Time", fontsize=16)
+axes[0].tick_params(axis="both", which="major", labelsize=12)
+axes[1].tick_params(axis="both", which="major", labelsize=12)
+axes[2].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
 
 fig.show()
@@ -600,20 +609,20 @@ dn_t1c_data_z = (dn_t1c_data - np.mean(dn_t1c_data, axis=0)) / np.std(dn_t1c_dat
 hk_t1c_data_z = (hk_t1c_data - np.mean(hk_t1c_data, axis=0)) / np.std(hk_t1c_data, axis=0)
 
 fig, axes = plt.subplots(2, sharex=True, figsize=(14, 6))
-axes[0].plot(dn_t1c_data_z[:, voxel_idx], label='ME-DN T1c')
-axes[0].plot(dn_data_z[:, voxel_idx], label='ME-DN', alpha=0.5, linewidth=3, zorder=0.)
-axes[0].set_title('ME-DN', fontsize=16)
-legend = axes[0].legend(frameon=True, loc='upper right')
+axes[0].plot(dn_t1c_data_z[:, voxel_idx], label="ME-DN T1c")
+axes[0].plot(dn_data_z[:, voxel_idx], label="ME-DN", alpha=0.5, linewidth=3, zorder=0.)
+axes[0].set_title("ME-DN", fontsize=16)
+legend = axes[0].legend(frameon=True, loc="upper right")
 
-axes[1].plot(hk_t1c_data_z[:, voxel_idx], label='ME-HK T1c')
-axes[1].plot(hk_data_z[:, voxel_idx], label='ME-HK', alpha=0.5, linewidth=3, zorder=0.)
-axes[1].set_title('ME-HK', fontsize=16)
+axes[1].plot(hk_t1c_data_z[:, voxel_idx], label="ME-HK T1c")
+axes[1].plot(hk_data_z[:, voxel_idx], label="ME-HK", alpha=0.5, linewidth=3, zorder=0.)
+axes[1].set_title("ME-HK", fontsize=16)
 legend = axes[1].legend(frameon=True)
 axes[0].set_xlim(0, oc_z.shape[0]-1)
 axes[1].set_xticks([])
-axes[1].set_xlabel('Time', fontsize=16)
-axes[0].tick_params(axis='both', which='major', labelsize=12)
-axes[1].tick_params(axis='both', which='major', labelsize=12)
+axes[1].set_xlabel("Time", fontsize=16)
+axes[0].tick_params(axis="both", which="major", labelsize=12)
+axes[1].tick_params(axis="both", which="major", labelsize=12)
 fig.tight_layout()
 fig.show()
 ```

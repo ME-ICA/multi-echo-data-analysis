@@ -17,176 +17,55 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-func_dir = os.path.join(data_path, "sub-04570/func/")
-data_files = [
-    os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz"),
-]
-echo_times = [12., 28., 44., 60.]
+# Prepare data for model
+log_data = np.log(np.abs(ts_1d) + 1)
+# log_data = np.log(ts_1d)  # in a perfect world...
+x = np.column_stack([np.ones(n_echoes), -1 * echo_times])
+X = np.repeat(x, n_trs, axis=0)  # T * E
 
-adaptive_mask_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz")
-mask = math_img('img >= 3', img=adaptive_mask_file)
+# Model fit
+betas = np.linalg.lstsq(X, log_data, rcond=None)[0]
+s0 = np.exp(betas[0])
+r2s = betas[1]
+t2s = 1. / r2s
 
-# Optimally combined data
-oc = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"), mask)
-oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
+# Values for plots
+# Values from log-linear model
+log_x = np.arange(-1000, 0, .01)
+log_y = betas[0] + log_x*betas[1]
 
-# Results from MEPCA
-mepca_mmix = pd.read_table(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
-)
-oc_red = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"),
-    mask,
-)
+# Values from monoexponential decay model
+mono_x = np.arange(0, 1000, .01)
+mono_y = np.exp(-1*betas[1]*mono_x) * s0
 
-# Results from MEICA
-meica_mmix = pd.read_table(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
-)
-norm_weights = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"),
-    mask,
-)
-meica_betas = masking.apply_mask(
-    [
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz"),
-    ],
-    mask,
-)
-r2_pred_betas = masking.apply_mask(
-    [
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz"),
-    ],
-    mask,
-)
-s0_pred_betas = masking.apply_mask(
-    [
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz"),
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz"),
-    ],
-    mask,
-)
+# Get weights for optimal combination
+alpha = echo_times * np.exp(-echo_times / t2s)
+alpha = alpha / np.sum(alpha)  # unnecessary but good for bar plot below
 
-# Component betas
-betas_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz")
-beta_maps = masking.apply_mask(betas_file, mask)
-
-# Multi-echo denoised data
-dn_data = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"),
-    mask,
-)
-hk_data = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"),
-    mask,
-)
-
-# Post-processed data
-dn_t1c_data = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"),
-    mask,
-)
-hk_t1c_data = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"),
-    mask,
-)
-
-# Get voxel index for most related to first component (checkerboard)
-voxel_idx = np.where(beta_maps[0, :] == np.max(beta_maps[0, :]))[0][0]
-
-# load data
-data = [masking.apply_mask(f, mask) for f in data_files]
-ts = [d[:, voxel_idx] for d in data]
-ts_1d = np.hstack(ts)
-
-n_echoes = len(data)
-n_trs = data[0].shape[0]
-
-# Component table
-df = pd.read_table(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
-    index_col="component",
-)
-
-pal = sns.color_palette('cubehelix', n_echoes)
+# Combine data across echoes
+oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2300/2165346729.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     98[0m df = pd.read_table(
-[1;32m     99[0m     [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"[0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 100[0;31m     [0mindex_col[0m[0;34m=[0m[0;34m"component"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    101[0m )
-[1;32m    102[0m [0;34m[0m[0m
+[0;32m/tmp/ipykernel_2400/522350095.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      2[0m [0mlog_data[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mlog[0m[0;34m([0m[0mnp[0m[0;34m.[0m[0mabs[0m[0;34m([0m[0mts_1d[0m[0;34m)[0m [0;34m+[0m [0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      3[0m [0;31m# log_data = np.log(ts_1d)  # in a perfect world...[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 4[0;31m [0mx[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mcolumn_stack[0m[0;34m([0m[0;34m[[0m[0mnp[0m[0;34m.[0m[0mones[0m[0;34m([0m[0mn_echoes[0m[0;34m)[0m[0;34m,[0m [0;34m-[0m[0;36m1[0m [0;34m*[0m [0mecho_times[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      5[0m [0mX[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mrepeat[0m[0;34m([0m[0mx[0m[0;34m,[0m [0mn_trs[0m[0;34m,[0m [0maxis[0m[0;34m=[0m[0;36m0[0m[0;34m)[0m  [0;31m# T * E[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      6[0m [0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/util/_decorators.py[0m in [0;36mwrapper[0;34m(*args, **kwargs)[0m
-[1;32m    309[0m                     [0mstacklevel[0m[0;34m=[0m[0mstacklevel[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    310[0m                 )
-[0;32m--> 311[0;31m             [0;32mreturn[0m [0mfunc[0m[0;34m([0m[0;34m*[0m[0margs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    312[0m [0;34m[0m[0m
-[1;32m    313[0m         [0;32mreturn[0m [0mwrapper[0m[0;34m[0m[0;34m[0m[0m
+[0;32m<__array_function__ internals>[0m in [0;36mcolumn_stack[0;34m(*args, **kwargs)[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py[0m in [0;36mread_table[0;34m(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, on_bad_lines, encoding_errors, delim_whitespace, low_memory, memory_map, float_precision)[0m
-[1;32m    681[0m     [0mkwds[0m[0;34m.[0m[0mupdate[0m[0;34m([0m[0mkwds_defaults[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    682[0m [0;34m[0m[0m
-[0;32m--> 683[0;31m     [0;32mreturn[0m [0m_read[0m[0;34m([0m[0mfilepath_or_buffer[0m[0;34m,[0m [0mkwds[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    684[0m [0;34m[0m[0m
-[1;32m    685[0m [0;34m[0m[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/shape_base.py[0m in [0;36mcolumn_stack[0;34m(tup)[0m
+[1;32m    654[0m             [0marr[0m [0;34m=[0m [0marray[0m[0;34m([0m[0marr[0m[0;34m,[0m [0mcopy[0m[0;34m=[0m[0;32mFalse[0m[0;34m,[0m [0msubok[0m[0;34m=[0m[0;32mTrue[0m[0;34m,[0m [0mndmin[0m[0;34m=[0m[0;36m2[0m[0;34m)[0m[0;34m.[0m[0mT[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    655[0m         [0marrays[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0marr[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 656[0;31m     [0;32mreturn[0m [0m_nx[0m[0;34m.[0m[0mconcatenate[0m[0;34m([0m[0marrays[0m[0;34m,[0m [0;36m1[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    657[0m [0;34m[0m[0m
+[1;32m    658[0m [0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py[0m in [0;36m_read[0;34m(filepath_or_buffer, kwds)[0m
-[1;32m    486[0m [0;34m[0m[0m
-[1;32m    487[0m     [0;32mwith[0m [0mparser[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 488[0;31m         [0;32mreturn[0m [0mparser[0m[0;34m.[0m[0mread[0m[0;34m([0m[0mnrows[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    489[0m [0;34m[0m[0m
-[1;32m    490[0m [0;34m[0m[0m
+[0;32m<__array_function__ internals>[0m in [0;36mconcatenate[0;34m(*args, **kwargs)[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py[0m in [0;36mread[0;34m(self, nrows)[0m
-[1;32m   1045[0m     [0;32mdef[0m [0mread[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mnrows[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m   1046[0m         [0mnrows[0m [0;34m=[0m [0mvalidate_integer[0m[0;34m([0m[0;34m"nrows"[0m[0;34m,[0m [0mnrows[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m-> 1047[0;31m         [0mindex[0m[0;34m,[0m [0mcolumns[0m[0;34m,[0m [0mcol_dict[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_engine[0m[0;34m.[0m[0mread[0m[0;34m([0m[0mnrows[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m   1048[0m [0;34m[0m[0m
-[1;32m   1049[0m         [0;32mif[0m [0mindex[0m [0;32mis[0m [0;32mNone[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/c_parser_wrapper.py[0m in [0;36mread[0;34m(self, nrows)[0m
-[1;32m    308[0m [0;34m[0m[0m
-[1;32m    309[0m             [0mnames[0m[0;34m,[0m [0mdata[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_do_date_conversions[0m[0;34m([0m[0mnames[0m[0;34m,[0m [0mdata[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 310[0;31m             [0mindex[0m[0;34m,[0m [0mnames[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_make_index[0m[0;34m([0m[0mdata[0m[0;34m,[0m [0malldata[0m[0;34m,[0m [0mnames[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    311[0m [0;34m[0m[0m
-[1;32m    312[0m         [0;31m# maybe create a mi on the columns[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py[0m in [0;36m_make_index[0;34m(self, data, alldata, columns, indexnamerow)[0m
-[1;32m    413[0m [0;34m[0m[0m
-[1;32m    414[0m         [0;32melif[0m [0;32mnot[0m [0mself[0m[0;34m.[0m[0m_has_complex_date_col[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 415[0;31m             [0mindex[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_get_simple_index[0m[0;34m([0m[0malldata[0m[0;34m,[0m [0mcolumns[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    416[0m             [0mindex[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_agg_index[0m[0;34m([0m[0mindex[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    417[0m         [0;32melif[0m [0mself[0m[0;34m.[0m[0m_has_complex_date_col[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py[0m in [0;36m_get_simple_index[0;34m(self, data, columns)[0m
-[1;32m    445[0m         [0mindex[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-[1;32m    446[0m         [0;32mfor[0m [0midx[0m [0;32min[0m [0mself[0m[0;34m.[0m[0mindex_col[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 447[0;31m             [0mi[0m [0;34m=[0m [0mix[0m[0;34m([0m[0midx[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    448[0m             [0mto_remove[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mi[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    449[0m             [0mindex[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mdata[0m[0;34m[[0m[0mi[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py[0m in [0;36mix[0;34m(col)[0m
-[1;32m    440[0m             [0;32mif[0m [0;32mnot[0m [0misinstance[0m[0;34m([0m[0mcol[0m[0;34m,[0m [0mstr[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    441[0m                 [0;32mreturn[0m [0mcol[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 442[0;31m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34mf"Index {col} invalid"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    443[0m [0;34m[0m[0m
-[1;32m    444[0m         [0mto_remove[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-
-[0;31mValueError[0m: Index component invalid
-ValueError: Index component invalid
+[0;31mValueError[0m: all the input array dimensions for the concatenation axis must match exactly, but along dimension 0, the array at index 0 has size 4 and the array at index 1 has size 0
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 0, the array at index 0 has size 4 and the array at index 1 has size 0
 
