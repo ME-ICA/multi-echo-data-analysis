@@ -38,7 +38,7 @@ data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 ted_dir = os.path.join(data_path, "tedana")
 ```
 
-# Load data
+## Load data
 ```{code-cell} ipython3
 func_dir = os.path.join(data_path, "sub-04570/func/")
 data_files = [
@@ -153,7 +153,7 @@ alpha = alpha / np.sum(alpha)  # unnecessary but good for bar plot below
 oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
 ```
 
-## Echo-specific timeseries
+### Echo-specific timeseries
 
 ```{code-cell} ipython3
 fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
@@ -169,7 +169,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-## Echo-specific data and echo time
+### Echo-specific data and echo time
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -188,7 +188,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-## Adaptive mask
+### Adaptive mask
 Longer echo times are more susceptible to signal dropout, which means that certain brain regions (e.g., orbitofrontal cortex, temporal poles) will only have good signal for some echoes. In order to avoid using bad signal from affected echoes in calculating $T_{2}^*$ and $S_{0}$ for a given voxel, `tedana` generates an adaptive mask, where the value for each voxel is the number of echoes with "good" signal. When $T_{2}^*$ and $S_{0}$ are calculated below, each voxel's values are only calculated from the first $n$ echoes, where $n$ is the value for that voxel in the adaptive mask.
 
 ```{code-cell} ipython3
@@ -216,7 +216,7 @@ plotting.plot_epi(adaptive_mask_img, vmax=8, alpha=1,
 fig.show()
 ```
 
-## Log-linear transformation
+### Log-linear transformation
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -236,7 +236,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-## Log-linear model
+### Log-linear model
 Let $S$ be the BOLD signal for a given echo.
 
 Let $TE$ be the echo time in milliseconds.
@@ -288,7 +288,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-# Monoexponential decay model
+## Monoexponential decay model
 Calculation of $S_{0}$ and $T_{2}^{*}$
 $$S_{0} = e^{B_{0}}$$
 
@@ -316,7 +316,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-## T2*
+### T2*
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -341,7 +341,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-## Optimal combination weights
+### Optimal combination weights
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -353,7 +353,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-## Optimally combined timeseries
+### Optimally combined timeseries
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -382,7 +382,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-## Optimally combined timeseries
+### Optimally combined timeseries
 
 ```{code-cell} ipython3
 fig, axes = plt.subplots(n_echoes+1, sharex=True, sharey=False, figsize=(14, 6))
@@ -403,7 +403,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-## Multi-Echo Principal Components Analysis
+### Multi-Echo Principal Components Analysis
 Optimally combined data are decomposed with PCA.
 The PCA components are selected according to one of multiple possible approaches.
 Two possible approaches are a decision tree and a threshold using the percentage of variance explained by each component.
@@ -433,7 +433,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-# Data Whitening
+## Data Whitening
 The selected components from the PCA are recombined to produce a whitened version of the optimally combined data.
 
 ```{code-cell} ipython3
@@ -448,7 +448,7 @@ ax.tick_params(axis='both', which='major', labelsize=14)
 fig.show()
 ```
 
-## Multi-Echo Independent Components Analysis
+### Multi-Echo Independent Components Analysis
 The whitened optimally combined data are then decomposed with ICA. The number of ICA components is limited to the number of retained components from the PCA, in order to reflect the true dimensionality of the data.
 ICA produces a mixing matrix (i.e., timeseries for each component).
 
@@ -485,7 +485,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-# $R_2$ and $S_0$ Model Fit
+## $R_2$ and $S_0$ Model Fit
 Linear regression is used to fit the component timeseries to each voxel in each echo from the original, echo-specific data. This results in echo- and voxel-specific betas for each of the components. TE-dependence ($R_2$) and TE-independence ($S_0$) models can then be fit to these betas.
 
 These models allow calculation of F-statistics for the $R_2$ and $S_0$ models (referred to as $\kappa$ and $\rho$, respectively).
@@ -517,7 +517,7 @@ for i, comp in enumerate(components):  # only generate plots for a few component
     fig.show()
 ```
 
-# ICA Component Selection and Multi-Echo Denoising
+## ICA Component Selection and Multi-Echo Denoising
 A decision tree is applied to $\kappa$, $\rho$, and other metrics in order to classify ICA components as TE-dependent (BOLD signal), TE-independent (non-BOLD noise), or neither (to be ignored).
 
 The ICA components are fitted to the original (not whitened) optimally combined data with linear regression, which is used to weight the components for construction of the denoised data. The residuals from this regression will thus include the variance that was not included in the PCA-whitened optimally combined data.
@@ -550,7 +550,7 @@ fig.tight_layout()
 fig.show()
 ```
 
-# Post-processing to remove spatially diffuse noise
+## Post-processing to remove spatially diffuse noise
 Due to the constraints of ICA, MEICA is able to identify and remove spatially localized noise components, but it cannot identify components that are spread out throughout the whole brain.
 
 One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse (ostensibly respiration-related) noise. Methods which have been employed in the past include global signal regression (GSR), T1c-GSR, anatomical CompCor, Go Decomposition (GODEC), and robust PCA.

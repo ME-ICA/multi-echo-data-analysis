@@ -385,88 +385,83 @@
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Generate tedana walkthrough figures
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#load-data">
    Load data
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#echo-specific-timeseries">
      Echo-specific timeseries
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#echo-specific-data-and-echo-time">
      Echo-specific data and echo time
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#adaptive-mask">
      Adaptive mask
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#log-linear-transformation">
      Log-linear transformation
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#log-linear-model">
      Log-linear model
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#monoexponential-decay-model">
    Monoexponential decay model
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#t2">
      T2*
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#optimal-combination-weights">
      Optimal combination weights
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#optimally-combined-timeseries">
      Optimally combined timeseries
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id1">
      Optimally combined timeseries
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#multi-echo-principal-components-analysis">
      Multi-Echo Principal Components Analysis
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#data-whitening">
    Data Whitening
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#multi-echo-independent-components-analysis">
      Multi-Echo Independent Components Analysis
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#r-2-and-s-0-model-fit">
    <span class="math notranslate nohighlight">
     \(R_2\)
@@ -478,12 +473,12 @@
    Model Fit
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#ica-component-selection-and-multi-echo-denoising">
    ICA Component Selection and Multi-Echo Denoising
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#post-processing-to-remove-spatially-diffuse-noise">
    Post-processing to remove spatially diffuse noise
   </a>
@@ -545,9 +540,8 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 </div>
-</div>
 <div class="section" id="load-data">
-<h1>Load data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h1>
+<h2>Load data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/func/&quot;</span><span class="p">)</span>
@@ -637,7 +631,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2277</span><span class="o">/</span><span class="mf">425716020.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2233</span><span class="o">/</span><span class="mf">425716020.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">     </span><span class="mi">16</span> 
 <span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Results from MEPCA</span>
 <span class="ne">---&gt; </span><span class="mi">18</span> <span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">))</span>
@@ -711,7 +705,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="section" id="echo-specific-timeseries">
-<h2>Echo-specific timeseries<a class="headerlink" href="#echo-specific-timeseries" title="Permalink to this headline">¶</a></h2>
+<h3>Echo-specific timeseries<a class="headerlink" href="#echo-specific-timeseries" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -731,7 +725,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="section" id="echo-specific-data-and-echo-time">
-<h2>Echo-specific data and echo time<a class="headerlink" href="#echo-specific-data-and-echo-time" title="Permalink to this headline">¶</a></h2>
+<h3>Echo-specific data and echo time<a class="headerlink" href="#echo-specific-data-and-echo-time" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -754,7 +748,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="section" id="adaptive-mask">
-<h2>Adaptive mask<a class="headerlink" href="#adaptive-mask" title="Permalink to this headline">¶</a></h2>
+<h3>Adaptive mask<a class="headerlink" href="#adaptive-mask" title="Permalink to this headline">¶</a></h3>
 <p>Longer echo times are more susceptible to signal dropout, which means that certain brain regions (e.g., orbitofrontal cortex, temporal poles) will only have good signal for some echoes. In order to avoid using bad signal from affected echoes in calculating <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> for a given voxel, <code class="docutils literal notranslate"><span class="pre">tedana</span></code> generates an adaptive mask, where the value for each voxel is the number of echoes with “good” signal. When <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> are calculated below, each voxel’s values are only calculated from the first <span class="math notranslate nohighlight">\(n\)</span> echoes, where <span class="math notranslate nohighlight">\(n\)</span> is the value for that voxel in the adaptive mask.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -792,7 +786,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="section" id="log-linear-transformation">
-<h2>Log-linear transformation<a class="headerlink" href="#log-linear-transformation" title="Permalink to this headline">¶</a></h2>
+<h3>Log-linear transformation<a class="headerlink" href="#log-linear-transformation" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -816,7 +810,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="section" id="log-linear-model">
-<h2>Log-linear model<a class="headerlink" href="#log-linear-model" title="Permalink to this headline">¶</a></h2>
+<h3>Log-linear model<a class="headerlink" href="#log-linear-model" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(S\)</span> be the BOLD signal for a given echo.</p>
 <p>Let <span class="math notranslate nohighlight">\(TE\)</span> be the echo time in milliseconds.</p>
 <div class="math notranslate nohighlight">
@@ -872,7 +866,7 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </div>
 </div>
 <div class="section" id="monoexponential-decay-model">
-<h1>Monoexponential decay model<a class="headerlink" href="#monoexponential-decay-model" title="Permalink to this headline">¶</a></h1>
+<h2>Monoexponential decay model<a class="headerlink" href="#monoexponential-decay-model" title="Permalink to this headline">¶</a></h2>
 <p>Calculation of <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span>
 $<span class="math notranslate nohighlight">\(S_{0} = e^{B_{0}}\)</span>$</p>
 <div class="math notranslate nohighlight">
@@ -903,7 +897,7 @@ $<span class="math notranslate nohighlight">\(S_{0} = e^{B_{0}}\)</span>$</p>
 </div>
 </div>
 <div class="section" id="t2">
-<h2>T2*<a class="headerlink" href="#t2" title="Permalink to this headline">¶</a></h2>
+<h3>T2*<a class="headerlink" href="#t2" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -932,7 +926,7 @@ $<span class="math notranslate nohighlight">\(S_{0} = e^{B_{0}}\)</span>$</p>
 </div>
 </div>
 <div class="section" id="optimal-combination-weights">
-<h2>Optimal combination weights<a class="headerlink" href="#optimal-combination-weights" title="Permalink to this headline">¶</a></h2>
+<h3>Optimal combination weights<a class="headerlink" href="#optimal-combination-weights" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -948,7 +942,7 @@ $<span class="math notranslate nohighlight">\(S_{0} = e^{B_{0}}\)</span>$</p>
 </div>
 </div>
 <div class="section" id="optimally-combined-timeseries">
-<h2>Optimally combined timeseries<a class="headerlink" href="#optimally-combined-timeseries" title="Permalink to this headline">¶</a></h2>
+<h3>Optimally combined timeseries<a class="headerlink" href="#optimally-combined-timeseries" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -981,7 +975,7 @@ $<span class="math notranslate nohighlight">\(S_{0} = e^{B_{0}}\)</span>$</p>
 </div>
 </div>
 <div class="section" id="id1">
-<h2>Optimally combined timeseries<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h3>Optimally combined timeseries<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_echoes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -1006,7 +1000,7 @@ $<span class="math notranslate nohighlight">\(S_{0} = e^{B_{0}}\)</span>$</p>
 </div>
 </div>
 <div class="section" id="multi-echo-principal-components-analysis">
-<h2>Multi-Echo Principal Components Analysis<a class="headerlink" href="#multi-echo-principal-components-analysis" title="Permalink to this headline">¶</a></h2>
+<h3>Multi-Echo Principal Components Analysis<a class="headerlink" href="#multi-echo-principal-components-analysis" title="Permalink to this headline">¶</a></h3>
 <p>Optimally combined data are decomposed with PCA.
 The PCA components are selected according to one of multiple possible approaches.
 Two possible approaches are a decision tree and a threshold using the percentage of variance explained by each component.</p>
@@ -1041,7 +1035,7 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </div>
 </div>
 <div class="section" id="data-whitening">
-<h1>Data Whitening<a class="headerlink" href="#data-whitening" title="Permalink to this headline">¶</a></h1>
+<h2>Data Whitening<a class="headerlink" href="#data-whitening" title="Permalink to this headline">¶</a></h2>
 <p>The selected components from the PCA are recombined to produce a whitened version of the optimally combined data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1059,7 +1053,7 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </div>
 </div>
 <div class="section" id="multi-echo-independent-components-analysis">
-<h2>Multi-Echo Independent Components Analysis<a class="headerlink" href="#multi-echo-independent-components-analysis" title="Permalink to this headline">¶</a></h2>
+<h3>Multi-Echo Independent Components Analysis<a class="headerlink" href="#multi-echo-independent-components-analysis" title="Permalink to this headline">¶</a></h3>
 <p>The whitened optimally combined data are then decomposed with ICA. The number of ICA components is limited to the number of retained components from the PCA, in order to reflect the true dimensionality of the data.
 ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 <div class="cell docutils container">
@@ -1101,7 +1095,7 @@ ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 </div>
 </div>
 <div class="section" id="r-2-and-s-0-model-fit">
-<h1><span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> Model Fit<a class="headerlink" href="#r-2-and-s-0-model-fit" title="Permalink to this headline">¶</a></h1>
+<h2><span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> Model Fit<a class="headerlink" href="#r-2-and-s-0-model-fit" title="Permalink to this headline">¶</a></h2>
 <p>Linear regression is used to fit the component timeseries to each voxel in each echo from the original, echo-specific data. This results in echo- and voxel-specific betas for each of the components. TE-dependence (<span class="math notranslate nohighlight">\(R_2\)</span>) and TE-independence (<span class="math notranslate nohighlight">\(S_0\)</span>) models can then be fit to these betas.</p>
 <p>These models allow calculation of F-statistics for the <span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> models (referred to as <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span>, respectively).</p>
 <p>Note that the values here are for a single voxel (the highest-weighted one for the component), but <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span> are averaged across voxels.</p>
@@ -1135,7 +1129,7 @@ ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 </div>
 </div>
 <div class="section" id="ica-component-selection-and-multi-echo-denoising">
-<h1>ICA Component Selection and Multi-Echo Denoising<a class="headerlink" href="#ica-component-selection-and-multi-echo-denoising" title="Permalink to this headline">¶</a></h1>
+<h2>ICA Component Selection and Multi-Echo Denoising<a class="headerlink" href="#ica-component-selection-and-multi-echo-denoising" title="Permalink to this headline">¶</a></h2>
 <p>A decision tree is applied to <span class="math notranslate nohighlight">\(\kappa\)</span>, <span class="math notranslate nohighlight">\(\rho\)</span>, and other metrics in order to classify ICA components as TE-dependent (BOLD signal), TE-independent (non-BOLD noise), or neither (to be ignored).</p>
 <p>The ICA components are fitted to the original (not whitened) optimally combined data with linear regression, which is used to weight the components for construction of the denoised data. The residuals from this regression will thus include the variance that was not included in the PCA-whitened optimally combined data.</p>
 <p>The ME-DN dataset is constructed from the accepted (BOLD) and ignored components, as well as the residual variance not explained by the ICA.
@@ -1170,7 +1164,7 @@ The ME-HK dataset is constructed just from the accepted (BOLD) components. This 
 </div>
 </div>
 <div class="section" id="post-processing-to-remove-spatially-diffuse-noise">
-<h1>Post-processing to remove spatially diffuse noise<a class="headerlink" href="#post-processing-to-remove-spatially-diffuse-noise" title="Permalink to this headline">¶</a></h1>
+<h2>Post-processing to remove spatially diffuse noise<a class="headerlink" href="#post-processing-to-remove-spatially-diffuse-noise" title="Permalink to this headline">¶</a></h2>
 <p>Due to the constraints of ICA, MEICA is able to identify and remove spatially localized noise components, but it cannot identify components that are spread out throughout the whole brain.</p>
 <p>One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse (ostensibly respiration-related) noise. Methods which have been employed in the past include global signal regression (GSR), T1c-GSR, anatomical CompCor, Go Decomposition (GODEC), and robust PCA.</p>
 <div class="cell docutils container">
@@ -1196,6 +1190,7 @@ The ME-HK dataset is constructed just from the accepted (BOLD) components. This 
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>

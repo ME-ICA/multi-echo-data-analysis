@@ -102,7 +102,7 @@ pal = sns.color_palette('cubehelix', n_echoes)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2277/425716020.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2233/425716020.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     16[0m [0;34m[0m[0m
 [1;32m     17[0m [0;31m# Results from MEPCA[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 18[0;31m [0mmepca_mmix[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mloadtxt[0m[0;34m([0m[0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
