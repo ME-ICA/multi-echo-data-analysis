@@ -19,6 +19,7 @@ parts:
     - file: content/fMRI_Sequences
     - file: content/Signal_Decay
     - file: content/TE_Dependence
+    - file: content/plot_approach_figures.md
   - caption: Practical Resources
     chapters:
     - file: content/Multi_Echo_Datasets
@@ -38,4 +39,4 @@ parts:
     chapters:
     - file: content/bibliography.md
     - file: content/build_information.md
-    - file: content/plot_approach_figures.md
+    - file: content/glossary.md
