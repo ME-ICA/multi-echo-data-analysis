@@ -103,7 +103,7 @@ for i_echo, img in enumerate(imgs):
         vmax=vmax,
         cmap="gray",
     )
-    axes[i_echo].set_title(f"TE={te}ms", fontsize=20, pad=0)
+    axes[i_echo].set_title("TE={}ms".format(te), fontsize=20, pad=0)
 
 glue("fig_brain_decay", fig, display=False)
 
