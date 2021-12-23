@@ -180,7 +180,7 @@ oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
 fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
-    axes[i_echo].set_ylabel("{0}ms".format(echo_times[i_echo]), rotation=0, va="center", ha="right", fontsize=14)
+    axes[i_echo].set_ylabel(f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14)
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
 
@@ -267,7 +267,9 @@ Let $S$ be the BOLD signal for a given echo.
 
 Let $TE$ be the echo time in milliseconds.
 
-$$\log_{e}(\left|\begin{pmatrix}
+```{math}
+:label: log_linear_model
+\log_{e}(\left|\begin{pmatrix}
 S(TE_{1}) \\
 S(TE_{2}) \\
 \vdots \\
@@ -288,7 +290,8 @@ S(TE_{n})\end{pmatrix}\right|
 B_{0} \\
 B_{0} \\
 \vdots \\
-B_{0}\end{pmatrix}$$
+B_{0}\end{pmatrix}
+```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -316,9 +319,16 @@ fig.show()
 
 ## Monoexponential decay model
 Calculation of $S_{0}$ and $T_{2}^{*}$
-$$S_{0} = e^{B_{0}}$$
 
-$$T_{2}^{*} = \frac{1}{B_{1}}$$
+```{math}
+:label: monoexponential_decay_s0
+S_{0} = e^{B_{0}}
+```
+
+```{math}
+:label: monoexponential_decay_t2s
+T_{2}^{*} = \frac{1}{B_{1}}
+```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -414,7 +424,7 @@ fig.show()
 fig, axes = plt.subplots(n_echoes+1, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
-    axes[i_echo].set_ylabel("{0}ms".format(echo_times[i_echo]), rotation=0, va="center", ha="right", fontsize=14)
+    axes[i_echo].set_ylabel(f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14)
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
 
@@ -439,15 +449,15 @@ fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
 
 i = 0
 axes[0].plot(mepca_mmix[:, i])
-axes[0].set_title("PCA Component {}".format(i), fontsize=16)
+axes[0].set_title(f"PCA Component {i}", fontsize=16)
 
 i = 3
 axes[1].plot(mepca_mmix[:, i])
-axes[1].set_title("PCA Component {}".format(i), fontsize=16)
+axes[1].set_title(f"PCA Component {i}", fontsize=16)
 
 i = 100
 axes[2].plot(mepca_mmix[:, i])
-axes[2].set_title("PCA Component {}".format(i), fontsize=16)
+axes[2].set_title(f"PCA Component {i}", fontsize=16)
 
 axes[2].set_xlim(0, mepca_mmix.shape[0]-1)
 axes[2].set_xticks([])
@@ -543,7 +553,7 @@ for i, comp in enumerate(components):  # only generate plots for a few component
     lim = np.mean(temp) * .05
     ax.set_ylim(np.floor(np.min(temp)) - lim, np.ceil(np.max(temp)) + lim)
     legend = ax.legend(frameon=True, fontsize=14, ncol=3)
-    ax.set_title("ICA Component {}".format(comp), fontsize=16)
+    ax.set_title(f"ICA Component {comp}", fontsize=16)
     fig.tight_layout()
     fig.show()
 ```
