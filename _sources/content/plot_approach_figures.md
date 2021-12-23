@@ -68,12 +68,12 @@ r2_pred_betas = masking.apply_mask(op.join(ted_dir, 'meica_R2_pred.nii'), mask)
 s0_pred_betas = masking.apply_mask(op.join(ted_dir, 'meica_S0_pred.nii'), mask)
 
 # Component betas
-betas_file = op.join(ted_dir, 'betas_OC.nii')
+betas_file = op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz")
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Multi-echo denoised data
-dn_data = masking.apply_mask(op.join(ted_dir, 'dn_ts_OC.nii'), mask)
-hk_data = masking.apply_mask(op.join(ted_dir, 'hik_ts_OC.nii'), mask)
+dn_data = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"), mask)
+hk_data = masking.apply_mask(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
 
 # Post-processed data
 dn_t1c_data = masking.apply_mask(op.join(ted_dir, 'dn_ts_OC_T1c.nii'), mask)
@@ -91,7 +91,7 @@ n_echoes = len(data)
 n_trs = data[0].shape[0]
 
 # Component table
-df = pd.read_csv(op.join(ted_dir, 'comp_table_ica.tsv'),
+df = pd.read_csv(op.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
                  sep='\t', index_col='component')
 
 pal = sns.color_palette('cubehelix', n_echoes)
@@ -140,7 +140,7 @@ for i_echo in range(n_echoes):
 axes[-1].set_xlabel('Time', fontsize=16)
 axes[-1].set_xlim(0, len(ts[i_echo])-1)
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a01_echo_timeseries.png'), dpi=400)
+fig.show()
 ```
 
 ## Echo-specific data and echo time
@@ -159,7 +159,7 @@ ax.tick_params(axis='both', which='major', labelsize=14)
 ax.set_xlim(0, 100)
 ax.set_ylim(0, 16000)
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a02_echo_value_distributions.png'), dpi=400)
+fig.show()
 ```
 
 ## Adaptive mask
@@ -187,7 +187,7 @@ plotting.plot_epi(adaptive_mask_img, vmax=8, alpha=1,
                   draw_cross=False, colorbar=True,
                   cmap='Blues', black_bg=False,
                   annotate=False, bg_img=None, figure=fig, axes=ax)
-fig.savefig(op.join(OUT_DIR, 'a03_adaptive_mask.png'), dpi=400)
+fig.show()
 ```
 
 ## Log-linear transformation
@@ -207,7 +207,7 @@ ax.set_ylim(7, 10)
 ax.tick_params(axis='both', which='major', labelsize=14)
 
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a04_echo_log_value_distributions.png'), dpi=400)
+fig.show()
 ```
 
 ## Log-linear model
@@ -259,7 +259,7 @@ ax.annotate('$B_0$: {0:.02f}\n$B_1$: {1:.02f}'.format(betas[0], betas[1]),
             bbox=dict(fc="white", ec="black", lw=1))
 
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a05_loglinear_regression.png'), dpi=400)
+fig.show()
 ```
 
 # Monoexponential decay model
@@ -287,7 +287,7 @@ ax.annotate('$S_0$: {0:.02f}\n$T_2^*$: {1:.02f}'.format(s0, t2s),
             bbox=dict(fc="white", ec="black", lw=1))
 
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a06_monoexponential_decay_model.png'), dpi=400)
+fig.show()
 ```
 
 ## T2*
@@ -312,7 +312,7 @@ ax.xaxis.get_major_ticks()[-1].set_pad(20)
 legend = ax.legend(frameon=True, fontsize=16)
 
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a07_monoexponential_decay_model_with_t2.png'), dpi=400)
+fig.show()
 ```
 
 ## Optimal combination weights
@@ -324,7 +324,7 @@ ax.set_ylabel('Weight', fontsize=16)
 ax.set_xlabel('Echo Time (ms)', fontsize=16)
 ax.tick_params(axis='both', which='major', labelsize=14)
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a08_optimal_combination_echo_weights.png'), dpi=400)
+fig.show()
 ```
 
 ## Optimally combined timeseries
@@ -353,7 +353,7 @@ ax.xaxis.get_major_ticks()[-1].set_pad(20)
 legend = ax.legend(frameon=True, fontsize=16)
 
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a09_optimal_combination_value_distributions.png'), dpi=400)
+fig.show()
 ```
 
 ## Optimally combined timeseries
@@ -374,7 +374,7 @@ axes[-1].set_xticks([])
 axes[-1].set_xlim(0, len(ts[i_echo])-1)
 ax.tick_params(axis='both', which='major', labelsize=14)
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a10_optimal_combination_timeseries.png'), dpi=400)
+fig.show()
 ```
 
 ## Multi-Echo Principal Components Analysis
@@ -404,7 +404,7 @@ axes[0].tick_params(axis='both', which='major', labelsize=12)
 axes[1].tick_params(axis='both', which='major', labelsize=12)
 axes[2].tick_params(axis='both', which='major', labelsize=12)
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a11_pca_component_timeseries.png'), dpi=400)
+fig.show()
 ```
 
 # Data Whitening
@@ -419,7 +419,7 @@ ax.set_xlim(0, oc_z.shape[0]-1)
 ax.set_xticks([])
 ax.set_xlabel('Time', fontsize=16)
 ax.tick_params(axis='both', which='major', labelsize=14)
-fig.savefig(op.join(OUT_DIR, 'a12_pca_reduced_data.png'), dpi=400)
+fig.show()
 ```
 
 ## Multi-Echo Independent Components Analysis
@@ -456,7 +456,7 @@ axes[0].tick_params(axis='both', which='major', labelsize=12)
 axes[1].tick_params(axis='both', which='major', labelsize=12)
 axes[2].tick_params(axis='both', which='major', labelsize=12)
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a13_ica_component_timeseries.png'), dpi=400)
+fig.show()
 ```
 
 # $R_2$ and $S_0$ Model Fit
@@ -488,7 +488,7 @@ for i, comp in enumerate(components):  # only generate plots for a few component
     legend = ax.legend(frameon=True, fontsize=14, ncol=3)
     ax.set_title('ICA Component {}'.format(comp), fontsize=16)
     fig.tight_layout()
-    fig.savefig(op.join(OUT_DIR, 'a14_te_dependence_models_component_{}.png').format(i), dpi=400)
+    fig.show()
 ```
 
 # ICA Component Selection and Multi-Echo Denoising
@@ -549,5 +549,5 @@ axes[1].set_xlabel('Time', fontsize=16)
 axes[0].tick_params(axis='both', which='major', labelsize=12)
 axes[1].tick_params(axis='both', which='major', labelsize=12)
 fig.tight_layout()
-fig.savefig(op.join(OUT_DIR, 'a16_t1c_denoised_data_timeseries.png'), dpi=400)
+fig.show()
 ```
