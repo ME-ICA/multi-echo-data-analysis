@@ -430,7 +430,7 @@ fig.show()
 fig, ax = plt.subplots(figsize=(16, 4))
 
 # Add a constant term to the array
-comp_X = np.hstack((component, np.ones((component.shape[0], 1))))
+comp_X = np.hstack((component[:, None], np.ones((component.shape[0], 1))))
 pes, _, _, _ = np.linalg.lstsq(comp_X, multiecho_signal.T, rcond=None)
 pes = pes[0, :]
 
