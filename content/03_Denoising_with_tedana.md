@@ -69,6 +69,7 @@ workflows.tedana_workflow(
     fittype="curvefit",
     tedpca="mdl",
     verbose=True,
+    gscontrol=["mir"],
 )
 ```
 
