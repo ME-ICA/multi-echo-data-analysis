@@ -1,3 +1,5 @@
+# Glossary
+
 ```{glossary}
 MEDN
   Stands for "multi-echo denoised".
