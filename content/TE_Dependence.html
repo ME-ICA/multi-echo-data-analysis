@@ -453,7 +453,7 @@
 <span class="kn">from</span> <span class="nn">nilearn.glm</span> <span class="kn">import</span> <span class="n">first_level</span>
 <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
 
-<span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">predict_bold_signal</span>
+<span class="kn">from</span> <span class="nn">book_utils</span> <span class="kn">import</span> <span class="n">predict_bold_signal</span><span class="p">,</span> <span class="n">compute_te_dependence_statistics</span>
 
 <span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
 <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
@@ -924,19 +924,7 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2334</span><span class="o">/</span><span class="mf">3856495562.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">pes</span> <span class="o">=</span> <span class="n">pes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> 
-<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">F_S0</span><span class="p">,</span> <span class="n">F_R2</span><span class="p">,</span> <span class="n">pred_S0</span><span class="p">,</span> <span class="n">pred_R2</span> <span class="o">=</span> <span class="n">compute_te_dependence_statistics</span><span class="p">(</span><span class="n">multiecho_signal</span><span class="p">,</span> <span class="n">pes</span><span class="p">,</span> <span class="n">echo_times</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">pred_R2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Predicted T2* model values&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">pred_S0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Predicted S0 model values&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;compute_te_dependence_statistics&#39; is not defined
-</pre></div>
-</div>
-<img alt="../_images/TE_Dependence_17_1.png" src="../_images/TE_Dependence_17_1.png" />
+<img alt="../_images/TE_Dependence_17_0.png" src="../_images/TE_Dependence_17_0.png" />
 </div>
 </div>
 </div>
