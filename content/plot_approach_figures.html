@@ -561,12 +561,22 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <span class="n">oc_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">oc</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">oc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">oc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Results from MEPCA</span>
-<span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">))</span>
-<span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;</span><span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1"># Results from MEICA</span>
-<span class="n">meica_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv&quot;</span><span class="p">))</span>
-<span class="n">norm_weights</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">meica_mmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">norm_weights</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz&quot;</span><span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">meica_betas</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
     <span class="p">[</span>
         <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz&quot;</span><span class="p">),</span>
@@ -600,12 +610,24 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <span class="n">beta_maps</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">betas_file</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
 
 <span class="c1"># Multi-echo denoised data</span>
-<span class="n">dn_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
-<span class="n">hk_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">dn_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz&quot;</span><span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">hk_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span><span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1"># Post-processed data</span>
-<span class="n">dn_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
-<span class="n">hk_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">dn_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz&quot;</span><span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">hk_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span><span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1"># Get voxel index for most related to first component (checkerboard)</span>
 <span class="n">voxel_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -631,42 +653,70 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2233</span><span class="o">/</span><span class="mf">425716020.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> 
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Results from MEPCA</span>
-<span class="ne">---&gt; </span><span class="mi">18</span> <span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> 
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2300</span><span class="o">/</span><span class="mf">2165346729.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">99</span>     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv&quot;</span><span class="p">),</span>
+<span class="ne">--&gt; </span><span class="mi">100</span>     <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">101</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">102</span> 
 
-<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py</span> in <span class="ni">loadtxt</span><span class="nt">(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows, like)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1146</span>         <span class="c1"># converting the data</span>
-<span class="g g-Whitespace">   </span><span class="mi">1147</span>         <span class="n">X</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="ne">-&gt; </span><span class="mi">1148</span>         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">read_data</span><span class="p">(</span><span class="n">_loadtxt_chunksize</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1149</span>             <span class="k">if</span> <span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1150</span>                 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/util/_decorators.py</span> in <span class="ni">wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">309</span>                     <span class="n">stacklevel</span><span class="o">=</span><span class="n">stacklevel</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">310</span>                 <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">311</span>             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">312</span> 
+<span class="g g-Whitespace">    </span><span class="mi">313</span>         <span class="k">return</span> <span class="n">wrapper</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py</span> in <span class="ni">read_data</span><span class="nt">(chunk_size)</span>
-<span class="g g-Whitespace">    </span><span class="mi">997</span> 
-<span class="g g-Whitespace">    </span><span class="mi">998</span>             <span class="c1"># Convert each value according to its column and store</span>
-<span class="ne">--&gt; </span><span class="mi">999</span>             <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">conv</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">conv</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">converters</span><span class="p">,</span> <span class="n">vals</span><span class="p">)]</span>
-<span class="g g-Whitespace">   </span><span class="mi">1000</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1001</span>             <span class="c1"># Then pack it according to the dtype&#39;s nesting</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py</span> in <span class="ni">read_table</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, on_bad_lines, encoding_errors, delim_whitespace, low_memory, memory_map, float_precision)</span>
+<span class="g g-Whitespace">    </span><span class="mi">681</span>     <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">682</span> 
+<span class="ne">--&gt; </span><span class="mi">683</span>     <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">684</span> 
+<span class="g g-Whitespace">    </span><span class="mi">685</span> 
 
-<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
-<span class="g g-Whitespace">    </span><span class="mi">997</span> 
-<span class="g g-Whitespace">    </span><span class="mi">998</span>             <span class="c1"># Convert each value according to its column and store</span>
-<span class="ne">--&gt; </span><span class="mi">999</span>             <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">conv</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">conv</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">converters</span><span class="p">,</span> <span class="n">vals</span><span class="p">)]</span>
-<span class="g g-Whitespace">   </span><span class="mi">1000</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1001</span>             <span class="c1"># Then pack it according to the dtype&#39;s nesting</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">486</span> 
+<span class="g g-Whitespace">    </span><span class="mi">487</span>     <span class="k">with</span> <span class="n">parser</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">488</span>         <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrows</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">489</span> 
+<span class="g g-Whitespace">    </span><span class="mi">490</span> 
 
-<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py</span> in <span class="ni">floatconv</span><span class="nt">(x)</span>
-<span class="g g-Whitespace">    </span><span class="mi">734</span>         <span class="k">if</span> <span class="s1">&#39;0x&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">735</span>             <span class="k">return</span> <span class="nb">float</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">736</span>         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">737</span> 
-<span class="g g-Whitespace">    </span><span class="mi">738</span>     <span class="n">typ</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py</span> in <span class="ni">read</span><span class="nt">(self, nrows)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1045</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1046</span>         <span class="n">nrows</span> <span class="o">=</span> <span class="n">validate_integer</span><span class="p">(</span><span class="s2">&quot;nrows&quot;</span><span class="p">,</span> <span class="n">nrows</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1047</span>         <span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">col_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nrows</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1048</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1049</span>         <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="ne">ValueError</span>: could not convert string to float: &#39;pca_00&#39;
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/c_parser_wrapper.py</span> in <span class="ni">read</span><span class="nt">(self, nrows)</span>
+<span class="g g-Whitespace">    </span><span class="mi">308</span> 
+<span class="g g-Whitespace">    </span><span class="mi">309</span>             <span class="n">names</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_date_conversions</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">310</span>             <span class="n">index</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_index</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">alldata</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">311</span> 
+<span class="g g-Whitespace">    </span><span class="mi">312</span>         <span class="c1"># maybe create a mi on the columns</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py</span> in <span class="ni">_make_index</span><span class="nt">(self, data, alldata, columns, indexnamerow)</span>
+<span class="g g-Whitespace">    </span><span class="mi">413</span> 
+<span class="g g-Whitespace">    </span><span class="mi">414</span>         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_complex_date_col</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">415</span>             <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_simple_index</span><span class="p">(</span><span class="n">alldata</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">416</span>             <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agg_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">417</span>         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_complex_date_col</span><span class="p">:</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py</span> in <span class="ni">_get_simple_index</span><span class="nt">(self, data, columns)</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>         <span class="n">index</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_col</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">447</span>             <span class="n">i</span> <span class="o">=</span> <span class="n">ix</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span>             <span class="n">to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">449</span>             <span class="n">index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py</span> in <span class="ni">ix</span><span class="nt">(col)</span>
+<span class="g g-Whitespace">    </span><span class="mi">440</span>             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">441</span>                 <span class="k">return</span> <span class="n">col</span>
+<span class="ne">--&gt; </span><span class="mi">442</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> invalid&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span> 
+<span class="g g-Whitespace">    </span><span class="mi">444</span>         <span class="n">to_remove</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="ne">ValueError</span>: Index component invalid
 </pre></div>
 </div>
 </div>
@@ -749,7 +799,12 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 <div class="section" id="adaptive-mask">
 <h3>Adaptive mask<a class="headerlink" href="#adaptive-mask" title="Permalink to this headline">¶</a></h3>
-<p>Longer echo times are more susceptible to signal dropout, which means that certain brain regions (e.g., orbitofrontal cortex, temporal poles) will only have good signal for some echoes. In order to avoid using bad signal from affected echoes in calculating <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> for a given voxel, <code class="docutils literal notranslate"><span class="pre">tedana</span></code> generates an adaptive mask, where the value for each voxel is the number of echoes with “good” signal. When <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> are calculated below, each voxel’s values are only calculated from the first <span class="math notranslate nohighlight">\(n\)</span> echoes, where <span class="math notranslate nohighlight">\(n\)</span> is the value for that voxel in the adaptive mask.</p>
+<p>Longer echo times are more susceptible to signal dropout, which means that certain brain regions
+(e.g., orbitofrontal cortex, temporal poles) will only have good signal for some echoes.
+In order to avoid using bad signal from affected echoes in calculating <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> for a given voxel,
+<code class="docutils literal notranslate"><span class="pre">tedana</span></code> generates an adaptive mask, where the value for each voxel is the number of echoes with “good” signal.
+When <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> are calculated below, each voxel’s values are only calculated from the first <span class="math notranslate nohighlight">\(n\)</span> echoes,
+where <span class="math notranslate nohighlight">\(n\)</span> is the value for that voxel in the adaptive mask.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tedana.io</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">new_nii_like</span>
@@ -1054,7 +1109,9 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </div>
 <div class="section" id="multi-echo-independent-components-analysis">
 <h3>Multi-Echo Independent Components Analysis<a class="headerlink" href="#multi-echo-independent-components-analysis" title="Permalink to this headline">¶</a></h3>
-<p>The whitened optimally combined data are then decomposed with ICA. The number of ICA components is limited to the number of retained components from the PCA, in order to reflect the true dimensionality of the data.
+<p>The whitened optimally combined data are then decomposed with ICA.
+The number of ICA components is limited to the number of retained components from the PCA,
+in order to reflect the true dimensionality of the data.
 ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1096,9 +1153,12 @@ ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 </div>
 <div class="section" id="r-2-and-s-0-model-fit">
 <h2><span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> Model Fit<a class="headerlink" href="#r-2-and-s-0-model-fit" title="Permalink to this headline">¶</a></h2>
-<p>Linear regression is used to fit the component timeseries to each voxel in each echo from the original, echo-specific data. This results in echo- and voxel-specific betas for each of the components. TE-dependence (<span class="math notranslate nohighlight">\(R_2\)</span>) and TE-independence (<span class="math notranslate nohighlight">\(S_0\)</span>) models can then be fit to these betas.</p>
+<p>Linear regression is used to fit the component timeseries to each voxel in each echo from the original, echo-specific data.
+This results in echo- and voxel-specific betas for each of the components.
+TE-dependence (<span class="math notranslate nohighlight">\(R_2\)</span>) and TE-independence (<span class="math notranslate nohighlight">\(S_0\)</span>) models can then be fit to these betas.</p>
 <p>These models allow calculation of F-statistics for the <span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> models (referred to as <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span>, respectively).</p>
-<p>Note that the values here are for a single voxel (the highest-weighted one for the component), but <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span> are averaged across voxels.</p>
+<p>Note that the values here are for a single voxel (the highest-weighted one for the component),
+but <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span> are averaged across voxels.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">44</span><span class="p">]</span>
@@ -1130,10 +1190,14 @@ ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 </div>
 <div class="section" id="ica-component-selection-and-multi-echo-denoising">
 <h2>ICA Component Selection and Multi-Echo Denoising<a class="headerlink" href="#ica-component-selection-and-multi-echo-denoising" title="Permalink to this headline">¶</a></h2>
-<p>A decision tree is applied to <span class="math notranslate nohighlight">\(\kappa\)</span>, <span class="math notranslate nohighlight">\(\rho\)</span>, and other metrics in order to classify ICA components as TE-dependent (BOLD signal), TE-independent (non-BOLD noise), or neither (to be ignored).</p>
-<p>The ICA components are fitted to the original (not whitened) optimally combined data with linear regression, which is used to weight the components for construction of the denoised data. The residuals from this regression will thus include the variance that was not included in the PCA-whitened optimally combined data.</p>
+<p>A decision tree is applied to <span class="math notranslate nohighlight">\(\kappa\)</span>, <span class="math notranslate nohighlight">\(\rho\)</span>, and other metrics in order to classify ICA components as TE-dependent (BOLD signal),
+TE-independent (non-BOLD noise), or neither (to be ignored).</p>
+<p>The ICA components are fitted to the original (not whitened) optimally combined data with linear regression,
+which is used to weight the components for construction of the denoised data.
+The residuals from this regression will thus include the variance that was not included in the PCA-whitened optimally combined data.</p>
 <p>The ME-DN dataset is constructed from the accepted (BOLD) and ignored components, as well as the residual variance not explained by the ICA.
-The ME-HK dataset is constructed just from the accepted (BOLD) components. This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.</p>
+The ME-HK dataset is constructed just from the accepted (BOLD) components.
+This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dn_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">dn_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dn_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dn_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1165,8 +1229,12 @@ The ME-HK dataset is constructed just from the accepted (BOLD) components. This 
 </div>
 <div class="section" id="post-processing-to-remove-spatially-diffuse-noise">
 <h2>Post-processing to remove spatially diffuse noise<a class="headerlink" href="#post-processing-to-remove-spatially-diffuse-noise" title="Permalink to this headline">¶</a></h2>
-<p>Due to the constraints of ICA, MEICA is able to identify and remove spatially localized noise components, but it cannot identify components that are spread out throughout the whole brain.</p>
-<p>One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse (ostensibly respiration-related) noise. Methods which have been employed in the past include global signal regression (GSR), T1c-GSR, anatomical CompCor, Go Decomposition (GODEC), and robust PCA.</p>
+<p>Due to the constraints of ICA, MEICA is able to identify and remove spatially localized noise components,
+but it cannot identify components that are spread out throughout the whole brain.</p>
+<p>One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse
+(ostensibly respiration-related) noise.
+Methods which have been employed in the past include global signal regression (GSR), T1c-GSR, anatomical CompCor,
+Go Decomposition (GODEC), and robust PCA.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dn_t1c_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">dn_t1c_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dn_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dn_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>

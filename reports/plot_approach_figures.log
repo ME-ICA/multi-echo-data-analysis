@@ -34,12 +34,22 @@ oc = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner
 oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
 # Results from MEPCA
-mepca_mmix = np.loadtxt(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"))
-oc_red = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"), mask)
+mepca_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
+)
+oc_red = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"),
+    mask,
+)
 
 # Results from MEICA
-meica_mmix = np.loadtxt(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"))
-norm_weights = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"), mask)
+meica_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
+)
+norm_weights = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"),
+    mask,
+)
 meica_betas = masking.apply_mask(
     [
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"),
@@ -73,12 +83,24 @@ betas_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_c
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Multi-echo denoised data
-dn_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"), mask)
-hk_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
+dn_data = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"),
+    mask,
+)
+hk_data = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"),
+    mask,
+)
 
 # Post-processed data
-dn_t1c_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"), mask)
-hk_t1c_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
+dn_t1c_data = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"),
+    mask,
+)
+hk_t1c_data = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"),
+    mask,
+)
 
 # Get voxel index for most related to first component (checkerboard)
 voxel_idx = np.where(beta_maps[0, :] == np.max(beta_maps[0, :]))[0][0]
@@ -102,41 +124,69 @@ pal = sns.color_palette('cubehelix', n_echoes)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2233/425716020.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     16[0m [0;34m[0m[0m
-[1;32m     17[0m [0;31m# Results from MEPCA[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 18[0;31m [0mmepca_mmix[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mloadtxt[0m[0;34m([0m[0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     19[0m [0moc_red[0m [0;34m=[0m [0mmasking[0m[0;34m.[0m[0mapply_mask[0m[0;34m([0m[0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"[0m[0;34m)[0m[0;34m,[0m [0mmask[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     20[0m [0;34m[0m[0m
+[0;32m/tmp/ipykernel_2300/2165346729.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     98[0m df = pd.read_table(
+[1;32m     99[0m     [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"[0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 100[0;31m     [0mindex_col[0m[0;34m=[0m[0;34m"component"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    101[0m )
+[1;32m    102[0m [0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py[0m in [0;36mloadtxt[0;34m(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows, like)[0m
-[1;32m   1146[0m         [0;31m# converting the data[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[1;32m   1147[0m         [0mX[0m [0;34m=[0m [0;32mNone[0m[0;34m[0m[0;34m[0m[0m
-[0;32m-> 1148[0;31m         [0;32mfor[0m [0mx[0m [0;32min[0m [0mread_data[0m[0;34m([0m[0m_loadtxt_chunksize[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m   1149[0m             [0;32mif[0m [0mX[0m [0;32mis[0m [0;32mNone[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m   1150[0m                 [0mX[0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0marray[0m[0;34m([0m[0mx[0m[0;34m,[0m [0mdtype[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/util/_decorators.py[0m in [0;36mwrapper[0;34m(*args, **kwargs)[0m
+[1;32m    309[0m                     [0mstacklevel[0m[0;34m=[0m[0mstacklevel[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    310[0m                 )
+[0;32m--> 311[0;31m             [0;32mreturn[0m [0mfunc[0m[0;34m([0m[0;34m*[0m[0margs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    312[0m [0;34m[0m[0m
+[1;32m    313[0m         [0;32mreturn[0m [0mwrapper[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py[0m in [0;36mread_data[0;34m(chunk_size)[0m
-[1;32m    997[0m [0;34m[0m[0m
-[1;32m    998[0m             [0;31m# Convert each value according to its column and store[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 999[0;31m             [0mitems[0m [0;34m=[0m [0;34m[[0m[0mconv[0m[0;34m([0m[0mval[0m[0;34m)[0m [0;32mfor[0m [0;34m([0m[0mconv[0m[0;34m,[0m [0mval[0m[0;34m)[0m [0;32min[0m [0mzip[0m[0;34m([0m[0mconverters[0m[0;34m,[0m [0mvals[0m[0;34m)[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m   1000[0m [0;34m[0m[0m
-[1;32m   1001[0m             [0;31m# Then pack it according to the dtype's nesting[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py[0m in [0;36mread_table[0;34m(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, on_bad_lines, encoding_errors, delim_whitespace, low_memory, memory_map, float_precision)[0m
+[1;32m    681[0m     [0mkwds[0m[0;34m.[0m[0mupdate[0m[0;34m([0m[0mkwds_defaults[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    682[0m [0;34m[0m[0m
+[0;32m--> 683[0;31m     [0;32mreturn[0m [0m_read[0m[0;34m([0m[0mfilepath_or_buffer[0m[0;34m,[0m [0mkwds[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    684[0m [0;34m[0m[0m
+[1;32m    685[0m [0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py[0m in [0;36m<listcomp>[0;34m(.0)[0m
-[1;32m    997[0m [0;34m[0m[0m
-[1;32m    998[0m             [0;31m# Convert each value according to its column and store[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 999[0;31m             [0mitems[0m [0;34m=[0m [0;34m[[0m[0mconv[0m[0;34m([0m[0mval[0m[0;34m)[0m [0;32mfor[0m [0;34m([0m[0mconv[0m[0;34m,[0m [0mval[0m[0;34m)[0m [0;32min[0m [0mzip[0m[0;34m([0m[0mconverters[0m[0;34m,[0m [0mvals[0m[0;34m)[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m   1000[0m [0;34m[0m[0m
-[1;32m   1001[0m             [0;31m# Then pack it according to the dtype's nesting[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py[0m in [0;36m_read[0;34m(filepath_or_buffer, kwds)[0m
+[1;32m    486[0m [0;34m[0m[0m
+[1;32m    487[0m     [0;32mwith[0m [0mparser[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 488[0;31m         [0;32mreturn[0m [0mparser[0m[0;34m.[0m[0mread[0m[0;34m([0m[0mnrows[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    489[0m [0;34m[0m[0m
+[1;32m    490[0m [0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/npyio.py[0m in [0;36mfloatconv[0;34m(x)[0m
-[1;32m    734[0m         [0;32mif[0m [0;34m'0x'[0m [0;32min[0m [0mx[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    735[0m             [0;32mreturn[0m [0mfloat[0m[0;34m.[0m[0mfromhex[0m[0;34m([0m[0mx[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 736[0;31m         [0;32mreturn[0m [0mfloat[0m[0;34m([0m[0mx[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    737[0m [0;34m[0m[0m
-[1;32m    738[0m     [0mtyp[0m [0;34m=[0m [0mdtype[0m[0;34m.[0m[0mtype[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/readers.py[0m in [0;36mread[0;34m(self, nrows)[0m
+[1;32m   1045[0m     [0;32mdef[0m [0mread[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mnrows[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1046[0m         [0mnrows[0m [0;34m=[0m [0mvalidate_integer[0m[0;34m([0m[0;34m"nrows"[0m[0;34m,[0m [0mnrows[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1047[0;31m         [0mindex[0m[0;34m,[0m [0mcolumns[0m[0;34m,[0m [0mcol_dict[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_engine[0m[0;34m.[0m[0mread[0m[0;34m([0m[0mnrows[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1048[0m [0;34m[0m[0m
+[1;32m   1049[0m         [0;32mif[0m [0mindex[0m [0;32mis[0m [0;32mNone[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 
-[0;31mValueError[0m: could not convert string to float: 'pca_00'
-ValueError: could not convert string to float: 'pca_00'
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/c_parser_wrapper.py[0m in [0;36mread[0;34m(self, nrows)[0m
+[1;32m    308[0m [0;34m[0m[0m
+[1;32m    309[0m             [0mnames[0m[0;34m,[0m [0mdata[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_do_date_conversions[0m[0;34m([0m[0mnames[0m[0;34m,[0m [0mdata[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 310[0;31m             [0mindex[0m[0;34m,[0m [0mnames[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_make_index[0m[0;34m([0m[0mdata[0m[0;34m,[0m [0malldata[0m[0;34m,[0m [0mnames[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    311[0m [0;34m[0m[0m
+[1;32m    312[0m         [0;31m# maybe create a mi on the columns[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py[0m in [0;36m_make_index[0;34m(self, data, alldata, columns, indexnamerow)[0m
+[1;32m    413[0m [0;34m[0m[0m
+[1;32m    414[0m         [0;32melif[0m [0;32mnot[0m [0mself[0m[0;34m.[0m[0m_has_complex_date_col[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 415[0;31m             [0mindex[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_get_simple_index[0m[0;34m([0m[0malldata[0m[0;34m,[0m [0mcolumns[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    416[0m             [0mindex[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_agg_index[0m[0;34m([0m[0mindex[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    417[0m         [0;32melif[0m [0mself[0m[0;34m.[0m[0m_has_complex_date_col[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py[0m in [0;36m_get_simple_index[0;34m(self, data, columns)[0m
+[1;32m    445[0m         [0mindex[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m    446[0m         [0;32mfor[0m [0midx[0m [0;32min[0m [0mself[0m[0;34m.[0m[0mindex_col[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 447[0;31m             [0mi[0m [0;34m=[0m [0mix[0m[0;34m([0m[0midx[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    448[0m             [0mto_remove[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mi[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    449[0m             [0mindex[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mdata[0m[0;34m[[0m[0mi[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py[0m in [0;36mix[0;34m(col)[0m
+[1;32m    440[0m             [0;32mif[0m [0;32mnot[0m [0misinstance[0m[0;34m([0m[0mcol[0m[0;34m,[0m [0mstr[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    441[0m                 [0;32mreturn[0m [0mcol[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 442[0;31m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34mf"Index {col} invalid"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    443[0m [0;34m[0m[0m
+[1;32m    444[0m         [0mto_remove[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: Index component invalid
+ValueError: Index component invalid
 

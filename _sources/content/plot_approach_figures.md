@@ -57,12 +57,22 @@ oc = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner
 oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
 # Results from MEPCA
-mepca_mmix = np.loadtxt(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"))
-oc_red = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"), mask)
+mepca_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
+)
+oc_red = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"),
+    mask,
+)
 
 # Results from MEICA
-meica_mmix = np.loadtxt(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"))
-norm_weights = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"), mask)
+meica_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
+)
+norm_weights = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"),
+    mask,
+)
 meica_betas = masking.apply_mask(
     [
         os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"),
@@ -96,12 +106,24 @@ betas_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_c
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Multi-echo denoised data
-dn_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"), mask)
-hk_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
+dn_data = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"),
+    mask,
+)
+hk_data = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"),
+    mask,
+)
 
 # Post-processed data
-dn_t1c_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"), mask)
-hk_t1c_data = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"), mask)
+dn_t1c_data = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"),
+    mask,
+)
+hk_t1c_data = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"),
+    mask,
+)
 
 # Get voxel index for most related to first component (checkerboard)
 voxel_idx = np.where(beta_maps[0, :] == np.max(beta_maps[0, :]))[0][0]
@@ -189,7 +211,12 @@ fig.show()
 ```
 
 ### Adaptive mask
-Longer echo times are more susceptible to signal dropout, which means that certain brain regions (e.g., orbitofrontal cortex, temporal poles) will only have good signal for some echoes. In order to avoid using bad signal from affected echoes in calculating $T_{2}^*$ and $S_{0}$ for a given voxel, `tedana` generates an adaptive mask, where the value for each voxel is the number of echoes with "good" signal. When $T_{2}^*$ and $S_{0}$ are calculated below, each voxel's values are only calculated from the first $n$ echoes, where $n$ is the value for that voxel in the adaptive mask.
+Longer echo times are more susceptible to signal dropout, which means that certain brain regions
+(e.g., orbitofrontal cortex, temporal poles) will only have good signal for some echoes.
+In order to avoid using bad signal from affected echoes in calculating $T_{2}^*$ and $S_{0}$ for a given voxel,
+`tedana` generates an adaptive mask, where the value for each voxel is the number of echoes with "good" signal.
+When $T_{2}^*$ and $S_{0}$ are calculated below, each voxel's values are only calculated from the first $n$ echoes,
+where $n$ is the value for that voxel in the adaptive mask.
 
 ```{code-cell} ipython3
 from tedana.io import load_data, new_nii_like
@@ -449,7 +476,9 @@ fig.show()
 ```
 
 ### Multi-Echo Independent Components Analysis
-The whitened optimally combined data are then decomposed with ICA. The number of ICA components is limited to the number of retained components from the PCA, in order to reflect the true dimensionality of the data.
+The whitened optimally combined data are then decomposed with ICA.
+The number of ICA components is limited to the number of retained components from the PCA,
+in order to reflect the true dimensionality of the data.
 ICA produces a mixing matrix (i.e., timeseries for each component).
 
 ```{code-cell} ipython3
@@ -486,11 +515,14 @@ fig.show()
 ```
 
 ## $R_2$ and $S_0$ Model Fit
-Linear regression is used to fit the component timeseries to each voxel in each echo from the original, echo-specific data. This results in echo- and voxel-specific betas for each of the components. TE-dependence ($R_2$) and TE-independence ($S_0$) models can then be fit to these betas.
+Linear regression is used to fit the component timeseries to each voxel in each echo from the original, echo-specific data.
+This results in echo- and voxel-specific betas for each of the components.
+TE-dependence ($R_2$) and TE-independence ($S_0$) models can then be fit to these betas.
 
 These models allow calculation of F-statistics for the $R_2$ and $S_0$ models (referred to as $\kappa$ and $\rho$, respectively).
 
-Note that the values here are for a single voxel (the highest-weighted one for the component), but $\kappa$ and $\rho$ are averaged across voxels.
+Note that the values here are for a single voxel (the highest-weighted one for the component),
+but $\kappa$ and $\rho$ are averaged across voxels.
 
 ```{code-cell} ipython3
 components = [0, 3, 44]
@@ -518,12 +550,16 @@ for i, comp in enumerate(components):  # only generate plots for a few component
 ```
 
 ## ICA Component Selection and Multi-Echo Denoising
-A decision tree is applied to $\kappa$, $\rho$, and other metrics in order to classify ICA components as TE-dependent (BOLD signal), TE-independent (non-BOLD noise), or neither (to be ignored).
+A decision tree is applied to $\kappa$, $\rho$, and other metrics in order to classify ICA components as TE-dependent (BOLD signal),
+TE-independent (non-BOLD noise), or neither (to be ignored).
 
-The ICA components are fitted to the original (not whitened) optimally combined data with linear regression, which is used to weight the components for construction of the denoised data. The residuals from this regression will thus include the variance that was not included in the PCA-whitened optimally combined data.
+The ICA components are fitted to the original (not whitened) optimally combined data with linear regression,
+which is used to weight the components for construction of the denoised data.
+The residuals from this regression will thus include the variance that was not included in the PCA-whitened optimally combined data.
 
 The ME-DN dataset is constructed from the accepted (BOLD) and ignored components, as well as the residual variance not explained by the ICA.
-The ME-HK dataset is constructed just from the accepted (BOLD) components. This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.
+The ME-HK dataset is constructed just from the accepted (BOLD) components.
+This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.
 
 ```{code-cell} ipython3
 dn_data_z = (dn_data - np.mean(dn_data, axis=0)) / np.std(dn_data, axis=0)
@@ -551,9 +587,13 @@ fig.show()
 ```
 
 ## Post-processing to remove spatially diffuse noise
-Due to the constraints of ICA, MEICA is able to identify and remove spatially localized noise components, but it cannot identify components that are spread out throughout the whole brain.
+Due to the constraints of ICA, MEICA is able to identify and remove spatially localized noise components,
+but it cannot identify components that are spread out throughout the whole brain.
 
-One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse (ostensibly respiration-related) noise. Methods which have been employed in the past include global signal regression (GSR), T1c-GSR, anatomical CompCor, Go Decomposition (GODEC), and robust PCA.
+One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse
+(ostensibly respiration-related) noise.
+Methods which have been employed in the past include global signal regression (GSR), T1c-GSR, anatomical CompCor,
+Go Decomposition (GODEC), and robust PCA.
 
 ```{code-cell} ipython3
 dn_t1c_data_z = (dn_t1c_data - np.mean(dn_t1c_data, axis=0)) / np.std(dn_t1c_data, axis=0)
