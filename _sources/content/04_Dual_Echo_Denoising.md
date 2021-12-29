@@ -13,9 +13,16 @@ kernelspec:
 
 # Dual-Echo Denoising with `nilearn`
 
-Dual-echo fMRI leverages one of the same principles motivating multi-echo fMRI; namely, that BOLD contrast increases with echo time, so earlier echoes tend to be more affected by non-BOLD noise than later ones. At an early enough echo time (<5ms for 3T scanners), the signal is almost entirely driven by non-BOLD noise. When it comes to denoising, this means that, if you acquire data with both an early echo time and a more typical echo time (~30ms for 3T), you can simply regress the earlier echo's time series out of the later echo's time series, which will remove a lot of non-BOLD noise.
+Dual-echo fMRI leverages one of the same principles motivating multi-echo fMRI;
+namely, that BOLD contrast increases with echo time, so earlier echoes tend to be more affected by non-BOLD noise than later ones.
+At an early enough echo time (<5ms for 3T scanners), the signal is almost entirely driven by non-BOLD noise.
+When it comes to denoising, this means that, if you acquire data with both an early echo time and a more typical echo time (~30ms for 3T),
+you can simply regress the earlier echo's time series out of the later echo's time series, which will remove a lot of non-BOLD noise.
 
-Additionally, dual-echo fMRI comes at no real cost in terms of temporal or spatial resolution, unlike multi-echo fMRI. For multi-echo denoising to work, you need to have at least one echo time that is _later_ than the typical echo time, which means decreasing your temporal resolution, all else remaining equal. In the case of dual-echo fMRI, you only need a _shorter_ echo time, which occurs in what is essentially "dead time" in the pulse sequence.
+Additionally, dual-echo fMRI comes at no real cost in terms of temporal or spatial resolution, unlike multi-echo fMRI.
+For multi-echo denoising to work, you need to have at least one echo time that is _later_ than the typical echo time,
+which means decreasing your temporal resolution, all else remaining equal. In the case of dual-echo fMRI,
+you only need a _shorter_ echo time, which occurs in what is essentially "dead time" in the pulse sequence.
 
 Dual-echo denoising was originally proposed in [Bright & Murphy (2013)](https://dx.doi.org/10.1016%2Fj.neuroimage.2012.09.043).
 
@@ -23,13 +30,11 @@ Dual-echo denoising was originally proposed in [Bright & Murphy (2013)](https://
 ```{code-cell} ipython3
 import os
 
-from myst_nb import glue
 import matplotlib.pyplot as plt
-from nilearn import plotting
-
-from repo2data.repo2data import Repo2Data
-
 from book_utils import regress_one_image_out_of_another
+from myst_nb import glue
+from nilearn import plotting
+from repo2data.repo2data import Repo2Data
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
@@ -41,9 +46,17 @@ data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 ```
 
 ```{code-cell} ipython3
-te1_img = os.path.join(data_path, "sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz")
-te2_img = os.path.join(data_path, "sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz")
-mask_img = os.path.join(data_path, "sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz")
+te1_img = os.path.join(
+    data_path,
+    "sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+)
+te2_img = os.path.join(
+    data_path,
+    "sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+)
+mask_img = os.path.join(
+    data_path, "sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
+)
 denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 ```
 

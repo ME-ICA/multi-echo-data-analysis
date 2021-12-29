@@ -400,82 +400,42 @@ For more information about these datasets, see <a class="reference internal" hre
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
-<span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
+<span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">datasets</span>
 
-<span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-<span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../data&quot;</span><span class="p">)</span>
 
-<span class="c1"># Download data</span>
-<span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
+<span class="n">euskalibur_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_euskalibur</span><span class="p">(</span>
+    <span class="n">n_subjects</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">low_resolution</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="n">DATA_DIR</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">euskalibur_dataset</span><span class="p">)</span>
+
+<span class="n">cambridge_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_cambridge</span><span class="p">(</span>
+    <span class="n">n_subjects</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">low_resolution</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="n">DATA_DIR</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">cambridge_dataset</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/repo2data
-Config from file :
-../binder/data_requirement.json
-Destination:
-./../data/multi-echo-data-analysis
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Module `duecredit` not successfully imported due to &quot;No module named &#39;duecredit&#39;&quot;. Package functionality unaffected.
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1786</span><span class="o">/</span><span class="mf">2827171989.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../data&quot;</span><span class="p">)</span>
 
-Info : Starting to download from Google drive https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx ...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
-From: https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx
-To: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/multi-echo-data-analysis.zip
-
-  0%|          | 0.00/309M [00:00&lt;?, ?B/s]
-  1%|          | 3.15M/309M [00:00&lt;00:09, 30.8MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  6%|▌         | 17.8M/309M [00:00&lt;00:02, 97.0MB/s]
- 11%|█         | 33.0M/309M [00:00&lt;00:02, 121MB/s] 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 15%|█▍        | 45.6M/309M [00:00&lt;00:02, 106MB/s]
- 18%|█▊        | 56.6M/309M [00:00&lt;00:02, 94.5MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 22%|██▏       | 67.6M/309M [00:00&lt;00:02, 97.9MB/s]
- 27%|██▋       | 84.4M/309M [00:00&lt;00:02, 109MB/s] 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 33%|███▎      | 101M/309M [00:00&lt;00:01, 124MB/s] 
- 37%|███▋      | 114M/309M [00:01&lt;00:01, 107MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 44%|████▎     | 135M/309M [00:01&lt;00:01, 123MB/s]
- 49%|████▉     | 152M/309M [00:01&lt;00:01, 134MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 56%|█████▌    | 172M/309M [00:01&lt;00:00, 152MB/s]
- 63%|██████▎   | 193M/309M [00:01&lt;00:00, 166MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 68%|██████▊   | 211M/309M [00:01&lt;00:00, 168MB/s]
- 74%|███████▍  | 228M/309M [00:01&lt;00:00, 167MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 80%|████████  | 248M/309M [00:01&lt;00:00, 175MB/s]
- 86%|████████▌ | 266M/309M [00:02&lt;00:00, 139MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 93%|█████████▎| 286M/309M [00:02&lt;00:00, 147MB/s]
-100%|██████████| 309M/309M [00:02&lt;00:00, 138MB/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: Extracting ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip ...
-patool: running /usr/bin/7z x -y -o./../data/multi-echo-data-analysis -- ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: ... ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip extracted to `./../data/multi-echo-data-analysis&#39;.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info : multi-echo-data-analysis.zip Decompressed
+<span class="ne">ImportError</span>: cannot import name &#39;datasets&#39; from &#39;tedana&#39; (/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/__init__.py)
 </pre></div>
 </div>
 </div>

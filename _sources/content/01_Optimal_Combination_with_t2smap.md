@@ -17,16 +17,14 @@ Use `t2smap` {cite:p}`DuPre2021` to combine data.
 
 ```{code-cell} ipython3
 import os
-import matplotlib.pyplot as plt
 from glob import glob
 
-from myst_nb import glue
+import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
+from myst_nb import glue
 from nilearn import image, plotting
-from tedana import workflows
-
 from repo2data.repo2data import Repo2Data
+from tedana import workflows
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
@@ -40,14 +38,30 @@ data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 ```{code-cell} ipython3
 func_dir = os.path.join(data_path, "sub-04570/func/")
 data_files = [
-    os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
 ]
-echo_times = [12., 28., 44., 60.]
-mask_file = os.path.join(func_dir, "sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz")
-confounds_file = os.path.join(func_dir, "sub-04570_task-rest_desc-confounds_timeseries.tsv")
+echo_times = [12.0, 28.0, 44.0, 60.0]
+mask_file = os.path.join(
+    func_dir, "sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
+)
+confounds_file = os.path.join(
+    func_dir, "sub-04570_task-rest_desc-confounds_timeseries.tsv"
+)
 
 out_dir = os.path.join(data_path, "t2smap")
 ```
@@ -148,7 +162,11 @@ plotting.plot_epi(
     axes=axes[3],
 )
 plotting.plot_epi(
-    image.mean_img(os.path.join(out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz")),
+    image.mean_img(
+        os.path.join(
+            out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"
+        )
+    ),
     draw_cross=False,
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
@@ -168,13 +186,15 @@ Mean map of each of the echoes in the original data, along with the mean map of 
 
 ```{code-cell} ipython3
 te30_tsnr = image.math_img(
-    '(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask',
+    "(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask",
     img=data_files[1],
     mask=mask_file,
 )
 oc_tsnr = image.math_img(
-    '(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask',
-    img=os.path.join(out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
+    "(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask",
+    img=os.path.join(
+        out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"
+    ),
     mask=mask_file,
 )
 vmax = np.nanmax(np.abs(oc_tsnr.get_fdata()))

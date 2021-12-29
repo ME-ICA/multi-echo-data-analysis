@@ -19,14 +19,23 @@ For more information about these datasets, see {ref}`content:open-datasets`.
 
 ```{code-cell} ipython3
 import os
+from pprint import pprint
 
-from repo2data.repo2data import Repo2Data
+from tedana import datasets
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+DATA_DIR = os.path.abspath("../data")
 
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+euskalibur_dataset = datasets.fetch_euskalibur(
+    n_subjects=5,
+    low_resolution=False,
+    data_dir=DATA_DIR,
+)
+pprint(euskalibur_dataset)
+
+cambridge_dataset = datasets.fetch_cambridge(
+    n_subjects=5,
+    low_resolution=False,
+    data_dir=DATA_DIR,
+)
+pprint(cambridge_dataset)
 ```

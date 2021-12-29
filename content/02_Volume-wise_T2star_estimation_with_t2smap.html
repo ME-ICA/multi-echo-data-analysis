@@ -394,20 +394,19 @@
                 
   <div class="section" id="volume-wise-t2-s0-estimation-with-t2smap">
 <h1>Volume-wise T2*/S0 estimation with <code class="docutils literal notranslate"><span class="pre">t2smap</span></code><a class="headerlink" href="#volume-wise-t2-s0-estimation-with-t2smap" title="Permalink to this headline">¶</a></h1>
-<p>Use <a class="reference external" href="https://tedana.readthedocs.io/en/0.0.11/generated/tedana.workflows.t2smap_workflow.html#tedana.workflows.t2smap_workflow" title="(in tedana v0.0.11+0.g4d5c645.dirty)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tedana.workflows.t2smap_workflow()</span></code></a> <span id="id1">[<a class="reference internal" href="bibliography.html#id4">DuPre <em>et al.</em>, 2021</a>]</span> to calculate volume-wise T2*/S0, as in <span id="id2">Power <em>et al.</em> [<a class="reference internal" href="bibliography.html#id2">2018</a>]</span> and <span id="id3">Heunis <em>et al.</em> [<a class="reference internal" href="bibliography.html#id3">2021</a>]</span>.</p>
+<p>Use <a class="reference external" href="https://tedana.readthedocs.io/en/0.0.11/generated/tedana.workflows.t2smap_workflow.html#tedana.workflows.t2smap_workflow" title="(in tedana v0.0.11+0.g4d5c645.dirty)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tedana.workflows.t2smap_workflow()</span></code></a> <span id="id1">[<a class="reference internal" href="bibliography.html#id4">DuPre <em>et al.</em>, 2021</a>]</span> to calculate volume-wise T2*/S0,
+as in <span id="id2">Power <em>et al.</em> [<a class="reference internal" href="bibliography.html#id2">2018</a>]</span> and <span id="id3">Heunis <em>et al.</em> [<a class="reference internal" href="bibliography.html#id3">2021</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
 <span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">image</span><span class="p">,</span> <span class="n">plotting</span>
-<span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">workflows</span>
-
 <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
+<span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">workflows</span>
 
 <span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
 <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
@@ -444,14 +443,30 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/func/&quot;</span><span class="p">)</span>
 <span class="n">data_files</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">),</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">func_dir</span><span class="p">,</span>
+        <span class="s2">&quot;sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">func_dir</span><span class="p">,</span>
+        <span class="s2">&quot;sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">func_dir</span><span class="p">,</span>
+        <span class="s2">&quot;sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">func_dir</span><span class="p">,</span>
+        <span class="s2">&quot;sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
 <span class="p">]</span>
-<span class="n">echo_times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">28.</span><span class="p">,</span> <span class="mf">44.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">]</span>
-<span class="n">mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz&quot;</span><span class="p">)</span>
-<span class="n">confounds_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_desc-confounds_timeseries.tsv&quot;</span><span class="p">)</span>
+<span class="n">echo_times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">12.0</span><span class="p">,</span> <span class="mf">28.0</span><span class="p">,</span> <span class="mf">44.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">]</span>
+<span class="n">mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz&quot;</span>
+<span class="p">)</span>
+<span class="n">confounds_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_desc-confounds_timeseries.tsv&quot;</span>
+<span class="p">)</span>
 
 <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;fit&quot;</span><span class="p">)</span>
 </pre></div>
@@ -554,13 +569,15 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 <div class="cell_output docutils container">
 <img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_5_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_5_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 33 </span><span class="caption-text">Carpet plots of optimally combined data, along with volume-wise T2* and S0 estimates.</span><a class="headerlink" href="#figure-volumewise-t2ss0-carpets" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 39 </span><span class="caption-text">Carpet plots of optimally combined data, along with volume-wise T2* and S0 estimates.</span><a class="headerlink" href="#figure-volumewise-t2ss0-carpets" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
-    <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_T2starmap.nii.gz&quot;</span><span class="p">)),</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_T2starmap.nii.gz&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
     <span class="n">vmax</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
     <span class="n">draw_cross</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">bg_img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -578,13 +595,15 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 <div class="cell_output docutils container">
 <img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_7_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_7_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 34 </span><span class="caption-text">Mean map from the volume-wise T2* estimation.</span><a class="headerlink" href="#figure-mean-volumewise-t2s" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 40 </span><span class="caption-text">Mean map from the volume-wise T2* estimation.</span><a class="headerlink" href="#figure-mean-volumewise-t2s" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
-    <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_S0map.nii.gz&quot;</span><span class="p">)),</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_S0map.nii.gz&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
     <span class="n">vmax</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span>
     <span class="n">draw_cross</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">bg_img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -602,7 +621,7 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 <div class="cell_output docutils container">
 <img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_9_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_9_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 35 </span><span class="caption-text">Mean map from the volume-wise S0 estimation.</span><a class="headerlink" href="#figure-mean-volumewise-s0" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 41 </span><span class="caption-text">Mean map from the volume-wise S0 estimation.</span><a class="headerlink" href="#figure-mean-volumewise-s0" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -640,7 +659,11 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
     <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
 <span class="p">)</span>
 <span class="n">plotting</span><span class="o">.</span><span class="n">plot_epi</span><span class="p">(</span>
-    <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;</span><span class="p">)),</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">mean_img</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
     <span class="n">draw_cross</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">bg_img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">cut_coords</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span>
@@ -658,18 +681,20 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 <div class="cell_output docutils container">
 <img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_11_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_11_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 36 </span><span class="caption-text">Mean images of the echo-wise data and the optimally combined data.</span><a class="headerlink" href="#figure-mean-echos-and-optcom" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 42 </span><span class="caption-text">Mean images of the echo-wise data and the optimally combined data.</span><a class="headerlink" href="#figure-mean-echos-and-optcom" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">te30_tsnr</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span>
-    <span class="s1">&#39;(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask&quot;</span><span class="p">,</span>
     <span class="n">img</span><span class="o">=</span><span class="n">data_files</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
     <span class="n">mask</span><span class="o">=</span><span class="n">mask_file</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">oc_tsnr</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span>
-    <span class="s1">&#39;(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask&#39;</span><span class="p">,</span>
-    <span class="n">img</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask&quot;</span><span class="p">,</span>
+    <span class="n">img</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;</span>
+    <span class="p">),</span>
     <span class="n">mask</span><span class="o">=</span><span class="n">mask_file</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">oc_tsnr</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()))</span>
@@ -715,7 +740,7 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 <div class="cell_output docutils container">
 <img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_13_2.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_13_2.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 37 </span><span class="caption-text">TSNR map of the second echo (TE30) and the optimally combined data.</span><a class="headerlink" href="#figure-t2snr-te30-and-optcom" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 43 </span><span class="caption-text">TSNR map of the second echo (TE30) and the optimally combined data.</span><a class="headerlink" href="#figure-t2snr-te30-and-optcom" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -735,7 +760,7 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 <div class="cell_output docutils container">
 <img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_15_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_15_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 38 </span><span class="caption-text">Carpet plot of the third echo.</span><a class="headerlink" href="#figure-echo3-carpet" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 44 </span><span class="caption-text">Carpet plot of the third echo.</span><a class="headerlink" href="#figure-echo3-carpet" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -755,7 +780,7 @@ sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
 <div class="cell_output docutils container">
 <img alt="../_images/02_Volume-wise_T2star_estimation_with_t2smap_17_0.png" src="../_images/02_Volume-wise_T2star_estimation_with_t2smap_17_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 39 </span><span class="caption-text">Carpet plot of the optimally combined data.</span><a class="headerlink" href="#figure-carpet-optcom" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 45 </span><span class="caption-text">Carpet plot of the optimally combined data.</span><a class="headerlink" href="#figure-carpet-optcom" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 
