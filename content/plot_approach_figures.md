@@ -16,10 +16,8 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [hide-cell]
 import os
-from glob import glob
 
 import matplotlib.pyplot as plt
-import nibabel as nib
 import nitransforms as nit
 import numpy as np
 import pandas as pd
@@ -27,10 +25,8 @@ import seaborn as sns
 from myst_nb import glue
 from nilearn import image, masking, plotting
 from repo2data.repo2data import Repo2Data
-
 from tedana.io import load_data, new_nii_like
 from tedana.utils import make_adaptive_mask
-from nilearn.masking import compute_epi_mask
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
@@ -48,15 +44,29 @@ ted_dir = os.path.join(data_path, "tedana")
 :tags: [hide-cell]
 func_dir = os.path.join(data_path, "sub-04570/func/")
 data_files = [
-    os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
 ]
-echo_times = np.array([12., 28., 44., 60.])
+echo_times = np.array([12.0, 28.0, 44.0, 60.0])
 
 # Background anatomical image
-xfm = os.path.join(func_dir, "sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt")
+xfm = os.path.join(
+    func_dir, "sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt"
+)
 xfm = nit.linear.load(xfm, fmt="itk")
 t1_file = os.path.join(data_path, "sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz")
 bg_img = xfm.apply(
@@ -65,11 +75,16 @@ bg_img = xfm.apply(
 )
 
 # Tedana outputs
-adaptive_mask_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz")
+adaptive_mask_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"
+)
 mask = image.math_img("img >= 3", img=adaptive_mask_file)
 
 # Optimally combined data
-oc = masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"), mask)
+oc = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
+    mask,
+)
 oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
 # Results from MEPCA
@@ -77,7 +92,9 @@ mepca_mmix = pd.read_table(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
 ).values
 oc_red = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"),
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"
+    ),
     mask,
 )
 
@@ -86,76 +103,143 @@ meica_mmix = pd.read_table(
     os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
 ).values
 norm_weights = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz"),
+    os.path.join(
+        ted_dir,
+        "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz",
+    ),
     mask,
 )
-meica_betas = np.dstack((
-    masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz"), mask).T,
-    masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz"), mask).T,
-    masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz"), mask).T,
-    masking.apply_mask(os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz"), mask).T,
-))
+meica_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
 meica_betas = np.swapaxes(meica_betas, 1, 2)
-r2_pred_betas = np.dstack((
-    masking.apply_mask(
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz"),
-        mask,
-    ).T,
-    masking.apply_mask(
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz"),
-        mask,
-    ).T,
-    masking.apply_mask(
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz"),
-        mask,
-    ).T,
-    masking.apply_mask(
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz"),
-        mask,
-    ).T,
-))
+r2_pred_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
 r2_pred_betas = np.swapaxes(r2_pred_betas, 1, 2)
-s0_pred_betas = np.dstack((
-    masking.apply_mask(
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz"),
-        mask,
-    ).T,
-    masking.apply_mask(
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz"),
-        mask,
-    ).T,
-    masking.apply_mask(
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz"),
-        mask,
-    ).T,
-    masking.apply_mask(
-        os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz"),
-        mask,
-    ).T,
-))
+s0_pred_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
 s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
 
 # Component parameter estimates
-betas_file = os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz")
+betas_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz"
+)
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Multi-echo denoised data
 dn_data = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"),
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"
+    ),
     mask,
 )
 hk_data = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"),
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"
+    ),
     mask,
 )
 
 # Post-processed data
 dn_t1c_data = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"),
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"
+    ),
     mask,
 )
 hk_t1c_data = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"),
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"
+    ),
     mask,
 )
 
@@ -169,7 +253,9 @@ comp_tbl = pd.read_table(
 acc_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "accepted"]
 high_kappa_comp = acc_comp_tbl.sort_values(by="kappa", ascending=False).index.values[0]
 high_kappa_comp_val = int(high_kappa_comp.split("_")[1])
-voxel_idx = np.where(beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :]))[0][0]
+voxel_idx = np.where(
+    beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :])
+)[0][0]
 
 rej_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "rejected"]
 low_kappa_comp = rej_comp_tbl.sort_values(by="rho", ascending=False).index.values[0]
@@ -197,16 +283,16 @@ X = np.repeat(x, n_trs, axis=0)  # T * E
 betas = np.linalg.lstsq(X, log_data, rcond=None)[0]
 s0 = np.exp(betas[0])
 r2s = betas[1]
-t2s = 1. / r2s
+t2s = 1.0 / r2s
 
 # Values for plots
 # Values from log-linear model
-log_x = np.arange(-1000, 0, .01)
-log_y = betas[0] + log_x*betas[1]
+log_x = np.arange(-1000, 0, 0.01)
+log_y = betas[0] + log_x * betas[1]
 
 # Values from monoexponential decay model
-mono_x = np.arange(0, 1000, .01)
-mono_y = np.exp(-1*betas[1]*mono_x) * s0
+mono_x = np.arange(0, 1000, 0.01)
+mono_y = np.exp(-1 * betas[1] * mono_x) * s0
 
 # Get weights for optimal combination
 alpha = echo_times * np.exp(-echo_times / t2s)
@@ -223,12 +309,14 @@ oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
 fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
-    axes[i_echo].set_ylabel(f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14)
+    axes[i_echo].set_ylabel(
+        f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
+    )
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
 
 axes[-1].set_xlabel("Time", fontsize=16)
-axes[-1].set_xlim(0, len(ts[i_echo])-1)
+axes[-1].set_xlim(0, len(ts[i_echo]) - 1)
 fig.tight_layout()
 glue("fig_echo_timeseries", fig, display=False)
 ```
@@ -277,7 +365,7 @@ where $n$ is the value for that voxel in the adaptive mask.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-mask_img = compute_epi_mask(data_files[0])
+mask_img = masking.compute_epi_mask(data_files[0])
 data, img = load_data(data_files, len(echo_times))
 mask, adaptive_mask = make_adaptive_mask(data, mask=mask_img, getsum=True)
 
@@ -289,7 +377,7 @@ plotting.plot_stat_map(
     adaptive_mask_img,
     vmax=n_echoes,
     # alpha=0.5,
-    threshold=1.,
+    threshold=1.0,
     draw_cross=False,
     colorbar=True,
     cmap="Blues",
@@ -513,7 +601,9 @@ ax.plot(mono_x, mono_y)
 
 # Optimal combination
 rep_t2s = np.ones(n_trs) * t2s
-ax.scatter(rep_t2s, oc_manual, alpha=0.9, color="red", label="Optimally\ncombined\ndata")
+ax.scatter(
+    rep_t2s, oc_manual, alpha=0.9, color="red", label="Optimally\ncombined\ndata"
+)
 
 ax.axvline(t2s, 0, 20000, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
 ax.set_ylabel("BOLD signal", fontsize=16)
@@ -541,19 +631,23 @@ Scatter plot of voxel's signal for each echo with optimally combined signal as w
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-fig, axes = plt.subplots(n_echoes+1, sharex=True, sharey=False, figsize=(14, 6))
+fig, axes = plt.subplots(n_echoes + 1, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
-    axes[i_echo].set_ylabel(f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14)
+    axes[i_echo].set_ylabel(
+        f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
+    )
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
 
 axes[-1].plot(oc_manual, color="red")
-axes[-1].set_ylabel("Optimally\ncombined\ndata", rotation=0, va="center", ha="right", fontsize=14)
+axes[-1].set_ylabel(
+    "Optimally\ncombined\ndata", rotation=0, va="center", ha="right", fontsize=14
+)
 axes[-1].set_xlabel("Time", fontsize=16)
 axes[-1].set_yticks([])
 axes[-1].set_xticks([])
-axes[-1].set_xlim(0, len(ts[i_echo])-1)
+axes[-1].set_xlim(0, len(ts[i_echo]) - 1)
 ax.tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
 glue("fig_echo_timeseries_with_optcom", fig, display=False)
@@ -574,7 +668,7 @@ Two possible approaches are a decision tree and a threshold using the percentage
 ```{code-cell} ipython3
 :tags: [hide-cell]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
-axes[-1].set_xlim(0, mepca_mmix.shape[0]-1)
+axes[-1].set_xlim(0, mepca_mmix.shape[0] - 1)
 axes[-1].set_xticks([])
 axes[-1].set_xlabel("Time", fontsize=16)
 
@@ -600,10 +694,12 @@ The selected components from the PCA are recombined to produce a whitened versio
 ```{code-cell} ipython3
 :tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(14, 6))
-ax.plot(oc_red[:, voxel_idx], label="Dimensionally reduced timeseries", zorder=1.)
-ax.plot(oc_z[:, voxel_idx], label="Original timeseries", alpha=0.5, zorder=0., linewidth=3)
+ax.plot(oc_red[:, voxel_idx], label="Dimensionally reduced timeseries", zorder=1.0)
+ax.plot(
+    oc_z[:, voxel_idx], label="Original timeseries", alpha=0.5, zorder=0.0, linewidth=3
+)
 legend = ax.legend(frameon=True, fontsize=16, loc="upper right", framealpha=1)
-ax.set_xlim(0, oc_z.shape[0]-1)
+ax.set_xlim(0, oc_z.shape[0] - 1)
 ax.set_xticks([])
 ax.set_xlabel("Time", fontsize=16)
 ax.tick_params(axis="both", which="major", labelsize=14)
@@ -636,11 +732,13 @@ for i_comp, comp_to_plot in enumerate(comps_to_plot):
     c = comp_tbl.loc[comp_to_plot, "classification"]
     axes[i_comp].plot(meica_mmix[:, idx])
     axes[i_comp].set_title(
-        "ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(comp_to_plot, k, r, c),
+        "ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}".format(
+            comp_to_plot, k, r, c
+        ),
         fontsize=16,
     )
 
-axes[0].set_xlim(0, meica_mmix.shape[0]-1)
+axes[0].set_xlim(0, meica_mmix.shape[0] - 1)
 axes[2].set_xticks([])
 axes[2].set_xlabel("Time", fontsize=16)
 axes[0].tick_params(axis="both", which="major", labelsize=12)
@@ -674,20 +772,35 @@ axes[-1].set_xticks(echo_times)
 axes[-1].tick_params(axis="both", which="major", labelsize=12)
 axes[-1].set_xlabel("Echo Time (ms)", fontsize=16)
 
-for i_comp, comp in enumerate(comps_to_plot):  # only generate plots for a few components
-    comp_voxel_idx = np.where(beta_maps[i_comp, :] == np.max(beta_maps[i_comp, :]))[0][0]
+for i_comp, comp in enumerate(
+    comps_to_plot
+):  # only generate plots for a few components
+    comp_voxel_idx = np.where(beta_maps[i_comp, :] == np.max(beta_maps[i_comp, :]))[0][
+        0
+    ]
     # Use weight map to average as fitmodels_direct does
     comp_weights = meica_betas[comp_voxel_idx, :, i_comp]
     r2_pred_weights = r2_pred_betas[comp_voxel_idx, :, i_comp]
     s0_pred_weights = s0_pred_betas[comp_voxel_idx, :, i_comp]
 
-    axes[i_comp].plot(echo_times, comp_weights, c="black", alpha=0.5, linewidth=5, label="Component PEs")
-    axes[i_comp].plot(echo_times, r2_pred_weights, c="blue", label="Predicted T2* model values")
-    axes[i_comp].plot(echo_times, s0_pred_weights, c="red", label="Predicted S0 model values")
+    axes[i_comp].plot(
+        echo_times,
+        comp_weights,
+        c="black",
+        alpha=0.5,
+        linewidth=5,
+        label="Component PEs",
+    )
+    axes[i_comp].plot(
+        echo_times, r2_pred_weights, c="blue", label="Predicted T2* model values"
+    )
+    axes[i_comp].plot(
+        echo_times, s0_pred_weights, c="red", label="Predicted S0 model values"
+    )
 
     # Set yticklabels
     temp = np.hstack((comp_weights, s0_pred_weights, r2_pred_weights))
-    lim = np.mean(temp) * .05
+    lim = np.mean(temp) * 0.05
     axes[i_comp].set_ylim(np.floor(np.min(temp)) - lim, np.ceil(np.max(temp)) + lim)
     legend = axes[i_comp].legend(frameon=True, fontsize=14, ncol=3)
     axes[i_comp].set_title(f"ICA Component {comp}", fontsize=16)
@@ -730,7 +843,7 @@ axes[1].set_title("ME-DN", fontsize=16)
 axes[2].plot(hk_data_z[:, voxel_idx])
 axes[2].set_title("ME-HK", fontsize=16)
 legend = ax.legend(frameon=True)
-axes[0].set_xlim(0, oc_z.shape[0]-1)
+axes[0].set_xlim(0, oc_z.shape[0] - 1)
 axes[2].set_xticks([])
 axes[2].set_xlabel("Time", fontsize=16)
 axes[0].tick_params(axis="both", which="major", labelsize=12)
@@ -759,20 +872,24 @@ Go Decomposition (GODEC), and robust PCA.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-dn_t1c_data_z = (dn_t1c_data - np.mean(dn_t1c_data, axis=0)) / np.std(dn_t1c_data, axis=0)
-hk_t1c_data_z = (hk_t1c_data - np.mean(hk_t1c_data, axis=0)) / np.std(hk_t1c_data, axis=0)
+dn_t1c_data_z = (dn_t1c_data - np.mean(dn_t1c_data, axis=0)) / np.std(
+    dn_t1c_data, axis=0
+)
+hk_t1c_data_z = (hk_t1c_data - np.mean(hk_t1c_data, axis=0)) / np.std(
+    hk_t1c_data, axis=0
+)
 
 fig, axes = plt.subplots(2, sharex=True, figsize=(14, 6))
 axes[0].plot(dn_t1c_data_z[:, voxel_idx], label="ME-DN T1c")
-axes[0].plot(dn_data_z[:, voxel_idx], label="ME-DN", alpha=0.5, linewidth=3, zorder=0.)
+axes[0].plot(dn_data_z[:, voxel_idx], label="ME-DN", alpha=0.5, linewidth=3, zorder=0.0)
 axes[0].set_title("ME-DN", fontsize=16)
 legend = axes[0].legend(frameon=True, loc="upper right")
 
 axes[1].plot(hk_t1c_data_z[:, voxel_idx], label="ME-HK T1c")
-axes[1].plot(hk_data_z[:, voxel_idx], label="ME-HK", alpha=0.5, linewidth=3, zorder=0.)
+axes[1].plot(hk_data_z[:, voxel_idx], label="ME-HK", alpha=0.5, linewidth=3, zorder=0.0)
 axes[1].set_title("ME-HK", fontsize=16)
 legend = axes[1].legend(frameon=True)
-axes[0].set_xlim(0, oc_z.shape[0]-1)
+axes[0].set_xlim(0, oc_z.shape[0] - 1)
 axes[1].set_xticks([])
 axes[1].set_xlabel("Time", fontsize=16)
 axes[0].tick_params(axis="both", which="major", labelsize=12)

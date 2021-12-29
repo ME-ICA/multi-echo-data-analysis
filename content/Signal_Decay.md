@@ -18,11 +18,11 @@ In this chapter, we use simulated data to show how BOLD signal decays and how we
 ```{code-cell} ipython3
 import os
 
-import imageio
 import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
 import seaborn as sns
+from book_utils import predict_bold_signal
 from IPython import display
 from matplotlib.animation import FuncAnimation
 from myst_nb import glue
@@ -31,14 +31,10 @@ from nilearn.glm import first_level
 from repo2data.repo2data import Repo2Data
 from scipy import signal
 
-from book_utils import predict_bold_signal
-
 sns.set_style("whitegrid")
-plt.rcParams.update({
-    "text.usetex": True,
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Helvetica"]
-})
+plt.rcParams.update(
+    {"text.usetex": True, "font.family": "sans-serif", "font.sans-serif": ["Helvetica"]}
+)
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
@@ -57,12 +53,24 @@ os.makedirs(out_dir, exist_ok=True)
 ```{code-cell} ipython3
 func_dir = os.path.join(data_path, "sub-04570/func/")
 data_files = [
-    os.path.join(func_dir, "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz"),
-    os.path.join(func_dir, "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz"),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
 ]
-echo_times = [12., 28., 44., 60.]
+echo_times = [12.0, 28.0, 44.0, 60.0]
 
 img = image.index_img(data_files[0], 0)
 data = img.get_fdata()
@@ -129,7 +137,7 @@ SINGLEECHO_TE = np.array([30])
 FULLCURVE_TES = np.arange(0, 101, 1)
 
 n_echoes = len(FULLCURVE_TES)
-pal = sns.color_palette('cubehelix', 8)
+pal = sns.color_palette("cubehelix", 8)
 ```
 
 ### Simulate $T_{2}^{*}$ and $S_{0}$ fluctuations
@@ -148,8 +156,8 @@ MEAN_S0 = 16000
 # simulate the T2*/S0 time series
 # The original time series will be a random time series from a normal distribution,
 # convolved with the HRF
-ts = np.random.normal(loc=0, scale=1, size=(N_VOLS+20,))
-ts = signal.convolve(ts, hrf)[20:N_VOLS+20]
+ts = np.random.normal(loc=0, scale=1, size=(N_VOLS + 20,))
+ts = signal.convolve(ts, hrf)[20 : N_VOLS + 20]
 ts *= SCALING_FRACTION / np.std(ts)
 ts -= np.mean(ts)
 
@@ -241,7 +249,9 @@ fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
 # gif code based on https://www.geeksforgeeks.org/create-an-animated-gif-using-python-matplotlib/
-fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
+fig, axes = plt.subplots(
+    nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
+)
 
 # Set constant params for figure
 axes[0].set_ylabel("Signal", fontsize=24)
@@ -256,11 +266,7 @@ axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
 fig.tight_layout()
 
-ax0_line_plot = axes[0].plot(
-    singleecho_signal[0, :],
-    color="black",
-    zorder=0
-)
+ax0_line_plot = axes[0].plot(singleecho_signal[0, :], color="black", zorder=0)
 ax0_scatter_plot = axes[0].scatter(
     0,
     singleecho_signal[:, 0],
@@ -281,30 +287,38 @@ ax1_scatter_plot = axes[1].scatter(
     singleecho_signal[:, 0],
     color="orange",
     s=150,
-    alpha=1.,
+    alpha=1.0,
     label="Single-Echo Signal",
     zorder=1,
 )
 
+
 def AnimationFunction(frame):
     """Function takes frame as an input."""
     ax0_scatter_plot.set_offsets(
-        np.column_stack((
-            frame,
-            singleecho_signal[:, frame],
-        ))
+        np.column_stack(
+            (
+                frame,
+                singleecho_signal[:, frame],
+            )
+        )
     )
 
-    ax1_line_plot.set_data((
-        FULLCURVE_TES,
-        fullcurve_signal[:, frame],
-    ))
-    ax1_scatter_plot.set_offsets(
-        np.column_stack((
-            SINGLEECHO_TE,
-            singleecho_signal[:, frame],
-        ))
+    ax1_line_plot.set_data(
+        (
+            FULLCURVE_TES,
+            fullcurve_signal[:, frame],
+        )
     )
+    ax1_scatter_plot.set_offsets(
+        np.column_stack(
+            (
+                SINGLEECHO_TE,
+                singleecho_signal[:, frame],
+            )
+        )
+    )
+
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
 html = display.HTML(anim_created.to_jshtml())
@@ -327,19 +341,15 @@ This shows how changes in fMRI data can be driven by both S0 and T2* fluctuation
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
-fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
+fig, axes = plt.subplots(
+    nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
+)
 
 t2s_value = predict_bold_signal(
-    np.array([t2s_ts[0]]),
-    np.array([s0_ts[0]]),
-    np.array([t2s_ts[0]])
+    np.array([t2s_ts[0]]), np.array([s0_ts[0]]), np.array([t2s_ts[0]])
 )[0]
 
-ax0_line_plot = axes[0].plot(
-    singleecho_signal[0, :],
-    color="black",
-    zorder=0
-)
+ax0_line_plot = axes[0].plot(singleecho_signal[0, :], color="black", zorder=0)
 ax0_scatter_plot = axes[0].scatter(
     0,
     singleecho_signal[:, 0],
@@ -360,7 +370,7 @@ ax1_scatter_plot = axes[1].scatter(
     singleecho_signal[:, 0],
     color="orange",
     s=150,
-    alpha=1.,
+    alpha=1.0,
     label="Single-Echo Signal",
     zorder=1,
 )
@@ -404,40 +414,49 @@ fig.tight_layout()
 def AnimationFunction(frame):
     """Function takes frame as an input."""
     t2s_value = predict_bold_signal(
-        np.array([t2s_ts[frame]]),
-        np.array([s0_ts[frame]]),
-        np.array([t2s_ts[frame]])
+        np.array([t2s_ts[frame]]), np.array([s0_ts[frame]]), np.array([t2s_ts[frame]])
     )[0]
 
     ax0_scatter_plot.set_offsets(
-        np.column_stack((
-            frame,
-            singleecho_signal[:, frame],
-        ))
+        np.column_stack(
+            (
+                frame,
+                singleecho_signal[:, frame],
+            )
+        )
     )
 
-    ax1_line_plot.set_data((
-        FULLCURVE_TES,
-        fullcurve_signal[:, frame],
-    ))
+    ax1_line_plot.set_data(
+        (
+            FULLCURVE_TES,
+            fullcurve_signal[:, frame],
+        )
+    )
     ax1_scatter_plot.set_offsets(
-        np.column_stack((
-            SINGLEECHO_TE,
-            singleecho_signal[:, frame],
-        ))
+        np.column_stack(
+            (
+                SINGLEECHO_TE,
+                singleecho_signal[:, frame],
+            )
+        )
     )
     ax1_t2s_scatter_plot.set_offsets(
-        np.column_stack((
-            t2s_ts[frame],
-            t2s_value,
-        ))
+        np.column_stack(
+            (
+                t2s_ts[frame],
+                t2s_value,
+            )
+        )
     )
     ax1_s0_scatter_plot.set_offsets(
-        np.column_stack((
-            0,
-            s0_ts[frame],
-        ))
+        np.column_stack(
+            (
+                0,
+                s0_ts[frame],
+            )
+        )
     )
+
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
 html = display.HTML(anim_created.to_jshtml())
@@ -457,22 +476,22 @@ This shows how fluctuations in S0 and T2* produce different patterns in the full
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
-t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
+s0based_fullcurve_signal = predict_bold_signal(
+    FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S)
+)
+t2sbased_fullcurve_signal = predict_bold_signal(
+    FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts
+)
 
-fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
+fig, axes = plt.subplots(
+    nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
+)
 
 t2s_value = predict_bold_signal(
-    np.array([t2s_ts[0]]),
-    np.array([s0_ts[0]]),
-    np.array([t2s_ts[0]])
+    np.array([t2s_ts[0]]), np.array([s0_ts[0]]), np.array([t2s_ts[0]])
 )[0]
 
-ax0_line_plot = axes[0].plot(
-    ts,
-    color="black",
-    zorder=0
-)
+ax0_line_plot = axes[0].plot(ts, color="black", zorder=0)
 ax0_scatter_plot = axes[0].scatter(
     0,
     ts[0],
@@ -514,20 +533,27 @@ fig.tight_layout()
 def AnimationFunction(frame):
     """Function takes frame as an input."""
     ax0_scatter_plot.set_offsets(
-        np.column_stack((
-            frame,
-            ts[frame],
-        ))
+        np.column_stack(
+            (
+                frame,
+                ts[frame],
+            )
+        )
     )
 
-    ax1_t2s_line_plot.set_data((
-        FULLCURVE_TES,
-        t2sbased_fullcurve_signal[:, frame],
-    ))
-    ax1_s0_line_plot.set_data((
-        FULLCURVE_TES,
-        s0based_fullcurve_signal[:, frame],
-    ))
+    ax1_t2s_line_plot.set_data(
+        (
+            FULLCURVE_TES,
+            t2sbased_fullcurve_signal[:, frame],
+        )
+    )
+    ax1_s0_line_plot.set_data(
+        (
+            FULLCURVE_TES,
+            s0based_fullcurve_signal[:, frame],
+        )
+    )
+
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
 html = display.HTML(anim_created.to_jshtml())
@@ -547,18 +573,20 @@ This shows how single-echo data, on its own, cannot distinguish between S0 and T
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
-t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
+s0based_fullcurve_signal = predict_bold_signal(
+    FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S)
+)
+t2sbased_fullcurve_signal = predict_bold_signal(
+    FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts
+)
 s0based_singleecho_signal = s0based_fullcurve_signal[SINGLEECHO_TE, :]
 t2sbased_singleecho_signal = t2sbased_fullcurve_signal[SINGLEECHO_TE, :]
 
-fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
-
-ax0_line_plot = axes[0].plot(
-    ts,
-    color="black",
-    zorder=0
+fig, axes = plt.subplots(
+    nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
 )
+
+ax0_line_plot = axes[0].plot(ts, color="black", zorder=0)
 ax0_scatter_plot = axes[0].scatter(
     0,
     ts[0],
@@ -587,7 +615,7 @@ ax1_s0_scatter_plot = axes[1].scatter(
     s0based_singleecho_signal[:, 0],
     color="red",
     s=150,
-    alpha=1.,
+    alpha=1.0,
     label="$S_0$-Driven Single-Echo Signal",
     zorder=2,
 )
@@ -596,7 +624,7 @@ ax1_t2s_scatter_plot = axes[1].scatter(
     t2sbased_singleecho_signal[:, 0],
     color="blue",
     s=150,
-    alpha=1.,
+    alpha=1.0,
     label="$T_{2}^{*}$-Driven Single-Echo Signal",
     zorder=3,
 )
@@ -619,32 +647,43 @@ fig.tight_layout()
 def AnimationFunction(frame):
     """Function takes frame as an input."""
     ax0_scatter_plot.set_offsets(
-        np.column_stack((
-            frame,
-            ts[frame],
-        ))
+        np.column_stack(
+            (
+                frame,
+                ts[frame],
+            )
+        )
     )
 
-    ax1_s0_line_plot.set_data((
-        FULLCURVE_TES,
-        s0based_fullcurve_signal[:, frame],
-    ))
-    ax1_t2s_line_plot.set_data((
-        FULLCURVE_TES,
-        t2sbased_fullcurve_signal[:, frame],
-    ))
+    ax1_s0_line_plot.set_data(
+        (
+            FULLCURVE_TES,
+            s0based_fullcurve_signal[:, frame],
+        )
+    )
+    ax1_t2s_line_plot.set_data(
+        (
+            FULLCURVE_TES,
+            t2sbased_fullcurve_signal[:, frame],
+        )
+    )
     ax1_s0_scatter_plot.set_offsets(
-        np.column_stack((
-            SINGLEECHO_TE,
-            s0based_singleecho_signal[:, frame],
-        ))
+        np.column_stack(
+            (
+                SINGLEECHO_TE,
+                s0based_singleecho_signal[:, frame],
+            )
+        )
     )
     ax1_t2s_scatter_plot.set_offsets(
-        np.column_stack((
-            SINGLEECHO_TE,
-            t2sbased_singleecho_signal[:, frame],
-        ))
+        np.column_stack(
+            (
+                SINGLEECHO_TE,
+                t2sbased_singleecho_signal[:, frame],
+            )
+        )
     )
+
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
 html = display.HTML(anim_created.to_jshtml())
@@ -664,12 +703,18 @@ This shows how S0 and T2* fluctuations produce different patterns in multi-echo 
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-s0based_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S))
-t2sbased_fullcurve_signal = predict_bold_signal(FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts)
+s0based_fullcurve_signal = predict_bold_signal(
+    FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S)
+)
+t2sbased_fullcurve_signal = predict_bold_signal(
+    FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts
+)
 s0based_multiecho_signal = s0based_fullcurve_signal[MULTIECHO_TES, :]
 t2sbased_multiecho_signal = t2sbased_fullcurve_signal[MULTIECHO_TES, :]
 
-fig, axes = plt.subplots(nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]})
+fig, axes = plt.subplots(
+    nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
+)
 
 ax0_line_plot = axes[0].plot(
     ts,
@@ -704,7 +749,7 @@ ax1_s0_scatter_plot = axes[1].scatter(
     s0based_multiecho_signal[:, 0],
     color="red",
     s=150,
-    alpha=1.,
+    alpha=1.0,
     label="$S_0$-Driven Multi-Echo Signal",
     zorder=2,
 )
@@ -713,7 +758,7 @@ ax1_t2s_scatter_plot = axes[1].scatter(
     t2sbased_multiecho_signal[:, 0],
     color="blue",
     s=150,
-    alpha=1.,
+    alpha=1.0,
     label="$T_{2}^{*}$-Driven Multi-Echo Signal",
     zorder=3,
 )
@@ -735,32 +780,43 @@ fig.tight_layout()
 def AnimationFunction(frame):
     """Function takes frame as an input."""
     ax0_scatter_plot.set_offsets(
-        np.column_stack((
-            frame,
-            ts[frame],
-        ))
+        np.column_stack(
+            (
+                frame,
+                ts[frame],
+            )
+        )
     )
 
-    ax1_s0_line_plot.set_data((
-        FULLCURVE_TES,
-        s0based_fullcurve_signal[:, frame],
-    ))
-    ax1_t2s_line_plot.set_data((
-        FULLCURVE_TES,
-        t2sbased_fullcurve_signal[:, frame],
-    ))
+    ax1_s0_line_plot.set_data(
+        (
+            FULLCURVE_TES,
+            s0based_fullcurve_signal[:, frame],
+        )
+    )
+    ax1_t2s_line_plot.set_data(
+        (
+            FULLCURVE_TES,
+            t2sbased_fullcurve_signal[:, frame],
+        )
+    )
     ax1_s0_scatter_plot.set_offsets(
-        np.column_stack((
-            MULTIECHO_TES,
-            s0based_multiecho_signal[:, frame],
-        ))
+        np.column_stack(
+            (
+                MULTIECHO_TES,
+                s0based_multiecho_signal[:, frame],
+            )
+        )
     )
     ax1_t2s_scatter_plot.set_offsets(
-        np.column_stack((
-            MULTIECHO_TES,
-            t2sbased_multiecho_signal[:, frame],
-        ))
+        np.column_stack(
+            (
+                MULTIECHO_TES,
+                t2sbased_multiecho_signal[:, frame],
+            )
+        )
     )
+
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
 html = display.HTML(anim_created.to_jshtml())
@@ -784,9 +840,7 @@ the BOLD signal is very similar to a scaled version of those T2* fluctuations, b
 fig, ax = plt.subplots(figsize=(16, 4))
 
 scalar = np.linalg.lstsq(
-    t2s_ts[:, None],
-    t2sbased_fullcurve_signal[SINGLEECHO_TE[0], :],
-    rcond=None
+    t2s_ts[:, None], t2sbased_fullcurve_signal[SINGLEECHO_TE[0], :], rcond=None
 )[0]
 ax.plot(
     t2sbased_fullcurve_signal[SINGLEECHO_TE[0], :],
@@ -819,9 +873,7 @@ When the BOLD signal is driven entirely by S0 fluctuations, the BOLD signal ends
 fig, ax = plt.subplots(figsize=(16, 4))
 
 scalar = np.linalg.lstsq(
-    s0_ts[:, None],
-    s0based_fullcurve_signal[SINGLEECHO_TE[0], :],
-    rcond=None
+    s0_ts[:, None], s0based_fullcurve_signal[SINGLEECHO_TE[0], :], rcond=None
 )[0]
 ax.plot(
     s0based_fullcurve_signal[SINGLEECHO_TE[0], :],
