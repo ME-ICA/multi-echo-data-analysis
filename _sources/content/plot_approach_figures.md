@@ -824,7 +824,8 @@ The ICA components are fitted to the original (not whitened) optimally combined 
 which is used to weight the components for construction of the denoised data.
 The residuals from this regression will thus include the variance that was not included in the PCA-whitened optimally combined data.
 
-The {term}`MEDN` dataset is constructed from the accepted (BOLD) and ignored components, as well as the residual variance not explained by the ICA.
+The {term}`MEDN` dataset is constructed from the accepted (BOLD) and ignored components,
+as well as the residual variance not explained by the ICA.
 The {term}`MEHK` dataset is constructed just from the accepted (BOLD) components.
 This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.
 

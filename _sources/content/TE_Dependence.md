@@ -13,9 +13,6 @@ kernelspec:
 
 # BOLD, non-BOLD, and TE-dependence with tedana
 
-
-## Make figures and examples for dependence metric calculation
-
 This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is leveraged to denoise multi-echo data.
 
 The equation for how signal is dependent on changes in S0 and T2*:
@@ -85,7 +82,7 @@ d_sig3 = sig3 - mean_sig
 dt_sig3 = d_sig3 / ((sig3 + mean_sig) / 2.0)
 ```
 
-### Plot simulations of BOLD and non-BOLD signals as a function of echo time
+## Plot simulations of BOLD and non-BOLD signals as a function of echo time
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -185,12 +182,13 @@ glue("fig_bold_nonbold_simulations", fig, display=False)
 Simulations of BOLD and non-BOLD signals as a function of echo time
 ```
 
-### Make design matrices
+## Make design matrices
 
-For TEDPCA and TEDICA, we use regression to get parameter estimates (PEs; not beta values) for component time-series against echo-specific data, and substitute those PEs for ${\bar{S}(TE_k)}$.
+For TEDPCA and TEDICA, we use regression to get parameter estimates (PEs; not beta values)
+for component time-series against echo-specific data, and substitute those PEs for ${\bar{S}(TE_k)}$.
 At some point, I would like to dig into why those parameter estimates are equivalent to ${\bar{S}(TE_k)}$ for our purposes.
 
-### TE-independence model
+## TE-independence model
 
 ```{math}
 :label: te_independence_model1
@@ -221,7 +219,7 @@ PE(TE_k) = {\bar{S}(TE_k)} * X
 
 Lastly, we fit X to the data and evaluate model fit.
 
-### TE-dependence model
+## TE-dependence model
 
 ```{math}
 :label: te_dependence_model1
@@ -233,7 +231,8 @@ Lastly, we fit X to the data and evaluate model fit.
 {\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k
 ```
 
-$-{\Delta}{R_2^*}$ is a scalar, so we ignore it, which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise-signal) and $TE_k$ (echo time in milliseconds).
+$-{\Delta}{R_2^*}$ is a scalar, so we ignore it,
+which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise-signal) and $TE_k$ (echo time in milliseconds).
 
 Thus,
 
@@ -259,7 +258,7 @@ X1 = (mean_sig)[:, None]  # Model 1
 X2 = ((echo_times * mean_sig) / mean_t2s)[:, None]  # Model 2
 ```
 
-### Fitted curves for S0-perturbed signal
+## Fitted curves for S0-perturbed signal
 
 The predicted curve for the S0 model matches the real curve perfectly!
 
@@ -293,7 +292,7 @@ print("Real delta S0: {}".format(s02 - mean_s0))
 print("Delta S0 from results: {}".format(coeffs_S0[0] * mean_s0))
 ```
 
-### Fitted curves for R2*-perturbed signal
+## Fitted curves for R2*-perturbed signal
 
 For some reason, the predicted curve for the R2 model doesn't match the real signal curve.
 What's with this mismatch?
@@ -387,7 +386,7 @@ print(x[0])
 print(coeffs_R2)
 ```
 
-### Now let's apply this approach to components
+## Now let's apply this approach to components
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
