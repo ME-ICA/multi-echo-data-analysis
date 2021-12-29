@@ -12,3 +12,9 @@ kernelspec:
 ---
 
 # Manual Classification with `rica`
+
+```{code-cell} ipython3
+from IPython.display import IFrame
+
+IFrame(src="https://www.loom.com/embed/ad37cf6f3c2d41e48721f62168a8284e", width="100%", height=300)
+```
