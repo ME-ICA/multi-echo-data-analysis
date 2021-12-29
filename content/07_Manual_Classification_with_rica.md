@@ -13,6 +13,10 @@ kernelspec:
 
 # Manual Classification with `rica`
 
+Reports for ICA (`rica`) is a web app that allows users to manually classify ICA components from decomposition-based denoising tools,
+like `tedana` and (some day) `aroma`.
+You can access the app at http://rica-fmri.netlify.app/.
+
 ```{code-cell} ipython3
 from IPython.display import IFrame
 
