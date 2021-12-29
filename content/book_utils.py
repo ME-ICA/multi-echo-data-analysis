@@ -33,7 +33,7 @@ def regress_one_image_out_of_another(data_img, nuis_img, mask_img):
         betas = np.linalg.lstsq(temp_data, nuis_mc[:, i_voxel], rcond=None)[0][0]
 
     # Construct denoised time series
-    scaled_nuis = (nuis_mc * betas)
+    scaled_nuis = nuis_mc * betas
     errorts = (data_mc - scaled_nuis) + data_mean
     errorts_img = masking.unmask(errorts, mask_img)
 
