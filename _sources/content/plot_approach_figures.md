@@ -868,8 +868,8 @@ but it cannot identify components that are spread out throughout the whole brain
 
 One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse
 (ostensibly respiration-related) noise.
-Methods which have been employed in the past include global signal regression (GSR), T1c-GSR, anatomical CompCor,
-Go Decomposition (GODEC), and robust PCA.
+Methods which have been employed in the past include global signal regression (GSR),
+{prf:ref}`Minimum Image Regression <minimum-image-regression>`, anatomical CompCor, Go Decomposition (GODEC), and robust PCA.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -903,5 +903,5 @@ glue("fig_mir_timeseries", fig, display=False)
 :name: fig_mir_timeseries
 :align: center
 
-Time series from a voxel before and after minimum image regression.
+Time series from a voxel before and after {prf:ref}`minimum image regression <minimum-image-regression>`.
 ```

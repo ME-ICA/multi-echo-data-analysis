@@ -1005,7 +1005,122 @@ Kappa: 31513.966302911744
 </div>
 <p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-4" title="Permalink to this image">¶</a></p>
 </div>
+<div class="proof algorithm admonition" id="minimum-image-regression">
+<p class="admonition-title"><span class="caption-number">Algorithm 1 </span> (Minimum image regression)</p>
+<div class="algorithm-content section" id="proof-content">
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{O}\)</span> is the matrix of optimally combined (OC) data, of shape <span class="math notranslate nohighlight">\(v \times t\)</span>,
+where <span class="math notranslate nohighlight">\(v\)</span> is the number of voxels in the brain mask and <span class="math notranslate nohighlight">\(t\)</span> is the number of timepoints in the scan.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is the mixing matrix from the ICA decomposition, of shape <span class="math notranslate nohighlight">\(c \times t\)</span>, where <span class="math notranslate nohighlight">\(c\)</span> is the number of components.</p></li>
+<li><p><span class="math notranslate nohighlight">\(W\)</span> is the set of indices of all components in <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>: <span class="math notranslate nohighlight">\(W = \{1, 2, 3, ..., c\}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(N\)</span> is the set of indices of all non-ignored components (i.e., all accepted or BOLD-like, and rejected or non-BOLD components) in
+<span class="math notranslate nohighlight">\(\mathbf{M}\)</span>: <span class="math notranslate nohighlight">\(N \in \mathbb{N}^k \text{ s.t } 1 \leq k \leq c, N \subseteq W\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is the set of indices of all accepted (i.e., BOLD-like) components in <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>:
+<span class="math notranslate nohighlight">\(A \in \mathbb{N}^l \text{ s.t } 1 \leq l \leq k, A \subseteq N\)</span></p></li>
+</ul>
+<p><strong>Output</strong> Multi-echo denoised data without the T1-like effect (<span class="math notranslate nohighlight">\(D\)</span>)</p>
+<ol>
+<li><p>First, the voxel-wise means (<span class="math notranslate nohighlight">\(\mathbf{\overline{O}} \in \mathbb{R}^{v}\)</span>) and standard deviations
+(<span class="math notranslate nohighlight">\(\mathbf{\sigma_{O}} \in \mathbb{R}^{v}\)</span>) of the OC data are computed over time.</p></li>
+<li><p>The OC data are then z-normalized over time (<span class="math notranslate nohighlight">\(\mathbf{O_z} \in \mathbb{R}^{v \times t}\)</span>) and the normalized
+OC matrix (<span class="math notranslate nohighlight">\(\mathbf{O_z}\)</span>) is regressed on the ICA mixing matrix (<span class="math notranslate nohighlight">\(\mathbf{M} \in \mathbb{R}^{c \times t}\)</span>)
+to construct component-wise parameter estimate maps (<span class="math notranslate nohighlight">\(\mathbf{B} \in \mathbb{R}^{v \times c}\)</span>).</p>
+<!-- no intercept included, because unnecessary and data are normalized. -->
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{O_{z}} = \mathbf{B} \mathbf{M} + \mathbf{\epsilon}, \enspace \mathbf{\epsilon} \in \mathbb{R}^{v \times t}
+    \]</div>
+</li>
+<li><p>Next, <span class="math notranslate nohighlight">\(N\)</span> is used to select rows from the mixing matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> and columns from the parameter estimate matrix <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>
+that correspond to non-ignored (i.e., accepted and rejected) components, forming reduced matrices <span class="math notranslate nohighlight">\(\mathbf{M}_N\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}_N\)</span>.
+The normalized time series matrix for the combined ignored components and variance left unexplained by the ICA decomposition is then
+computed by subtracting the scalar product of the non-ignored beta weight and mixing matrices from the normalized OC data time series
+(<span class="math notranslate nohighlight">\(\mathbf{O_{z}}\)</span>).
+The result is referred to as the normalized residuals time series matrix (<span class="math notranslate nohighlight">\(\mathbf{R} \in \mathbb{R}^{v \times t}\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{R} = \mathbf{O_{z}} - \mathbf{B}_N \mathbf{M}_N, \enspace \mathbf{B}_N \in \mathbb{R}^{v \times |N|},
+        \enspace \mathbf{M}_N \in \mathbb{R}^{|N| \times t}
+    \]</div>
+</li>
+<li><p>We can likewise construct the normalized time series of BOLD-like components (<span class="math notranslate nohighlight">\(\mathbf{P} \in \mathbb{R}^{v \times t}\)</span>) by
+multiplying similarly reduced parameter estimate and mixing matrices composed of only the columns and rows, respectively,
+that are associated with the accepted components indexed in <span class="math notranslate nohighlight">\(A\)</span>.
+The resulting time series matrix is similar to the time series matrix referred to elsewhere in the manuscript as
+multi-echo high-Kappa (MEHK), with the exception that the component time series have been normalized prior to reconstruction.</p>
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{P} = \mathbf{B}_A \mathbf{M}_A, \enspace \mathbf{B}_A \in \mathbb{R}^{v \times |A|},
+        \enspace \mathbf{M}_A \in \mathbb{R}^{|A| \times t}
+    \]</div>
+</li>
+<li><p>The map of the T1-like effect (<span class="math notranslate nohighlight">\(\mathbf{m} \in \mathbb{R}^{v}\)</span>) is constructed by taking the minimum across timepoints
+from the normalized MEHK time series (<span class="math notranslate nohighlight">\(\mathbf{P}\)</span>) and then mean-centering across brain voxels.
+Let <span class="math notranslate nohighlight">\(J = \{1, ..., t\}\)</span> denote the indices of the columns of matrix <span class="math notranslate nohighlight">\(\mathbf{P}\)</span>, and let <span class="math notranslate nohighlight">\(p_{ij}\)</span> denote the value of the
+element <span class="math notranslate nohighlight">\(P[i,j]\)</span>.</p>
+<!-- adapted from https://math.stackexchange.com/a/871689 -->
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{q_{i}} = \min_{j\in{J}}p_{ij} \quad \forall  i = 1,...,v
+    \]</div>
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{m} = \mathbf{q} - \mathbf{\overline{q}}, \enspace \mathbf{q} \in \mathbb{R}^{v}
+    \]</div>
+</li>
+<li><p>The standardized OC time series matrix (<span class="math notranslate nohighlight">\(\mathbf{O_z}\)</span>) is regressed on the T1-like effect map (<span class="math notranslate nohighlight">\(\mathbf{m}\)</span>) to estimate the
+volume-wise global signal time series (<span class="math notranslate nohighlight">\(\mathbf{g} \in \mathbb{R}^t\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{O_{z}} = \mathbf{m} \otimes \mathbf{g} + \mathbf{\epsilon}, \enspace \mathbf{\epsilon} \in \mathbb{R}^{v \times t}
+    \]</div>
+<p>Where <span class="math notranslate nohighlight">\(\otimes\)</span> is the outer product.</p>
+</li>
+<li><p>The normalized BOLD time series matrix (<span class="math notranslate nohighlight">\(\mathbf{P}\)</span>) is then regressed on this global signal time series (<span class="math notranslate nohighlight">\(\mathbf{g}\)</span>)
+in order to estimate a global signal map (<span class="math notranslate nohighlight">\(\mathbf{s} \in \mathbb{R}^v\)</span>) and the normalized BOLD time series matrix without
+the T1-like effect (<span class="math notranslate nohighlight">\(\mathbf{E} \in \mathbb{R}^{v \times t}\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{P} = \mathbf{g} \otimes \mathbf{s} + \mathbf{E}
+    \]</div>
+</li>
+<li><p>The time series matrix of BOLD-like components without the T1-like effect (MEHK+MIR, <span class="math notranslate nohighlight">\(\mathbf{H} \in \mathbb{R}^{v \times t}\)</span>),
+scaled to match the original OC time series matrix, is constructed by multiplying each column of <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> by the vector
+<span class="math notranslate nohighlight">\(\mathbf{\sigma_{O}}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+        \mathbf{H} = \mathbf{E} \circ
+        \underbrace{
+            \pmatrix{
+                \mathbf{{\sigma_{O}}_1} &amp; \cdots &amp; \mathbf{{\sigma_{O}}_1}\\
+                \vdots &amp; \vdots &amp; \vdots \\
+                \mathbf{{\sigma_{O}}_v} &amp; \cdots &amp; \mathbf{{\sigma_{O}}_v}\\
+            }
+        }_{t}
+    \end{split}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\circ\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Hadamard_product_(matrices)">Hadamard product</a>
+for element-wise multiplication of two matrices.</p>
+</li>
+<li><p>The MEICA-denoised time series without the T1-like effect (MEDN+MIR, <span class="math notranslate nohighlight">\(\mathbf{D} \in \mathbb{R}^{v \times t}\)</span>)
+is constructed by adding the residuals time series (<span class="math notranslate nohighlight">\(\mathbf{R}\)</span>) to the normalized BOLD time series (<span class="math notranslate nohighlight">\(\mathbf{E}\)</span>),
+multiplying each column of the result by the vector <span class="math notranslate nohighlight">\(\sigma_{O}\)</span>, and adding back in the voxel-wise mean of the OC time series
+(<span class="math notranslate nohighlight">\(\mathbf{\overline{O}}\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+        \mathbf{D} = \mathbf{\overline{O}} + (\mathbf{E} + \mathbf{R}) \circ
+        \underbrace{
+            \pmatrix{
+                \mathbf{{\sigma_{O}}_1} &amp; \cdots &amp; \mathbf{{\sigma_{O}}_1}\\
+                \vdots &amp; \vdots &amp; \vdots \\
+                \mathbf{{\sigma_{O}}_v} &amp; \cdots &amp; \mathbf{{\sigma_{O}}_v}\\
+            }
+        }_{t}
+    \end{split}\]</div>
+</li>
+</ol>
 </div>
+</div></div>
 </div>
 
     <script type="text/x-thebe-config">

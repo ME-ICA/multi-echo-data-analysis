@@ -1453,8 +1453,8 @@ This means that ignored components and residual variance not explained by the IC
 but it cannot identify components that are spread out throughout the whole brain.</p>
 <p>One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse
 (ostensibly respiration-related) noise.
-Methods which have been employed in the past include global signal regression (GSR), T1c-GSR, anatomical CompCor,
-Go Decomposition (GODEC), and robust PCA.</p>
+Methods which have been employed in the past include global signal regression (GSR),
+<a class="reference internal" href="TE_Dependence.html#minimum-image-regression">Minimum Image Regression</a>, anatomical CompCor, Go Decomposition (GODEC), and robust PCA.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dn_t1c_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">dn_t1c_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dn_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span>
@@ -1492,7 +1492,7 @@ Go Decomposition (GODEC), and robust PCA.</p>
 <div class="cell_output docutils container">
 <img alt="../_images/plot_approach_figures_36_0.png" src="../_images/plot_approach_figures_36_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 32 </span><span class="caption-text">Time series from a voxel before and after minimum image regression.</span><a class="headerlink" href="#fig-mir-timeseries" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 32 </span><span class="caption-text">Time series from a voxel before and after <a class="reference internal" href="TE_Dependence.html#minimum-image-regression">minimum image regression</a>.</span><a class="headerlink" href="#fig-mir-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
