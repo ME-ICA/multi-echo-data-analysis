@@ -538,6 +538,7 @@ Now let's apply this approach to components again.
 
 ```{prf:algorithm} Minimum image regression
 :label: minimum-image-regression
+<!-- Written by Taylor Salo, Jessica Bartley, and Elizabeth DuPre -->
 
 **Inputs**
 
@@ -550,20 +551,28 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
 - $A$ is the set of indices of all accepted (i.e., BOLD-like) components in $\mathbf{M}$:
   $A \in \mathbb{N}^l \text{ s.t } 1 \leq l \leq k, A \subseteq N$
 
-**Output** Multi-echo denoised data without the T1-like effect ($D$)
+**Outputs**
 
-1.  First, the voxel-wise means ($\mathbf{\overline{O}} \in \mathbb{R}^{v}$) and standard deviations
-    ($\mathbf{\sigma_{O}} \in \mathbb{R}^{v}$) of the OC data are computed over time.
-2.  The OC data are then z-normalized over time ($\mathbf{O_z} \in \mathbb{R}^{v \times t}$) and the normalized
-    OC matrix ($\mathbf{O_z}$) is regressed on the ICA mixing matrix ($\mathbf{M} \in \mathbb{R}^{c \times t}$)
-    to construct component-wise parameter estimate maps ($\mathbf{B} \in \mathbb{R}^{v \times c}$).
+- Multi-echo denoised data without the T1-like effect, referred to as $\mathbf{D}$ or MEDN+MIR.
+- Multi-echo BOLD-like data without the T1-like effect, referred to as $\mathbf{H}$ or MEHK+MIR.
+- ICA mixing matrix with the T1-like effect removed from component time series ($\mathbf{K}$).
+- Map of the T1-like effect ($\mathbf{m}$)
+
+**Algorithm**
+
+1.  The voxel-wise means ($\mathbf{\overline{O}} \in \mathbb{R}^{v}$) and standard deviations
+    ($\mathbf{\sigma_{O}} \in \mathbb{R}^{v}$) of the optimally combined data are computed over time.
+2.  The optimally combined data are z-normalized over time ($\mathbf{O_z} \in \mathbb{R}^{v \times t}$).
+3.  The normalized optimally combined data matrix ($\mathbf{O_z}$) is regressed on the ICA mixing matrix
+    ($\mathbf{M} \in \mathbb{R}^{c \times t}$) to construct component-wise parameter estimate maps
+    ($\mathbf{B} \in \mathbb{R}^{v \times c}$).
 
     <!-- no intercept included, because unnecessary and data are normalized. -->
     $$
         \mathbf{O_{z}} = \mathbf{B} \mathbf{M} + \mathbf{\epsilon}, \enspace \mathbf{\epsilon} \in \mathbb{R}^{v \times t}
     $$
 
-3.  Next, $N$ is used to select rows from the mixing matrix $\mathbf{M}$ and columns from the parameter estimate matrix $\mathbf{B}$
+4.  $N$ is used to select rows from the mixing matrix $\mathbf{M}$ and columns from the parameter estimate matrix $\mathbf{B}$
     that correspond to non-ignored (i.e., accepted and rejected) components, forming reduced matrices $\mathbf{M}_N$ and $\mathbf{B}_N$.
     The normalized time series matrix for the combined ignored components and variance left unexplained by the ICA decomposition is then
     computed by subtracting the scalar product of the non-ignored beta weight and mixing matrices from the normalized OC data time series
@@ -575,7 +584,7 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
         \enspace \mathbf{M}_N \in \mathbb{R}^{|N| \times t}
     $$
 
-4.  We can likewise construct the normalized time series of BOLD-like components ($\mathbf{P} \in \mathbb{R}^{v \times t}$) by
+5.  We can likewise construct the normalized time series of BOLD-like components ($\mathbf{P} \in \mathbb{R}^{v \times t}$) by
     multiplying similarly reduced parameter estimate and mixing matrices composed of only the columns and rows, respectively,
     that are associated with the accepted components indexed in $A$.
     The resulting time series matrix is similar to the time series matrix referred to elsewhere in the manuscript as
@@ -586,10 +595,10 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
         \enspace \mathbf{M}_A \in \mathbb{R}^{|A| \times t}
     $$
 
-5.  The map of the T1-like effect ($\mathbf{m} \in \mathbb{R}^{v}$) is constructed by taking the minimum across timepoints
+6.  The map of the T1-like effect ($\mathbf{m} \in \mathbb{R}^{v}$) is constructed by taking the minimum across timepoints
     from the normalized MEHK time series ($\mathbf{P}$) and then mean-centering across brain voxels.
     Let $J = \{1, ..., t\}$ denote the indices of the columns of matrix $\mathbf{P}$, and let $p_{ij}$ denote the value of the
-    element $P[i,j]$.
+    element $\mathbf{P}[i,j]$.
 
     <!-- adapted from https://math.stackexchange.com/a/871689 -->
     $$
@@ -600,8 +609,8 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
         \mathbf{m} = \mathbf{q} - \mathbf{\overline{q}}, \enspace \mathbf{q} \in \mathbb{R}^{v}
     $$
 
-6.  The standardized OC time series matrix ($\mathbf{O_z}$) is regressed on the T1-like effect map ($\mathbf{m}$) to estimate the
-    volume-wise global signal time series ($\mathbf{g} \in \mathbb{R}^t$).
+7.  The standardized optimally combined time series matrix ($\mathbf{O_z}$) is regressed on the T1-like effect map
+    ($\mathbf{m}$) to estimate the volume-wise global signal time series ($\mathbf{g} \in \mathbb{R}^t$).
 
     $$
         \mathbf{O_{z}} = \mathbf{m} \otimes \mathbf{g} + \mathbf{\epsilon}, \enspace \mathbf{\epsilon} \in \mathbb{R}^{v \times t}
@@ -609,7 +618,7 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
 
     Where $\otimes$ is the outer product.
 
-7.  The normalized BOLD time series matrix ($\mathbf{P}$) is then regressed on this global signal time series ($\mathbf{g}$)
+8.  The normalized BOLD time series matrix ($\mathbf{P}$) is then regressed on this global signal time series ($\mathbf{g}$)
     in order to estimate a global signal map ($\mathbf{s} \in \mathbb{R}^v$) and the normalized BOLD time series matrix without
     the T1-like effect ($\mathbf{E} \in \mathbb{R}^{v \times t}$).
 
@@ -617,7 +626,7 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
         \mathbf{P} = \mathbf{g} \otimes \mathbf{s} + \mathbf{E}
     $$
 
-8.  The time series matrix of BOLD-like components without the T1-like effect (MEHK+MIR, $\mathbf{H} \in \mathbb{R}^{v \times t}$),
+9.  The time series matrix of BOLD-like components without the T1-like effect (MEHK+MIR, $\mathbf{H} \in \mathbb{R}^{v \times t}$),
     scaled to match the original OC time series matrix, is constructed by multiplying each column of $\mathbf{E}$ by the vector
     $\mathbf{\sigma_{O}}$.
 
@@ -635,7 +644,7 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
     Where $\circ$ is the [Hadamard product](https://en.wikipedia.org/wiki/Hadamard_product_(matrices))
     for element-wise multiplication of two matrices.
 
-9.  The MEICA-denoised time series without the T1-like effect (MEDN+MIR, $\mathbf{D} \in \mathbb{R}^{v \times t}$)
+10. The ICA-denoised time series without the T1-like effect (MEDN+MIR, $\mathbf{D} \in \mathbb{R}^{v \times t}$)
     is constructed by adding the residuals time series ($\mathbf{R}$) to the normalized BOLD time series ($\mathbf{E}$),
     multiplying each column of the result by the vector $\sigma_{O}$, and adding back in the voxel-wise mean of the OC time series
     ($\mathbf{\overline{O}}$).
@@ -649,5 +658,17 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
                 \mathbf{{\sigma_{O}}_v} & \cdots & \mathbf{{\sigma_{O}}_v}\\
             }
         }_{t}
+    $$
+
+11. The T1c-corrected ICA mixing matrix is then derived by regressing the global signal time series $\mathbf{g}$ from
+    each component's time series. Let $\mathbf{Q}$ be the associated parameter estimate matrix
+    ($\mathbf{Q} \in \mathbb{R}^{c \times t}$).
+
+    $$
+        \mathbf{M} = \mathbf{Q}\mathbf{g} + \mathbf{K}
+    $$
+
+    $$
+        \mathbf{K} = \mathbf{M} - \mathbf{Q}\mathbf{g}
     $$
 ```

@@ -1008,6 +1008,7 @@ Kappa: 31513.966302911744
 <div class="proof algorithm admonition" id="minimum-image-regression">
 <p class="admonition-title"><span class="caption-number">Algorithm 1 </span> (Minimum image regression)</p>
 <div class="algorithm-content section" id="proof-content">
+<!-- Written by Taylor Salo, Jessica Bartley, and Elizabeth DuPre -->
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathbf{O}\)</span> is the matrix of optimally combined (OC) data, of shape <span class="math notranslate nohighlight">\(v \times t\)</span>,
@@ -1019,20 +1020,28 @@ where <span class="math notranslate nohighlight">\(v\)</span> is the number of v
 <li><p><span class="math notranslate nohighlight">\(A\)</span> is the set of indices of all accepted (i.e., BOLD-like) components in <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>:
 <span class="math notranslate nohighlight">\(A \in \mathbb{N}^l \text{ s.t } 1 \leq l \leq k, A \subseteq N\)</span></p></li>
 </ul>
-<p><strong>Output</strong> Multi-echo denoised data without the T1-like effect (<span class="math notranslate nohighlight">\(D\)</span>)</p>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Multi-echo denoised data without the T1-like effect, referred to as <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> or MEDN+MIR.</p></li>
+<li><p>Multi-echo BOLD-like data without the T1-like effect, referred to as <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> or MEHK+MIR.</p></li>
+<li><p>ICA mixing matrix with the T1-like effect removed from component time series (<span class="math notranslate nohighlight">\(\mathbf{K}\)</span>).</p></li>
+<li><p>Map of the T1-like effect (<span class="math notranslate nohighlight">\(\mathbf{m}\)</span>)</p></li>
+</ul>
+<p><strong>Algorithm</strong></p>
 <ol>
-<li><p>First, the voxel-wise means (<span class="math notranslate nohighlight">\(\mathbf{\overline{O}} \in \mathbb{R}^{v}\)</span>) and standard deviations
-(<span class="math notranslate nohighlight">\(\mathbf{\sigma_{O}} \in \mathbb{R}^{v}\)</span>) of the OC data are computed over time.</p></li>
-<li><p>The OC data are then z-normalized over time (<span class="math notranslate nohighlight">\(\mathbf{O_z} \in \mathbb{R}^{v \times t}\)</span>) and the normalized
-OC matrix (<span class="math notranslate nohighlight">\(\mathbf{O_z}\)</span>) is regressed on the ICA mixing matrix (<span class="math notranslate nohighlight">\(\mathbf{M} \in \mathbb{R}^{c \times t}\)</span>)
-to construct component-wise parameter estimate maps (<span class="math notranslate nohighlight">\(\mathbf{B} \in \mathbb{R}^{v \times c}\)</span>).</p>
+<li><p>The voxel-wise means (<span class="math notranslate nohighlight">\(\mathbf{\overline{O}} \in \mathbb{R}^{v}\)</span>) and standard deviations
+(<span class="math notranslate nohighlight">\(\mathbf{\sigma_{O}} \in \mathbb{R}^{v}\)</span>) of the optimally combined data are computed over time.</p></li>
+<li><p>The optimally combined data are z-normalized over time (<span class="math notranslate nohighlight">\(\mathbf{O_z} \in \mathbb{R}^{v \times t}\)</span>).</p></li>
+<li><p>The normalized optimally combined data matrix (<span class="math notranslate nohighlight">\(\mathbf{O_z}\)</span>) is regressed on the ICA mixing matrix
+(<span class="math notranslate nohighlight">\(\mathbf{M} \in \mathbb{R}^{c \times t}\)</span>) to construct component-wise parameter estimate maps
+(<span class="math notranslate nohighlight">\(\mathbf{B} \in \mathbb{R}^{v \times c}\)</span>).</p>
 <!-- no intercept included, because unnecessary and data are normalized. -->
 <div class="math notranslate nohighlight">
 \[
         \mathbf{O_{z}} = \mathbf{B} \mathbf{M} + \mathbf{\epsilon}, \enspace \mathbf{\epsilon} \in \mathbb{R}^{v \times t}
     \]</div>
 </li>
-<li><p>Next, <span class="math notranslate nohighlight">\(N\)</span> is used to select rows from the mixing matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> and columns from the parameter estimate matrix <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>
+<li><p><span class="math notranslate nohighlight">\(N\)</span> is used to select rows from the mixing matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> and columns from the parameter estimate matrix <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>
 that correspond to non-ignored (i.e., accepted and rejected) components, forming reduced matrices <span class="math notranslate nohighlight">\(\mathbf{M}_N\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}_N\)</span>.
 The normalized time series matrix for the combined ignored components and variance left unexplained by the ICA decomposition is then
 computed by subtracting the scalar product of the non-ignored beta weight and mixing matrices from the normalized OC data time series
@@ -1058,7 +1067,7 @@ multi-echo high-Kappa (MEHK), with the exception that the component time series 
 <li><p>The map of the T1-like effect (<span class="math notranslate nohighlight">\(\mathbf{m} \in \mathbb{R}^{v}\)</span>) is constructed by taking the minimum across timepoints
 from the normalized MEHK time series (<span class="math notranslate nohighlight">\(\mathbf{P}\)</span>) and then mean-centering across brain voxels.
 Let <span class="math notranslate nohighlight">\(J = \{1, ..., t\}\)</span> denote the indices of the columns of matrix <span class="math notranslate nohighlight">\(\mathbf{P}\)</span>, and let <span class="math notranslate nohighlight">\(p_{ij}\)</span> denote the value of the
-element <span class="math notranslate nohighlight">\(P[i,j]\)</span>.</p>
+element <span class="math notranslate nohighlight">\(\mathbf{P}[i,j]\)</span>.</p>
 <!-- adapted from https://math.stackexchange.com/a/871689 -->
 <div class="math notranslate nohighlight">
 \[
@@ -1069,8 +1078,8 @@ element <span class="math notranslate nohighlight">\(P[i,j]\)</span>.</p>
         \mathbf{m} = \mathbf{q} - \mathbf{\overline{q}}, \enspace \mathbf{q} \in \mathbb{R}^{v}
     \]</div>
 </li>
-<li><p>The standardized OC time series matrix (<span class="math notranslate nohighlight">\(\mathbf{O_z}\)</span>) is regressed on the T1-like effect map (<span class="math notranslate nohighlight">\(\mathbf{m}\)</span>) to estimate the
-volume-wise global signal time series (<span class="math notranslate nohighlight">\(\mathbf{g} \in \mathbb{R}^t\)</span>).</p>
+<li><p>The standardized optimally combined time series matrix (<span class="math notranslate nohighlight">\(\mathbf{O_z}\)</span>) is regressed on the T1-like effect map
+(<span class="math notranslate nohighlight">\(\mathbf{m}\)</span>) to estimate the volume-wise global signal time series (<span class="math notranslate nohighlight">\(\mathbf{g} \in \mathbb{R}^t\)</span>).</p>
 <div class="math notranslate nohighlight">
 \[
         \mathbf{O_{z}} = \mathbf{m} \otimes \mathbf{g} + \mathbf{\epsilon}, \enspace \mathbf{\epsilon} \in \mathbb{R}^{v \times t}
@@ -1102,7 +1111,7 @@ scaled to match the original OC time series matrix, is constructed by multiplyin
 <p>Where <span class="math notranslate nohighlight">\(\circ\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Hadamard_product_(matrices)">Hadamard product</a>
 for element-wise multiplication of two matrices.</p>
 </li>
-<li><p>The MEICA-denoised time series without the T1-like effect (MEDN+MIR, <span class="math notranslate nohighlight">\(\mathbf{D} \in \mathbb{R}^{v \times t}\)</span>)
+<li><p>The ICA-denoised time series without the T1-like effect (MEDN+MIR, <span class="math notranslate nohighlight">\(\mathbf{D} \in \mathbb{R}^{v \times t}\)</span>)
 is constructed by adding the residuals time series (<span class="math notranslate nohighlight">\(\mathbf{R}\)</span>) to the normalized BOLD time series (<span class="math notranslate nohighlight">\(\mathbf{E}\)</span>),
 multiplying each column of the result by the vector <span class="math notranslate nohighlight">\(\sigma_{O}\)</span>, and adding back in the voxel-wise mean of the OC time series
 (<span class="math notranslate nohighlight">\(\mathbf{\overline{O}}\)</span>).</p>
@@ -1117,6 +1126,18 @@ multiplying each column of the result by the vector <span class="math notranslat
             }
         }_{t}
     \end{split}\]</div>
+</li>
+<li><p>The T1c-corrected ICA mixing matrix is then derived by regressing the global signal time series <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> from
+each component’s time series. Let <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> be the associated parameter estimate matrix
+(<span class="math notranslate nohighlight">\(\mathbf{Q} \in \mathbb{R}^{c \times t}\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{M} = \mathbf{Q}\mathbf{g} + \mathbf{K}
+    \]</div>
+<div class="math notranslate nohighlight">
+\[
+        \mathbf{K} = \mathbf{M} - \mathbf{Q}\mathbf{g}
+    \]</div>
 </li>
 </ol>
 </div>
