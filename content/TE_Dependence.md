@@ -535,3 +535,119 @@ glue("fig_component_curves_4", fig, display=False)
 
 Now let's apply this approach to components again.
 ```
+
+```{prf:algorithm} Minimum image regression
+:label: minimum-image-regression
+
+**Inputs**
+
+- $\mathbf{O}$ is the matrix of optimally combined (OC) data, of shape $v \times t$,
+where $v$ is the number of voxels in the brain mask and $t$ is the number of timepoints in the scan.
+- $\mathbf{M}$ is the mixing matrix from the ICA decomposition, of shape $c \times t$, where $c$ is the number of components.
+- $W$ is the set of indices of all components in $\mathbf{M}$: $W = \{1, 2, 3, ..., c\}$
+- $N$ is the set of indices of all non-ignored components (i.e., all accepted or BOLD-like, and rejected or non-BOLD components) in
+  $\mathbf{M}$: $N \in \mathbb{N}^k \text{ s.t } 1 \leq k \leq c, N \subseteq W$
+- $A$ is the set of indices of all accepted (i.e., BOLD-like) components in $\mathbf{M}$:
+  $A \in \mathbb{N}^l \text{ s.t } 1 \leq l \leq k, A \subseteq N$
+
+**Output** Multi-echo denoised data without the T1-like effect ($D$)
+
+1.  First, the voxel-wise means ($\mathbf{\overline{O}} \in \mathbb{R}^{v}$) and standard deviations
+    ($\mathbf{\sigma_{O}} \in \mathbb{R}^{v}$) of the OC data are computed over time.
+2.  The OC data are then z-normalized over time ($\mathbf{O_z} \in \mathbb{R}^{v \times t}$) and the normalized
+    OC matrix ($\mathbf{O_z}$) is regressed on the ICA mixing matrix ($\mathbf{M} \in \mathbb{R}^{c \times t}$)
+    to construct component-wise parameter estimate maps ($\mathbf{B} \in \mathbb{R}^{v \times c}$).
+
+    <!-- no intercept included, because unnecessary and data are normalized. -->
+    $$
+        \mathbf{O_{z}} = \mathbf{B} \mathbf{M} + \mathbf{\epsilon}, \enspace \mathbf{\epsilon} \in \mathbb{R}^{v \times t}
+    $$
+
+3.  Next, $N$ is used to select rows from the mixing matrix $\mathbf{M}$ and columns from the parameter estimate matrix $\mathbf{B}$
+    that correspond to non-ignored (i.e., accepted and rejected) components, forming reduced matrices $\mathbf{M}_N$ and $\mathbf{B}_N$.
+    The normalized time series matrix for the combined ignored components and variance left unexplained by the ICA decomposition is then
+    computed by subtracting the scalar product of the non-ignored beta weight and mixing matrices from the normalized OC data time series
+    ($\mathbf{O_{z}}$).
+    The result is referred to as the normalized residuals time series matrix ($\mathbf{R} \in \mathbb{R}^{v \times t}$).
+
+    $$
+        \mathbf{R} = \mathbf{O_{z}} - \mathbf{B}_N \mathbf{M}_N, \enspace \mathbf{B}_N \in \mathbb{R}^{v \times |N|},
+        \enspace \mathbf{M}_N \in \mathbb{R}^{|N| \times t}
+    $$
+
+4.  We can likewise construct the normalized time series of BOLD-like components ($\mathbf{P} \in \mathbb{R}^{v \times t}$) by
+    multiplying similarly reduced parameter estimate and mixing matrices composed of only the columns and rows, respectively,
+    that are associated with the accepted components indexed in $A$.
+    The resulting time series matrix is similar to the time series matrix referred to elsewhere in the manuscript as
+    multi-echo high-Kappa (MEHK), with the exception that the component time series have been normalized prior to reconstruction.
+
+    $$
+        \mathbf{P} = \mathbf{B}_A \mathbf{M}_A, \enspace \mathbf{B}_A \in \mathbb{R}^{v \times |A|},
+        \enspace \mathbf{M}_A \in \mathbb{R}^{|A| \times t}
+    $$
+
+5.  The map of the T1-like effect ($\mathbf{m} \in \mathbb{R}^{v}$) is constructed by taking the minimum across timepoints
+    from the normalized MEHK time series ($\mathbf{P}$) and then mean-centering across brain voxels.
+    Let $J = \{1, ..., t\}$ denote the indices of the columns of matrix $\mathbf{P}$, and let $p_{ij}$ denote the value of the
+    element $P[i,j]$.
+
+    <!-- adapted from https://math.stackexchange.com/a/871689 -->
+    $$
+        \mathbf{q_{i}} = \min_{j\in{J}}p_{ij} \quad \forall  i = 1,...,v
+    $$
+
+    $$
+        \mathbf{m} = \mathbf{q} - \mathbf{\overline{q}}, \enspace \mathbf{q} \in \mathbb{R}^{v}
+    $$
+
+6.  The standardized OC time series matrix ($\mathbf{O_z}$) is regressed on the T1-like effect map ($\mathbf{m}$) to estimate the
+    volume-wise global signal time series ($\mathbf{g} \in \mathbb{R}^t$).
+
+    $$
+        \mathbf{O_{z}} = \mathbf{m} \otimes \mathbf{g} + \mathbf{\epsilon}, \enspace \mathbf{\epsilon} \in \mathbb{R}^{v \times t}
+    $$
+
+    Where $\otimes$ is the outer product.
+
+7.  The normalized BOLD time series matrix ($\mathbf{P}$) is then regressed on this global signal time series ($\mathbf{g}$)
+    in order to estimate a global signal map ($\mathbf{s} \in \mathbb{R}^v$) and the normalized BOLD time series matrix without
+    the T1-like effect ($\mathbf{E} \in \mathbb{R}^{v \times t}$).
+
+    $$
+        \mathbf{P} = \mathbf{g} \otimes \mathbf{s} + \mathbf{E}
+    $$
+
+8.  The time series matrix of BOLD-like components without the T1-like effect (MEHK+MIR, $\mathbf{H} \in \mathbb{R}^{v \times t}$),
+    scaled to match the original OC time series matrix, is constructed by multiplying each column of $\mathbf{E}$ by the vector
+    $\mathbf{\sigma_{O}}$.
+
+    $$
+        \mathbf{H} = \mathbf{E} \circ
+        \underbrace{
+            \pmatrix{
+                \mathbf{{\sigma_{O}}_1} & \cdots & \mathbf{{\sigma_{O}}_1}\\
+                \vdots & \vdots & \vdots \\
+                \mathbf{{\sigma_{O}}_v} & \cdots & \mathbf{{\sigma_{O}}_v}\\
+            }
+        }_{t}
+    $$
+
+    Where $\circ$ is the [Hadamard product](https://en.wikipedia.org/wiki/Hadamard_product_(matrices))
+    for element-wise multiplication of two matrices.
+
+9.  The MEICA-denoised time series without the T1-like effect (MEDN+MIR, $\mathbf{D} \in \mathbb{R}^{v \times t}$)
+    is constructed by adding the residuals time series ($\mathbf{R}$) to the normalized BOLD time series ($\mathbf{E}$),
+    multiplying each column of the result by the vector $\sigma_{O}$, and adding back in the voxel-wise mean of the OC time series
+    ($\mathbf{\overline{O}}$).
+
+    $$
+        \mathbf{D} = \mathbf{\overline{O}} + (\mathbf{E} + \mathbf{R}) \circ
+        \underbrace{
+            \pmatrix{
+                \mathbf{{\sigma_{O}}_1} & \cdots & \mathbf{{\sigma_{O}}_1}\\
+                \vdots & \vdots & \vdots \\
+                \mathbf{{\sigma_{O}}_v} & \cdots & \mathbf{{\sigma_{O}}_v}\\
+            }
+        }_{t}
+    $$
+```
