@@ -17,7 +17,7 @@ For the tutorials in this book,
 we will use partially-preprocessed data from two open multi-echo datasets: Euskalibur and Cambridge.
 For more information about these datasets, see {ref}`content:open-datasets`.
 
-```{code-cell} ipython3
+```python
 import os
 from pprint import pprint
 
@@ -38,4 +38,20 @@ cambridge_dataset = datasets.fetch_cambridge(
     data_dir=DATA_DIR,
 )
 pprint(cambridge_dataset)
+```
+
+For now, we will use repo2data to download some data we're storing on Google Drive.
+
+```{code-cell} ipython3
+import os
+
+from repo2data.repo2data import Repo2Data
+
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 ```
