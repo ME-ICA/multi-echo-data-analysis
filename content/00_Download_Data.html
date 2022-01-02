@@ -398,9 +398,7 @@
 <p>For the tutorials in this book,
 we will use partially-preprocessed data from two open multi-echo datasets: Euskalibur and Cambridge.
 For more information about these datasets, see <a class="reference internal" href="Multi_Echo_Datasets.html#content-open-datasets"><span class="std std-ref">Open Multi-Echo Datasets</span></a>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">datasets</span>
@@ -422,21 +420,81 @@ For more information about these datasets, see <a class="reference internal" hre
 <span class="n">pprint</span><span class="p">(</span><span class="n">cambridge_dataset</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Module `duecredit` not successfully imported due to &quot;No module named &#39;duecredit&#39;&quot;. Package functionality unaffected.
+<p>For now, we will use repo2data to download some data we’re storing on Google Drive.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
+
+<span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
+<span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
+
+<span class="c1"># Download data</span>
+<span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1759</span><span class="o">/</span><span class="mf">2827171989.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> 
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">datasets</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../data&quot;</span><span class="p">)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
+/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/repo2data
+Config from file :
+../binder/data_requirement.json
+Destination:
+./../data/multi-echo-data-analysis
 
-<span class="ne">ImportError</span>: cannot import name &#39;datasets&#39; from &#39;tedana&#39; (/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/__init__.py)
+Info : Starting to download from Google drive https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx ...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
+From: https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx
+To: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/multi-echo-data-analysis.zip
+
+  0%|          | 0.00/309M [00:00&lt;?, ?B/s]
+  3%|▎         | 8.91M/309M [00:00&lt;00:04, 69.5MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  9%|▉         | 27.3M/309M [00:00&lt;00:02, 129MB/s] 
+ 13%|█▎        | 40.9M/309M [00:00&lt;00:02, 110MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19%|█▊        | 57.7M/309M [00:00&lt;00:01, 129MB/s]
+ 23%|██▎       | 71.3M/309M [00:00&lt;00:01, 130MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 28%|██▊       | 86.0M/309M [00:00&lt;00:01, 133MB/s]
+ 33%|███▎      | 103M/309M [00:00&lt;00:01, 143MB/s] 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 38%|███▊      | 118M/309M [00:00&lt;00:01, 147MB/s]
+ 45%|████▌     | 139M/309M [00:00&lt;00:01, 163MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 50%|█████     | 156M/309M [00:01&lt;00:01, 132MB/s]
+ 59%|█████▉    | 182M/309M [00:01&lt;00:00, 165MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 65%|██████▍   | 200M/309M [00:01&lt;00:00, 141MB/s]
+ 70%|██████▉   | 215M/309M [00:01&lt;00:00, 125MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 76%|███████▋  | 235M/309M [00:01&lt;00:00, 140MB/s]
+ 84%|████████▍ | 260M/309M [00:01&lt;00:00, 165MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90%|█████████ | 278M/309M [00:01&lt;00:00, 144MB/s]
+ 98%|█████████▊| 303M/309M [00:02&lt;00:00, 167MB/s]
+100%|██████████| 309M/309M [00:02&lt;00:00, 146MB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: Extracting ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip ...
+patool: running /usr/bin/7z x -y -o./../data/multi-echo-data-analysis -- ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: ... ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip extracted to `./../data/multi-echo-data-analysis&#39;.
+Info : multi-echo-data-analysis.zip Decompressed
 </pre></div>
 </div>
 </div>
