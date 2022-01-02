@@ -13,6 +13,11 @@ kernelspec:
 
 # Generate tedana walkthrough figures
 
+```{important}
+The contents of this chapter will be moved into TE_Dependence and, to a lesser extent, Signal_Decay,
+and this chapter will be removed.
+```
+
 ```{code-cell} ipython3
 :tags: [hide-cell]
 import os
@@ -69,10 +74,7 @@ xfm = os.path.join(
 )
 xfm = nit.linear.load(xfm, fmt="itk")
 t1_file = os.path.join(data_path, "sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz")
-bg_img = xfm.apply(
-    spatialimage=t1_file,
-    reference=data_files[0],
-)
+bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 
 # Tedana outputs
 adaptive_mask_file = os.path.join(
@@ -318,11 +320,11 @@ for i_echo in range(n_echoes):
 axes[-1].set_xlabel("Time", fontsize=16)
 axes[-1].set_xlim(0, len(ts[i_echo]) - 1)
 fig.tight_layout()
-glue("fig_echo_timeseries", fig, display=False)
+glue("fig_echo_timeseries2", fig, display=False)
 ```
 
-```{glue:figure} fig_echo_timeseries
-:name: fig_echo_timeseries
+```{glue:figure} fig_echo_timeseries2
+:name: fig_echo_timeseries2
 :align: center
 
 Time series from a voxel for each echo.
@@ -345,11 +347,11 @@ ax.tick_params(axis="both", which="major", labelsize=14)
 ax.set_xlim(0, 70)
 ax.set_ylim(0, 3000)
 fig.tight_layout()
-glue("fig_echo_scatter", fig, display=False)
+glue("fig_echo_scatter2", fig, display=False)
 ```
 
-```{glue:figure} fig_echo_scatter
-:name: fig_echo_scatter
+```{glue:figure} fig_echo_scatter2
+:name: fig_echo_scatter2
 :align: center
 
 Scatter plot of voxel's values by echo time.

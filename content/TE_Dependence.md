@@ -13,6 +13,30 @@ kernelspec:
 
 # BOLD, non-BOLD, and TE-dependence with tedana
 
+```{important}
+This chapter should differentiate itself from Signal_Decay by focusing on the application of {eq}`monoexponential_decay`
+to decompositions, rather than raw signal compared between active and inactive states.
+
+We may want to describe adaptive masking, data whitening, the model fit metrics, and post-processing methods (e.g., MIR)
+in this page as well.
+```
+
+```{important}
+The general flow of this chapter should be:
+
+1.  Explain the monoexponential decay equation, but primarily reference back to Signal_Decay.
+2.  Walk through optimal combination and adaptive masking somewhere around here.
+3.  Describe why multi-echo denoising can't be done directly to the raw signal and why ICA is necessary.
+    1.  This mean talking about noise, really, and why the FIT method (volume-wise T2*/S0 estimation)
+        is generally considered too noisy for practical application.
+    2.  Walk through TEDPCA as well.
+4.  The TE-(in)dependence models.
+5.  Apply the models to a simulated component, as well as multiple real components.
+    1.  Show model fit for different components.
+6.  Compare optimally combined, denoised, and high-kappa data.
+7.  Describe post-processing methods, like minimum image regression and tedana's version of global signal regression.
+```
+
 This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is leveraged to denoise multi-echo data.
 
 The equation for how signal is dependent on changes in S0 and T2*:
@@ -35,6 +59,11 @@ from nilearn.glm import first_level
 from repo2data.repo2data import Repo2Data
 from scipy import signal, stats
 
+sns.set_style("whitegrid")
+plt.rcParams.update(
+    {"text.usetex": True, "font.family": "sans-serif", "font.sans-serif": ["Helvetica"]}
+)
+
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 
@@ -52,12 +81,6 @@ os.makedirs(out_dir, exist_ok=True)
 # Simulate data
 # For a nice, smooth curve
 echo_times = np.arange(0, 201, 1)
-
-# logan's TEs
-# echo_times = np.array([9.58, 21.95, 34.32, 46.69, 59.06, 71.43, 83.8, 96.17])
-
-# dan's TEs
-# echo_times = np.array([15.4, 29.7, 44.0, 58.3, 72.6])
 
 n_echoes = len(echo_times)
 pal = sns.color_palette("cubehelix", 8)
