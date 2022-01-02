@@ -13,23 +13,61 @@ kernelspec:
 
 # Signal Decay
 
-In this chapter, we use simulated data to show how BOLD signal decays and how we can glean useful information from that decay rate.
+```{important}
+This chapter should differentiate itself from TE_Dependence by focusing on the application of {eq}`monoexponential_decay`
+to raw signal, rather than decompositions.
+```
+
+```{important}
+The general flow of this chapter should be:
+
+1.  Explain the monoexponential decay equation.
+    1.  Mention other models of signal decay, including biexponential models,
+        and why they generally aren't used on multi-echo fMRI data.
+2.  Show signal decay in real data.
+    1.  Start with single-volume brain images across increasing echo times.
+    2.  Next, show a scatter plot of the values for a single voxel over time, separated by echo time,
+        to give a better sense of the scale of the decay.
+    3.  Line plots of the different echo times for a single voxel to show that decay is not a simple scalar.
+3.  Show a simulated, static decay curve.
+4.  Show the difference in decay curves for "active" and "inactive" states in the same voxel (i.e., different T2* values).
+5.  Show how single-echo data fluctuate over time, given an underlying signal.
+6.  Add a changing decay curve underneath the single-echo data point.
+7.  Overlay points for the changing T2* and S0 values as well.
+8.  Plot the decay curves of the same relative fluctuations, but dependent solely on S0 or T2* changes.
+9.  Overlay single-echo data points on the fluctuating decay curves,
+    to show how the two types of fluctuations cannot be dissociated using single-echo data.
+    1.  Plot scaled T2* against the single-echo data in a line plot. The time series will be very similar, but slightly different.
+    2.  Plot scaled S0 against the single-echo data. The time series will effectively be the same.
+    3.  Point out that we don't know the underlying T2* or S0 fluctuations,
+        so this just shows how very similar signal can come from T2* _or_ S0.
+10. Overlay multi-echo data points on the fluctuating decay curves, to show how the differences in the patterns are much clearer.
+11. Discuss the effect of noise on the multi-echo signal. Perhaps plot a single voxel's real values?
+12. Point to the TE Dependence chapter.
+```
+
+In this chapter, we illustrate how BOLD signal decays and how we can glean useful information from that decay rate.
+
+To do this, we will use a combination of simulated and real multi-echo data.
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
 import os
 
 import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
+import pandas as pd
 import seaborn as sns
-from book_utils import predict_bold_signal
 from IPython import display
 from matplotlib.animation import FuncAnimation
 from myst_nb import glue
-from nilearn import image, plotting
+from nilearn import image, masking, plotting
 from nilearn.glm import first_level
 from repo2data.repo2data import Repo2Data
 from scipy import signal
+
+from book_utils import predict_bold_signal
 
 sns.set_style("whitegrid")
 plt.rcParams.update(
@@ -48,9 +86,8 @@ out_dir = os.path.join(data_path, "signal-decay")
 os.makedirs(out_dir, exist_ok=True)
 ```
 
-## Signal decays as echo time increases
-
 ```{code-cell} ipython3
+:tags: [hide-cell]
 func_dir = os.path.join(data_path, "sub-04570/func/")
 data_files = [
     os.path.join(
@@ -70,7 +107,11 @@ data_files = [
         "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
     ),
 ]
-echo_times = [12.0, 28.0, 44.0, 60.0]
+ted_dir = os.path.join(data_path, "tedana")
+ECHO_TIMES = [12, 28, 44, 60]
+n_echoes = len(ECHO_TIMES)
+
+pal = sns.color_palette("cubehelix", n_echoes)
 
 img = image.index_img(data_files[0], 0)
 data = img.get_fdata()
@@ -87,7 +128,45 @@ for f in data_files:
     data = data[min_x:max_x, min_y:max_y, min_z:max_z]
     img = nib.Nifti1Image(data, img.affine, img.header)
     imgs.append(img)
+
+# Create binary mask from adaptive mask
+adaptive_mask_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"
+)
+mask = image.math_img("img >= 3", img=adaptive_mask_file)
+
+# Component parameter estimates
+betas_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz"
+)
+beta_maps = masking.apply_mask(betas_file, mask)
+
+# Component table
+comp_tbl = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    index_col="Component",
+)
+
+# Get voxel index for voxel most related to component with highest kappa value
+acc_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "accepted"]
+high_kappa_comp = acc_comp_tbl.sort_values(by="kappa", ascending=False).index.values[0]
+high_kappa_comp_val = int(high_kappa_comp.split("_")[1])
+voxel_idx = np.where(
+    beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :])
+)[0][0]
+
+# Extract the time series for the high-kappa voxel
+data = [masking.apply_mask(f, mask) for f in data_files]
+ts = [d[:, voxel_idx] for d in data]
+ts_1d = np.hstack(ts)
+
+n_trs = ts[0].shape[0]
 ```
+
+## Signal decays as echo time increases
+
+To start, let us look at how BOLD signal changes with increasing echo time in real data.
+The data we use is a single resting-state run, with echo times of 12, 28, 44, and 60 milliseconds.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -95,7 +174,7 @@ plt.style.use("dark_background")
 
 fig, axes = plt.subplots(figsize=(26, 4), ncols=len(data_files))
 for i_echo, img in enumerate(imgs):
-    te = echo_times[i_echo]
+    te = ECHO_TIMES[i_echo]
     if i_echo == 0:
         data = img.get_fdata()
         vmax = np.max(data)
@@ -126,11 +205,67 @@ plt.style.use("default")
 Signal decay in the brain.
 ```
 
+### Echo-specific data and echo time
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+fig, ax = plt.subplots(figsize=(14, 6))
+values = [i[0] for i in ts]
+for i_echo in range(n_echoes):
+    rep_echo_times = np.ones(n_trs) * ECHO_TIMES[i_echo]
+    ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
+
+ax.set_ylabel("BOLD signal", fontsize=16)
+ax.set_xlabel("Echo Time (ms)", fontsize=16)
+ax.set_xticks(ECHO_TIMES)
+ax.tick_params(axis="both", which="major", labelsize=14)
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
+fig.tight_layout()
+glue("fig_echo_scatter", fig, display=False)
+```
+
+```{glue:figure} fig_echo_scatter
+:name: fig_echo_scatter
+:align: center
+
+Scatter plot of voxel's values by echo time.
+```
+
+### The signal itself changes with echo time as well
+
+While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
+for i_echo in range(n_echoes):
+    axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
+    axes[i_echo].set_ylabel(
+        f"{ECHO_TIMES[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
+    )
+    axes[i_echo].set_yticks([])
+    axes[i_echo].set_xticks([])
+
+axes[-1].set_xlabel("Time", fontsize=16)
+axes[-1].set_xlim(0, len(ts[i_echo]) - 1)
+fig.tight_layout()
+glue("fig_echo_timeseries", fig, display=False)
+```
+
+```{glue:figure} fig_echo_timeseries
+:name: fig_echo_timeseries
+:align: center
+
+Time series from a voxel for each echo.
+```
+
 ## The impact of $T_{2}^{*}$ and $S_{0}$ fluctuations on BOLD signal
+
+In this section, we investigate the two factors driving changes in the signal decay pattern: $T_{2}^{*}$ and $S_{0}$.
 
 ```{code-cell} ipython3
 # Simulate data
-MULTIECHO_TES = np.array([15, 30, 45, 60, 75, 90])
 SINGLEECHO_TE = np.array([30])
 
 # For a nice, smooth curve
@@ -159,7 +294,7 @@ MEAN_S0 = 16000
 ts = np.random.normal(loc=0, scale=1, size=(N_VOLS + 20,))
 ts = signal.convolve(ts, hrf)[20 : N_VOLS + 20]
 ts *= SCALING_FRACTION / np.std(ts)
-ts -= np.mean(ts)
+ts -= ts[0]
 
 t2s_ts = (ts * MEAN_T2S) + MEAN_T2S
 s0_ts = (ts * MEAN_S0) + MEAN_S0
@@ -239,6 +374,82 @@ BOLD signal decay and BOLD contrast
 
 This shows how fMRI data fluctuates over time.
 
+```{code-cell} ipython3
+:tags: [hide-cell]
+fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
+singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
+
+# gif code based on https://www.geeksforgeeks.org/create-an-animated-gif-using-python-matplotlib/
+fig, axes = plt.subplots(
+    nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
+)
+
+# Set constant params for figure
+axes[0].set_ylabel("Signal", fontsize=24)
+axes[0].set_xlabel("Volume", fontsize=24)
+axes[0].set_xlim(0, N_VOLS - 1)
+axes[0].tick_params(axis="both", which="major", labelsize=14)
+axes[1].set_ylabel("Signal", fontsize=24)
+axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
+axes[1].set_xticks(ECHO_TIMES)
+axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
+axes[1].set_xlim(0, np.max(FULLCURVE_TES))
+axes[1].tick_params(axis="both", which="major", labelsize=14)
+fig.tight_layout()
+
+ax0_line_plot = axes[0].plot(singleecho_signal[0, :], color="black", zorder=0)
+ax0_scatter_plot = axes[0].scatter(
+    0,
+    singleecho_signal[:, 0],
+    color="orange",
+    s=150,
+    label="Single-Echo Signal",
+    zorder=1,
+)
+ax1_scatter_plot = axes[1].scatter(
+    SINGLEECHO_TE,
+    singleecho_signal[:, 0],
+    color="orange",
+    s=150,
+    alpha=1.0,
+    label="Single-Echo Signal",
+    zorder=1,
+)
+
+
+def AnimationFunction(frame):
+    """Function takes frame as an input."""
+    ax0_scatter_plot.set_offsets(
+        np.column_stack(
+            (
+                frame,
+                singleecho_signal[:, frame],
+            )
+        )
+    )
+
+    ax1_scatter_plot.set_offsets(
+        np.column_stack(
+            (
+                SINGLEECHO_TE,
+                singleecho_signal[:, frame],
+            )
+        )
+    )
+
+
+anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
+html = display.HTML(anim_created.to_jshtml())
+glue("fig_single-echo", html, display=False)
+```
+
+```{glue:figure} fig_single-echo
+:name: fig_single-echo
+:align: center
+
+Single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
+```
+
 ### Plot single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 This shows how single-echo data is a sample from a signal decay curve.
@@ -260,7 +471,7 @@ axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_xticks(ECHO_TIMES)
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -404,7 +615,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_xticks(ECHO_TIMES)
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -482,6 +693,10 @@ s0based_fullcurve_signal = predict_bold_signal(
 t2sbased_fullcurve_signal = predict_bold_signal(
     FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts
 )
+unperturbed_fullcurve_signal = np.mean(
+    (s0based_fullcurve_signal[:, 0], t2sbased_fullcurve_signal[:, 0]),
+    axis=0,
+)
 
 fig, axes = plt.subplots(
     nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
@@ -500,6 +715,14 @@ ax0_scatter_plot = axes[0].scatter(
     label="Single-Echo Signal",
     zorder=1,
 )
+ax1_orig_line_plot = axes[1].plot(
+    FULLCURVE_TES,
+    unperturbed_fullcurve_signal,
+    alpha=0.5,
+    color="black",
+    label="Original Average Decay Curve",
+    zorder=-1,
+)[0]
 ax1_s0_line_plot = axes[1].plot(
     FULLCURVE_TES,
     s0based_fullcurve_signal[:, 0],
@@ -523,7 +746,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_xticks(ECHO_TIMES)
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -637,7 +860,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_xticks(ECHO_TIMES)
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -709,8 +932,8 @@ s0based_fullcurve_signal = predict_bold_signal(
 t2sbased_fullcurve_signal = predict_bold_signal(
     FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts
 )
-s0based_multiecho_signal = s0based_fullcurve_signal[MULTIECHO_TES, :]
-t2sbased_multiecho_signal = t2sbased_fullcurve_signal[MULTIECHO_TES, :]
+s0based_multiecho_signal = s0based_fullcurve_signal[ECHO_TIMES, :]
+t2sbased_multiecho_signal = t2sbased_fullcurve_signal[ECHO_TIMES, :]
 
 fig, axes = plt.subplots(
     nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
@@ -745,7 +968,7 @@ ax1_t2s_line_plot = axes[1].plot(
     zorder=1,
 )[0]
 ax1_s0_scatter_plot = axes[1].scatter(
-    MULTIECHO_TES,
+    ECHO_TIMES,
     s0based_multiecho_signal[:, 0],
     color="red",
     s=150,
@@ -754,7 +977,7 @@ ax1_s0_scatter_plot = axes[1].scatter(
     zorder=2,
 )
 ax1_t2s_scatter_plot = axes[1].scatter(
-    MULTIECHO_TES,
+    ECHO_TIMES,
     t2sbased_multiecho_signal[:, 0],
     color="blue",
     s=150,
@@ -770,7 +993,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(MULTIECHO_TES)
+axes[1].set_xticks(ECHO_TIMES)
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -803,7 +1026,7 @@ def AnimationFunction(frame):
     ax1_s0_scatter_plot.set_offsets(
         np.column_stack(
             (
-                MULTIECHO_TES,
+                ECHO_TIMES,
                 s0based_multiecho_signal[:, frame],
             )
         )
@@ -811,7 +1034,7 @@ def AnimationFunction(frame):
     ax1_t2s_scatter_plot.set_offsets(
         np.column_stack(
             (
-                MULTIECHO_TES,
+                ECHO_TIMES,
                 t2sbased_multiecho_signal[:, frame],
             )
         )
