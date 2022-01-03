@@ -60,9 +60,6 @@ from repo2data.repo2data import Repo2Data
 from scipy import signal, stats
 
 sns.set_style("whitegrid")
-plt.rcParams.update(
-    {"text.usetex": True, "font.family": "sans-serif", "font.sans-serif": ["Helvetica"]}
-)
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
