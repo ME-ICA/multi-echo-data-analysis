@@ -70,9 +70,6 @@ from scipy import signal
 from book_utils import predict_bold_signal
 
 sns.set_style("whitegrid")
-plt.rcParams.update(
-    {"text.usetex": True, "font.family": "sans-serif", "font.sans-serif": ["Helvetica"]}
-)
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
