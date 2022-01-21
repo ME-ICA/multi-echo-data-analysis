@@ -169,7 +169,7 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 :tags: [hide-cell]
 plt.style.use("dark_background")
 
-fig, axes = plt.subplots(figsize=(26, 4), ncols=len(data_files))
+fig, axes = plt.subplots(figsize=(26, 16), nrows=len(data_files))
 for i_echo, img in enumerate(imgs):
     te = ECHO_TIMES[i_echo]
     if i_echo == 0:
@@ -178,7 +178,7 @@ for i_echo, img in enumerate(imgs):
 
     plotting.plot_epi(
         img,
-        cut_coords=[0],
+        cut_coords=[-15, 0, 15, 30, 45],
         display_mode="z",
         annotate=False,
         draw_cross=False,
