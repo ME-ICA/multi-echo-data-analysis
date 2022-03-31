@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -36,26 +36,28 @@
     
   <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -104,7 +106,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Course Overview
  </span>
@@ -116,7 +118,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Getting Started
  </span>
@@ -138,7 +140,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Theoretical Background
  </span>
@@ -170,7 +172,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Practical Resources
  </span>
@@ -192,7 +194,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Analysis Tutorials
  </span>
@@ -264,7 +266,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Final Thoughts
  </span>
@@ -617,7 +619,7 @@
             
               <div>
                 
-  <div class="section" id="generate-tedana-walkthrough-figures">
+  <div class="tex2jax_ignore mathjax_ignore section" id="generate-tedana-walkthrough-figures">
 <h1>Generate tedana walkthrough figures<a class="headerlink" href="#generate-tedana-walkthrough-figures" title="Permalink to this headline">¶</a></h1>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -652,9 +654,7 @@ and this chapter will be removed.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/datasets/__init__.py:96: FutureWarning: Fetchers from the nilearn.datasets module will be updated in version 0.9 to return python strings instead of bytes and Pandas dataframes instead of Numpy arrays.
-  &quot;Numpy arrays.&quot;, FutureWarning)
-Module `duecredit` not successfully imported due to &quot;No module named &#39;duecredit&#39;&quot;. Package functionality unaffected.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Module `duecredit` not successfully imported due to &quot;No module named &#39;duecredit&#39;&quot;. Package functionality unaffected.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
@@ -900,6 +900,34 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2200</span><span class="o">/</span><span class="mf">1468567380.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>     <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span> <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">34</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span><span class="s2">&quot;img &gt;= 3&quot;</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">adaptive_mask_file</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span> 
+<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="c1"># Optimally combined data</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/image.py</span> in <span class="ni">math_img</span><span class="nt">(formula, **imgs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">985</span>         <span class="n">niimgs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="g g-Whitespace">    </span><span class="mi">986</span>         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">imgs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">987</span>             <span class="n">niimgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check_niimg</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">988</span>         <span class="n">_check_same_fov</span><span class="p">(</span><span class="o">*</span><span class="n">niimgs</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">989</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">270</span>             <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">271</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">niimg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">272</span>         <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">niimg</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">273</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">niimg</span><span class="p">)</span>
+
+<span class="ne">ValueError</span>: (&quot;Input images cannot be compared, you provided &#39;dict_values([&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz&#39;])&#39;,&quot;, &quot;File not found: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz&#39;&quot;)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -954,14 +982,8 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_6_1.png" src="../_images/plot_approach_figures_6_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-echo-timeseries2">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_6_0.png" src="../_images/plot_approach_figures_6_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 20 </span><span class="caption-text">Time series from a voxel for each echo.</span><a class="headerlink" href="#fig-echo-timeseries2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -986,14 +1008,8 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_8_1.png" src="../_images/plot_approach_figures_8_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-echo-scatter2">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_8_0.png" src="../_images/plot_approach_figures_8_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Scatter plot of voxel’s values by echo time.</span><a class="headerlink" href="#fig-echo-scatter2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1032,18 +1048,8 @@ where <span class="math notranslate nohighlight">\(n\)</span> is the value for t
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/resampling.py:531: UserWarning: Casting data from int32 to float32
-  warnings.warn(&quot;Casting data from %s to %s&quot; % (data.dtype.name, aux))
-</pre></div>
-</div>
-<img alt="../_images/plot_approach_figures_10_2.png" src="../_images/plot_approach_figures_10_2.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-adaptive-mask">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_10_1.png" src="../_images/plot_approach_figures_10_1.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Adaptive mask.</span><a class="headerlink" href="#fig-adaptive-mask" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1069,14 +1075,8 @@ where <span class="math notranslate nohighlight">\(n\)</span> is the value for t
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_12_1.png" src="../_images/plot_approach_figures_12_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_12_0.png" src="../_images/plot_approach_figures_12_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 23 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation.</span><a class="headerlink" href="#fig-loglin-scatter" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1136,14 +1136,8 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_14_1.png" src="../_images/plot_approach_figures_14_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter-with-line">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_14_0.png" src="../_images/plot_approach_figures_14_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 24 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation, with fitted line.</span><a class="headerlink" href="#fig-loglin-scatter-with-line" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1182,14 +1176,8 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_16_1.png" src="../_images/plot_approach_figures_16_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter-with-t2s">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_16_0.png" src="../_images/plot_approach_figures_16_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 25 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation, with fitted line and T2* estimate.</span><a class="headerlink" href="#fig-loglin-scatter-with-t2s" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="t2">
@@ -1219,14 +1207,8 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_18_1.png" src="../_images/plot_approach_figures_18_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-scatter-with-t2s">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_18_0.png" src="../_images/plot_approach_figures_18_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo with T2* estimate.</span><a class="headerlink" href="#fig-scatter-with-t2s" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1244,18 +1226,8 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/seaborn/_decorators.py:43: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
-  FutureWarning
-</pre></div>
-</div>
-<img alt="../_images/plot_approach_figures_20_2.png" src="../_images/plot_approach_figures_20_2.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-optcom-weights">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_20_1.png" src="../_images/plot_approach_figures_20_1.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 27 </span><span class="caption-text">Averaging weights for optimal combination.</span><a class="headerlink" href="#fig-optcom-weights" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1292,14 +1264,8 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_22_1.png" src="../_images/plot_approach_figures_22_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-scatter-with-optcom">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_22_0.png" src="../_images/plot_approach_figures_22_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 28 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo with optimally combined signal as well.</span><a class="headerlink" href="#fig-scatter-with-optcom" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1330,14 +1296,8 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_24_1.png" src="../_images/plot_approach_figures_24_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-echo-timeseries-with-optcom">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_24_0.png" src="../_images/plot_approach_figures_24_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 29 </span><span class="caption-text">Echo-wise time series for a voxel, including the optimally combined time series.</span><a class="headerlink" href="#fig-echo-timeseries-with-optcom" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1363,14 +1323,8 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_26_1.png" src="../_images/plot_approach_figures_26_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-pca-timeseries">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_26_0.png" src="../_images/plot_approach_figures_26_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 30 </span><span class="caption-text">Time series of three PCA components.</span><a class="headerlink" href="#fig-pca-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1394,14 +1348,8 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_28_1.png" src="../_images/plot_approach_figures_28_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-optcom-reduced-timeseries">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_28_0.png" src="../_images/plot_approach_figures_28_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 31 </span><span class="caption-text">Time series of optimally combined data from a voxel, before and after dimensionality reduction with PCA.</span><a class="headerlink" href="#fig-optcom-reduced-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="multi-echo-independent-components-analysis">
@@ -1440,14 +1388,8 @@ ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_30_1.png" src="../_images/plot_approach_figures_30_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-ica-timeseries">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_30_0.png" src="../_images/plot_approach_figures_30_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 32 </span><span class="caption-text">Time series of three ICA components.</span><a class="headerlink" href="#fig-ica-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1505,14 +1447,8 @@ but <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_32_1.png" src="../_images/plot_approach_figures_32_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-ica-weights">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_32_0.png" src="../_images/plot_approach_figures_32_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 33 </span><span class="caption-text">Echo-wise model weights for three ICA components.</span><a class="headerlink" href="#fig-ica-weights" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1554,14 +1490,8 @@ This means that ignored components and residual variance not explained by the IC
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_34_1.png" src="../_images/plot_approach_figures_34_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-medn-timeseries">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_34_0.png" src="../_images/plot_approach_figures_34_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 34 </span><span class="caption-text">Time series for optimally combined, denoised, and high-kappa data for a single voxel.</span><a class="headerlink" href="#fig-medn-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -1602,14 +1532,8 @@ Methods which have been employed in the past include global signal regression (G
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_36_1.png" src="../_images/plot_approach_figures_36_1.png" />
-</div>
 </div>
 <div class="figure align-center" id="fig-mir-timeseries">
-<div class="cell_output docutils container">
-<img alt="../_images/plot_approach_figures_36_0.png" src="../_images/plot_approach_figures_36_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 35 </span><span class="caption-text">Time series from a voxel before and after <a class="reference internal" href="TE_Dependence.html#minimum-image-regression">minimum image regression</a>.</span><a class="headerlink" href="#fig-mir-timeseries" title="Permalink to this image">¶</a></p>
 </div>
 </div>

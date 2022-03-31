@@ -1,0 +1,271 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+    record_timing=False,
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+    cell, index, execution_count=self.code_cells_executed + 1
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+func_dir = os.path.join(data_path, "sub-04570/func/")
+data_files = [
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+]
+echo_times = np.array([12.0, 28.0, 44.0, 60.0])
+
+# Background anatomical image
+xfm = os.path.join(
+    func_dir, "sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt"
+)
+xfm = nit.linear.load(xfm, fmt="itk")
+t1_file = os.path.join(data_path, "sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz")
+bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
+
+# Tedana outputs
+adaptive_mask_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"
+)
+mask = image.math_img("img >= 3", img=adaptive_mask_file)
+
+# Optimally combined data
+oc = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
+    mask,
+)
+oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
+
+# Results from MEPCA
+mepca_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
+).values
+oc_red = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Results from MEICA
+meica_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
+).values
+norm_weights = masking.apply_mask(
+    os.path.join(
+        ted_dir,
+        "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz",
+    ),
+    mask,
+)
+meica_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
+meica_betas = np.swapaxes(meica_betas, 1, 2)
+r2_pred_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
+r2_pred_betas = np.swapaxes(r2_pred_betas, 1, 2)
+s0_pred_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
+s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
+
+# Component parameter estimates
+betas_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz"
+)
+beta_maps = masking.apply_mask(betas_file, mask)
+
+# Multi-echo denoised data
+dn_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"
+    ),
+    mask,
+)
+hk_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Post-processed data
+dn_t1c_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"
+    ),
+    mask,
+)
+hk_t1c_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Component table
+comp_tbl = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    index_col="Component",
+)
+
+# Get voxel index for voxel most related to component with highest kappa value
+acc_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "accepted"]
+high_kappa_comp = acc_comp_tbl.sort_values(by="kappa", ascending=False).index.values[0]
+high_kappa_comp_val = int(high_kappa_comp.split("_")[1])
+voxel_idx = np.where(
+    beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :])
+)[0][0]
+
+rej_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "rejected"]
+low_kappa_comp = rej_comp_tbl.sort_values(by="rho", ascending=False).index.values[0]
+
+# load data
+data = [masking.apply_mask(f, mask) for f in data_files]
+ts = [d[:, voxel_idx] for d in data]
+ts_1d = np.hstack(ts)
+
+n_echoes = len(echo_times)
+n_trs = data[0].shape[0]
+
+pal = sns.color_palette("cubehelix", n_echoes)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2200/1468567380.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     32[0m     [0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     33[0m )
+[0;32m---> 34[0;31m [0mmask[0m [0;34m=[0m [0mimage[0m[0;34m.[0m[0mmath_img[0m[0;34m([0m[0;34m"img >= 3"[0m[0;34m,[0m [0mimg[0m[0;34m=[0m[0madaptive_mask_file[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     35[0m [0;34m[0m[0m
+[1;32m     36[0m [0;31m# Optimally combined data[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/image.py[0m in [0;36mmath_img[0;34m(formula, **imgs)[0m
+[1;32m    985[0m         [0mniimgs[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m    986[0m         [0;32mfor[0m [0mimage[0m [0;32min[0m [0mimgs[0m[0;34m.[0m[0mvalues[0m[0;34m([0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 987[0;31m             [0mniimgs[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mcheck_niimg[0m[0;34m([0m[0mimage[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    988[0m         [0m_check_same_fov[0m[0;34m([0m[0;34m*[0m[0mniimgs[0m[0;34m,[0m [0mraise_error[0m[0;34m=[0m[0;32mTrue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    989[0m     [0;32mexcept[0m [0mException[0m [0;32mas[0m [0mexc[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py[0m in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+[1;32m    269[0m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0mmessage[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    270[0m             [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 271[0;31m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    272[0m         [0;32melif[0m [0;32mnot[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mexists[0m[0;34m([0m[0mniimg[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    273[0m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: ("Input images cannot be compared, you provided 'dict_values(['/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz'])',", "File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz'")
+ValueError: ("Input images cannot be compared, you provided 'dict_values(['/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz'])',", "File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz'")
+

@@ -1,0 +1,99 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+    record_timing=False,
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+    cell, index, execution_count=self.code_cells_executed + 1
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import json
+import os
+from glob import glob
+from pprint import pprint
+
+import pandas as pd
+from IPython.display import HTML, display
+from repo2data.repo2data import Repo2Data
+from tedana import workflows
+
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mImportError[0m                               Traceback (most recent call last)
+[0;32m/tmp/ipykernel_1877/1081264977.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      7[0m [0;32mfrom[0m [0mIPython[0m[0;34m.[0m[0mdisplay[0m [0;32mimport[0m [0mHTML[0m[0;34m,[0m [0mdisplay[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      8[0m [0;32mfrom[0m [0mrepo2data[0m[0;34m.[0m[0mrepo2data[0m [0;32mimport[0m [0mRepo2Data[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 9[0;31m [0;32mfrom[0m [0mtedana[0m [0;32mimport[0m [0mworkflows[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     10[0m [0;34m[0m[0m
+[1;32m     11[0m [0;31m# Install the data if running locally, or point to cached data if running on neurolibre[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/workflows/__init__.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      5[0m [0;34m[0m[0m
+[1;32m      6[0m [0;31m# Overrides submodules with their functions.[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 7[0;31m [0;32mfrom[0m [0;34m.[0m[0mtedana[0m [0;32mimport[0m [0mtedana_workflow[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      8[0m [0;34m[0m[0m
+[1;32m      9[0m [0m__all__[0m [0;34m=[0m [0;34m[[0m[0;34m"tedana_workflow"[0m[0;34m,[0m [0;34m"t2smap_workflow"[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/workflows/tedana.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     19[0m [0;34m[0m[0m
+[1;32m     20[0m [0;32mimport[0m [0mtedana[0m[0;34m.[0m[0mgscontrol[0m [0;32mas[0m [0mgsc[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 21[0;31m from tedana import (
+[0m[1;32m     22[0m     [0m__version__[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     23[0m     [0mcombine[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/reporting/__init__.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      3[0m """
+[1;32m      4[0m [0;34m[0m[0m
+[0;32m----> 5[0;31m [0;32mfrom[0m [0;34m.[0m[0mhtml_report[0m [0;32mimport[0m [0mgenerate_report[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      6[0m [0;32mfrom[0m [0;34m.[0m[0mstatic_figures[0m [0;32mimport[0m [0mcomp_figures[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      7[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/tedana/reporting/html_report.py[0m in [0;36m<module>[0;34m[0m
+[1;32m      6[0m [0;32mimport[0m [0mpandas[0m [0;32mas[0m [0mpd[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      7[0m [0;32mfrom[0m [0mbokeh[0m [0;32mimport[0m [0m__version__[0m [0;32mas[0m [0mbokehversion[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 8[0;31m [0;32mfrom[0m [0mbokeh[0m [0;32mimport[0m [0membed[0m[0;34m,[0m [0mlayouts[0m[0;34m,[0m [0mmodels[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      9[0m [0;34m[0m[0m
+[1;32m     10[0m [0;32mfrom[0m [0mtedana[0m[0;34m.[0m[0minfo[0m [0;32mimport[0m [0m__version__[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/bokeh/embed/__init__.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     21[0m [0;34m[0m[0m
+[1;32m     22[0m [0;31m# Bokeh imports[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 23[0;31m [0;32mfrom[0m [0;34m.[0m[0mserver[0m [0;32mimport[0m [0mserver_document[0m[0;34m,[0m [0mserver_session[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     24[0m [0;32mfrom[0m [0;34m.[0m[0mstandalone[0m [0;32mimport[0m [0mautoload_static[0m[0;34m,[0m [0mcomponents[0m[0;34m,[0m [0mfile_html[0m[0;34m,[0m [0mjson_item[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     25[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/bokeh/embed/server.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     23[0m [0;34m[0m[0m
+[1;32m     24[0m [0;31m# Bokeh imports[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 25[0;31m [0;32mfrom[0m [0;34m.[0m[0;34m.[0m[0mcore[0m[0;34m.[0m[0mtemplates[0m [0;32mimport[0m [0mAUTOLOAD_REQUEST_TAG[0m[0;34m,[0m [0mFILE[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     26[0m [0;32mfrom[0m [0;34m.[0m[0;34m.[0m[0mresources[0m [0;32mimport[0m [0mDEFAULT_SERVER_HTTP_URL[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     27[0m [0;32mfrom[0m [0;34m.[0m[0;34m.[0m[0mutil[0m[0;34m.[0m[0mserialization[0m [0;32mimport[0m [0mmake_id[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/bokeh/core/templates.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     40[0m [0;34m[0m[0m
+[1;32m     41[0m [0;31m# External imports[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 42[0;31m [0;32mfrom[0m [0mjinja2[0m [0;32mimport[0m [0mEnvironment[0m[0;34m,[0m [0mFileSystemLoader[0m[0;34m,[0m [0mMarkup[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     43[0m [0;34m[0m[0m
+[1;32m     44[0m [0;31m#-----------------------------------------------------------------------------[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mImportError[0m: cannot import name 'Markup' from 'jinja2' (/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/jinja2/__init__.py)
+ImportError: cannot import name 'Markup' from 'jinja2' (/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/jinja2/__init__.py)
+

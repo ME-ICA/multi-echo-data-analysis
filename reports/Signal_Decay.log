@@ -1,0 +1,120 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+    record_timing=False,
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+    cell, index, execution_count=self.code_cells_executed + 1
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+func_dir = os.path.join(data_path, "sub-04570/func/")
+data_files = [
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+]
+ted_dir = os.path.join(data_path, "tedana")
+ECHO_TIMES = [12, 28, 44, 60]
+n_echoes = len(ECHO_TIMES)
+
+pal = sns.color_palette("cubehelix", n_echoes)
+
+img = image.index_img(data_files[0], 0)
+data = img.get_fdata()
+vmax = np.max(data)
+idx = np.vstack(np.where(data > 1000))
+
+min_x, min_y, min_z = np.min(idx, axis=1)
+max_x, max_y, max_z = np.max(idx, axis=1)
+
+imgs = []
+for f in data_files:
+    img = image.index_img(f, 0)
+    data = img.get_fdata()
+    data = data[min_x:max_x, min_y:max_y, min_z:max_z]
+    img = nib.Nifti1Image(data, img.affine, img.header)
+    imgs.append(img)
+
+# Create binary mask from adaptive mask
+adaptive_mask_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"
+)
+mask = image.math_img("img >= 3", img=adaptive_mask_file)
+
+# Component parameter estimates
+betas_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz"
+)
+beta_maps = masking.apply_mask(betas_file, mask)
+
+# Component table
+comp_tbl = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    index_col="Component",
+)
+
+# Get voxel index for voxel most related to component with highest kappa value
+acc_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "accepted"]
+high_kappa_comp = acc_comp_tbl.sort_values(by="kappa", ascending=False).index.values[0]
+high_kappa_comp_val = int(high_kappa_comp.split("_")[1])
+voxel_idx = np.where(
+    beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :])
+)[0][0]
+
+# Extract the time series for the high-kappa voxel
+data = [masking.apply_mask(f, mask) for f in data_files]
+ts = [d[:, voxel_idx] for d in data]
+ts_1d = np.hstack(ts)
+
+n_trs = ts[0].shape[0]
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2130/2693789111.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     44[0m     [0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     45[0m )
+[0;32m---> 46[0;31m [0mmask[0m [0;34m=[0m [0mimage[0m[0;34m.[0m[0mmath_img[0m[0;34m([0m[0;34m"img >= 3"[0m[0;34m,[0m [0mimg[0m[0;34m=[0m[0madaptive_mask_file[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     47[0m [0;34m[0m[0m
+[1;32m     48[0m [0;31m# Component parameter estimates[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/image.py[0m in [0;36mmath_img[0;34m(formula, **imgs)[0m
+[1;32m    985[0m         [0mniimgs[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m    986[0m         [0;32mfor[0m [0mimage[0m [0;32min[0m [0mimgs[0m[0;34m.[0m[0mvalues[0m[0;34m([0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 987[0;31m             [0mniimgs[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mcheck_niimg[0m[0;34m([0m[0mimage[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    988[0m         [0m_check_same_fov[0m[0;34m([0m[0;34m*[0m[0mniimgs[0m[0;34m,[0m [0mraise_error[0m[0;34m=[0m[0;32mTrue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    989[0m     [0;32mexcept[0m [0mException[0m [0;32mas[0m [0mexc[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py[0m in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+[1;32m    269[0m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0mmessage[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    270[0m             [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 271[0;31m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    272[0m         [0;32melif[0m [0;32mnot[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mexists[0m[0;34m([0m[0mniimg[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    273[0m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: ("Input images cannot be compared, you provided 'dict_values(['/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz'])',", "File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz'")
+ValueError: ("Input images cannot be compared, you provided 'dict_values(['/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz'])',", "File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana/sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz'")
+

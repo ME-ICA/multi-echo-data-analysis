@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -36,23 +36,25 @@
     
   <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -102,7 +104,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Course Overview
  </span>
@@ -114,7 +116,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Getting Started
  </span>
@@ -136,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Theoretical Background
  </span>
@@ -168,7 +170,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Practical Resources
  </span>
@@ -190,7 +192,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Analysis Tutorials
  </span>
@@ -262,7 +264,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Final Thoughts
  </span>
@@ -403,7 +405,7 @@
             
               <div>
                 
-  <div class="section" id="download-data">
+  <div class="tex2jax_ignore mathjax_ignore section" id="download-data">
 <h1>Download Data<a class="headerlink" href="#download-data" title="Permalink to this headline">¶</a></h1>
 <p>For the tutorials in this book,
 we will use partially-preprocessed data from two open multi-echo datasets: Euskalibur and Cambridge.
@@ -463,44 +465,60 @@ From: https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx
 To: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/multi-echo-data-analysis.zip
 
   0%|          | 0.00/309M [00:00&lt;?, ?B/s]
-  3%|▎         | 7.86M/309M [00:00&lt;00:03, 77.4MB/s]
+  0%|          | 524k/309M [00:00&lt;01:07, 4.59MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  6%|▌         | 17.3M/309M [00:00&lt;00:04, 71.5MB/s]
- 11%|█         | 34.1M/309M [00:00&lt;00:02, 110MB/s] 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  2%|▏         | 6.82M/309M [00:00&lt;00:08, 36.2MB/s]
+  6%|▌         | 18.9M/309M [00:00&lt;00:03, 72.8MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 17%|█▋        | 53.5M/309M [00:00&lt;00:01, 140MB/s]
- 23%|██▎       | 70.8M/309M [00:00&lt;00:01, 151MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|█         | 30.9M/309M [00:00&lt;00:03, 90.2MB/s]
+ 14%|█▍        | 43.0M/309M [00:00&lt;00:02, 99.9MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 28%|██▊       | 86.5M/309M [00:00&lt;00:01, 150MB/s]
- 34%|███▍      | 106M/309M [00:00&lt;00:01, 165MB/s] 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 18%|█▊        | 55.1M/309M [00:00&lt;00:02, 106MB/s] 
+ 22%|██▏       | 67.1M/309M [00:00&lt;00:02, 110MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 40%|███▉      | 123M/309M [00:00&lt;00:01, 146MB/s]
- 45%|████▍     | 138M/309M [00:01&lt;00:01, 141MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 26%|██▌       | 79.2M/309M [00:00&lt;00:02, 113MB/s]
+ 30%|██▉       | 91.2M/309M [00:00&lt;00:01, 115MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 50%|████▉     | 153M/309M [00:01&lt;00:01, 134MB/s]
- 56%|█████▌    | 171M/309M [00:01&lt;00:00, 147MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 33%|███▎      | 103M/309M [00:01&lt;00:01, 116MB/s] 
+ 37%|███▋      | 115M/309M [00:01&lt;00:01, 117MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 61%|██████    | 188M/309M [00:01&lt;00:00, 151MB/s]
- 66%|██████▌   | 203M/309M [00:01&lt;00:00, 128MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 41%|████▏     | 127M/309M [00:01&lt;00:01, 117MB/s]
+ 45%|████▌     | 139M/309M [00:01&lt;00:01, 118MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 71%|███████   | 219M/309M [00:01&lt;00:00, 134MB/s]
- 76%|███████▋  | 235M/309M [00:01&lt;00:00, 115MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 49%|████▉     | 152M/309M [00:01&lt;00:01, 118MB/s]
+ 53%|█████▎    | 164M/309M [00:01&lt;00:01, 118MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 82%|████████▏ | 252M/309M [00:01&lt;00:00, 122MB/s]
- 87%|████████▋ | 269M/309M [00:02&lt;00:00, 116MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 57%|█████▋    | 176M/309M [00:01&lt;00:01, 118MB/s]
+ 61%|██████    | 188M/309M [00:01&lt;00:01, 118MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 93%|█████████▎| 286M/309M [00:02&lt;00:00, 122MB/s]
- 98%|█████████▊| 303M/309M [00:02&lt;00:00, 132MB/s]
-100%|██████████| 309M/309M [00:02&lt;00:00, 132MB/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 65%|██████▍   | 200M/309M [00:01&lt;00:00, 118MB/s]
+ 69%|██████▊   | 212M/309M [00:01&lt;00:00, 118MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 73%|███████▎  | 224M/309M [00:02&lt;00:00, 118MB/s]
+ 76%|███████▋  | 236M/309M [00:02&lt;00:00, 118MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 80%|████████  | 248M/309M [00:02&lt;00:00, 118MB/s]
+ 84%|████████▍ | 260M/309M [00:02&lt;00:00, 118MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 88%|████████▊ | 272M/309M [00:02&lt;00:00, 116MB/s]
+ 92%|█████████▏| 284M/309M [00:02&lt;00:00, 116MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 96%|█████████▌| 296M/309M [00:02&lt;00:00, 115MB/s]
+100%|█████████▉| 308M/309M [00:02&lt;00:00, 116MB/s]
+100%|██████████| 309M/309M [00:02&lt;00:00, 111MB/s]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: Extracting ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip ...
@@ -508,9 +526,7 @@ patool: running /usr/bin/7z x -y -o./../data/multi-echo-data-analysis -- ./../da
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>patool: ... ./../data/multi-echo-data-analysis/multi-echo-data-analysis.zip extracted to `./../data/multi-echo-data-analysis&#39;.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info : multi-echo-data-analysis.zip Decompressed
+Info : multi-echo-data-analysis.zip Decompressed
 </pre></div>
 </div>
 </div>

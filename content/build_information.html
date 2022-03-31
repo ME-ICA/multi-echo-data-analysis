@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -36,23 +36,25 @@
     
   <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -102,7 +104,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Course Overview
  </span>
@@ -114,7 +116,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Getting Started
  </span>
@@ -136,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Theoretical Background
  </span>
@@ -168,7 +170,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Practical Resources
  </span>
@@ -190,7 +192,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Analysis Tutorials
  </span>
@@ -262,7 +264,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Final Thoughts
  </span>
@@ -383,7 +385,7 @@
             
               <div>
                 
-  <div class="section" id="build-information">
+  <div class="tex2jax_ignore mathjax_ignore section" id="build-information">
 <h1>Build Information<a class="headerlink" href="#build-information" title="Permalink to this headline">¶</a></h1>
 <table class="colwidths-auto table">
 <thead>
@@ -396,118 +398,118 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>content/00_Download_Data</p></td>
-<td><p>2022-01-21 21:01</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>7.26</p></td>
+<td><p>6.64</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p>content/01_Optimal_Combination_with_t2smap</p></td>
-<td><p>2022-01-21 21:02</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>84.31</p></td>
-<td><p>✅</p></td>
+<td><p>4.5</p></td>
+<td><p>❌</p></td>
 </tr>
 <tr class="row-even"><td><p>content/02_Volume-wise_T2star_estimation_with_t2smap</p></td>
-<td><p>2022-01-21 21:03</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>57.12</p></td>
-<td><p>✅</p></td>
+<td><p>3.67</p></td>
+<td><p>❌</p></td>
 </tr>
 <tr class="row-odd"><td><p>content/03_Denoising_with_tedana</p></td>
-<td><p>2022-01-21 21:06</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>179.36</p></td>
-<td><p>✅</p></td>
+<td><p>2.18</p></td>
+<td><p>❌</p></td>
 </tr>
 <tr class="row-even"><td><p>content/04_Dual_Echo_Denoising</p></td>
-<td><p>2022-01-21 21:07</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>15.73</p></td>
+<td><p>15.31</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p>content/05_3dMEPFM</p></td>
-<td><p>2022-01-21 21:07</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>0.9</p></td>
+<td><p>0.99</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p>content/06_Cerebrovascular_Reactivity_Mapping</p></td>
-<td><p>2022-01-21 21:07</p></td>
+<td><p>2022-03-31 17:18</p></td>
+<td><p>auto</p></td>
+<td><p>1.08</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>content/07_Manual_Classification_with_rica</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
 <td><p>0.94</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p>content/07_Manual_Classification_with_rica</p></td>
-<td><p>2022-01-21 21:07</p></td>
-<td><p>auto</p></td>
-<td><p>1.11</p></td>
-<td><p>✅</p></td>
-</tr>
 <tr class="row-even"><td><p>content/08_ICA_Based_Denoising</p></td>
-<td><p>2022-01-21 21:07</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>1.15</p></td>
+<td><p>0.95</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p>content/Acquiring_Multi_Echo_Data</p></td>
-<td><p>2022-01-21 21:07</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>3.2</p></td>
+<td><p>3.54</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p>content/Course_Overview</p></td>
-<td><p>2022-01-21 21:07</p></td>
-<td><p>auto</p></td>
-<td><p>1.27</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p>content/Install_Software</p></td>
-<td><p>2022-01-21 21:07</p></td>
-<td><p>auto</p></td>
-<td><p>1.14</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p>content/Multi_Echo_Datasets</p></td>
-<td><p>2022-01-21 21:07</p></td>
-<td><p>auto</p></td>
-<td><p>0.91</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p>content/Processing_Multi_Echo_Data</p></td>
-<td><p>2022-01-21 21:07</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
 <td><p>1.09</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p>content/Recommended_Reading</p></td>
-<td><p>2022-01-21 21:07</p></td>
+<tr class="row-odd"><td><p>content/Install_Software</p></td>
+<td><p>2022-03-31 17:18</p></td>
 <td><p>auto</p></td>
-<td><p>1.19</p></td>
+<td><p>1.16</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>content/Multi_Echo_Datasets</p></td>
+<td><p>2022-03-31 17:18</p></td>
+<td><p>auto</p></td>
+<td><p>0.94</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>content/Processing_Multi_Echo_Data</p></td>
+<td><p>2022-03-31 17:19</p></td>
+<td><p>auto</p></td>
+<td><p>0.95</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>content/Recommended_Reading</p></td>
+<td><p>2022-03-31 17:19</p></td>
+<td><p>auto</p></td>
+<td><p>1.08</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p>content/Signal_Decay</p></td>
-<td><p>2022-01-21 21:08</p></td>
+<td><p>2022-03-31 17:19</p></td>
 <td><p>auto</p></td>
-<td><p>51.92</p></td>
-<td><p>✅</p></td>
+<td><p>7.21</p></td>
+<td><p>❌</p></td>
 </tr>
 <tr class="row-even"><td><p>content/TE_Dependence</p></td>
-<td><p>2022-01-21 21:08</p></td>
+<td><p>2022-03-31 17:19</p></td>
 <td><p>auto</p></td>
-<td><p>6.74</p></td>
+<td><p>7.0</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p>content/intro</p></td>
-<td><p>2022-01-21 21:08</p></td>
+<td><p>2022-03-31 17:19</p></td>
 <td><p>auto</p></td>
-<td><p>0.96</p></td>
+<td><p>0.97</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p>content/plot_approach_figures</p></td>
-<td><p>2022-01-21 21:08</p></td>
+<td><p>2022-03-31 17:19</p></td>
 <td><p>auto</p></td>
-<td><p>36.55</p></td>
-<td><p>✅</p></td>
+<td><p>4.56</p></td>
+<td><p>❌</p></td>
 </tr>
 </tbody>
 </table>
