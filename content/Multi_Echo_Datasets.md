@@ -120,3 +120,14 @@ Given the naturalistic nature of this task, it is a good target for functional a
 
 Additionally, the language in which the task was presented differed across participants.
 51 participants listened to the audiobook in English, 35 listened in Chinese, and 30 listened in French.
+
+## Neurocognitive aging data release with behavioral, structural, and multi-echo functional MRI measures
+
+**Link**: https://openneuro.org/datasets/ds003592
+
+**Citation**: {cite:t}`spreng2022neurocognitive`
+
+**Brief Description**: 301 participants, with two 10-minute resting-state runs.
+The multi-echo fMRI data have three echoes (13.7, 30, 47 ms).
+Additional data include T1-weighted anatomical scans, FLAIR anatomical scans, and
+physiological data (chest belt, cardiac) acquired concurrently with the fMRI scans.
