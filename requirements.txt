@@ -1,11 +1,11 @@
 imageio
-jupyter-book==0.11.3
-jupytext==1.10.3
-matplotlib==3.4.2
-myst_nb==0.12.3
+jupyter-book
+jupytext
+matplotlib
+myst_nb
 nitransforms
 repo2data==2.4.4
-seaborn==0.11.2
+seaborn
 sphinx>=4
 sphinx-inline-tabs
 sphinx-jupyterbook-latex
