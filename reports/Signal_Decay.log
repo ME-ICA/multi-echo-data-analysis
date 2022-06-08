@@ -1,19 +1,19 @@
 Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
     record_timing=False,
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
     return just_run(coro(*args, **kwargs))
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
     return loop.run_until_complete(coro)
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
     return future.result()
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
     cell, index, execution_count=self.code_cells_executed + 1
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
@@ -94,21 +94,21 @@ n_trs = ts[0].shape[0]
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2130/2693789111.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2151/2693789111.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     44[0m     [0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     45[0m )
 [0;32m---> 46[0;31m [0mmask[0m [0;34m=[0m [0mimage[0m[0;34m.[0m[0mmath_img[0m[0;34m([0m[0;34m"img >= 3"[0m[0;34m,[0m [0mimg[0m[0;34m=[0m[0madaptive_mask_file[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m[1;32m     47[0m [0;34m[0m[0m
 [1;32m     48[0m [0;31m# Component parameter estimates[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/image.py[0m in [0;36mmath_img[0;34m(formula, **imgs)[0m
-[1;32m    985[0m         [0mniimgs[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-[1;32m    986[0m         [0;32mfor[0m [0mimage[0m [0;32min[0m [0mimgs[0m[0;34m.[0m[0mvalues[0m[0;34m([0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 987[0;31m             [0mniimgs[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mcheck_niimg[0m[0;34m([0m[0mimage[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    988[0m         [0m_check_same_fov[0m[0;34m([0m[0;34m*[0m[0mniimgs[0m[0;34m,[0m [0mraise_error[0m[0;34m=[0m[0;32mTrue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    989[0m     [0;32mexcept[0m [0mException[0m [0;32mas[0m [0mexc[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nilearn/image/image.py[0m in [0;36mmath_img[0;34m(formula, **imgs)[0m
+[1;32m    986[0m         [0mniimgs[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m    987[0m         [0;32mfor[0m [0mimage[0m [0;32min[0m [0mimgs[0m[0;34m.[0m[0mvalues[0m[0;34m([0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 988[0;31m             [0mniimgs[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mcheck_niimg[0m[0;34m([0m[0mimage[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    989[0m         [0m_check_same_fov[0m[0;34m([0m[0;34m*[0m[0mniimgs[0m[0;34m,[0m [0mraise_error[0m[0;34m=[0m[0;32mTrue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    990[0m     [0;32mexcept[0m [0mException[0m [0;32mas[0m [0mexc[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py[0m in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py[0m in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
 [1;32m    269[0m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0mmessage[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [1;32m    270[0m             [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 [0;32m--> 271[0;31m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m

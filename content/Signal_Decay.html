@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signal Decay &#8212; Multi-Echo fMRI Data Analysis</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,12 +19,8 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -31,10 +28,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -42,14 +39,16 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script src="../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -58,7 +57,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="BOLD, non-BOLD, and TE-dependence with tedana" href="TE_Dependence.html" />
@@ -70,7 +68,21 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -79,9 +91,10 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -99,14 +112,15 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="intro.html">
-   Multi-Echo (fMRI) Data Analysis
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Multi-Echo (fMRI) Data Analysis
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Course Overview
  </span>
@@ -290,110 +304,226 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        <a class="dropdown-buttons"
-            href="../_sources/content/Signal_Decay.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/content/Signal_Decay.md"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/ME-ICA/multi-echo-data-analysis"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/ME-ICA/multi-echo-data-analysis/issues/new?title=Issue%20on%20page%20%2Fcontent/Signal_Decay.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/ME-ICA/multi-echo-data-analysis/main?urlpath=tree/content/content/Signal_Decay.md"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/ME-ICA/multi-echo-data-analysis/main?urlpath=tree/content/content/Signal_Decay.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/ME-ICA/multi-echo-data-analysis"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/ME-ICA/multi-echo-data-analysis/issues/new?title=Issue%20on%20page%20%2Fcontent/Signal_Decay.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/content/Signal_Decay.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download notebook file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="../_sources/content/Signal_Decay.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#signal-decays-as-echo-time-increases">
    Signal decays as echo time increases
@@ -559,12 +689,11 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Signal Decay</h1>
@@ -746,11 +875,12 @@ const thebe_selector_output = ".output, .cell_output"
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="signal-decay">
-<h1>Signal Decay<a class="headerlink" href="#signal-decay" title="Permalink to this headline">¶</a></h1>
+<h1>Signal Decay<a class="headerlink" href="#signal-decay" title="Permalink to this headline">#</a></h1>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>This chapter should differentiate itself from TE_Dependence by focusing on the application of <a class="reference internal" href="TE_Dependence.html#equation-monoexponential-decay">(1)</a>
@@ -832,7 +962,7 @@ so this just shows how very similar signal can come from T2* <em>or</em> S0.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/repo2data
+/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/repo2data
 Config from file :
 ../binder/data_requirement.json
 Destination:
@@ -924,21 +1054,21 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2130</span><span class="o">/</span><span class="mf">2693789111.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2151</span><span class="o">/</span><span class="mf">2693789111.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">     </span><span class="mi">44</span>     <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz&quot;</span>
 <span class="g g-Whitespace">     </span><span class="mi">45</span> <span class="p">)</span>
 <span class="ne">---&gt; </span><span class="mi">46</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span><span class="s2">&quot;img &gt;= 3&quot;</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">adaptive_mask_file</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">47</span> 
 <span class="g g-Whitespace">     </span><span class="mi">48</span> <span class="c1"># Component parameter estimates</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/image/image.py</span> in <span class="ni">math_img</span><span class="nt">(formula, **imgs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">985</span>         <span class="n">niimgs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="g g-Whitespace">    </span><span class="mi">986</span>         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">imgs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-<span class="ne">--&gt; </span><span class="mi">987</span>             <span class="n">niimgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check_niimg</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">988</span>         <span class="n">_check_same_fov</span><span class="p">(</span><span class="o">*</span><span class="n">niimgs</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">989</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nilearn/image/image.py</span> in <span class="ni">math_img</span><span class="nt">(formula, **imgs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">986</span>         <span class="n">niimgs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="g g-Whitespace">    </span><span class="mi">987</span>         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">imgs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">988</span>             <span class="n">niimgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check_niimg</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">989</span>         <span class="n">_check_same_fov</span><span class="p">(</span><span class="o">*</span><span class="n">niimgs</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">990</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nilearn/_utils/niimg_conversions.py</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
 <span class="g g-Whitespace">    </span><span class="mi">269</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">270</span>             <span class="k">else</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">271</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File not found: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">niimg</span><span class="p">)</span>
@@ -951,7 +1081,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="section" id="signal-decays-as-echo-time-increases">
-<h2>Signal decays as echo time increases<a class="headerlink" href="#signal-decays-as-echo-time-increases" title="Permalink to this headline">¶</a></h2>
+<h2>Signal decays as echo time increases<a class="headerlink" href="#signal-decays-as-echo-time-increases" title="Permalink to this headline">#</a></h2>
 <p>To start, let us look at how BOLD signal changes with increasing echo time in real data.
 The data we use is a single resting-state run, with echo times of 12, 28, 44, and 60 milliseconds.</p>
 <div class="cell tag_hide-cell docutils container">
@@ -987,10 +1117,10 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-brain-decay">
-<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Signal decay in the brain.</span><a class="headerlink" href="#fig-brain-decay" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Signal decay in the brain.</span><a class="headerlink" href="#fig-brain-decay" title="Permalink to this image">#</a></p>
 </div>
 <div class="section" id="echo-specific-data-and-echo-time">
-<h3>Echo-specific data and echo time<a class="headerlink" href="#echo-specific-data-and-echo-time" title="Permalink to this headline">¶</a></h3>
+<h3>Echo-specific data and echo time<a class="headerlink" href="#echo-specific-data-and-echo-time" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -1012,11 +1142,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-echo-scatter">
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Scatter plot of voxel’s values by echo time.</span><a class="headerlink" href="#fig-echo-scatter" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Scatter plot of voxel’s values by echo time.</span><a class="headerlink" href="#fig-echo-scatter" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="the-signal-itself-changes-with-echo-time-as-well">
-<h3>The signal itself changes with echo time as well<a class="headerlink" href="#the-signal-itself-changes-with-echo-time-as-well" title="Permalink to this headline">¶</a></h3>
+<h3>The signal itself changes with echo time as well<a class="headerlink" href="#the-signal-itself-changes-with-echo-time-as-well" title="Permalink to this headline">#</a></h3>
 <p>While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1038,12 +1168,12 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-echo-timeseries">
-<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Time series from a voxel for each echo.</span><a class="headerlink" href="#fig-echo-timeseries" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Time series from a voxel for each echo.</span><a class="headerlink" href="#fig-echo-timeseries" title="Permalink to this image">#</a></p>
 </div>
 </div>
 </div>
 <div class="section" id="the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal">
-<h2>The impact of <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> fluctuations on BOLD signal<a class="headerlink" href="#the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal" title="Permalink to this headline">¶</a></h2>
+<h2>The impact of <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> fluctuations on BOLD signal<a class="headerlink" href="#the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal" title="Permalink to this headline">#</a></h2>
 <p>In this section, we investigate the two factors driving changes in the signal decay pattern: <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1060,7 +1190,7 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="section" id="simulate-t-2-and-s-0-fluctuations">
-<h3>Simulate <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> fluctuations<a class="headerlink" href="#simulate-t-2-and-s-0-fluctuations" title="Permalink to this headline">¶</a></h3>
+<h3>Simulate <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> fluctuations<a class="headerlink" href="#simulate-t-2-and-s-0-fluctuations" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate data</span>
@@ -1088,7 +1218,7 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="section" id="plot-bold-signal-decay-for-a-standard-single-echo-scan">
-<h4>Plot BOLD signal decay for a standard single-echo scan<a class="headerlink" href="#plot-bold-signal-decay-for-a-standard-single-echo-scan" title="Permalink to this headline">¶</a></h4>
+<h4>Plot BOLD signal decay for a standard single-echo scan<a class="headerlink" href="#plot-bold-signal-decay-for-a-standard-single-echo-scan" title="Permalink to this headline">#</a></h4>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullcurve_signal</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">FULLCURVE_TES</span><span class="p">,</span> <span class="p">[</span><span class="n">MEAN_S0</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">])</span>
@@ -1113,12 +1243,12 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-signal-decay-single-echo">
-<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">BOLD signal decay for a standard single-echo scan</span><a class="headerlink" href="#fig-signal-decay-single-echo" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">BOLD signal decay for a standard single-echo scan</span><a class="headerlink" href="#fig-signal-decay-single-echo" title="Permalink to this image">#</a></p>
 </div>
 </div>
 </div>
 <div class="section" id="plot-bold-signal-decay-and-bold-contrast">
-<h3>Plot BOLD signal decay and BOLD contrast<a class="headerlink" href="#plot-bold-signal-decay-and-bold-contrast" title="Permalink to this headline">¶</a></h3>
+<h3>Plot BOLD signal decay and BOLD contrast<a class="headerlink" href="#plot-bold-signal-decay-and-bold-contrast" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullcurve_signal_active</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">FULLCURVE_TES</span><span class="p">,</span> <span class="p">[</span><span class="n">MEAN_S0</span><span class="p">],</span> <span class="p">[</span><span class="mi">40</span><span class="p">])</span>
@@ -1153,11 +1283,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-signal-decay-contrast">
-<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">BOLD signal decay and BOLD contrast</span><a class="headerlink" href="#fig-signal-decay-contrast" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">BOLD signal decay and BOLD contrast</span><a class="headerlink" href="#fig-signal-decay-contrast" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="plot-single-echo-data-resulting-from-s-0-and-t-2-fluctuations">
-<h3>Plot single-echo data resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">¶</a></h3>
+<h3>Plot single-echo data resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">#</a></h3>
 <p>This shows how fMRI data fluctuates over time.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1231,11 +1361,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-single-echo">
-<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Single-echo data resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations</span><a class="headerlink" href="#fig-single-echo" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Single-echo data resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations</span><a class="headerlink" href="#fig-single-echo" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="plot-single-echo-data-and-the-curve-resulting-from-s-0-and-t-2-fluctuations">
-<h3>Plot single-echo data and the curve resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-and-the-curve-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">¶</a></h3>
+<h3>Plot single-echo data and the curve resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-and-the-curve-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">#</a></h3>
 <p>This shows how single-echo data is a sample from a signal decay curve.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1322,11 +1452,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-signal-decay">
-<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Single-echo data and the curve resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations</span><a class="headerlink" href="#fig-signal-decay" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Single-echo data and the curve resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations</span><a class="headerlink" href="#fig-signal-decay" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="plot-single-echo-data-the-curve-and-the-s-0-and-t-2-values-resulting-from-s-0-and-t-2-fluctuations">
-<h3>Plot single-echo data, the curve, and the <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> values resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-the-curve-and-the-s-0-and-t-2-values-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">¶</a></h3>
+<h3>Plot single-echo data, the curve, and the <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> values resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-the-curve-and-the-s-0-and-t-2-values-resulting-from-s-0-and-t-2-fluctuations" title="Permalink to this headline">#</a></h3>
 <p>This shows how changes in fMRI data can be driven by both S0 and T2* fluctuations.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1458,11 +1588,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-signal-decay2">
-<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Single-echo data, the curve, and the <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> values resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations</span><a class="headerlink" href="#fig-signal-decay2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Single-echo data, the curve, and the <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> values resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations</span><a class="headerlink" href="#fig-signal-decay2" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="plot-s-0-and-t-2-fluctuations">
-<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations" title="Permalink to this headline">¶</a></h3>
+<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations" title="Permalink to this headline">#</a></h3>
 <p>This shows how fluctuations in S0 and T2* produce different patterns in the full signal decay curves.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1565,11 +1695,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-signal-decay3">
-<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text"><span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations</span><a class="headerlink" href="#fig-signal-decay3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text"><span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations</span><a class="headerlink" href="#fig-signal-decay3" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="plot-s-0-and-t-2-fluctuations-and-resulting-single-echo-data">
-<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting single-echo data<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations-and-resulting-single-echo-data" title="Permalink to this headline">¶</a></h3>
+<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting single-echo data<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations-and-resulting-single-echo-data" title="Permalink to this headline">#</a></h3>
 <p>This shows how single-echo data, on its own, cannot distinguish between S0 and T2* fluctuations.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1693,11 +1823,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-signal-decay4">
-<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text"><span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting single-echo data</span><a class="headerlink" href="#fig-signal-decay4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text"><span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting single-echo data</span><a class="headerlink" href="#fig-signal-decay4" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="plot-s-0-and-t-2-fluctuations-and-resulting-multi-echo-data">
-<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting multi-echo data<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations-and-resulting-multi-echo-data" title="Permalink to this headline">¶</a></h3>
+<h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting multi-echo data<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations-and-resulting-multi-echo-data" title="Permalink to this headline">#</a></h3>
 <p>This shows how S0 and T2* fluctuations produce different patterns in multi-echo data.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1824,10 +1954,10 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </div>
 <div class="figure align-center" id="fig-signal-decay5">
-<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text"><span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting multi-echo data</span><a class="headerlink" href="#fig-signal-decay5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text"><span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting multi-echo data</span><a class="headerlink" href="#fig-signal-decay5" title="Permalink to this image">#</a></p>
 </div>
 <div class="section" id="plot-t-2-against-bold-signal-from-single-echo-data-te-30ms">
-<h4>Plot <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> against BOLD signal from single-echo data (TE=30ms)<a class="headerlink" href="#plot-t-2-against-bold-signal-from-single-echo-data-te-30ms" title="Permalink to this headline">¶</a></h4>
+<h4>Plot <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> against BOLD signal from single-echo data (TE=30ms)<a class="headerlink" href="#plot-t-2-against-bold-signal-from-single-echo-data-te-30ms" title="Permalink to this headline">#</a></h4>
 <p>When the BOLD signal is driven entirely by T2* fluctuations,
 the BOLD signal is very similar to a scaled version of those T2* fluctuations, but there are small differences.</p>
 <div class="cell tag_hide-cell docutils container">
@@ -1855,11 +1985,11 @@ the BOLD signal is very similar to a scaled version of those T2* fluctuations, b
 </div>
 </div>
 <div class="figure align-center" id="fig-t2s-bold-single-echo">
-<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text"><span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> against BOLD signal from single-echo data (TE=30ms)</span><a class="headerlink" href="#fig-t2s-bold-single-echo" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text"><span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> against BOLD signal from single-echo data (TE=30ms)</span><a class="headerlink" href="#fig-t2s-bold-single-echo" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="plot-s-0-against-bold-signal-from-single-echo-data-te-30ms">
-<h4>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> against BOLD signal from single-echo data (TE=30ms)<a class="headerlink" href="#plot-s-0-against-bold-signal-from-single-echo-data-te-30ms" title="Permalink to this headline">¶</a></h4>
+<h4>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> against BOLD signal from single-echo data (TE=30ms)<a class="headerlink" href="#plot-s-0-against-bold-signal-from-single-echo-data-te-30ms" title="Permalink to this headline">#</a></h4>
 <p>When the BOLD signal is driven entirely by S0 fluctuations, the BOLD signal ends up being a scaled version of the S0 fluctuations.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1886,7 +2016,7 @@ the BOLD signal is very similar to a scaled version of those T2* fluctuations, b
 </div>
 </div>
 <div class="figure align-center" id="fig-s0-bold-single-echo">
-<p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text"><span class="math notranslate nohighlight">\(S_{0}\)</span> against BOLD signal from single-echo data (TE=30ms)</span><a class="headerlink" href="#fig-s0-bold-single-echo" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text"><span class="math notranslate nohighlight">\(S_{0}\)</span> against BOLD signal from single-echo data (TE=30ms)</span><a class="headerlink" href="#fig-s0-bold-single-echo" title="Permalink to this image">#</a></p>
 </div>
 </div>
 </div>
@@ -1915,9 +2045,11 @@ the BOLD signal is very similar to a scaled version of those T2* fluctuations, b
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="fMRI_Sequences.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1933,24 +2065,28 @@ the BOLD signal is very similar to a scaled version of those T2* fluctuations, b
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By The tedana community<br/>
+  
+      &copy; Copyright 2021.<br/>
+</p>
+        </footer>
+    </div>
     
-      By The tedana community<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>
