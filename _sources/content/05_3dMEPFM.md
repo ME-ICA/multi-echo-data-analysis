@@ -13,10 +13,10 @@ kernelspec:
 
 # 3dMEPFM
 
-Requirements:
+```{code-cell} ipython3
+:tags: [output_scroll]
 
-- abind
-- lars
-- genlasso
-- wavethresh
-- snow
+from pySPFM import pySPFM
+
+print(pySPFM.__file__)
+```

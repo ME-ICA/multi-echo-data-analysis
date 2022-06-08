@@ -38,7 +38,7 @@ data_path = os.path.abspath(os.path.join(data_path[0], "data"))
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mImportError[0m                               Traceback (most recent call last)
-[0;32m/tmp/ipykernel_1852/678870246.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_1837/678870246.py[0m in [0;36m<module>[0;34m[0m
 [1;32m      7[0m [0;32mfrom[0m [0mnilearn[0m [0;32mimport[0m [0mimage[0m[0;34m,[0m [0mplotting[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      8[0m [0;32mfrom[0m [0mrepo2data[0m[0;34m.[0m[0mrepo2data[0m [0;32mimport[0m [0mRepo2Data[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 9[0;31m [0;32mfrom[0m [0mtedana[0m [0;32mimport[0m [0mworkflows[0m[0;34m[0m[0;34m[0m[0m

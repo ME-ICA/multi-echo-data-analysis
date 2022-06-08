@@ -245,7 +245,7 @@ pal = sns.color_palette("cubehelix", n_echoes)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2225/1468567380.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2224/1468567380.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     32[0m     [0mted_dir[0m[0;34m,[0m [0;34m"sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     33[0m )
 [0;32m---> 34[0;31m [0mmask[0m [0;34m=[0m [0mimage[0m[0;34m.[0m[0mmath_img[0m[0;34m([0m[0;34m"img >= 3"[0m[0;34m,[0m [0mimg[0m[0;34m=[0m[0madaptive_mask_file[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
