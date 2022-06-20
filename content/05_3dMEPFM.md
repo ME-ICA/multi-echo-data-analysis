@@ -15,6 +15,7 @@ kernelspec:
 
 ```{code-cell} ipython3
 import os
+from glob import glob
 
 from repo2data.repo2data import Repo2Data
 
@@ -71,4 +72,12 @@ pySPFM.pySPFM(
     out_dir=out_dir,
     te=echo_times,
 )
+```
+
+The pySPFM workflow writes out a number of files.
+
+```{code-cell} ipython3
+out_files = sorted(glob(os.path.join(out_dir, "*")))
+out_files = [os.path.basename(f) for f in out_files]
+print("\n".join(out_files))
 ```
