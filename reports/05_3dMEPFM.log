@@ -1,0 +1,92 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from pySPFM import pySPFM
+
+pySPFM.pySPFM(
+    data_fn=data_files,
+    mask_fn=mask_file,
+    output_filename=os.path.join(out_dir, "out"),
+    tr=2.47,
+    out_dir=out_dir,
+    te=echo_times,
+)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mCalledProcessError[0m                        Traceback (most recent call last)
+Input [0;32mIn [3][0m, in [0;36m<cell line: 3>[0;34m()[0m
+[1;32m      1[0m [38;5;28;01mfrom[39;00m [38;5;21;01mpySPFM[39;00m [38;5;28;01mimport[39;00m pySPFM
+[0;32m----> 3[0m [43mpySPFM[49m[38;5;241;43m.[39;49m[43mpySPFM[49m[43m([49m
+[1;32m      4[0m [43m    [49m[43mdata_fn[49m[38;5;241;43m=[39;49m[43mdata_files[49m[43m,[49m
+[1;32m      5[0m [43m    [49m[43mmask_fn[49m[38;5;241;43m=[39;49m[43mmask_file[49m[43m,[49m
+[1;32m      6[0m [43m    [49m[43moutput_filename[49m[38;5;241;43m=[39;49m[43mos[49m[38;5;241;43m.[39;49m[43mpath[49m[38;5;241;43m.[39;49m[43mjoin[49m[43m([49m[43mout_dir[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mout[39;49m[38;5;124;43m"[39;49m[43m)[49m[43m,[49m
+[1;32m      7[0m [43m    [49m[43mtr[49m[38;5;241;43m=[39;49m[38;5;241;43m2.47[39;49m[43m,[49m
+[1;32m      8[0m [43m    [49m[43mout_dir[49m[38;5;241;43m=[39;49m[43mout_dir[49m[43m,[49m
+[1;32m      9[0m [43m    [49m[43mte[49m[38;5;241;43m=[39;49m[43mecho_times[49m[43m,[49m
+[1;32m     10[0m [43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pySPFM/pySPFM.py:122[0m, in [0;36mpySPFM[0;34m(data_fn, mask_fn, output_filename, tr, out_dir, te, block_model, debias, group, criteria, pcg, factor, lambda_echo, max_iter_factor, max_iter_fista, max_iter_spatial, max_iter, min_iter_fista, n_jobs, spatial_weight, spatial_lambda, spatial_dim, mu, tolerance, is_atlas, debug, quiet)[0m
+[1;32m    120[0m LGR[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124mGenerating design matrix with shifted versions of HRF...[39m[38;5;124m"[39m)
+[1;32m    121[0m hrf_obj [38;5;241m=[39m HRFMatrix(TR[38;5;241m=[39mtr, nscans[38;5;241m=[39mnscans, TE[38;5;241m=[39mte, block[38;5;241m=[39mblock_model)
+[0;32m--> 122[0m hrf_norm [38;5;241m=[39m [43mhrf_obj[49m[38;5;241;43m.[39;49m[43mgenerate_hrf[49m[43m([49m[43m)[49m[38;5;241m.[39mX_hrf_norm
+[1;32m    124[0m [38;5;66;03m# Run LARS if bic or aic criteria given.[39;00m
+[1;32m    125[0m [38;5;66;03m# If another criteria is given, then solve with FISTA.[39;00m
+[1;32m    126[0m lars_criteria [38;5;241m=[39m [[38;5;124m"[39m[38;5;124mbic[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124maic[39m[38;5;124m"[39m]
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pySPFM/deconvolution/hrf_matrix.py:166[0m, in [0;36mHRFMatrix.generate_hrf[0;34m(self)[0m
+[1;32m    159[0m [38;5;124;03m"""Generate HRF matrix.[39;00m
+[1;32m    160[0m 
+[1;32m    161[0m [38;5;124;03mReturns[39;00m
+[1;32m    162[0m [38;5;124;03m-------[39;00m
+[1;32m    163[0m [38;5;124;03mself[39;00m
+[1;32m    164[0m [38;5;124;03m"""[39;00m
+[1;32m    165[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39mis_afni:
+[0;32m--> 166[0m     hrf_SPM [38;5;241m=[39m [43mhrf_afni[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mTR[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mlop_hrf[49m[43m)[49m
+[1;32m    167[0m [38;5;28;01melse[39;00m:
+[1;32m    168[0m     p [38;5;241m=[39m [[38;5;241m6[39m, [38;5;241m16[39m, [38;5;241m1[39m, [38;5;241m1[39m, [38;5;241m6[39m, [38;5;241m0[39m, [38;5;241m32[39m]
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pySPFM/deconvolution/hrf_matrix.py:100[0m, in [0;36mhrf_afni[0;34m(TR, lop_hrf)[0m
+[1;32m     95[0m dur_hrf [38;5;241m=[39m [38;5;241m2[39m [38;5;241m*[39m dur_hrf
+[1;32m     96[0m hrf_command [38;5;241m=[39m (
+[1;32m     97[0m     [38;5;124m"[39m[38;5;124m3dDeconvolve -x1D_stop -nodata [39m[38;5;132;01m%d[39;00m[38;5;124m [39m[38;5;132;01m%f[39;00m[38;5;124m -polort -1 -num_stimts 1 -stim_times 1 [39m[38;5;124m"[39m
+[1;32m     98[0m     [38;5;124m"[39m[38;5;124m'[39m[38;5;124m1D:0[39m[38;5;124m'[39m[38;5;124m [39m[38;5;124m'[39m[38;5;132;01m%s[39;00m[38;5;124m'[39m[38;5;124m -quiet -x1D stdout: | 1deval -a stdin: -expr [39m[38;5;124m'[39m[38;5;124ma[39m[38;5;124m'[39m[38;5;124m"[39m
+[1;32m     99[0m ) [38;5;241m%[39m (dur_hrf, TR, lop_hrf)
+[0;32m--> 100[0m hrf_tr_str [38;5;241m=[39m [43msubprocess[49m[38;5;241;43m.[39;49m[43mcheck_output[49m[43m([49m
+[1;32m    101[0m [43m    [49m[43mhrf_command[49m[43m,[49m[43m [49m[43mshell[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m[43m [49m[43muniversal_newlines[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m
+[1;32m    102[0m [43m[49m[43m)[49m[38;5;241m.[39msplitlines()
+[1;32m    103[0m hrf [38;5;241m=[39m np[38;5;241m.[39marray([[38;5;28mfloat[39m(i) [38;5;28;01mfor[39;00m i [38;5;129;01min[39;00m hrf_tr_str])
+[1;32m    104[0m last_hrf_sample [38;5;241m=[39m hrf[[38;5;28mlen[39m(hrf) [38;5;241m-[39m [38;5;241m1[39m]
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/subprocess.py:415[0m, in [0;36mcheck_output[0;34m(timeout, *popenargs, **kwargs)[0m
+[1;32m    412[0m         empty [38;5;241m=[39m [38;5;124mb[39m[38;5;124m'[39m[38;5;124m'[39m
+[1;32m    413[0m     kwargs[[38;5;124m'[39m[38;5;124minput[39m[38;5;124m'[39m] [38;5;241m=[39m empty
+[0;32m--> 415[0m [38;5;28;01mreturn[39;00m [43mrun[49m[43m([49m[38;5;241;43m*[39;49m[43mpopenargs[49m[43m,[49m[43m [49m[43mstdout[49m[38;5;241;43m=[39;49m[43mPIPE[49m[43m,[49m[43m [49m[43mtimeout[49m[38;5;241;43m=[39;49m[43mtimeout[49m[43m,[49m[43m [49m[43mcheck[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+[1;32m    416[0m [43m           [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m[38;5;241m.[39mstdout
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/subprocess.py:516[0m, in [0;36mrun[0;34m(input, capture_output, timeout, check, *popenargs, **kwargs)[0m
+[1;32m    514[0m     retcode [38;5;241m=[39m process[38;5;241m.[39mpoll()
+[1;32m    515[0m     [38;5;28;01mif[39;00m check [38;5;129;01mand[39;00m retcode:
+[0;32m--> 516[0m         [38;5;28;01mraise[39;00m CalledProcessError(retcode, process[38;5;241m.[39margs,
+[1;32m    517[0m                                  output[38;5;241m=[39mstdout, stderr[38;5;241m=[39mstderr)
+[1;32m    518[0m [38;5;28;01mreturn[39;00m CompletedProcess(process[38;5;241m.[39margs, retcode, stdout, stderr)
+
+[0;31mCalledProcessError[0m: Command '3dDeconvolve -x1D_stop -nodata 16 2.470000 -polort -1 -num_stimts 1 -stim_times 1 '1D:0' 'SPMG1' -quiet -x1D stdout: | 1deval -a stdin: -expr 'a'' returned non-zero exit status 127.
+CalledProcessError: Command '3dDeconvolve -x1D_stop -nodata 16 2.470000 -polort -1 -num_stimts 1 -stim_times 1 '1D:0' 'SPMG1' -quiet -x1D stdout: | 1deval -a stdin: -expr 'a'' returned non-zero exit status 127.
+
