@@ -1,0 +1,145 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import json
+import os
+from glob import glob
+from pprint import pprint
+
+import pandas as pd
+from IPython.display import HTML, display
+from repo2data.repo2data import Repo2Data
+from tedana import workflows
+
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mImportError[0m                               Traceback (most recent call last)
+Cell [0;32mIn [1], line 9[0m
+[1;32m      7[0m [38;5;28;01mfrom[39;00m [38;5;21;01mIPython[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdisplay[39;00m [38;5;28;01mimport[39;00m HTML, display
+[1;32m      8[0m [38;5;28;01mfrom[39;00m [38;5;21;01mrepo2data[39;00m[38;5;21;01m.[39;00m[38;5;21;01mrepo2data[39;00m [38;5;28;01mimport[39;00m Repo2Data
+[0;32m----> 9[0m [38;5;28;01mfrom[39;00m [38;5;21;01mtedana[39;00m [38;5;28;01mimport[39;00m workflows
+[1;32m     11[0m [38;5;66;03m# Install the data if running locally, or point to cached data if running on neurolibre[39;00m
+[1;32m     12[0m DATA_REQ_FILE [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin([38;5;124m"[39m[38;5;124m../binder/data_requirement.json[39m[38;5;124m"[39m)
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/tedana/workflows/__init__.py:4[0m
+[1;32m      1[0m [38;5;66;03m# emacs: -*- mode: python-mode; py-indent-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-[39;00m
+[1;32m      2[0m [38;5;66;03m# ex: set sts=4 ts=4 sw=4 et:[39;00m
+[0;32m----> 4[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mt2smap[39;00m [38;5;28;01mimport[39;00m t2smap_workflow
+[1;32m      6[0m [38;5;66;03m# Overrides submodules with their functions.[39;00m
+[1;32m      7[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mtedana[39;00m [38;5;28;01mimport[39;00m tedana_workflow
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/tedana/workflows/t2smap.py:10[0m
+[1;32m      7[0m [38;5;28;01mimport[39;00m [38;5;21;01mos[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpath[39;00m [38;5;28;01mas[39;00m [38;5;21;01mop[39;00m
+[1;32m      9[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[0;32m---> 10[0m [38;5;28;01mfrom[39;00m [38;5;21;01mscipy[39;00m [38;5;28;01mimport[39;00m stats
+[1;32m     11[0m [38;5;28;01mfrom[39;00m [38;5;21;01mthreadpoolctl[39;00m [38;5;28;01mimport[39;00m threadpool_limits
+[1;32m     13[0m [38;5;28;01mfrom[39;00m [38;5;21;01mtedana[39;00m [38;5;28;01mimport[39;00m __version__, combine, decay, io, utils
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/scipy/__init__.py:211[0m, in [0;36m__getattr__[0;34m(name)[0m
+[1;32m    209[0m [38;5;28;01mdef[39;00m [38;5;21m__getattr__[39m(name):
+[1;32m    210[0m     [38;5;28;01mif[39;00m name [38;5;129;01min[39;00m submodules:
+[0;32m--> 211[0m         [38;5;28;01mreturn[39;00m [43m_importlib[49m[38;5;241;43m.[39;49m[43mimport_module[49m[43m([49m[38;5;124;43mf[39;49m[38;5;124;43m'[39;49m[38;5;124;43mscipy.[39;49m[38;5;132;43;01m{[39;49;00m[43mname[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m'[39;49m[43m)[49m
+[1;32m    212[0m     [38;5;28;01melse[39;00m:
+[1;32m    213[0m         [38;5;28;01mtry[39;00m:
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/importlib/__init__.py:127[0m, in [0;36mimport_module[0;34m(name, package)[0m
+[1;32m    125[0m             [38;5;28;01mbreak[39;00m
+[1;32m    126[0m         level [38;5;241m+[39m[38;5;241m=[39m [38;5;241m1[39m
+[0;32m--> 127[0m [38;5;28;01mreturn[39;00m [43m_bootstrap[49m[38;5;241;43m.[39;49m[43m_gcd_import[49m[43m([49m[43mname[49m[43m[[49m[43mlevel[49m[43m:[49m[43m][49m[43m,[49m[43m [49m[43mpackage[49m[43m,[49m[43m [49m[43mlevel[49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/scipy/stats/__init__.py:467[0m
+[1;32m      1[0m [38;5;124;03m"""[39;00m
+[1;32m      2[0m [38;5;124;03m.. _statsrefmanual:[39;00m
+[1;32m      3[0m 
+[0;32m   (...)[0m
+[1;32m    462[0m 
+[1;32m    463[0m [38;5;124;03m"""[39;00m
+[1;32m    465[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_warnings_errors[39;00m [38;5;28;01mimport[39;00m (ConstantInputWarning, NearConstantInputWarning,
+[1;32m    466[0m                                DegenerateDataWarning, FitError)
+[0;32m--> 467[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_stats_py[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
+[1;32m    468[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_variation[39;00m [38;5;28;01mimport[39;00m variation
+[1;32m    469[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mdistributions[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/scipy/stats/_stats_py.py:37[0m
+[1;32m     35[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mimport[39;00m array, asarray, ma
+[1;32m     36[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlib[39;00m [38;5;28;01mimport[39;00m NumpyVersion
+[0;32m---> 37[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mtesting[39;00m [38;5;28;01mimport[39;00m suppress_warnings
+[1;32m     39[0m [38;5;28;01mfrom[39;00m [38;5;21;01mscipy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mspatial[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistance[39;00m [38;5;28;01mimport[39;00m cdist
+[1;32m     40[0m [38;5;28;01mfrom[39;00m [38;5;21;01mscipy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mndimage[39;00m [38;5;28;01mimport[39;00m _measurements
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/testing/__init__.py:12[0m
+[1;32m     10[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_private[39;00m[38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
+[1;32m     11[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_private[39;00m[38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m [38;5;28;01mimport[39;00m (_assert_valid_refcount, _gen_alignment_data)
+[0;32m---> 12[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_private[39;00m [38;5;28;01mimport[39;00m extbuild, decorators [38;5;28;01mas[39;00m dec
+[1;32m     13[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_private[39;00m[38;5;21;01m.[39;00m[38;5;21;01mnosetester[39;00m [38;5;28;01mimport[39;00m (
+[1;32m     14[0m     run_module_suite, NoseTester [38;5;28;01mas[39;00m Tester
+[1;32m     15[0m     )
+[1;32m     17[0m __all__ [38;5;241m=[39m _private[38;5;241m.[39mutils[38;5;241m.[39m__all__ [38;5;241m+[39m [[38;5;124m'[39m[38;5;124mTestCase[39m[38;5;124m'[39m, [38;5;124m'[39m[38;5;124mrun_module_suite[39m[38;5;124m'[39m]
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/testing/_private/extbuild.py:11[0m
+[1;32m      9[0m [38;5;28;01mimport[39;00m [38;5;21;01msys[39;00m
+[1;32m     10[0m [38;5;28;01mimport[39;00m [38;5;21;01msysconfig[39;00m
+[0;32m---> 11[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mccompiler[39;00m [38;5;28;01mimport[39;00m new_compiler
+[1;32m     12[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01merrors[39;00m [38;5;28;01mimport[39;00m CompileError
+[1;32m     14[0m __all__ [38;5;241m=[39m [[38;5;124m'[39m[38;5;124mbuild_and_import_extension[39m[38;5;124m'[39m, [38;5;124m'[39m[38;5;124mcompile_extension_module[39m[38;5;124m'[39m]
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/distutils/__init__.py:24[0m
+[1;32m      1[0m [38;5;124;03m"""[39;00m
+[1;32m      2[0m [38;5;124;03mAn enhanced distutils, providing support for Fortran compilers, for BLAS,[39;00m
+[1;32m      3[0m [38;5;124;03mLAPACK and other common libraries for numerical computing, and more.[39;00m
+[0;32m   (...)[0m
+[1;32m     19[0m 
+[1;32m     20[0m [38;5;124;03m"""[39;00m
+[1;32m     22[0m [38;5;66;03m# Must import local ccompiler ASAP in order to get[39;00m
+[1;32m     23[0m [38;5;66;03m# customized CCompiler.spawn effective.[39;00m
+[0;32m---> 24[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m [38;5;28;01mimport[39;00m ccompiler
+[1;32m     25[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m [38;5;28;01mimport[39;00m unixccompiler
+[1;32m     27[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mnpy_pkg_config[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/distutils/ccompiler.py:20[0m
+[1;32m     17[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01msysconfig[39;00m [38;5;28;01mimport[39;00m customize_compiler
+[1;32m     18[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mversion[39;00m [38;5;28;01mimport[39;00m LooseVersion
+[0;32m---> 20[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m [38;5;28;01mimport[39;00m log
+[1;32m     21[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mexec_command[39;00m [38;5;28;01mimport[39;00m (
+[1;32m     22[0m     filepath_from_subprocess_output, forward_bytes_to_stdout
+[1;32m     23[0m )
+[1;32m     24[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mmisc_util[39;00m [38;5;28;01mimport[39;00m cyg2win32, is_sequence, mingw32, \
+[1;32m     25[0m                                       get_num_build_jobs, \
+[1;32m     26[0m                                       _commandline_dep_string, \
+[1;32m     27[0m                                       sanitize_cxx_flags
+
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/distutils/log.py:4[0m
+[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01msys[39;00m
+[1;32m      3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlog[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m  [38;5;66;03m# noqa: F403[39;00m
+[0;32m----> 4[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlog[39;00m [38;5;28;01mimport[39;00m Log [38;5;28;01mas[39;00m old_Log
+[1;32m      5[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlog[39;00m [38;5;28;01mimport[39;00m _global_log
+[1;32m      7[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mmisc_util[39;00m [38;5;28;01mimport[39;00m (red_text, default_text, cyan_text,
+[1;32m      8[0m         green_text, is_sequence, is_string)
+
+[0;31mImportError[0m: cannot import name 'Log' from 'distutils.log' (/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/setuptools/_distutils/log.py)
+ImportError: cannot import name 'Log' from 'distutils.log' (/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/setuptools/_distutils/log.py)
+

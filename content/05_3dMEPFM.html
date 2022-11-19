@@ -20,7 +20,7 @@
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -39,7 +39,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script src="../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
@@ -550,13 +550,70 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/repo2data
+/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/repo2data
 Config from file :
 ../binder/data_requirement.json
 Destination:
 ./../data/multi-echo-data-analysis
 
-Info : ./../data/multi-echo-data-analysis already downloaded
+Info : Starting to download from Google drive https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx ...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 	Cannot retrieve the public link of the file. You may need to change
+	the permission to &#39;Anyone with the link&#39;, or have had many accesses. 
+
+You may still be able to access the file from the browser:
+
+	 https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Access denied with the following error:
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">CalledProcessError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">11</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="c1"># Download data</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/repo2data/repo2data.py:75,</span> in <span class="ni">Repo2Data.install</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>             <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="c1">#if not, it is a single assignment</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">75</span>     <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span> <span class="k">return</span> <span class="n">ret</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/repo2data/repo2data.py:249,</span> in <span class="ni">Repo2DataChild.install</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">247</span>     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">248</span> <span class="c1"># Downloading with the right method, depending on the src type</span>
+<span class="ne">--&gt; </span><span class="mi">249</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scan_dl_type</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">250</span> <span class="c1"># If needed, decompression of the data</span>
+<span class="g g-Whitespace">    </span><span class="mi">251</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_decompress</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/repo2data/repo2data.py:229,</span> in <span class="ni">Repo2DataChild._scan_dl_type</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">227</span> <span class="c1"># or coming from google drive</span>
+<span class="g g-Whitespace">    </span><span class="mi">228</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?(drive</span><span class="se">\\</span><span class="s2">.google</span><span class="se">\\</span><span class="s2">.com).*?&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
+<span class="ne">--&gt; </span><span class="mi">229</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_gdrive_download</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="c1">#or maybe it is a python script</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?(import.*?;).*?&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/repo2data/repo2data.py:165,</span> in <span class="ni">Repo2DataChild._gdrive_download</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">163</span>     <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">164</span>     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">165</span>     <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s1">&#39;gdown&#39;</span>
+<span class="g g-Whitespace">    </span><span class="mi">166</span>                            <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]])</span>
+<span class="g g-Whitespace">    </span><span class="mi">167</span>     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">168</span> <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/subprocess.py:364,</span> in <span class="ni">check_call</span><span class="nt">(*popenargs, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">362</span>     <span class="k">if</span> <span class="n">cmd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">363</span>         <span class="n">cmd</span> <span class="o">=</span> <span class="n">popenargs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="ne">--&gt; </span><span class="mi">364</span>     <span class="k">raise</span> <span class="n">CalledProcessError</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">365</span> <span class="k">return</span> <span class="mi">0</span>
+
+<span class="ne">CalledProcessError</span>: Command &#39;[&#39;gdown&#39;, &#39;https://drive.google.com/uc?id=1t98v7EiEKsV8q8mT-uMRgoYeHaVL2JWx&#39;]&#39; returned non-zero exit status 1.
 </pre></div>
 </div>
 </div>
@@ -607,123 +664,6 @@ Info : ./../data/multi-echo-data-analysis already downloaded
     <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
     <span class="n">te</span><span class="o">=</span><span class="n">echo_times</span><span class="p">,</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/nilearn/input_data/__init__.py:27: FutureWarning: The import path &#39;nilearn.input_data&#39; is deprecated in version 0.9. Importing from &#39;nilearn.input_data&#39; will be possible at least until release 0.13.0. Please import from &#39;nilearn.maskers&#39; instead.
-  warnings.warn(message, FutureWarning)
-INFO     pySPFM:pySPFM:87 Using output directory: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/pySPFM
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Using output directory: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/pySPFM
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     pySPFM:pySPFM:94 Reading data...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Reading data...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     pySPFM:pySPFM:115 1/4 echoes...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: 1/4 echoes...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     pySPFM:pySPFM:115 2/4 echoes...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: 2/4 echoes...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     pySPFM:pySPFM:115 3/4 echoes...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: 3/4 echoes...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     pySPFM:pySPFM:115 4/4 echoes...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: 4/4 echoes...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     pySPFM:pySPFM:117 Data read.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Data read.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     pySPFM:pySPFM:120 Generating design matrix with shifted versions of HRF...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Generating design matrix with shifted versions of HRF...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/bin/sh: 1: /bin/sh: 1: 3dDeconvolve: not found
-1deval: not found
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">CalledProcessError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
-<span class="nn">Input In [3],</span> in <span class="ni">&lt;cell line: 3&gt;</span><span class="nt">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">pySPFM</span> <span class="kn">import</span> <span class="n">pySPFM</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">pySPFM</span><span class="o">.</span><span class="n">pySPFM</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">data_fn</span><span class="o">=</span><span class="n">data_files</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">mask_fn</span><span class="o">=</span><span class="n">mask_file</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">output_filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;out&quot;</span><span class="p">),</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="n">tr</span><span class="o">=</span><span class="mf">2.47</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">te</span><span class="o">=</span><span class="n">echo_times</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pySPFM/pySPFM.py:122,</span> in <span class="ni">pySPFM</span><span class="nt">(data_fn, mask_fn, output_filename, tr, out_dir, te, block_model, debias, group, criteria, pcg, factor, lambda_echo, max_iter_factor, max_iter_fista, max_iter_spatial, max_iter, min_iter_fista, n_jobs, spatial_weight, spatial_lambda, spatial_dim, mu, tolerance, is_atlas, debug, quiet)</span>
-<span class="g g-Whitespace">    </span><span class="mi">120</span> <span class="n">LGR</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Generating design matrix with shifted versions of HRF...&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">121</span> <span class="n">hrf_obj</span> <span class="o">=</span> <span class="n">HRFMatrix</span><span class="p">(</span><span class="n">TR</span><span class="o">=</span><span class="n">tr</span><span class="p">,</span> <span class="n">nscans</span><span class="o">=</span><span class="n">nscans</span><span class="p">,</span> <span class="n">TE</span><span class="o">=</span><span class="n">te</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="n">block_model</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">122</span> <span class="n">hrf_norm</span> <span class="o">=</span> <span class="n">hrf_obj</span><span class="o">.</span><span class="n">generate_hrf</span><span class="p">()</span><span class="o">.</span><span class="n">X_hrf_norm</span>
-<span class="g g-Whitespace">    </span><span class="mi">124</span> <span class="c1"># Run LARS if bic or aic criteria given.</span>
-<span class="g g-Whitespace">    </span><span class="mi">125</span> <span class="c1"># If another criteria is given, then solve with FISTA.</span>
-<span class="g g-Whitespace">    </span><span class="mi">126</span> <span class="n">lars_criteria</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;bic&quot;</span><span class="p">,</span> <span class="s2">&quot;aic&quot;</span><span class="p">]</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pySPFM/deconvolution/hrf_matrix.py:166,</span> in <span class="ni">HRFMatrix.generate_hrf</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">159</span> <span class="sd">&quot;&quot;&quot;Generate HRF matrix.</span>
-<span class="g g-Whitespace">    </span><span class="mi">160</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">161</span><span class="sd"> Returns</span>
-<span class="g g-Whitespace">    </span><span class="mi">162</span><span class="sd"> -------</span>
-<span class="g g-Whitespace">    </span><span class="mi">163</span><span class="sd"> self</span>
-<span class="g g-Whitespace">    </span><span class="mi">164</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">165</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_afni</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">166</span>     <span class="n">hrf_SPM</span> <span class="o">=</span> <span class="n">hrf_afni</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TR</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lop_hrf</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">167</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">168</span>     <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">]</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pySPFM/deconvolution/hrf_matrix.py:100,</span> in <span class="ni">hrf_afni</span><span class="nt">(TR, lop_hrf)</span>
-<span class="g g-Whitespace">     </span><span class="mi">95</span> <span class="n">dur_hrf</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dur_hrf</span>
-<span class="g g-Whitespace">     </span><span class="mi">96</span> <span class="n">hrf_command</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span>     <span class="s2">&quot;3dDeconvolve -x1D_stop -nodata </span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> -polort -1 -num_stimts 1 -stim_times 1 &quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">98</span>     <span class="s2">&quot;&#39;1D:0&#39; &#39;</span><span class="si">%s</span><span class="s2">&#39; -quiet -x1D stdout: | 1deval -a stdin: -expr &#39;a&#39;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">99</span> <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">dur_hrf</span><span class="p">,</span> <span class="n">TR</span><span class="p">,</span> <span class="n">lop_hrf</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">100</span> <span class="n">hrf_tr_str</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">101</span>     <span class="n">hrf_command</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">102</span> <span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">103</span> <span class="n">hrf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">hrf_tr_str</span><span class="p">])</span>
-<span class="g g-Whitespace">    </span><span class="mi">104</span> <span class="n">last_hrf_sample</span> <span class="o">=</span> <span class="n">hrf</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">hrf</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/subprocess.py:415,</span> in <span class="ni">check_output</span><span class="nt">(timeout, *popenargs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">412</span>         <span class="n">empty</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
-<span class="g g-Whitespace">    </span><span class="mi">413</span>     <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">empty</span>
-<span class="ne">--&gt; </span><span class="mi">415</span> <span class="k">return</span> <span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">416</span>            <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/subprocess.py:516,</span> in <span class="ni">run</span><span class="nt">(input, capture_output, timeout, check, *popenargs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">514</span>     <span class="n">retcode</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">515</span>     <span class="k">if</span> <span class="n">check</span> <span class="ow">and</span> <span class="n">retcode</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">516</span>         <span class="k">raise</span> <span class="n">CalledProcessError</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span> <span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">517</span>                                  <span class="n">output</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">518</span> <span class="k">return</span> <span class="n">CompletedProcess</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">retcode</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span>
-
-<span class="ne">CalledProcessError</span>: Command &#39;3dDeconvolve -x1D_stop -nodata 16 2.470000 -polort -1 -num_stimts 1 -stim_times 1 &#39;1D:0&#39; &#39;SPMG1&#39; -quiet -x1D stdout: | 1deval -a stdin: -expr &#39;a&#39;&#39; returned non-zero exit status 127.
 </pre></div>
 </div>
 </div>
