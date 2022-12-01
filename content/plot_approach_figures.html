@@ -782,7 +782,7 @@ DATA_REQ_FILE = os.path.join(&quot;../binder/data_requirement.json&quot;)
 # Download data
 repo2data = Repo2Data(DATA_REQ_FILE)
 data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(data_path[0], &quot;data&quot;))
+data_path = os.path.abspath(data_path[0])
 
 ted_dir = os.path.join(data_path, &quot;tedana&quot;)
 </pre></div>
@@ -808,7 +808,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <h2>Load data<a class="headerlink" href="#load-data" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>func_dir = os.path.join(data_path, &quot;sub-04570/func/&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>func_dir = os.path.join(data_path, &quot;func/&quot;)
 data_files = [
     os.path.join(
         func_dir,
@@ -834,7 +834,7 @@ xfm = os.path.join(
     func_dir, &quot;sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt&quot;
 )
 xfm = nit.linear.load(xfm, fmt=&quot;itk&quot;)
-t1_file = os.path.join(data_path, &quot;sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz&quot;)
+t1_file = os.path.join(data_path, &quot;anat/sub-04570_desc-preproc_T1w.nii.gz&quot;)
 bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 
 # Tedana outputs
@@ -1035,50 +1035,6 @@ pal = sns.color_palette(&quot;cubehelix&quot;, n_echoes)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">26</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># Background anatomical image</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="n">xfm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">26</span> <span class="n">xfm</span> <span class="o">=</span> <span class="n">nit</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xfm</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;itk&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="n">t1_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="n">bg_img</span> <span class="o">=</span> <span class="n">xfm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">spatialimage</span><span class="o">=</span><span class="n">t1_file</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">data_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nitransforms/linear.py:504,</span> in <span class="ni">load</span><span class="nt">(filename, fmt, reference, moving)</span>
-<span class="g g-Whitespace">    </span><span class="mi">489</span> <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;X5&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">490</span>     <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">491</span><span class="sd">     Load a linear transform file.</span>
-<span class="g g-Whitespace">    </span><span class="mi">492</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">502</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">503</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">504</span>     <span class="n">xfm</span> <span class="o">=</span> <span class="n">LinearTransformsMapping</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">505</span>         <span class="n">filename</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="n">moving</span>
-<span class="g g-Whitespace">    </span><span class="mi">506</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">507</span>     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xfm</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">508</span>         <span class="k">return</span> <span class="n">xfm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nitransforms/linear.py:224,</span> in <span class="ni">Affine.from_filename</span><span class="nt">(cls, filename, fmt, reference, moving)</span>
-<span class="g g-Whitespace">    </span><span class="mi">221</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-<span class="ne">--&gt; </span><span class="mi">224</span> <span class="n">struct</span> <span class="o">=</span> <span class="n">_factory</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">225</span> <span class="n">matrix</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">to_ras</span><span class="p">(</span><span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="n">moving</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">226</span> <span class="k">if</span> <span class="bp">cls</span> <span class="o">==</span> <span class="n">Affine</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nitransforms/io/itk.py:228,</span> in <span class="ni">ITKLinearTransformArray.from_filename</span><span class="nt">(cls, filename)</span>
-<span class="g g-Whitespace">    </span><span class="mi">225</span>     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">226</span>         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_binary</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">228</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">229</span>     <span class="n">string</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1133,8 +1089,14 @@ glue(&quot;fig_echo_timeseries2&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_6_1.png" src="../_images/plot_approach_figures_6_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-echo-timeseries2">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_6_0.png" src="../_images/plot_approach_figures_6_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 20 </span><span class="caption-text">Time series from a voxel for each echo.</span><a class="headerlink" href="#fig-echo-timeseries2" title="Permalink to this image">#</a></p>
 </div>
 </div>
@@ -1159,8 +1121,14 @@ glue(&quot;fig_echo_scatter2&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_8_1.png" src="../_images/plot_approach_figures_8_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-echo-scatter2">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_8_0.png" src="../_images/plot_approach_figures_8_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Scatter plot of voxel’s values by echo time.</span><a class="headerlink" href="#fig-echo-scatter2" title="Permalink to this image">#</a></p>
 </div>
 </div>
@@ -1199,8 +1167,22 @@ glue(&quot;fig_adaptive_mask&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/image/resampling.py:531: UserWarning: Casting data from int16 to float32
+  warnings.warn(&quot;Casting data from %s to %s&quot; % (data.dtype.name, aux))
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/image/resampling.py:531: UserWarning: Casting data from int32 to float32
+  warnings.warn(&quot;Casting data from %s to %s&quot; % (data.dtype.name, aux))
+</pre></div>
+</div>
+<img alt="../_images/plot_approach_figures_10_3.png" src="../_images/plot_approach_figures_10_3.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-adaptive-mask">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_10_2.png" src="../_images/plot_approach_figures_10_2.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Adaptive mask.</span><a class="headerlink" href="#fig-adaptive-mask" title="Permalink to this image">#</a></p>
 </div>
 </div>
@@ -1226,8 +1208,14 @@ glue(&quot;fig_loglin_scatter&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_12_1.png" src="../_images/plot_approach_figures_12_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_12_0.png" src="../_images/plot_approach_figures_12_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 23 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation.</span><a class="headerlink" href="#fig-loglin-scatter" title="Permalink to this image">#</a></p>
 </div>
 </div>
@@ -1287,8 +1275,14 @@ glue(&quot;fig_loglin_scatter_with_line&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_14_1.png" src="../_images/plot_approach_figures_14_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter-with-line">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_14_0.png" src="../_images/plot_approach_figures_14_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 24 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation, with fitted line.</span><a class="headerlink" href="#fig-loglin-scatter-with-line" title="Permalink to this image">#</a></p>
 </div>
 </div>
@@ -1327,8 +1321,14 @@ glue(&quot;fig_loglin_scatter_with_t2s&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_16_1.png" src="../_images/plot_approach_figures_16_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-loglin-scatter-with-t2s">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_16_0.png" src="../_images/plot_approach_figures_16_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 25 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation, with fitted line and T2* estimate.</span><a class="headerlink" href="#fig-loglin-scatter-with-t2s" title="Permalink to this image">#</a></p>
 </div>
 <div class="section" id="t2">
@@ -1358,8 +1358,14 @@ glue(&quot;fig_scatter_with_t2s&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_18_1.png" src="../_images/plot_approach_figures_18_1.png" />
+</div>
 </div>
 <div class="figure align-center" id="fig-scatter-with-t2s">
+<div class="cell_output docutils container">
+<img alt="../_images/plot_approach_figures_18_0.png" src="../_images/plot_approach_figures_18_0.png" />
+</div>
 <p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo with T2* estimate.</span><a class="headerlink" href="#fig-scatter-with-t2s" title="Permalink to this image">#</a></p>
 </div>
 </div>
@@ -1376,6 +1382,20 @@ fig.tight_layout()
 glue(&quot;fig_optcom_weights&quot;, fig, display=False)
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">pal</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Weight&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: barplot() takes from 0 to 1 positional arguments but 2 positional arguments (and 2 keyword-only arguments) were given
+</pre></div>
+</div>
+<img alt="../_images/plot_approach_figures_20_1.png" src="../_images/plot_approach_figures_20_1.png" />
 </div>
 </div>
 <div class="figure align-center" id="fig-optcom-weights">

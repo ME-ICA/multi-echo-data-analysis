@@ -77,7 +77,7 @@ DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 # Download data
 repo2data = Repo2Data(DATA_REQ_FILE)
 data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+data_path = os.path.abspath(data_path[0])
 
 out_dir = os.path.join(data_path, "signal-decay")
 os.makedirs(out_dir, exist_ok=True)
@@ -85,7 +85,7 @@ os.makedirs(out_dir, exist_ok=True)
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-func_dir = os.path.join(data_path, "sub-04570/func/")
+func_dir = os.path.join(data_path, "func/")
 data_files = [
     os.path.join(
         func_dir,

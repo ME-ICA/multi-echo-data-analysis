@@ -544,7 +544,7 @@ DATA_REQ_FILE = os.path.join(&quot;../binder/data_requirement.json&quot;)
 # Download data
 repo2data = Repo2Data(DATA_REQ_FILE)
 data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(data_path[0], &quot;data&quot;))
+data_path = os.path.abspath(data_path[0])
 </pre></div>
 </div>
 </div>
@@ -563,7 +563,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>func_dir = os.path.join(data_path, &quot;sub-04570/func/&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>func_dir = os.path.join(data_path, &quot;func/&quot;)
 data_files = [
     os.path.join(
         func_dir,
