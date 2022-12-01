@@ -763,178 +763,43 @@ and this chapter will be removed.</p>
 </div>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import os
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">nitransforms</span> <span class="k">as</span> <span class="nn">nit</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
-<span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">image</span><span class="p">,</span> <span class="n">masking</span><span class="p">,</span> <span class="n">plotting</span>
-<span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
-<span class="kn">from</span> <span class="nn">tedana.io</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">new_nii_like</span>
-<span class="kn">from</span> <span class="nn">tedana.utils</span> <span class="kn">import</span> <span class="n">make_adaptive_mask</span>
+import matplotlib.pyplot as plt
+import nitransforms as nit
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from myst_nb import glue
+from nilearn import image, masking, plotting
+from repo2data.repo2data import Repo2Data
+from tedana.io import load_data, new_nii_like
+from tedana.utils import make_adaptive_mask
 
-<span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-<span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join(&quot;../binder/data_requirement.json&quot;)
 
-<span class="c1"># Download data</span>
-<span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], &quot;data&quot;))
 
-<span class="n">ted_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;tedana&quot;</span><span class="p">)</span>
+ted_dir = os.path.join(data_path, &quot;tedana&quot;)
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">9</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
-<span class="ne">----&gt; </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">nilearn</span> <span class="kn">import</span> <span class="n">image</span><span class="p">,</span> <span class="n">masking</span><span class="p">,</span> <span class="n">plotting</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">tedana.io</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">new_nii_like</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Module `duecredit` not successfully imported due to &quot;No module named &#39;duecredit&#39;&quot;. Package functionality unaffected.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
+/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/repo2data
+Config from file :
+../binder/data_requirement.json
+Destination:
+./../data/multi-echo-data-analysis
 
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">nilearn</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">68</span>
-<span class="g g-Whitespace">     </span><span class="mi">64</span>     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">65</span>         <span class="n">_py36_deprecation_warning</span><span class="p">()</span>
-<span class="ne">---&gt; </span><span class="mi">68</span> <span class="n">_check_module_dependencies</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">69</span> <span class="n">_python_deprecation_warnings</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span> <span class="c1"># Monkey-patch gzip to have faster reads on large gzip files</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/version.py:180,</span> in <span class="ni">_check_module_dependencies</span><span class="nt">(is_nilearn_installing)</span>
-<span class="g g-Whitespace">    </span><span class="mi">175</span> <span class="k">for</span> <span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">module_metadata</span><span class="p">)</span> <span class="ow">in</span> <span class="n">REQUIRED_MODULE_METADATA</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">176</span>     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">is_nilearn_installing</span> <span class="ow">and</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span>             <span class="ow">not</span> <span class="n">module_metadata</span><span class="p">[</span><span class="s1">&#39;required_at_installation&#39;</span><span class="p">]):</span>
-<span class="g g-Whitespace">    </span><span class="mi">178</span>         <span class="c1"># Skip check only when installing and it&#39;s a module that</span>
-<span class="g g-Whitespace">    </span><span class="mi">179</span>         <span class="c1"># will be auto-installed.</span>
-<span class="ne">--&gt; </span><span class="mi">180</span>         <span class="n">_import_module_with_version_check</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span>             <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">182</span>             <span class="n">minimum_version</span><span class="o">=</span><span class="n">module_metadata</span><span class="p">[</span><span class="s1">&#39;min_version&#39;</span><span class="p">],</span>
-<span class="g g-Whitespace">    </span><span class="mi">183</span>             <span class="n">install_info</span><span class="o">=</span><span class="n">module_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;install_info&#39;</span><span class="p">))</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/version.py:72,</span> in <span class="ni">_import_module_with_version_check</span><span class="nt">(module_name, minimum_version, install_info)</span>
-<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="sd">&quot;&quot;&quot;Check that module is installed with a recent enough version.&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">72</span>     <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span>     <span class="n">user_friendly_info</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Module &quot;</span><span class="si">{0}</span><span class="s1">&quot; could not be found. </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">75</span>         <span class="n">module_name</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">76</span>         <span class="n">install_info</span> <span class="ow">or</span> <span class="s1">&#39;Please install it properly to use nilearn.&#39;</span><span class="p">)</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">sklearn</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">82</span>
-<span class="g g-Whitespace">     </span><span class="mi">80</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_distributor_init</span>  <span class="c1"># noqa: F401</span>
-<span class="g g-Whitespace">     </span><span class="mi">81</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">__check_build</span>  <span class="c1"># noqa: F401</span>
-<span class="ne">---&gt; </span><span class="mi">82</span> <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">clone</span>
-<span class="g g-Whitespace">     </span><span class="mi">83</span> <span class="kn">from</span> <span class="nn">.utils._show_versions</span> <span class="kn">import</span> <span class="n">show_versions</span>
-<span class="g g-Whitespace">     </span><span class="mi">85</span> <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-<span class="g g-Whitespace">     </span><span class="mi">86</span>     <span class="s2">&quot;calibration&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">87</span>     <span class="s2">&quot;cluster&quot;</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">128</span>     <span class="s2">&quot;show_versions&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">129</span> <span class="p">]</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">sklearn</span><span class="o">/</span><span class="n">base</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">17</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">__version__</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="kn">from</span> <span class="nn">._config</span> <span class="kn">import</span> <span class="n">get_config</span>
-<span class="ne">---&gt; </span><span class="mi">17</span> <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_IS_32BIT</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="kn">from</span> <span class="nn">.utils._tags</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="n">_DEFAULT_TAGS</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="kn">from</span> <span class="nn">.utils.validation</span> <span class="kn">import</span> <span class="n">check_X_y</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">sklearn</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">29</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">DataConversionWarning</span>
-<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="kn">from</span> <span class="nn">.deprecation</span> <span class="kn">import</span> <span class="n">deprecated</span>
-<span class="ne">---&gt; </span><span class="mi">29</span> <span class="kn">from</span> <span class="nn">.fixes</span> <span class="kn">import</span> <span class="n">parse_version</span><span class="p">,</span> <span class="n">threadpool_info</span>
-<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="kn">from</span> <span class="nn">._estimator_html_repr</span> <span class="kn">import</span> <span class="n">estimator_html_repr</span>
-<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="kn">from</span> <span class="nn">.validation</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span>     <span class="n">as_float_array</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">33</span>     <span class="n">assert_all_finite</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="n">check_scalar</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">42</span> <span class="p">)</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">sklearn</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">fixes</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">19</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="kn">import</span> <span class="nn">scipy</span>
-<span class="ne">---&gt; </span><span class="mi">19</span> <span class="kn">import</span> <span class="nn">scipy.stats</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="kn">import</span> <span class="nn">threadpoolctl</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="kn">from</span> <span class="nn">.._config</span> <span class="kn">import</span> <span class="n">config_context</span><span class="p">,</span> <span class="n">get_config</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">scipy</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">467</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span><span class="sd"> .. _statsrefmanual:</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">462</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">463</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">465</span> <span class="kn">from</span> <span class="nn">._warnings_errors</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ConstantInputWarning</span><span class="p">,</span> <span class="n">NearConstantInputWarning</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">466</span>                                <span class="n">DegenerateDataWarning</span><span class="p">,</span> <span class="n">FitError</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">467</span> <span class="kn">from</span> <span class="nn">._stats_py</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">    </span><span class="mi">468</span> <span class="kn">from</span> <span class="nn">._variation</span> <span class="kn">import</span> <span class="n">variation</span>
-<span class="g g-Whitespace">    </span><span class="mi">469</span> <span class="kn">from</span> <span class="nn">.distributions</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">scipy</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">_stats_py</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">37</span>
-<span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">asarray</span><span class="p">,</span> <span class="n">ma</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="kn">from</span> <span class="nn">numpy.lib</span> <span class="kn">import</span> <span class="n">NumpyVersion</span>
-<span class="ne">---&gt; </span><span class="mi">37</span> <span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">suppress_warnings</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cdist</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">_measurements</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">testing</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">12</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">._private.utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">._private.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_assert_valid_refcount</span><span class="p">,</span> <span class="n">_gen_alignment_data</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">12</span> <span class="kn">from</span> <span class="nn">._private</span> <span class="kn">import</span> <span class="n">extbuild</span><span class="p">,</span> <span class="n">decorators</span> <span class="k">as</span> <span class="n">dec</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="kn">from</span> <span class="nn">._private.nosetester</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span>     <span class="n">run_module_suite</span><span class="p">,</span> <span class="n">NoseTester</span> <span class="k">as</span> <span class="n">Tester</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">__all__</span> <span class="o">=</span> <span class="n">_private</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">__all__</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;TestCase&#39;</span><span class="p">,</span> <span class="s1">&#39;run_module_suite&#39;</span><span class="p">]</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">testing</span><span class="o">/</span><span class="n">_private</span><span class="o">/</span><span class="n">extbuild</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">11</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">sys</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">import</span> <span class="nn">sysconfig</span>
-<span class="ne">---&gt; </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">numpy.distutils.ccompiler</span> <span class="kn">import</span> <span class="n">new_compiler</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="kn">from</span> <span class="nn">distutils.errors</span> <span class="kn">import</span> <span class="n">CompileError</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;build_and_import_extension&#39;</span><span class="p">,</span> <span class="s1">&#39;compile_extension_module&#39;</span><span class="p">]</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">distutils</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">24</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span><span class="sd"> An enhanced distutils, providing support for Fortran compilers, for BLAS,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="sd"> LAPACK and other common libraries for numerical computing, and more.</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># Must import local ccompiler ASAP in order to get</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="c1"># customized CCompiler.spawn effective.</span>
-<span class="ne">---&gt; </span><span class="mi">24</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ccompiler</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">unixccompiler</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="kn">from</span> <span class="nn">.npy_pkg_config</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">distutils</span><span class="o">/</span><span class="n">ccompiler</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">20</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">from</span> <span class="nn">distutils.sysconfig</span> <span class="kn">import</span> <span class="n">customize_compiler</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="kn">from</span> <span class="nn">distutils.version</span> <span class="kn">import</span> <span class="n">LooseVersion</span>
-<span class="ne">---&gt; </span><span class="mi">20</span> <span class="kn">from</span> <span class="nn">numpy.distutils</span> <span class="kn">import</span> <span class="n">log</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="kn">from</span> <span class="nn">numpy.distutils.exec_command</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="n">filepath_from_subprocess_output</span><span class="p">,</span> <span class="n">forward_bytes_to_stdout</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="kn">from</span> <span class="nn">numpy.distutils.misc_util</span> <span class="kn">import</span> <span class="n">cyg2win32</span><span class="p">,</span> <span class="n">is_sequence</span><span class="p">,</span> <span class="n">mingw32</span><span class="p">,</span> \
-<span class="g g-Whitespace">     </span><span class="mi">25</span>                                       <span class="n">get_num_build_jobs</span><span class="p">,</span> \
-<span class="g g-Whitespace">     </span><span class="mi">26</span>                                       <span class="n">_commandline_dep_string</span><span class="p">,</span> \
-<span class="g g-Whitespace">     </span><span class="mi">27</span>                                       <span class="n">sanitize_cxx_flags</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">distutils</span><span class="o">/</span><span class="n">log</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">4</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">sys</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">distutils.log</span> <span class="kn">import</span> <span class="o">*</span>  <span class="c1"># noqa: F403</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">distutils.log</span> <span class="kn">import</span> <span class="n">Log</span> <span class="k">as</span> <span class="n">old_Log</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">distutils.log</span> <span class="kn">import</span> <span class="n">_global_log</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">numpy.distutils.misc_util</span> <span class="kn">import</span> <span class="p">(</span><span class="n">red_text</span><span class="p">,</span> <span class="n">default_text</span><span class="p">,</span> <span class="n">cyan_text</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>         <span class="n">green_text</span><span class="p">,</span> <span class="n">is_sequence</span><span class="p">,</span> <span class="n">is_string</span><span class="p">)</span>
-
-<span class="ne">ImportError</span>: cannot import name &#39;Log&#39; from &#39;distutils.log&#39; (/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/setuptools/_distutils/log.py). Module &quot;sklearn&quot; could not be found. See http://nilearn.github.io/introduction.html#installation for installation information.
+Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
@@ -943,263 +808,307 @@ and this chapter will be removed.</p>
 <h2>Load data<a class="headerlink" href="#load-data" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/func/&quot;</span><span class="p">)</span>
-<span class="n">data_files</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">func_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">func_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">func_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">func_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">]</span>
-<span class="n">echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">12.0</span><span class="p">,</span> <span class="mf">28.0</span><span class="p">,</span> <span class="mf">44.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>func_dir = os.path.join(data_path, &quot;sub-04570/func/&quot;)
+data_files = [
+    os.path.join(
+        func_dir,
+        &quot;sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&quot;,
+    ),
+    os.path.join(
+        func_dir,
+        &quot;sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;,
+    ),
+    os.path.join(
+        func_dir,
+        &quot;sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&quot;,
+    ),
+    os.path.join(
+        func_dir,
+        &quot;sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&quot;,
+    ),
+]
+echo_times = np.array([12.0, 28.0, 44.0, 60.0])
 
-<span class="c1"># Background anatomical image</span>
-<span class="n">xfm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt&quot;</span>
-<span class="p">)</span>
-<span class="n">xfm</span> <span class="o">=</span> <span class="n">nit</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xfm</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;itk&quot;</span><span class="p">)</span>
-<span class="n">t1_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz&quot;</span><span class="p">)</span>
-<span class="n">bg_img</span> <span class="o">=</span> <span class="n">xfm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">spatialimage</span><span class="o">=</span><span class="n">t1_file</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">data_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+# Background anatomical image
+xfm = os.path.join(
+    func_dir, &quot;sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt&quot;
+)
+xfm = nit.linear.load(xfm, fmt=&quot;itk&quot;)
+t1_file = os.path.join(data_path, &quot;sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz&quot;)
+bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 
-<span class="c1"># Tedana outputs</span>
-<span class="n">adaptive_mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz&quot;</span>
-<span class="p">)</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span><span class="s2">&quot;img &gt;= 3&quot;</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">adaptive_mask_file</span><span class="p">)</span>
+# Tedana outputs
+adaptive_mask_file = os.path.join(
+    ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz&quot;
+)
+mask = image.math_img(&quot;img &gt;= 3&quot;, img=adaptive_mask_file)
 
-<span class="c1"># Optimally combined data</span>
-<span class="n">oc</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;</span><span class="p">),</span>
-    <span class="n">mask</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">oc_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">oc</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">oc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">oc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+# Optimally combined data
+oc = masking.apply_mask(
+    os.path.join(ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz&quot;),
+    mask,
+)
+oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
-<span class="c1"># Results from MEPCA</span>
-<span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">),</span>
-<span class="p">)</span><span class="o">.</span><span class="n">values</span>
-<span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;</span>
-    <span class="p">),</span>
-    <span class="n">mask</span><span class="p">,</span>
-<span class="p">)</span>
+# Results from MEPCA
+mepca_mmix = pd.read_table(
+    os.path.join(ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;),
+).values
+oc_red = masking.apply_mask(
+    os.path.join(
+        ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;
+    ),
+    mask,
+)
 
-<span class="c1"># Results from MEICA</span>
-<span class="n">meica_mmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv&quot;</span><span class="p">),</span>
-<span class="p">)</span><span class="o">.</span><span class="n">values</span>
-<span class="n">norm_weights</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">ted_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">mask</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">meica_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span>
-    <span class="p">(</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">meica_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">meica_betas</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">r2_pred_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span>
-    <span class="p">(</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">r2_pred_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">r2_pred_betas</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">s0_pred_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span>
-    <span class="p">(</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">ted_dir</span><span class="p">,</span>
-                <span class="s2">&quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">mask</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">s0_pred_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">s0_pred_betas</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+# Results from MEICA
+meica_mmix = pd.read_table(
+    os.path.join(ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv&quot;),
+).values
+norm_weights = masking.apply_mask(
+    os.path.join(
+        ted_dir,
+        &quot;sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz&quot;,
+    ),
+    mask,
+)
+meica_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+    )
+)
+meica_betas = np.swapaxes(meica_betas, 1, 2)
+r2_pred_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+    )
+)
+r2_pred_betas = np.swapaxes(r2_pred_betas, 1, 2)
+s0_pred_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                &quot;sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz&quot;,
+            ),
+            mask,
+        ).T,
+    )
+)
+s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
 
-<span class="c1"># Component parameter estimates</span>
-<span class="n">betas_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz&quot;</span>
-<span class="p">)</span>
-<span class="n">beta_maps</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">betas_file</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+# Component parameter estimates
+betas_file = os.path.join(
+    ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz&quot;
+)
+beta_maps = masking.apply_mask(betas_file, mask)
 
-<span class="c1"># Multi-echo denoised data</span>
-<span class="n">dn_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz&quot;</span>
-    <span class="p">),</span>
-    <span class="n">mask</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">hk_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span>
-    <span class="p">),</span>
-    <span class="n">mask</span><span class="p">,</span>
-<span class="p">)</span>
+# Multi-echo denoised data
+dn_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz&quot;
+    ),
+    mask,
+)
+hk_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;
+    ),
+    mask,
+)
 
-<span class="c1"># Post-processed data</span>
-<span class="n">dn_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz&quot;</span>
-    <span class="p">),</span>
-    <span class="n">mask</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">hk_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;</span>
-    <span class="p">),</span>
-    <span class="n">mask</span><span class="p">,</span>
-<span class="p">)</span>
+# Post-processed data
+dn_t1c_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz&quot;
+    ),
+    mask,
+)
+hk_t1c_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz&quot;
+    ),
+    mask,
+)
 
-<span class="c1"># Component table</span>
-<span class="n">comp_tbl</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv&quot;</span><span class="p">),</span>
-    <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;Component&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+# Component table
+comp_tbl = pd.read_table(
+    os.path.join(ted_dir, &quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv&quot;),
+    index_col=&quot;Component&quot;,
+)
 
-<span class="c1"># Get voxel index for voxel most related to component with highest kappa value</span>
-<span class="n">acc_comp_tbl</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_tbl</span><span class="p">[</span><span class="s2">&quot;classification&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;accepted&quot;</span><span class="p">]</span>
-<span class="n">high_kappa_comp</span> <span class="o">=</span> <span class="n">acc_comp_tbl</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;kappa&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">high_kappa_comp_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">high_kappa_comp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">voxel_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
-    <span class="n">beta_maps</span><span class="p">[</span><span class="n">high_kappa_comp_val</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="n">high_kappa_comp_val</span><span class="p">,</span> <span class="p">:])</span>
-<span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+# Get voxel index for voxel most related to component with highest kappa value
+acc_comp_tbl = comp_tbl.loc[comp_tbl[&quot;classification&quot;] == &quot;accepted&quot;]
+high_kappa_comp = acc_comp_tbl.sort_values(by=&quot;kappa&quot;, ascending=False).index.values[0]
+high_kappa_comp_val = int(high_kappa_comp.split(&quot;_&quot;)[1])
+voxel_idx = np.where(
+    beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :])
+)[0][0]
 
-<span class="n">rej_comp_tbl</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_tbl</span><span class="p">[</span><span class="s2">&quot;classification&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;rejected&quot;</span><span class="p">]</span>
-<span class="n">low_kappa_comp</span> <span class="o">=</span> <span class="n">rej_comp_tbl</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;rho&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+rej_comp_tbl = comp_tbl.loc[comp_tbl[&quot;classification&quot;] == &quot;rejected&quot;]
+low_kappa_comp = rej_comp_tbl.sort_values(by=&quot;rho&quot;, ascending=False).index.values[0]
 
-<span class="c1"># load data</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data_files</span><span class="p">]</span>
-<span class="n">ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
-<span class="n">ts_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+# load data
+data = [masking.apply_mask(f, mask) for f in data_files]
+ts = [d[:, voxel_idx] for d in data]
+ts_1d = np.hstack(ts)
 
-<span class="n">n_echoes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">echo_times</span><span class="p">)</span>
-<span class="n">n_trs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+n_echoes = len(echo_times)
+n_trs = data[0].shape[0]
 
-<span class="n">pal</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;cubehelix&quot;</span><span class="p">,</span> <span class="n">n_echoes</span><span class="p">)</span>
+pal = sns.color_palette(&quot;cubehelix&quot;, n_echoes)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">26</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># Background anatomical image</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="n">xfm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">26</span> <span class="n">xfm</span> <span class="o">=</span> <span class="n">nit</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xfm</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;itk&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="n">t1_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="n">bg_img</span> <span class="o">=</span> <span class="n">xfm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">spatialimage</span><span class="o">=</span><span class="n">t1_file</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">data_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nitransforms/linear.py:504,</span> in <span class="ni">load</span><span class="nt">(filename, fmt, reference, moving)</span>
+<span class="g g-Whitespace">    </span><span class="mi">489</span> <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;X5&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">490</span>     <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">491</span><span class="sd">     Load a linear transform file.</span>
+<span class="g g-Whitespace">    </span><span class="mi">492</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">502</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">503</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">504</span>     <span class="n">xfm</span> <span class="o">=</span> <span class="n">LinearTransformsMapping</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">505</span>         <span class="n">filename</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="n">moving</span>
+<span class="g g-Whitespace">    </span><span class="mi">506</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">507</span>     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xfm</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">508</span>         <span class="k">return</span> <span class="n">xfm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nitransforms/linear.py:224,</span> in <span class="ni">Affine.from_filename</span><span class="nt">(cls, filename, fmt, reference, moving)</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<span class="ne">--&gt; </span><span class="mi">224</span> <span class="n">struct</span> <span class="o">=</span> <span class="n">_factory</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span> <span class="n">matrix</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">to_ras</span><span class="p">(</span><span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="n">moving</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span> <span class="k">if</span> <span class="bp">cls</span> <span class="o">==</span> <span class="n">Affine</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nitransforms/io/itk.py:228,</span> in <span class="ni">ITKLinearTransformArray.from_filename</span><span class="nt">(cls, filename)</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span>     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span>         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_binary</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">228</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">229</span>     <span class="n">string</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt&#39;
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare data for model</span>
-<span class="n">log_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ts_1d</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="c1"># log_data = np.log(ts_1d)  # in a perfect world...</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">])</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n_trs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># T * E</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Prepare data for model
+log_data = np.log(np.abs(ts_1d) + 1)
+# log_data = np.log(ts_1d)  # in a perfect world...
+x = np.column_stack([np.ones(n_echoes), -1 * echo_times])
+X = np.repeat(x, n_trs, axis=0)  # T * E
 
-<span class="c1"># Model fit</span>
-<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">log_data</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">s0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">r2s</span> <span class="o">=</span> <span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">t2s</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">r2s</span>
+# Model fit
+betas = np.linalg.lstsq(X, log_data, rcond=None)[0]
+s0 = np.exp(betas[0])
+r2s = betas[1]
+t2s = 1.0 / r2s
 
-<span class="c1"># Values for plots</span>
-<span class="c1"># Values from log-linear model</span>
-<span class="n">log_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
-<span class="n">log_y</span> <span class="o">=</span> <span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">log_x</span> <span class="o">*</span> <span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+# Values for plots
+# Values from log-linear model
+log_x = np.arange(-1000, 0, 0.01)
+log_y = betas[0] + log_x * betas[1]
 
-<span class="c1"># Values from monoexponential decay model</span>
-<span class="n">mono_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
-<span class="n">mono_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">mono_x</span><span class="p">)</span> <span class="o">*</span> <span class="n">s0</span>
+# Values from monoexponential decay model
+mono_x = np.arange(0, 1000, 0.01)
+mono_y = np.exp(-1 * betas[1] * mono_x) * s0
 
-<span class="c1"># Get weights for optimal combination</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="n">echo_times</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">echo_times</span> <span class="o">/</span> <span class="n">t2s</span><span class="p">)</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>  <span class="c1"># unnecessary but good for bar plot below</span>
+# Get weights for optimal combination
+alpha = echo_times * np.exp(-echo_times / t2s)
+alpha = alpha / np.sum(alpha)  # unnecessary but good for bar plot below
 
-<span class="c1"># Combine data across echoes</span>
-<span class="n">oc_manual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+# Combine data across echoes
+oc_manual = np.average(np.vstack(ts), axis=0, weights=alpha)
 </pre></div>
 </div>
 </div>
@@ -1208,19 +1117,19 @@ and this chapter will be removed.</p>
 <h3>Echo-specific timeseries<a class="headerlink" href="#echo-specific-timeseries" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="si">}</span><span class="s2">ms&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span>
-    <span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
+for i_echo in range(n_echoes):
+    axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
+    axes[i_echo].set_ylabel(
+        f&quot;{echo_times[i_echo]}ms&quot;, rotation=0, va=&quot;center&quot;, ha=&quot;right&quot;, fontsize=14
+    )
+    axes[i_echo].set_yticks([])
+    axes[i_echo].set_xticks([])
 
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_echo_timeseries2&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+axes[-1].set_xlabel(&quot;Time&quot;, fontsize=16)
+axes[-1].set_xlim(0, len(ts[i_echo]) - 1)
+fig.tight_layout()
+glue(&quot;fig_echo_timeseries2&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1233,20 +1142,20 @@ and this chapter will be removed.</p>
 <h3>Echo-specific data and echo time<a class="headerlink" href="#echo-specific-data-and-echo-time" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
-    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(figsize=(14, 6))
+values = [i[0] for i in ts]
+for i_echo in range(n_echoes):
+    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">echo_times</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_echo_scatter2&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+ax.set_ylabel(&quot;BOLD signal&quot;, fontsize=16)
+ax.set_xlabel(&quot;Echo Time (ms)&quot;, fontsize=16)
+ax.set_xticks(echo_times)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
+fig.tight_layout()
+glue(&quot;fig_echo_scatter2&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1265,28 +1174,28 @@ When <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span cla
 where <span class="math notranslate nohighlight">\(n\)</span> is the value for that voxel in the adaptive mask.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_img</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">compute_epi_mask</span><span class="p">(</span><span class="n">data_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">data</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_files</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">echo_times</span><span class="p">))</span>
-<span class="n">mask</span><span class="p">,</span> <span class="n">adaptive_mask</span> <span class="o">=</span> <span class="n">make_adaptive_mask</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask_img</span><span class="p">,</span> <span class="n">getsum</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mask_img = masking.compute_epi_mask(data_files[0])
+data, img = load_data(data_files, len(echo_times))
+mask, adaptive_mask = make_adaptive_mask(data, mask=mask_img, getsum=True)
 
-<span class="n">adaptive_mask_img</span> <span class="o">=</span> <span class="n">new_nii_like</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">adaptive_mask</span><span class="p">)</span>
+adaptive_mask_img = new_nii_like(img, adaptive_mask)
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;BuGn_r&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
-    <span class="n">adaptive_mask_img</span><span class="p">,</span>
-    <span class="n">vmax</span><span class="o">=</span><span class="n">n_echoes</span><span class="p">,</span>
-    <span class="c1"># alpha=0.5,</span>
-    <span class="n">threshold</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-    <span class="n">draw_cross</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span>
-    <span class="n">annotate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">bg_img</span><span class="o">=</span><span class="n">bg_img</span><span class="p">,</span>
-    <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
-    <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_adaptive_mask&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+fig, ax = plt.subplots(figsize=(10, 4))
+palette = sns.color_palette(&quot;BuGn_r&quot;, 10)
+plotting.plot_stat_map(
+    adaptive_mask_img,
+    vmax=n_echoes,
+    # alpha=0.5,
+    threshold=1.0,
+    draw_cross=False,
+    colorbar=True,
+    cmap=&quot;Blues&quot;,
+    annotate=False,
+    bg_img=bg_img,
+    figure=fig,
+    axes=ax,
+)
+glue(&quot;fig_adaptive_mask&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1299,21 +1208,21 @@ where <span class="math notranslate nohighlight">\(n\)</span> is the value for t
 <h3>Log-linear transformation<a class="headerlink" href="#log-linear-transformation" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
-    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
-    <span class="n">log_echo_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">log_echo_data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(figsize=(14, 6))
+for i_echo in range(n_echoes):
+    rep_echo_times = -1 * np.ones(n_trs) * echo_times[i_echo]
+    log_echo_data = np.log((np.abs(ts[i_echo]) + 1))
+    ax.scatter(rep_echo_times, log_echo_data, alpha=0.05, color=pal[i_echo])
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;log(BOLD signal)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Negative Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+ax.set_ylabel(&quot;log(BOLD signal)&quot;, fontsize=16)
+ax.set_xlabel(&quot;Negative Echo Time (ms)&quot;, fontsize=16)
+ax.set_xticks(-1 * echo_times)
+ax.set_xlim(-70, 0)
+ax.set_ylim(4, 8)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_loglin_scatter&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+fig.tight_layout()
+glue(&quot;fig_loglin_scatter&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1351,30 +1260,30 @@ B_{0} \\
 B_{0}\end{pmatrix}\end{split}\]</div>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
-    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
-    <span class="n">log_echo_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">log_echo_data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(figsize=(14, 6))
+for i_echo in range(n_echoes):
+    rep_echo_times = -1 * np.ones(n_trs) * echo_times[i_echo]
+    log_echo_data = np.log((np.abs(ts[i_echo]) + 1))
+    ax.scatter(rep_echo_times, log_echo_data, alpha=0.05, color=pal[i_echo])
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">log_x</span><span class="p">,</span> <span class="n">log_y</span><span class="p">)</span>
+ax.plot(log_x, log_y)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;log(BOLD signal)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Negative Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+ax.set_ylabel(&quot;log(BOLD signal)&quot;, fontsize=16)
+ax.set_xlabel(&quot;Negative Echo Time (ms)&quot;, fontsize=16)
+ax.set_xticks(-1 * echo_times)
+ax.set_xlim(-70, 0)
+ax.set_ylim(5, 8)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-    <span class="s2">&quot;$B_0$: </span><span class="si">{0:.02f}</span><span class="se">\n</span><span class="s2">$B_1$: </span><span class="si">{1:.02f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">),</span>
-    <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-    <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-<span class="p">)</span>
+ax.annotate(
+    &quot;$B_0$: {0:.02f}\n$B_1$: {1:.02f}&quot;.format(betas[0], betas[1]),
+    xy=(-70, 9.5),
+    fontsize=16,
+    bbox=dict(fc=&quot;white&quot;, ec=&quot;black&quot;, lw=1),
+)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_loglin_scatter_with_line&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+fig.tight_layout()
+glue(&quot;fig_loglin_scatter_with_line&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1393,28 +1302,28 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 <span class="eqno">(12)<a class="headerlink" href="#equation-monoexponential-decay-t2s" title="Permalink to this equation">#</a></span>\[T_{2}^{*} = \frac{1}{B_{1}}\]</div>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
-    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(figsize=(14, 6))
+for i_echo in range(n_echoes):
+    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mono_x</span><span class="p">,</span> <span class="n">mono_y</span><span class="p">)</span>
+ax.plot(mono_x, mono_y)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">echo_times</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-    <span class="s2">&quot;$S_0$: </span><span class="si">{0:.02f}</span><span class="se">\n</span><span class="s2">$T_2^*$: </span><span class="si">{1:.02f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span> <span class="n">t2s</span><span class="p">),</span>
-    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">86.5</span><span class="p">,</span> <span class="mi">13500</span><span class="p">),</span>
-    <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-    <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-<span class="p">)</span>
+ax.set_ylabel(&quot;BOLD signal&quot;, fontsize=16)
+ax.set_xlabel(&quot;Echo Time (ms)&quot;, fontsize=16)
+ax.set_xticks(echo_times)
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
+ax.annotate(
+    &quot;$S_0$: {0:.02f}\n$T_2^*$: {1:.02f}&quot;.format(s0, t2s),
+    xy=(86.5, 13500),
+    fontsize=16,
+    bbox=dict(fc=&quot;white&quot;, ec=&quot;black&quot;, lw=1),
+)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_loglin_scatter_with_t2s&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+fig.tight_layout()
+glue(&quot;fig_loglin_scatter_with_t2s&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1426,26 +1335,26 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 <h3>T2*<a class="headerlink" href="#t2" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
-    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(figsize=(14, 6))
+for i_echo in range(n_echoes):
+    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mono_x</span><span class="p">,</span> <span class="n">mono_y</span><span class="p">)</span>
+ax.plot(mono_x, mono_y)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t2s</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$T_2^*$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">echo_times</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">t2s</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_pad</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+ax.axvline(t2s, 0, 1, label=&quot;$T_2^*$&quot;, color=&quot;black&quot;, linestyle=&quot;--&quot;, alpha=0.5)
+ax.set_ylabel(&quot;BOLD signal&quot;, fontsize=16)
+ax.set_xlabel(&quot;Echo Time (ms)&quot;, fontsize=16)
+ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
+ax.xaxis.get_major_ticks()[-1].set_pad(20)
 
-<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+legend = ax.legend(frameon=True, fontsize=16)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_scatter_with_t2s&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+fig.tight_layout()
+glue(&quot;fig_scatter_with_t2s&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1458,13 +1367,13 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 <h3>Optimal combination weights<a class="headerlink" href="#optimal-combination-weights" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">pal</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Weight&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_optcom_weights&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots()
+sns.barplot(echo_times, alpha, ax=ax, palette=pal)
+ax.set_ylabel(&quot;Weight&quot;, fontsize=16)
+ax.set_xlabel(&quot;Echo Time (ms)&quot;, fontsize=16)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
+fig.tight_layout()
+glue(&quot;fig_optcom_weights&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1477,32 +1386,32 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 <h3>Optimally combined timeseries<a class="headerlink" href="#optimally-combined-timeseries" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
-    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(figsize=(14, 6))
+for i_echo in range(n_echoes):
+    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mono_x</span><span class="p">,</span> <span class="n">mono_y</span><span class="p">)</span>
+ax.plot(mono_x, mono_y)
 
-<span class="c1"># Optimal combination</span>
-<span class="n">rep_t2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">t2s</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-    <span class="n">rep_t2s</span><span class="p">,</span> <span class="n">oc_manual</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Optimally</span><span class="se">\n</span><span class="s2">combined</span><span class="se">\n</span><span class="s2">data&quot;</span>
-<span class="p">)</span>
+# Optimal combination
+rep_t2s = np.ones(n_trs) * t2s
+ax.scatter(
+    rep_t2s, oc_manual, alpha=0.9, color=&quot;red&quot;, label=&quot;Optimally\ncombined\ndata&quot;
+)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t2s</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$T_2^*$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">echo_times</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">t2s</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_pad</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+ax.axvline(t2s, 0, 20000, label=&quot;$T_2^*$&quot;, color=&quot;black&quot;, linestyle=&quot;--&quot;, alpha=0.5)
+ax.set_ylabel(&quot;BOLD signal&quot;, fontsize=16)
+ax.set_xlabel(&quot;Echo Time (ms)&quot;, fontsize=16)
+ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
+ax.set_xlim(0, 70)
+ax.set_ylim(0, 3000)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
+ax.xaxis.get_major_ticks()[-1].set_pad(20)
 
-<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+legend = ax.legend(frameon=True, fontsize=16)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_scatter_with_optcom&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+fig.tight_layout()
+glue(&quot;fig_scatter_with_optcom&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1515,26 +1424,26 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 <h3>Optimally combined timeseries<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_echoes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="si">}</span><span class="s2">ms&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span>
-    <span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, axes = plt.subplots(n_echoes + 1, sharex=True, sharey=False, figsize=(14, 6))
+for i_echo in range(n_echoes):
+    axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
+    axes[i_echo].set_ylabel(
+        f&quot;{echo_times[i_echo]}ms&quot;, rotation=0, va=&quot;center&quot;, ha=&quot;right&quot;, fontsize=14
+    )
+    axes[i_echo].set_yticks([])
+    axes[i_echo].set_xticks([])
 
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">oc_manual</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
-    <span class="s2">&quot;Optimally</span><span class="se">\n</span><span class="s2">combined</span><span class="se">\n</span><span class="s2">data&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span>
-<span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_echo_timeseries_with_optcom&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+axes[-1].plot(oc_manual, color=&quot;red&quot;)
+axes[-1].set_ylabel(
+    &quot;Optimally\ncombined\ndata&quot;, rotation=0, va=&quot;center&quot;, ha=&quot;right&quot;, fontsize=14
+)
+axes[-1].set_xlabel(&quot;Time&quot;, fontsize=16)
+axes[-1].set_yticks([])
+axes[-1].set_xticks([])
+axes[-1].set_xlim(0, len(ts[i_echo]) - 1)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
+fig.tight_layout()
+glue(&quot;fig_echo_timeseries_with_optcom&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1550,18 +1459,18 @@ The PCA components are selected according to one of multiple possible approaches
 Two possible approaches are a decision tree and a threshold using the percentage of variance explained by each component.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mepca_mmix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
+axes[-1].set_xlim(0, mepca_mmix.shape[0] - 1)
+axes[-1].set_xticks([])
+axes[-1].set_xlabel(&quot;Time&quot;, fontsize=16)
 
-<span class="k">for</span> <span class="n">comp_to_plot</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mepca_mmix</span><span class="p">[:,</span> <span class="n">comp_to_plot</span><span class="p">])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PCA Component </span><span class="si">{</span><span class="n">comp_to_plot</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+for comp_to_plot in [0, 1, 2]:
+    axes[comp_to_plot].plot(mepca_mmix[:, comp_to_plot])
+    axes[comp_to_plot].set_title(f&quot;PCA Component {comp_to_plot}&quot;, fontsize=16)
+    axes[comp_to_plot].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_pca_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+fig.tight_layout()
+glue(&quot;fig_pca_timeseries&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1576,17 +1485,17 @@ Two possible approaches are a decision tree and a threshold using the percentage
 <p>The selected components from the PCA are recombined to produce a whitened version of the optimally combined data.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">oc_red</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Dimensionally reduced timeseries&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="n">oc_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original timeseries&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span>
-<span class="p">)</span>
-<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">,</span> <span class="n">framealpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">oc_z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_optcom_reduced_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(figsize=(14, 6))
+ax.plot(oc_red[:, voxel_idx], label=&quot;Dimensionally reduced timeseries&quot;, zorder=1.0)
+ax.plot(
+    oc_z[:, voxel_idx], label=&quot;Original timeseries&quot;, alpha=0.5, zorder=0.0, linewidth=3
+)
+legend = ax.legend(frameon=True, fontsize=16, loc=&quot;upper right&quot;, framealpha=1)
+ax.set_xlim(0, oc_z.shape[0] - 1)
+ax.set_xticks([])
+ax.set_xlabel(&quot;Time&quot;, fontsize=16)
+ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=14)
+glue(&quot;fig_optcom_reduced_timeseries&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1602,31 +1511,31 @@ in order to reflect the true dimensionality of the data.
 ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
 
-<span class="n">comps_to_plot</span> <span class="o">=</span> <span class="p">[</span><span class="n">high_kappa_comp</span><span class="p">,</span> <span class="n">low_kappa_comp</span><span class="p">,</span> <span class="s2">&quot;ICA_00&quot;</span><span class="p">]</span>
+comps_to_plot = [high_kappa_comp, low_kappa_comp, &quot;ICA_00&quot;]
 
-<span class="k">for</span> <span class="n">i_comp</span><span class="p">,</span> <span class="n">comp_to_plot</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">comps_to_plot</span><span class="p">):</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">comp_to_plot</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">,</span> <span class="s2">&quot;kappa&quot;</span><span class="p">]</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">,</span> <span class="s2">&quot;rho&quot;</span><span class="p">]</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">,</span> <span class="s2">&quot;classification&quot;</span><span class="p">]</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">meica_mmix</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
-        <span class="s2">&quot;ICA Component </span><span class="si">{0}</span><span class="s2">; $</span><span class="se">\\</span><span class="s2">kappa$ = </span><span class="si">{1:.02f}</span><span class="s2">; $</span><span class="se">\\</span><span class="s2">rho$ = </span><span class="si">{2:.02f}</span><span class="s2">; </span><span class="si">{3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">comp_to_plot</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span>
-        <span class="p">),</span>
-        <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-    <span class="p">)</span>
+for i_comp, comp_to_plot in enumerate(comps_to_plot):
+    idx = int(comp_to_plot.split(&quot;_&quot;)[1])
+    k = comp_tbl.loc[comp_to_plot, &quot;kappa&quot;]
+    r = comp_tbl.loc[comp_to_plot, &quot;rho&quot;]
+    c = comp_tbl.loc[comp_to_plot, &quot;classification&quot;]
+    axes[i_comp].plot(meica_mmix[:, idx])
+    axes[i_comp].set_title(
+        &quot;ICA Component {0}; $\\kappa$ = {1:.02f}; $\\rho$ = {2:.02f}; {3}&quot;.format(
+            comp_to_plot, k, r, c
+        ),
+        fontsize=16,
+    )
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">meica_mmix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_ica_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+axes[0].set_xlim(0, meica_mmix.shape[0] - 1)
+axes[2].set_xticks([])
+axes[2].set_xlabel(&quot;Time&quot;, fontsize=16)
+axes[0].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+axes[1].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+axes[2].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+fig.tight_layout()
+glue(&quot;fig_ica_timeseries&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1646,46 +1555,46 @@ TE-dependence (<span class="math notranslate nohighlight">\(R_2\)</span>) and TE
 but <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span> are averaged across voxels.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">echo_times</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, axes = plt.subplots(3, sharex=True, figsize=(14, 9))
+axes[-1].set_xticks(echo_times)
+axes[-1].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+axes[-1].set_xlabel(&quot;Echo Time (ms)&quot;, fontsize=16)
 
-<span class="k">for</span> <span class="n">i_comp</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
-    <span class="n">comps_to_plot</span>
-<span class="p">):</span>  <span class="c1"># only generate plots for a few components</span>
-    <span class="n">comp_voxel_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="n">i_comp</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="n">i_comp</span><span class="p">,</span> <span class="p">:]))[</span><span class="mi">0</span><span class="p">][</span>
-        <span class="mi">0</span>
-    <span class="p">]</span>
-    <span class="c1"># Use weight map to average as fitmodels_direct does</span>
-    <span class="n">comp_weights</span> <span class="o">=</span> <span class="n">meica_betas</span><span class="p">[</span><span class="n">comp_voxel_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">i_comp</span><span class="p">]</span>
-    <span class="n">r2_pred_weights</span> <span class="o">=</span> <span class="n">r2_pred_betas</span><span class="p">[</span><span class="n">comp_voxel_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">i_comp</span><span class="p">]</span>
-    <span class="n">s0_pred_weights</span> <span class="o">=</span> <span class="n">s0_pred_betas</span><span class="p">[</span><span class="n">comp_voxel_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">i_comp</span><span class="p">]</span>
+for i_comp, comp in enumerate(
+    comps_to_plot
+):  # only generate plots for a few components
+    comp_voxel_idx = np.where(beta_maps[i_comp, :] == np.max(beta_maps[i_comp, :]))[0][
+        0
+    ]
+    # Use weight map to average as fitmodels_direct does
+    comp_weights = meica_betas[comp_voxel_idx, :, i_comp]
+    r2_pred_weights = r2_pred_betas[comp_voxel_idx, :, i_comp]
+    s0_pred_weights = s0_pred_betas[comp_voxel_idx, :, i_comp]
 
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">echo_times</span><span class="p">,</span>
-        <span class="n">comp_weights</span><span class="p">,</span>
-        <span class="n">c</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Component PEs&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">echo_times</span><span class="p">,</span> <span class="n">r2_pred_weights</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Predicted T2* model values&quot;</span>
-    <span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_pred_weights</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Predicted S0 model values&quot;</span>
-    <span class="p">)</span>
+    axes[i_comp].plot(
+        echo_times,
+        comp_weights,
+        c=&quot;black&quot;,
+        alpha=0.5,
+        linewidth=5,
+        label=&quot;Component PEs&quot;,
+    )
+    axes[i_comp].plot(
+        echo_times, r2_pred_weights, c=&quot;blue&quot;, label=&quot;Predicted T2* model values&quot;
+    )
+    axes[i_comp].plot(
+        echo_times, s0_pred_weights, c=&quot;red&quot;, label=&quot;Predicted S0 model values&quot;
+    )
 
-    <span class="c1"># Set yticklabels</span>
-    <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">comp_weights</span><span class="p">,</span> <span class="n">s0_pred_weights</span><span class="p">,</span> <span class="n">r2_pred_weights</span><span class="p">))</span>
-    <span class="n">lim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.05</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span> <span class="o">-</span> <span class="n">lim</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span> <span class="o">+</span> <span class="n">lim</span><span class="p">)</span>
-    <span class="n">legend</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ICA Component </span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    # Set yticklabels
+    temp = np.hstack((comp_weights, s0_pred_weights, r2_pred_weights))
+    lim = np.mean(temp) * 0.05
+    axes[i_comp].set_ylim(np.floor(np.min(temp)) - lim, np.ceil(np.max(temp)) + lim)
+    legend = axes[i_comp].legend(frameon=True, fontsize=14, ncol=3)
+    axes[i_comp].set_title(f&quot;ICA Component {comp}&quot;, fontsize=16)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_ica_weights&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+fig.tight_layout()
+glue(&quot;fig_ica_weights&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1707,28 +1616,28 @@ The <a class="reference internal" href="glossary.html#term-MEHK"><span class="xr
 This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dn_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">dn_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dn_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dn_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">hk_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">hk_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hk_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">hk_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>dn_data_z = (dn_data - np.mean(dn_data, axis=0)) / np.std(dn_data, axis=0)
+hk_data_z = (hk_data - np.mean(hk_data, axis=0)) / np.std(hk_data, axis=0)
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">oc_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Optimally combined&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Optimally combined&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+fig, axes = plt.subplots(3, sharex=True, figsize=(14, 6))
+axes[0].plot(oc_z[:, voxel_idx], label=&quot;Optimally combined&quot;)
+axes[0].set_title(&quot;Optimally combined&quot;, fontsize=16)
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dn_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-DN&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ME-DN&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+axes[1].plot(dn_data_z[:, voxel_idx], label=&quot;ME-DN&quot;)
+axes[1].set_title(&quot;ME-DN&quot;, fontsize=16)
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hk_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ME-HK&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">oc_z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+axes[2].plot(hk_data_z[:, voxel_idx])
+axes[2].set_title(&quot;ME-HK&quot;, fontsize=16)
+legend = ax.legend(frameon=True)
+axes[0].set_xlim(0, oc_z.shape[0] - 1)
+axes[2].set_xticks([])
+axes[2].set_xlabel(&quot;Time&quot;, fontsize=16)
+axes[0].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+axes[1].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+axes[2].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+fig.tight_layout()
 
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_medn_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+glue(&quot;fig_medn_timeseries&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>
@@ -1747,30 +1656,30 @@ Methods which have been employed in the past include global signal regression (G
 <a class="reference internal" href="TE_Dependence.html#minimum-image-regression">Minimum Image Regression</a>, anatomical CompCor, Go Decomposition (GODEC), and robust PCA.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dn_t1c_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">dn_t1c_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dn_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span>
-    <span class="n">dn_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
-<span class="p">)</span>
-<span class="n">hk_t1c_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">hk_t1c_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hk_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span>
-    <span class="n">hk_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>dn_t1c_data_z = (dn_t1c_data - np.mean(dn_t1c_data, axis=0)) / np.std(
+    dn_t1c_data, axis=0
+)
+hk_t1c_data_z = (hk_t1c_data - np.mean(hk_t1c_data, axis=0)) / np.std(
+    hk_t1c_data, axis=0
+)
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dn_t1c_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-DN T1c&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dn_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-DN&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ME-DN&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">legend</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+fig, axes = plt.subplots(2, sharex=True, figsize=(14, 6))
+axes[0].plot(dn_t1c_data_z[:, voxel_idx], label=&quot;ME-DN T1c&quot;)
+axes[0].plot(dn_data_z[:, voxel_idx], label=&quot;ME-DN&quot;, alpha=0.5, linewidth=3, zorder=0.0)
+axes[0].set_title(&quot;ME-DN&quot;, fontsize=16)
+legend = axes[0].legend(frameon=True, loc=&quot;upper right&quot;)
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hk_t1c_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-HK T1c&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hk_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-HK&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ME-HK&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">legend</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">oc_z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_mir_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+axes[1].plot(hk_t1c_data_z[:, voxel_idx], label=&quot;ME-HK T1c&quot;)
+axes[1].plot(hk_data_z[:, voxel_idx], label=&quot;ME-HK&quot;, alpha=0.5, linewidth=3, zorder=0.0)
+axes[1].set_title(&quot;ME-HK&quot;, fontsize=16)
+legend = axes[1].legend(frameon=True)
+axes[0].set_xlim(0, oc_z.shape[0] - 1)
+axes[1].set_xticks([])
+axes[1].set_xlabel(&quot;Time&quot;, fontsize=16)
+axes[0].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+axes[1].tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, labelsize=12)
+fig.tight_layout()
+glue(&quot;fig_mir_timeseries&quot;, fig, display=False)
 </pre></div>
 </div>
 </div>

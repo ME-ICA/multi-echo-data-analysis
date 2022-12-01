@@ -535,23 +535,23 @@ title="Print to PDF"
 <p>Specifically, we will use <a class="reference external" href="https://tedana.readthedocs.io/en/0.0.11/generated/tedana.workflows.tedana_workflow.html#tedana.workflows.tedana_workflow" title="(in tedana v0.0.11+0.g4d5c645.dirty)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tedana.workflows.tedana_workflow()</span></code></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import json
+import os
+from glob import glob
+from pprint import pprint
 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display</span>
-<span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
-<span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">workflows</span>
+import pandas as pd
+from IPython.display import HTML, display
+from repo2data.repo2data import Repo2Data
+from tedana import workflows
 
-<span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-<span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
+# Install the data if running locally, or point to cached data if running on neurolibre
+DATA_REQ_FILE = os.path.join(&quot;../binder/data_requirement.json&quot;)
 
-<span class="c1"># Download data</span>
-<span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
+# Download data
+repo2data = Repo2Data(DATA_REQ_FILE)
+data_path = repo2data.install()
+data_path = os.path.abspath(os.path.join(data_path[0], &quot;data&quot;))
 </pre></div>
 </div>
 </div>
@@ -559,162 +559,95 @@ title="Print to PDF"
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Module `duecredit` not successfully imported due to &quot;No module named &#39;duecredit&#39;&quot;. Package functionality unaffected.
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">9</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">repo2data.repo2data</span> <span class="kn">import</span> <span class="n">Repo2Data</span>
-<span class="ne">----&gt; </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">workflows</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to import duecredit due to No module named &#39;duecredit&#39;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
+/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/repo2data
+Config from file :
+../binder/data_requirement.json
+Destination:
+./../data/multi-echo-data-analysis
 
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">tedana</span><span class="o">/</span><span class="n">workflows</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">4</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># emacs: -*- mode: python-mode; py-indent-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># ex: set sts=4 ts=4 sw=4 et:</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">.t2smap</span> <span class="kn">import</span> <span class="n">t2smap_workflow</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Overrides submodules with their functions.</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">.tedana</span> <span class="kn">import</span> <span class="n">tedana_workflow</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">tedana</span><span class="o">/</span><span class="n">workflows</span><span class="o">/</span><span class="n">t2smap</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">10</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">op</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="ne">---&gt; </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">threadpoolctl</span> <span class="kn">import</span> <span class="n">threadpool_limits</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="kn">from</span> <span class="nn">tedana</span> <span class="kn">import</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">combine</span><span class="p">,</span> <span class="n">decay</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">utils</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/scipy/__init__.py:211,</span> in <span class="ni">__getattr__</span><span class="nt">(name)</span>
-<span class="g g-Whitespace">    </span><span class="mi">209</span> <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">210</span>     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">submodules</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">211</span>         <span class="k">return</span> <span class="n">_importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;scipy.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span>         <span class="k">try</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/importlib/__init__.py:127,</span> in <span class="ni">import_module</span><span class="nt">(name, package)</span>
-<span class="g g-Whitespace">    </span><span class="mi">125</span>             <span class="k">break</span>
-<span class="g g-Whitespace">    </span><span class="mi">126</span>         <span class="n">level</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="ne">--&gt; </span><span class="mi">127</span> <span class="k">return</span> <span class="n">_bootstrap</span><span class="o">.</span><span class="n">_gcd_import</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="n">level</span><span class="p">:],</span> <span class="n">package</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">scipy</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">467</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span><span class="sd"> .. _statsrefmanual:</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">462</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">463</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">465</span> <span class="kn">from</span> <span class="nn">._warnings_errors</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ConstantInputWarning</span><span class="p">,</span> <span class="n">NearConstantInputWarning</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">466</span>                                <span class="n">DegenerateDataWarning</span><span class="p">,</span> <span class="n">FitError</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">467</span> <span class="kn">from</span> <span class="nn">._stats_py</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">    </span><span class="mi">468</span> <span class="kn">from</span> <span class="nn">._variation</span> <span class="kn">import</span> <span class="n">variation</span>
-<span class="g g-Whitespace">    </span><span class="mi">469</span> <span class="kn">from</span> <span class="nn">.distributions</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">scipy</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">_stats_py</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">37</span>
-<span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">asarray</span><span class="p">,</span> <span class="n">ma</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="kn">from</span> <span class="nn">numpy.lib</span> <span class="kn">import</span> <span class="n">NumpyVersion</span>
-<span class="ne">---&gt; </span><span class="mi">37</span> <span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">suppress_warnings</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cdist</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">_measurements</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">testing</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">12</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">._private.utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">._private.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_assert_valid_refcount</span><span class="p">,</span> <span class="n">_gen_alignment_data</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">12</span> <span class="kn">from</span> <span class="nn">._private</span> <span class="kn">import</span> <span class="n">extbuild</span><span class="p">,</span> <span class="n">decorators</span> <span class="k">as</span> <span class="n">dec</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="kn">from</span> <span class="nn">._private.nosetester</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span>     <span class="n">run_module_suite</span><span class="p">,</span> <span class="n">NoseTester</span> <span class="k">as</span> <span class="n">Tester</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">__all__</span> <span class="o">=</span> <span class="n">_private</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">__all__</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;TestCase&#39;</span><span class="p">,</span> <span class="s1">&#39;run_module_suite&#39;</span><span class="p">]</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">testing</span><span class="o">/</span><span class="n">_private</span><span class="o">/</span><span class="n">extbuild</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">11</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">sys</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">import</span> <span class="nn">sysconfig</span>
-<span class="ne">---&gt; </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">numpy.distutils.ccompiler</span> <span class="kn">import</span> <span class="n">new_compiler</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="kn">from</span> <span class="nn">distutils.errors</span> <span class="kn">import</span> <span class="n">CompileError</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;build_and_import_extension&#39;</span><span class="p">,</span> <span class="s1">&#39;compile_extension_module&#39;</span><span class="p">]</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">distutils</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">24</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span><span class="sd"> An enhanced distutils, providing support for Fortran compilers, for BLAS,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="sd"> LAPACK and other common libraries for numerical computing, and more.</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># Must import local ccompiler ASAP in order to get</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="c1"># customized CCompiler.spawn effective.</span>
-<span class="ne">---&gt; </span><span class="mi">24</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ccompiler</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">unixccompiler</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="kn">from</span> <span class="nn">.npy_pkg_config</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">distutils</span><span class="o">/</span><span class="n">ccompiler</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">20</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">from</span> <span class="nn">distutils.sysconfig</span> <span class="kn">import</span> <span class="n">customize_compiler</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="kn">from</span> <span class="nn">distutils.version</span> <span class="kn">import</span> <span class="n">LooseVersion</span>
-<span class="ne">---&gt; </span><span class="mi">20</span> <span class="kn">from</span> <span class="nn">numpy.distutils</span> <span class="kn">import</span> <span class="n">log</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="kn">from</span> <span class="nn">numpy.distutils.exec_command</span> <span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="n">filepath_from_subprocess_output</span><span class="p">,</span> <span class="n">forward_bytes_to_stdout</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="kn">from</span> <span class="nn">numpy.distutils.misc_util</span> <span class="kn">import</span> <span class="n">cyg2win32</span><span class="p">,</span> <span class="n">is_sequence</span><span class="p">,</span> <span class="n">mingw32</span><span class="p">,</span> \
-<span class="g g-Whitespace">     </span><span class="mi">25</span>                                       <span class="n">get_num_build_jobs</span><span class="p">,</span> \
-<span class="g g-Whitespace">     </span><span class="mi">26</span>                                       <span class="n">_commandline_dep_string</span><span class="p">,</span> \
-<span class="g g-Whitespace">     </span><span class="mi">27</span>                                       <span class="n">sanitize_cxx_flags</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.8.14</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">distutils</span><span class="o">/</span><span class="n">log</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">4</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">sys</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">distutils.log</span> <span class="kn">import</span> <span class="o">*</span>  <span class="c1"># noqa: F403</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">distutils.log</span> <span class="kn">import</span> <span class="n">Log</span> <span class="k">as</span> <span class="n">old_Log</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">distutils.log</span> <span class="kn">import</span> <span class="n">_global_log</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">numpy.distutils.misc_util</span> <span class="kn">import</span> <span class="p">(</span><span class="n">red_text</span><span class="p">,</span> <span class="n">default_text</span><span class="p">,</span> <span class="n">cyan_text</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>         <span class="n">green_text</span><span class="p">,</span> <span class="n">is_sequence</span><span class="p">,</span> <span class="n">is_string</span><span class="p">)</span>
-
-<span class="ne">ImportError</span>: cannot import name &#39;Log&#39; from &#39;distutils.log&#39; (/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/setuptools/_distutils/log.py)
+Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/func/&quot;</span><span class="p">)</span>
-<span class="n">data_files</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">func_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">func_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">func_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">func_dir</span><span class="p">,</span>
-        <span class="s2">&quot;sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">]</span>
-<span class="n">echo_times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">12.0</span><span class="p">,</span> <span class="mf">28.0</span><span class="p">,</span> <span class="mf">44.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">]</span>
-<span class="n">mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz&quot;</span>
-<span class="p">)</span>
-<span class="n">confounds_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">func_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_desc-confounds_timeseries.tsv&quot;</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>func_dir = os.path.join(data_path, &quot;sub-04570/func/&quot;)
+data_files = [
+    os.path.join(
+        func_dir,
+        &quot;sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&quot;,
+    ),
+    os.path.join(
+        func_dir,
+        &quot;sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;,
+    ),
+    os.path.join(
+        func_dir,
+        &quot;sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&quot;,
+    ),
+    os.path.join(
+        func_dir,
+        &quot;sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&quot;,
+    ),
+]
+echo_times = [12.0, 28.0, 44.0, 60.0]
+mask_file = os.path.join(
+    func_dir, &quot;sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz&quot;
+)
+confounds_file = os.path.join(
+    func_dir, &quot;sub-04570_task-rest_desc-confounds_timeseries.tsv&quot;
+)
 
-<span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;tedana&quot;</span><span class="p">)</span>
+out_dir = os.path.join(data_path, &quot;tedana&quot;)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">workflows</span><span class="o">.</span><span class="n">tedana_workflow</span><span class="p">(</span>
-    <span class="n">data_files</span><span class="p">,</span>
-    <span class="n">echo_times</span><span class="p">,</span>
-    <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
-    <span class="n">mask</span><span class="o">=</span><span class="n">mask_file</span><span class="p">,</span>
-    <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;sub-04570_task-rest_space-scanner&quot;</span><span class="p">,</span>
-    <span class="n">fittype</span><span class="o">=</span><span class="s2">&quot;curvefit&quot;</span><span class="p">,</span>
-    <span class="n">tedpca</span><span class="o">=</span><span class="s2">&quot;mdl&quot;</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">gscontrol</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mir&quot;</span><span class="p">],</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>workflows.tedana_workflow(
+    data_files,
+    echo_times,
+    out_dir=out_dir,
+    mask=mask_file,
+    prefix=&quot;sub-04570_task-rest_space-scanner&quot;,
+    fittype=&quot;curvefit&quot;,
+    tedpca=&quot;mdl&quot;,
+    verbose=True,
+    gscontrol=[&quot;mir&quot;],
+)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">workflows</span><span class="o">.</span><span class="n">tedana_workflow</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">data_files</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">echo_times</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">mask</span><span class="o">=</span><span class="n">mask_file</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;sub-04570_task-rest_space-scanner&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="n">fittype</span><span class="o">=</span><span class="s2">&quot;curvefit&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">tedpca</span><span class="o">=</span><span class="s2">&quot;mdl&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="n">gscontrol</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mir&quot;</span><span class="p">],</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/tedana/workflows/tedana.py:444,</span> in <span class="ni">tedana_workflow</span><span class="nt">(data, tes, out_dir, mask, convention, prefix, fittype, combmode, tedpca, fixed_seed, maxit, maxrestart, tedort, gscontrol, no_reports, png_cmap, verbose, low_mem, debug, quiet, t2smap, mixm, ctab, manacc)</span>
+<span class="g g-Whitespace">    </span><span class="mi">442</span> <span class="n">out_dir</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">op</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">444</span>     <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span> <span class="c1"># boilerplate</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span> <span class="n">basename</span> <span class="o">=</span> <span class="s2">&quot;report&quot;</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/tedana&#39;
 </pre></div>
 </div>
 </div>
@@ -722,70 +655,70 @@ title="Print to PDF"
 <p>The tedana workflow writes out a number of files.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)))</span>
-<span class="n">out_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">out_files</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_files</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>out_files = sorted(glob(os.path.join(out_dir, &quot;*&quot;)))
+out_files = [os.path.basename(f) for f in out_files]
+print(&quot;\n&quot;.join(out_files))
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv&quot;</span><span class="p">)</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>metrics = pd.read_table(
+    os.path.join(out_dir, &quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv&quot;)
+)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">color_rejected_red</span><span class="p">(</span><span class="n">series</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Color rejected components red.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">[</span>
-        <span class="s2">&quot;color: red&quot;</span> <span class="k">if</span> <span class="n">series</span><span class="p">[</span><span class="s2">&quot;classification&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;rejected&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">series</span>
-    <span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def color_rejected_red(series):
+    &quot;&quot;&quot;Color rejected components red.&quot;&quot;&quot;
+    return [
+        &quot;color: red&quot; if series[&quot;classification&quot;] == &quot;rejected&quot; else &quot;&quot; for v in series
+    ]
 
 
-<span class="n">metrics</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">color_rejected_red</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+metrics.style.apply(color_rejected_red, axis=1)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.json&quot;</span><span class="p">),</span>
-    <span class="s2">&quot;r&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>with open(
+    os.path.join(out_dir, &quot;sub-04570_task-rest_space-scanner_desc-tedana_metrics.json&quot;),
+    &quot;r&quot;,
+) as fo:
+    data = json.load(fo)
 
-<span class="n">first_five_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="n">reduced_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">first_five_keys</span><span class="p">}</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">)</span>
+first_five_keys = list(data.keys())[:5]
+reduced_data = {k: data[k] for k in first_five_keys}
+pprint(reduced_data)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_output_scroll docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;n/a&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">()))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df = pd.DataFrame.from_dict(data, orient=&quot;index&quot;)
+df = df.fillna(&quot;n/a&quot;)
+display(HTML(df.to_html()))
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;tedana_report.html&quot;</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
-    <span class="n">report_data</span> <span class="o">=</span> <span class="n">fo</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>report = os.path.join(out_dir, &quot;tedana_report.html&quot;)
+with open(report, &quot;r&quot;) as fo:
+    report_data = fo.read()
 
-<span class="n">figures_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;figures&quot;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
-<span class="n">report_data</span> <span class="o">=</span> <span class="n">report_data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;./figures&quot;</span><span class="p">,</span> <span class="n">figures_dir</span><span class="p">)</span>
+figures_dir = os.path.relpath(os.path.join(out_dir, &quot;figures&quot;), os.getcwd())
+report_data = report_data.replace(&quot;./figures&quot;, figures_dir)
 
-<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">report_data</span><span class="p">))</span>
+display(HTML(report_data))
 </pre></div>
 </div>
 </div>

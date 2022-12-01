@@ -754,53 +754,53 @@ You can see the spreadsheet of publications at
 <p>The following plots reflect the average values for studies conducted at 3 Tesla.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
-<span class="c1"># TODO: deal with the issue that the plot doesn&#39;t regenerate (ie isn&#39;t alive)</span>
-<span class="c1"># Unless the code is updated.</span>
-<span class="n">metable</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-    <span class="s2">&quot;https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/export?gid=0&amp;format=csv&quot;</span><span class="p">,</span>
-    <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">TEs</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE1</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE2</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE3</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE4</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE5</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-<span class="p">]</span>
-<span class="n">TE_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TE1&quot;</span><span class="p">,</span> <span class="s2">&quot;TE2&quot;</span><span class="p">,</span> <span class="s2">&quot;TE3&quot;</span><span class="p">,</span> <span class="s2">&quot;TE4&quot;</span><span class="p">,</span> <span class="s2">&quot;TE5&quot;</span><span class="p">]</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">TEs</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Echo Times&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
-<span class="n">pub_count</span> <span class="o">=</span> <span class="n">metable</span><span class="o">.</span><span class="n">TE1</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">&quot;Average from </span><span class="si">{}</span><span class="s2"> studies&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pub_count</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Number&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+# TODO: deal with the issue that the plot doesn&#39;t regenerate (ie isn&#39;t alive)
+# Unless the code is updated.
+metable = pd.read_csv(
+    &quot;https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/export?gid=0&amp;format=csv&quot;,
+    header=0,
+)
+TEs = [
+    metable.TE1.mean(),
+    metable.TE2.mean(),
+    metable.TE3.mean(),
+    metable.TE4.mean(),
+    metable.TE5.mean(),
+]
+TE_labels = [&quot;TE1&quot;, &quot;TE2&quot;, &quot;TE3&quot;, &quot;TE4&quot;, &quot;TE5&quot;]
+plt.bar([1, 2, 3, 4, 5], TEs)
+plt.title(&quot;Echo Times&quot;, fontsize=18)
+pub_count = metable.TE1.count()
+plt.text(0.5, 60, &quot;Average from {} studies&quot;.format(pub_count))
+plt.xlabel(&quot;Echo Number&quot;)
+plt.ylabel(&quot;Echo Time (ms)&quot;)
+plt.show()
 
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">metable</span><span class="o">.</span><span class="n">TR</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Repetition Times&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Repetition Time (s)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+plt.hist(metable.TR.to_numpy())
+plt.title(&quot;Repetition Times&quot;, fontsize=18)
+plt.xlabel(&quot;Repetition Time (s)&quot;)
+plt.ylabel(&quot;Count&quot;)
+plt.show()
 
-<span class="n">x_vox</span> <span class="o">=</span> <span class="n">metable</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-<span class="n">y_vox</span> <span class="o">=</span> <span class="n">metable</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-<span class="n">z_vox</span> <span class="o">=</span> <span class="n">metable</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">([</span><span class="n">x_vox</span><span class="p">,</span> <span class="n">y_vox</span><span class="p">,</span> <span class="n">z_vox</span><span class="p">],</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Voxel Dimensions&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Average Voxel dimension (mm)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+x_vox = metable.x.to_numpy()
+y_vox = metable.y.to_numpy()
+z_vox = metable.z.to_numpy()
+plt.hist(np.nanmean([x_vox, y_vox, z_vox], 0))
+plt.title(&quot;Voxel Dimensions&quot;, fontsize=18)
+plt.xlabel(&quot;Average Voxel dimension (mm)&quot;)
+plt.ylabel(&quot;Count&quot;)
+plt.show()
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <img alt="../_images/Acquiring_Multi_Echo_Data_1_0.png" src="../_images/Acquiring_Multi_Echo_Data_1_0.png" />
 <img alt="../_images/Acquiring_Multi_Echo_Data_1_1.png" src="../_images/Acquiring_Multi_Echo_Data_1_1.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2093/3298299946.py:36: RuntimeWarning: Mean of empty slice
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2052/3298299946.py:36: RuntimeWarning: Mean of empty slice
   plt.hist(np.nanmean([x_vox, y_vox, z_vox], 0))
 </pre></div>
 </div>

@@ -17,175 +17,58 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import os
-
-import matplotlib.pyplot as plt
-from book_utils import regress_one_image_out_of_another
-from myst_nb import glue
-from nilearn import plotting
-from repo2data.repo2data import Repo2Data
-
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+te1_img = os.path.join(
+    data_path,
+    "sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+)
+te2_img = os.path.join(
+    data_path,
+    "sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+)
+mask_img = os.path.join(
+    data_path, "sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
+)
+denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mImportError[0m                               Traceback (most recent call last)
-Cell [0;32mIn [1], line 4[0m
-[1;32m      1[0m [38;5;28;01mimport[39;00m [38;5;21;01mos[39;00m
-[1;32m      3[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
-[0;32m----> 4[0m [38;5;28;01mfrom[39;00m [38;5;21;01mbook_utils[39;00m [38;5;28;01mimport[39;00m regress_one_image_out_of_another
-[1;32m      5[0m [38;5;28;01mfrom[39;00m [38;5;21;01mmyst_nb[39;00m [38;5;28;01mimport[39;00m glue
-[1;32m      6[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnilearn[39;00m [38;5;28;01mimport[39;00m plotting
+[0;31mValueError[0m                                Traceback (most recent call last)
+Cell [0;32mIn[2], line 12[0m
+[1;32m      5[0m te2_img [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(
+[1;32m      6[0m     data_path,
+[1;32m      7[0m     [38;5;124m"[39m[38;5;124msub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz[39m[38;5;124m"[39m,
+[1;32m      8[0m )
+[1;32m      9[0m mask_img [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(
+[1;32m     10[0m     data_path, [38;5;124m"[39m[38;5;124msub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz[39m[38;5;124m"[39m
+[1;32m     11[0m )
+[0;32m---> 12[0m denoised_img [38;5;241m=[39m [43mregress_one_image_out_of_another[49m[43m([49m[43mte2_img[49m[43m,[49m[43m [49m[43mte1_img[49m[43m,[49m[43m [49m[43mmask_img[49m[43m)[49m
 
-File [0;32m~/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py:3[0m
-[1;32m      1[0m [38;5;124;03m"""Utility functions for the JupyterBook."""[39;00m
-[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
-[0;32m----> 3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnilearn[39;00m [38;5;28;01mimport[39;00m image, masking
-[1;32m      6[0m [38;5;28;01mdef[39;00m [38;5;21mregress_one_image_out_of_another[39m(data_img, nuis_img, mask_img):
-[1;32m      7[0m     [38;5;124;03m"""Do what it says on the tin."""[39;00m
+File [0;32m~/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py:9[0m, in [0;36mregress_one_image_out_of_another[0;34m(data_img, nuis_img, mask_img)[0m
+[1;32m      7[0m [38;5;124;03m"""Do what it says on the tin."""[39;00m
+[1;32m      8[0m [38;5;66;03m# First, mean-center each image over time[39;00m
+[0;32m----> 9[0m mean_data_img [38;5;241m=[39m [43mimage[49m[38;5;241;43m.[39;49m[43mmean_img[49m[43m([49m[43mdata_img[49m[43m)[49m
+[1;32m     10[0m mean_nuis_img [38;5;241m=[39m image[38;5;241m.[39mmean_img(nuis_img)
+[1;32m     12[0m data_img_mc [38;5;241m=[39m image[38;5;241m.[39mmath_img(
+[1;32m     13[0m     [38;5;124m"[39m[38;5;124mimg - avg_img[..., None][39m[38;5;124m"[39m,
+[1;32m     14[0m     img[38;5;241m=[39mdata_img,
+[1;32m     15[0m     avg_img[38;5;241m=[39mmean_data_img,
+[1;32m     16[0m )
 
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/__init__.py:68[0m
-[1;32m     64[0m     [38;5;28;01mif[39;00m sys[38;5;241m.[39mversion_info[38;5;241m.[39mmajor [38;5;241m==[39m [38;5;241m3[39m [38;5;129;01mand[39;00m sys[38;5;241m.[39mversion_info[38;5;241m.[39mminor [38;5;241m==[39m [38;5;241m6[39m:
-[1;32m     65[0m         _py36_deprecation_warning()
-[0;32m---> 68[0m [43m_check_module_dependencies[49m[43m([49m[43m)[49m
-[1;32m     69[0m _python_deprecation_warnings()
-[1;32m     72[0m [38;5;66;03m# Monkey-patch gzip to have faster reads on large gzip files[39;00m
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/image/image.py:531[0m, in [0;36mmean_img[0;34m(imgs, target_affine, target_shape, verbose, n_jobs)[0m
+[1;32m    528[0m     imgs [38;5;241m=[39m [imgs, ]
+[1;32m    530[0m imgs_iter [38;5;241m=[39m [38;5;28miter[39m(imgs)
+[0;32m--> 531[0m first_img [38;5;241m=[39m [43mcheck_niimg[49m[43m([49m[38;5;28;43mnext[39;49m[43m([49m[43mimgs_iter[49m[43m)[49m[43m)[49m
+[1;32m    533[0m [38;5;66;03m# Compute the first mean to retrieve the reference[39;00m
+[1;32m    534[0m [38;5;66;03m# target_affine and target_shape if_needed[39;00m
+[1;32m    535[0m n_imgs [38;5;241m=[39m [38;5;241m1[39m
 
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/version.py:180[0m, in [0;36m_check_module_dependencies[0;34m(is_nilearn_installing)[0m
-[1;32m    175[0m [38;5;28;01mfor[39;00m (module_name, module_metadata) [38;5;129;01min[39;00m REQUIRED_MODULE_METADATA:
-[1;32m    176[0m     [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m (is_nilearn_installing [38;5;129;01mand[39;00m
-[1;32m    177[0m             [38;5;129;01mnot[39;00m module_metadata[[38;5;124m'[39m[38;5;124mrequired_at_installation[39m[38;5;124m'[39m]):
-[1;32m    178[0m         [38;5;66;03m# Skip check only when installing and it's a module that[39;00m
-[1;32m    179[0m         [38;5;66;03m# will be auto-installed.[39;00m
-[0;32m--> 180[0m         [43m_import_module_with_version_check[49m[43m([49m
-[1;32m    181[0m [43m            [49m[43mmodule_name[49m[38;5;241;43m=[39;49m[43mmodule_name[49m[43m,[49m
-[1;32m    182[0m [43m            [49m[43mminimum_version[49m[38;5;241;43m=[39;49m[43mmodule_metadata[49m[43m[[49m[38;5;124;43m'[39;49m[38;5;124;43mmin_version[39;49m[38;5;124;43m'[39;49m[43m][49m[43m,[49m
-[1;32m    183[0m [43m            [49m[43minstall_info[49m[38;5;241;43m=[39;49m[43mmodule_metadata[49m[38;5;241;43m.[39;49m[43mget[49m[43m([49m[38;5;124;43m'[39;49m[38;5;124;43minstall_info[39;49m[38;5;124;43m'[39;49m[43m)[49m[43m)[49m
+File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/_utils/niimg_conversions.py:271[0m, in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+[1;32m    269[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
+[1;32m    270[0m     [38;5;28;01melse[39;00m:
+[0;32m--> 271[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m%s[39;00m[38;5;124m'[39m[38;5;124m"[39m [38;5;241m%[39m niimg)
+[1;32m    272[0m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(niimg):
+[1;32m    273[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m%s[39;00m[38;5;124m'[39m[38;5;124m"[39m [38;5;241m%[39m niimg)
 
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/nilearn/version.py:72[0m, in [0;36m_import_module_with_version_check[0;34m(module_name, minimum_version, install_info)[0m
-[1;32m     70[0m [38;5;124;03m"""Check that module is installed with a recent enough version."""[39;00m
-[1;32m     71[0m [38;5;28;01mtry[39;00m:
-[0;32m---> 72[0m     module [38;5;241m=[39m [38;5;28;43m__import__[39;49m[43m([49m[43mmodule_name[49m[43m)[49m
-[1;32m     73[0m [38;5;28;01mexcept[39;00m [38;5;167;01mImportError[39;00m [38;5;28;01mas[39;00m exc:
-[1;32m     74[0m     user_friendly_info [38;5;241m=[39m ([38;5;124m'[39m[38;5;124mModule [39m[38;5;124m"[39m[38;5;132;01m{0}[39;00m[38;5;124m"[39m[38;5;124m could not be found. [39m[38;5;132;01m{1}[39;00m[38;5;124m'[39m)[38;5;241m.[39mformat(
-[1;32m     75[0m         module_name,
-[1;32m     76[0m         install_info [38;5;129;01mor[39;00m [38;5;124m'[39m[38;5;124mPlease install it properly to use nilearn.[39m[38;5;124m'[39m)
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/sklearn/__init__.py:82[0m
-[1;32m     80[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m [38;5;28;01mimport[39;00m _distributor_init  [38;5;66;03m# noqa: F401[39;00m
-[1;32m     81[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m [38;5;28;01mimport[39;00m __check_build  [38;5;66;03m# noqa: F401[39;00m
-[0;32m---> 82[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mbase[39;00m [38;5;28;01mimport[39;00m clone
-[1;32m     83[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_show_versions[39;00m [38;5;28;01mimport[39;00m show_versions
-[1;32m     85[0m __all__ [38;5;241m=[39m [
-[1;32m     86[0m     [38;5;124m"[39m[38;5;124mcalibration[39m[38;5;124m"[39m,
-[1;32m     87[0m     [38;5;124m"[39m[38;5;124mcluster[39m[38;5;124m"[39m,
-[0;32m   (...)[0m
-[1;32m    128[0m     [38;5;124m"[39m[38;5;124mshow_versions[39m[38;5;124m"[39m,
-[1;32m    129[0m ]
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/sklearn/base.py:17[0m
-[1;32m     15[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m [38;5;28;01mimport[39;00m __version__
-[1;32m     16[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_config[39;00m [38;5;28;01mimport[39;00m get_config
-[0;32m---> 17[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m [38;5;28;01mimport[39;00m _IS_32BIT
-[1;32m     18[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_tags[39;00m [38;5;28;01mimport[39;00m (
-[1;32m     19[0m     _DEFAULT_TAGS,
-[1;32m     20[0m )
-[1;32m     21[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mvalidation[39;00m [38;5;28;01mimport[39;00m check_X_y
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/sklearn/utils/__init__.py:29[0m
-[1;32m     27[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m.[39;00m[38;5;21;01mexceptions[39;00m [38;5;28;01mimport[39;00m DataConversionWarning
-[1;32m     28[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mdeprecation[39;00m [38;5;28;01mimport[39;00m deprecated
-[0;32m---> 29[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mfixes[39;00m [38;5;28;01mimport[39;00m parse_version, threadpool_info
-[1;32m     30[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_estimator_html_repr[39;00m [38;5;28;01mimport[39;00m estimator_html_repr
-[1;32m     31[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mvalidation[39;00m [38;5;28;01mimport[39;00m (
-[1;32m     32[0m     as_float_array,
-[1;32m     33[0m     assert_all_finite,
-[0;32m   (...)[0m
-[1;32m     41[0m     check_scalar,
-[1;32m     42[0m )
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/sklearn/utils/fixes.py:19[0m
-[1;32m     17[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
-[1;32m     18[0m [38;5;28;01mimport[39;00m [38;5;21;01mscipy[39;00m
-[0;32m---> 19[0m [38;5;28;01mimport[39;00m [38;5;21;01mscipy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mstats[39;00m
-[1;32m     20[0m [38;5;28;01mimport[39;00m [38;5;21;01mthreadpoolctl[39;00m
-[1;32m     21[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_config[39;00m [38;5;28;01mimport[39;00m config_context, get_config
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/scipy/stats/__init__.py:467[0m
-[1;32m      1[0m [38;5;124;03m"""[39;00m
-[1;32m      2[0m [38;5;124;03m.. _statsrefmanual:[39;00m
-[1;32m      3[0m 
-[0;32m   (...)[0m
-[1;32m    462[0m 
-[1;32m    463[0m [38;5;124;03m"""[39;00m
-[1;32m    465[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_warnings_errors[39;00m [38;5;28;01mimport[39;00m (ConstantInputWarning, NearConstantInputWarning,
-[1;32m    466[0m                                DegenerateDataWarning, FitError)
-[0;32m--> 467[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_stats_py[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
-[1;32m    468[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_variation[39;00m [38;5;28;01mimport[39;00m variation
-[1;32m    469[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mdistributions[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/scipy/stats/_stats_py.py:37[0m
-[1;32m     35[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mimport[39;00m array, asarray, ma
-[1;32m     36[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlib[39;00m [38;5;28;01mimport[39;00m NumpyVersion
-[0;32m---> 37[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mtesting[39;00m [38;5;28;01mimport[39;00m suppress_warnings
-[1;32m     39[0m [38;5;28;01mfrom[39;00m [38;5;21;01mscipy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mspatial[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistance[39;00m [38;5;28;01mimport[39;00m cdist
-[1;32m     40[0m [38;5;28;01mfrom[39;00m [38;5;21;01mscipy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mndimage[39;00m [38;5;28;01mimport[39;00m _measurements
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/testing/__init__.py:12[0m
-[1;32m     10[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_private[39;00m[38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
-[1;32m     11[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_private[39;00m[38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m [38;5;28;01mimport[39;00m (_assert_valid_refcount, _gen_alignment_data)
-[0;32m---> 12[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_private[39;00m [38;5;28;01mimport[39;00m extbuild, decorators [38;5;28;01mas[39;00m dec
-[1;32m     13[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01m_private[39;00m[38;5;21;01m.[39;00m[38;5;21;01mnosetester[39;00m [38;5;28;01mimport[39;00m (
-[1;32m     14[0m     run_module_suite, NoseTester [38;5;28;01mas[39;00m Tester
-[1;32m     15[0m     )
-[1;32m     17[0m __all__ [38;5;241m=[39m _private[38;5;241m.[39mutils[38;5;241m.[39m__all__ [38;5;241m+[39m [[38;5;124m'[39m[38;5;124mTestCase[39m[38;5;124m'[39m, [38;5;124m'[39m[38;5;124mrun_module_suite[39m[38;5;124m'[39m]
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/testing/_private/extbuild.py:11[0m
-[1;32m      9[0m [38;5;28;01mimport[39;00m [38;5;21;01msys[39;00m
-[1;32m     10[0m [38;5;28;01mimport[39;00m [38;5;21;01msysconfig[39;00m
-[0;32m---> 11[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mccompiler[39;00m [38;5;28;01mimport[39;00m new_compiler
-[1;32m     12[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01merrors[39;00m [38;5;28;01mimport[39;00m CompileError
-[1;32m     14[0m __all__ [38;5;241m=[39m [[38;5;124m'[39m[38;5;124mbuild_and_import_extension[39m[38;5;124m'[39m, [38;5;124m'[39m[38;5;124mcompile_extension_module[39m[38;5;124m'[39m]
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/distutils/__init__.py:24[0m
-[1;32m      1[0m [38;5;124;03m"""[39;00m
-[1;32m      2[0m [38;5;124;03mAn enhanced distutils, providing support for Fortran compilers, for BLAS,[39;00m
-[1;32m      3[0m [38;5;124;03mLAPACK and other common libraries for numerical computing, and more.[39;00m
-[0;32m   (...)[0m
-[1;32m     19[0m 
-[1;32m     20[0m [38;5;124;03m"""[39;00m
-[1;32m     22[0m [38;5;66;03m# Must import local ccompiler ASAP in order to get[39;00m
-[1;32m     23[0m [38;5;66;03m# customized CCompiler.spawn effective.[39;00m
-[0;32m---> 24[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m [38;5;28;01mimport[39;00m ccompiler
-[1;32m     25[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m [38;5;28;01mimport[39;00m unixccompiler
-[1;32m     27[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mnpy_pkg_config[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/distutils/ccompiler.py:20[0m
-[1;32m     17[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01msysconfig[39;00m [38;5;28;01mimport[39;00m customize_compiler
-[1;32m     18[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mversion[39;00m [38;5;28;01mimport[39;00m LooseVersion
-[0;32m---> 20[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m [38;5;28;01mimport[39;00m log
-[1;32m     21[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mexec_command[39;00m [38;5;28;01mimport[39;00m (
-[1;32m     22[0m     filepath_from_subprocess_output, forward_bytes_to_stdout
-[1;32m     23[0m )
-[1;32m     24[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mmisc_util[39;00m [38;5;28;01mimport[39;00m cyg2win32, is_sequence, mingw32, \
-[1;32m     25[0m                                       get_num_build_jobs, \
-[1;32m     26[0m                                       _commandline_dep_string, \
-[1;32m     27[0m                                       sanitize_cxx_flags
-
-File [0;32m/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/numpy/distutils/log.py:4[0m
-[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01msys[39;00m
-[1;32m      3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlog[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m  [38;5;66;03m# noqa: F403[39;00m
-[0;32m----> 4[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlog[39;00m [38;5;28;01mimport[39;00m Log [38;5;28;01mas[39;00m old_Log
-[1;32m      5[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlog[39;00m [38;5;28;01mimport[39;00m _global_log
-[1;32m      7[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdistutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mmisc_util[39;00m [38;5;28;01mimport[39;00m (red_text, default_text, cyan_text,
-[1;32m      8[0m         green_text, is_sequence, is_string)
-
-[0;31mImportError[0m: cannot import name 'Log' from 'distutils.log' (/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/setuptools/_distutils/log.py). Module "sklearn" could not be found. See http://nilearn.github.io/introduction.html#installation for installation information.
-ImportError: cannot import name 'Log' from 'distutils.log' (/opt/hostedtoolcache/Python/3.8.14/x64/lib/python3.8/site-packages/setuptools/_distutils/log.py). Module "sklearn" could not be found. See http://nilearn.github.io/introduction.html#installation for installation information.
+[0;31mValueError[0m: File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz'
+ValueError: File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/data/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz'
 
