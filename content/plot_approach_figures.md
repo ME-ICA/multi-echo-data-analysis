@@ -39,7 +39,7 @@ DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 # Download data
 repo2data = Repo2Data(DATA_REQ_FILE)
 data_path = repo2data.install()
-data_path = os.path.abspath(os.path.join(data_path[0], "data"))
+data_path = os.path.abspath(data_path[0])
 
 ted_dir = os.path.join(data_path, "tedana")
 ```
@@ -47,7 +47,7 @@ ted_dir = os.path.join(data_path, "tedana")
 ## Load data
 ```{code-cell} ipython3
 :tags: [hide-cell]
-func_dir = os.path.join(data_path, "sub-04570/func/")
+func_dir = os.path.join(data_path, "func/")
 data_files = [
     os.path.join(
         func_dir,
@@ -73,7 +73,7 @@ xfm = os.path.join(
     func_dir, "sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt"
 )
 xfm = nit.linear.load(xfm, fmt="itk")
-t1_file = os.path.join(data_path, "sub-04570/anat/sub-04570_desc-preproc_T1w.nii.gz")
+t1_file = os.path.join(data_path, "anat/sub-04570_desc-preproc_T1w.nii.gz")
 bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 
 # Tedana outputs
