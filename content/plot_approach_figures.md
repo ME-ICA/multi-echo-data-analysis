@@ -575,7 +575,7 @@ Scatter plot of voxel's signal for each echo with T2* estimate.
 ```{code-cell} ipython3
 :tags: [hide-cell]
 fig, ax = plt.subplots()
-sns.barplot(echo_times, alpha, ax=ax, palette=pal)
+sns.barplot(x=echo_times, y=alpha, ax=ax, palette=pal)
 ax.set_ylabel("Weight", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.tick_params(axis="both", which="major", labelsize=14)
