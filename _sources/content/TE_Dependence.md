@@ -283,7 +283,7 @@ X2 = ((echo_times * mean_sig) / mean_t2s)[:, None]  # Model 2
 The predicted curve for the S0 model matches the real curve perfectly!
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [hide-input]
 B = d_sig2[:, None]  # (E x S)
 alpha = (np.abs(B) ** 2).sum(axis=0)
 
@@ -321,7 +321,7 @@ It seems like the mismatch increases as the difference between the fluctuating v
 The fitted curve seems to actually match the mean signal, not the perturbed signal!
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [hide-input]
 B = d_sig3[:, None]  # (E x S)
 alpha = (np.abs(B) ** 2).sum(axis=0)
 
