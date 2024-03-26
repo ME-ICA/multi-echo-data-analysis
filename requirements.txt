@@ -5,7 +5,7 @@ matplotlib
 myst_nb
 nitransforms
 repo2data==2.9.1
-pyspfm==0.0.1b19
+pyspfm==0.0.1b23
 seaborn
 sphinx>=4
 sphinx-inline-tabs
