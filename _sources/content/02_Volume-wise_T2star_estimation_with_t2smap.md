@@ -14,7 +14,7 @@ kernelspec:
 # Volume-wise T2*/S0 estimation with `t2smap`
 
 Use {py:func}`tedana.workflows.t2smap_workflow` {cite:p}`DuPre2021` to calculate volume-wise T2*/S0,
-as in {cite:t}`power2018ridding` and {cite:t}`HEUNIS2021118244`.
+as in {cite:t}`power2018ridding` and {cite:t}`heunis2021effects`.
 
 ```{code-cell} ipython3
 import os

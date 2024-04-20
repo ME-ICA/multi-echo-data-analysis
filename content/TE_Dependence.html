@@ -965,8 +965,15 @@ Kappa: 31513.966302911744
 <span class="n">s0_std</span> <span class="o">=</span> <span class="n">mean_s0</span> <span class="o">*</span> <span class="n">frac</span>
 
 <span class="c1"># simulate the T2*/S0 time series</span>
-<span class="n">t2s_ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">mean_t2s</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">t2s_std</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_trs</span> <span class="o">+</span> <span class="mi">20</span><span class="p">,))</span>
-<span class="n">t2s_ts</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">t2s_ts</span><span class="p">,</span> <span class="n">hrf</span><span class="p">)[</span><span class="mi">20</span> <span class="p">:</span> <span class="n">n_trs</span> <span class="o">+</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">scales</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="n">t2s_ts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)))</span>
+    <span class="n">ts</span> <span class="o">*=</span> <span class="n">scales</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+    <span class="n">t2s_ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+<span class="n">t2s_ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">t2s_ts</span><span class="p">)[:</span><span class="n">n_trs</span> <span class="o">+</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">t2s_ts</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">t2s_ts</span><span class="p">,</span> <span class="n">hrf</span><span class="p">)[:</span><span class="n">n_trs</span><span class="p">]</span>
 <span class="n">t2s_ts</span> <span class="o">*=</span> <span class="n">t2s_std</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">t2s_ts</span><span class="p">)</span>
 <span class="n">t2s_ts</span> <span class="o">+=</span> <span class="n">mean_t2s</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">t2s_ts</span><span class="p">)</span>
 
@@ -1002,13 +1009,20 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/594fa8f62f31807a0b93f0988899c83e1fc25e1f1d73f8ad222a5ad718bab554.png" src="../_images/594fa8f62f31807a0b93f0988899c83e1fc25e1f1d73f8ad222a5ad718bab554.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">IndexError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">line</span> <span class="mi">18</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span>     <span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)))</span>
+<span class="ne">---&gt; </span><span class="mi">18</span>     <span class="n">ts</span> <span class="o">*=</span> <span class="n">scales</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="n">t2s_ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="n">t2s_ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">t2s_ts</span><span class="p">)[:</span><span class="n">n_trs</span> <span class="o">+</span> <span class="mi">20</span><span class="p">]</span>
+
+<span class="ne">IndexError</span>: index 5 is out of bounds for axis 0 with size 5
+</pre></div>
+</div>
 </div>
 </details>
-</div>
-<div class="figure align-center" id="fig-component-curves">
-<img alt="../_images/594fa8f62f31807a0b93f0988899c83e1fc25e1f1d73f8ad222a5ad718bab554.png" src="../_images/594fa8f62f31807a0b93f0988899c83e1fc25e1f1d73f8ad222a5ad718bab554.png" />
-<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Now let’s apply this approach to components</span><a class="headerlink" href="#fig-component-curves" title="Permalink to this image">#</a></p>
 </div>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
@@ -1041,14 +1055,7 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/83b47471bc12271dd8499a62545c33359790f5ff7057faa06c261f43ffcfff0a.png" src="../_images/83b47471bc12271dd8499a62545c33359790f5ff7057faa06c261f43ffcfff0a.png" />
-</div>
 </details>
-</div>
-<div class="figure align-center" id="fig-component-curves-2">
-<img alt="../_images/83b47471bc12271dd8499a62545c33359790f5ff7057faa06c261f43ffcfff0a.png" src="../_images/83b47471bc12271dd8499a62545c33359790f5ff7057faa06c261f43ffcfff0a.png" />
-<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-2" title="Permalink to this image">#</a></p>
 </div>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
@@ -1078,14 +1085,7 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/b118e19500144ca9a16324a4ca31c5eb84ca0fe3b977c6be4fc45333d352ef09.png" src="../_images/b118e19500144ca9a16324a4ca31c5eb84ca0fe3b977c6be4fc45333d352ef09.png" />
-</div>
 </details>
-</div>
-<div class="figure align-center" id="fig-component-curves-3">
-<img alt="../_images/b118e19500144ca9a16324a4ca31c5eb84ca0fe3b977c6be4fc45333d352ef09.png" src="../_images/b118e19500144ca9a16324a4ca31c5eb84ca0fe3b977c6be4fc45333d352ef09.png" />
-<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-3" title="Permalink to this image">#</a></p>
 </div>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
@@ -1116,14 +1116,7 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/a57a5a39c838e3220d72b9f81c319039fd2b875f250e1405271b12397ad76233.png" src="../_images/a57a5a39c838e3220d72b9f81c319039fd2b875f250e1405271b12397ad76233.png" />
-</div>
 </details>
-</div>
-<div class="figure align-center" id="fig-component-curves-4">
-<img alt="../_images/a57a5a39c838e3220d72b9f81c319039fd2b875f250e1405271b12397ad76233.png" src="../_images/a57a5a39c838e3220d72b9f81c319039fd2b875f250e1405271b12397ad76233.png" />
-<p class="caption"><span class="caption-number">Fig. 19 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-4" title="Permalink to this image">#</a></p>
 </div>
 <div class="proof algorithm admonition" id="minimum-image-regression">
 <p class="admonition-title"><span class="caption-number">Algorithm 1 </span> (Minimum image regression)</p>
