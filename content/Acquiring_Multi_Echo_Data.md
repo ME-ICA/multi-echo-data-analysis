@@ -81,10 +81,11 @@ higher quality T2* map is used.
 Some benefit is likely, so, if a T2* map is independently calculated, it can be
 used as an input to many functions in the tedana workflow.
 
-.. warning::
-    While tedana allows the input of a T2* map from any source, and a more
-    accurate T2* map should lead to better results, this hasn't been
-    systematically evaluated yet.
+```{warning}
+While tedana allows the input of a T2* map from any source, and a more
+accurate T2* map should lead to better results, this hasn't been
+systematically evaluated yet.
+```
 
 There are many ways to calculate T2* maps, with some using multi-echo acquisitions.
 We are not presenting an expansive review of this literature here,
@@ -120,7 +121,7 @@ Where the benefits of more echoes balance out the additional costs is an open re
 We are not recommending specific parameter options at this time.
 There are multiple ways to balance the slight time cost from the added echoes that have
 resulted in research publications.
-We suggest new multi-echo fMRI users examine the :ref:`spreadsheet of publications` that use
+We suggest new multi-echo fMRI users examine the spreadsheet of publications that use
 multi-echo fMRI to identify studies with similar acquisition priorities,
 and use the parameters from those studies as a starting point.
 More complete recommendations and guidelines are discussed in the
