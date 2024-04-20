@@ -423,9 +423,10 @@ mean_s0 = 16000
 s0_std = mean_s0 * frac
 
 # simulate the T2*/S0 time series
-scales = np.random.random(5) * 3
+n_chunks = 10
+scales = np.random.random(n_chunks) * 3
 t2s_ts = []
-for section in range(10):
+for section in range(n_chunks):
     ts = np.hstack((np.zeros(10), np.ones(20), np.zeros(10)))
     ts *= scales[section]
     t2s_ts.append(ts)
@@ -435,8 +436,18 @@ t2s_ts = signal.convolve(t2s_ts, hrf)[:n_trs]
 t2s_ts *= t2s_std / np.std(t2s_ts)
 t2s_ts += mean_t2s - np.mean(t2s_ts)
 
-s0_ts = np.random.normal(loc=mean_s0, scale=s0_std, size=(n_trs + 20,))
-s0_ts = signal.convolve(s0_ts, hrf)[20 : n_trs + 20]
+s0_ts = np.random.randint(0, 2, n_trs).astype(float)
+s0_ts -= 0.5
+s0_ts *= np.random.normal(loc=1, scale=0.25, size=n_trs)
+s0_ts = np.sort(s0_ts)
+first_half = s0_ts[:n_trs // 2]
+second_half = s0_ts[n_trs // 2:]
+s0_ts = np.zeros(n_trs)
+np.random.shuffle(first_half)
+np.random.shuffle(second_half)
+s0_ts[::2] = first_half
+s0_ts[1::2] = second_half
+# s0_ts = signal.convolve(s0_ts, hrf)[20 : n_trs + 20]
 s0_ts *= s0_std / np.std(s0_ts)
 s0_ts += mean_s0 - np.mean(s0_ts)
 
