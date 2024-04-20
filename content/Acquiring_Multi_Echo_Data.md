@@ -16,10 +16,10 @@ kernelspec:
 ## Available multi-echo fMRI sequences
 
 We have attempted to compile some basic multi-echo fMRI protocols in an [OSF project](https://osf.io/ebkrp/).
-The parameter choices in these protocols run and seem reasonable, but they have
-not been optimized for a specific situation.
-They are a good starting point for someone designing a study, but should not be
-considered canonical.
+The parameter choices in these protocols run and seem reasonable,
+but they have not been optimized for a specific situation.
+They are a good starting point for someone designing a study,
+but should not be considered canonical.
 If you would like to use one of them, please customize it for your own purposes
 and make sure to run pilot scans to test your choices.
 
@@ -29,12 +29,13 @@ and make sure to run pilot scans to test your choices.
 
 - The Center for Magnetic Resonance Research at the University of Minnesota
   provides a custom MR sequence that allows users to collect multiple echoes
-  (termed **Contrasts**). The sequence and documentation can be [found here](https://www.cmrr.umn.edu/multiband/).
+  (termed **Contrasts**).
+  The sequence and documentation can be [found here](https://www.cmrr.umn.edu/multiband/).
   For details on obtaining a license follow
   [this link](http://license.umn.edu/technologies/cmrr_center-for-magnetic-resonance-research-software-for-siemens-mri-scanners).
   By default the number of contrasts is 1, yielding a single-echo sequence.
-  In order to collect multiple echoes, increase number of Contrasts on the
-  **Sequence Tab, Part 1** on the MR console.
+  In order to collect multiple echoes,
+  increase number of Contrasts on the **Sequence Tab, Part 1** on the MR console.
 - The Martinos Center at Harvard also has a MR sequence available, with the details
   [available here](https://www.nmr.mgh.harvard.edu/software/c2p/sms).
   The number of echoes can be specified on the **Sequence, Special** tab in this sequence.
@@ -139,7 +140,7 @@ For typically used parameters see the **ME-fMRI parameters** section below.
 
 It is possible to retain phase data when reconstructing multi-echo fMRI data.
 The phase data may be leveraged for a number of useful denoising and processing methods,
-including NORDIC {cite:p}`vizioli2021lowering;dowdle2021nordic;dowdle2023evaluating`
+including NORDIC {cite:p}`vizioli2021lowering,dowdle2021nordic,dowdle2023evaluating`
 and MEDIC dynamic distortion correction {cite:p}`van2023framewise`.
 
 It's important to remember that retaining phase data for each echo will effectively double the

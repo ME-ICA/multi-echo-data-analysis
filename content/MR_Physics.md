@@ -8,7 +8,7 @@ Since the 1980s, MRI has been a mainstay of non-invasive diagnostic radiology be
 It is frequently used in neuroimaging for the diagnosis and monitoring of diseases,
 and it has not yet shown any adverse effects from exposure,
 which is a major benefit over other imaging modalities.
-MRI enables to perform dynamic studies due to its speed of acquisition.{cite:p}`hovet2018mri;berger2002does`
+MRI enables to perform dynamic studies due to its speed of acquisition.{cite:p}`hovet2018mri,berger2002does`
 
 
 ## Basic Physics
