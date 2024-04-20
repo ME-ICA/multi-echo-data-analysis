@@ -558,10 +558,12 @@ study quantifies the benefit to optimal combination or tedana denoising if a
 higher quality T2* map is used.
 Some benefit is likely, so, if a T2* map is independently calculated, it can be
 used as an input to many functions in the tedana workflow.</p>
-<p>.. warning::
-While tedana allows the input of a T2* map from any source, and a more
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While tedana allows the input of a T2* map from any source, and a more
 accurate T2* map should lead to better results, this hasn’t been
 systematically evaluated yet.</p>
+</div>
 <p>There are many ways to calculate T2* maps, with some using multi-echo acquisitions.
 We are not presenting an expansive review of this literature here,
 but <span id="id1">Cohen-Adad <em>et al.</em> [<a class="reference internal" href="bibliography.html#id16" title="Julien Cohen-Adad, Jonathan R Polimeni, Karl G Helmer, Thomas Benner, Jennifer A McNab, Lawrence L Wald, Bruce R Rosen, and Caterina Mainero. T2* mapping and b0 orientation-dependence at 7 t reveal cyto-and myeloarchitecture organization of the human cortex. Neuroimage, 60(2):1006–1014, 2012.">2012</a>]</span> and <span id="id2">Ruuth <em>et al.</em> [<a class="reference internal" href="bibliography.html#id17" title="Riikka Ruuth, Linda Kuusela, Teemu Mäkelä, Susanna Melkas, and Antti Korvenoja. Comparison of reconstruction and acquisition choices for quantitative t2* maps and synthetic contrasts. European journal of radiology open, 6:42–48, 2019.">2019</a>]</span> are good places to start
@@ -593,7 +595,7 @@ Where the benefits of more echoes balance out the additional costs is an open re
 <p>We are not recommending specific parameter options at this time.
 There are multiple ways to balance the slight time cost from the added echoes that have
 resulted in research publications.
-We suggest new multi-echo fMRI users examine the :ref:<code class="docutils literal notranslate"><span class="pre">spreadsheet</span> <span class="pre">of</span> <span class="pre">publications</span></code> that use
+We suggest new multi-echo fMRI users examine the spreadsheet of publications that use
 multi-echo fMRI to identify studies with similar acquisition priorities,
 and use the parameters from those studies as a starting point.
 More complete recommendations and guidelines are discussed in the
@@ -680,7 +682,7 @@ You can see the spreadsheet of publications at
 <div class="cell_output docutils container">
 <img alt="../_images/fb6428c13972038e14956c99573ee88f0d8a401387b67ceeb3fd9a461c20aa18.png" src="../_images/fb6428c13972038e14956c99573ee88f0d8a401387b67ceeb3fd9a461c20aa18.png" />
 <img alt="../_images/a7247abca0251851427ee5fbb2becdebf14f77517aa24c4ec31b70b6fef976f8.png" src="../_images/a7247abca0251851427ee5fbb2becdebf14f77517aa24c4ec31b70b6fef976f8.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2067/3298299946.py:36: RuntimeWarning: Mean of empty slice
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2149/3298299946.py:36: RuntimeWarning: Mean of empty slice
   plt.hist(np.nanmean([x_vox, y_vox, z_vox], 0))
 </pre></div>
 </div>
