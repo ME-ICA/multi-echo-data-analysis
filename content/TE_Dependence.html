@@ -1,13 +1,13 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>BOLD, non-BOLD, and TE-dependence with tedana &#8212; Multi-Echo fMRI Data Analysis</title>
   
   
@@ -18,58 +18,54 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script src="../_static/tabs.js"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'content/TE_Dependence';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Generate tedana walkthrough figures" href="plot_approach_figures.html" />
@@ -83,10 +79,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -127,11 +122,14 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -165,7 +163,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -474,10 +483,10 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
-  <div class="tex2jax_ignore mathjax_ignore section" id="bold-non-bold-and-te-dependence-with-tedana">
-<h1>BOLD, non-BOLD, and TE-dependence with tedana<a class="headerlink" href="#bold-non-bold-and-te-dependence-with-tedana" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="bold-non-bold-and-te-dependence-with-tedana">
+<h1>BOLD, non-BOLD, and TE-dependence with tedana<a class="headerlink" href="#bold-non-bold-and-te-dependence-with-tedana" title="Link to this heading">#</a></h1>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>This chapter should differentiate itself from Signal_Decay by focusing on the application of <a class="reference internal" href="#equation-monoexponential-decay">(1)</a>
@@ -511,7 +520,7 @@ is generally considered too noisy for practical application.</p></li>
 <p>This notebook uses simulated T2*/S0 manipulations to show how TE-dependence is leveraged to denoise multi-echo data.</p>
 <p>The equation for how signal is dependent on changes in S0 and T2*:</p>
 <div class="math notranslate nohighlight" id="equation-monoexponential-decay">
-<span class="eqno">(1)<a class="headerlink" href="#equation-monoexponential-decay" title="Permalink to this equation">#</a></span>\[S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)\]</div>
+<span class="eqno">(1)<a class="headerlink" href="#equation-monoexponential-decay" title="Link to this equation">#</a></span>\[S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)\]</div>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -547,7 +556,7 @@ is generally considered too noisy for practical application.</p></li>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/repo2data
+/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/repo2data
 Config from file :
 ../binder/data_requirement.json
 Destination:
@@ -556,7 +565,7 @@ Destination:
 Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nilearn/glm/__init__.py:55: FutureWarning: The nilearn.glm module is experimental. It may change in any future release of Nilearn.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nilearn/glm/__init__.py:55: FutureWarning: The nilearn.glm module is experimental. It may change in any future release of Nilearn.
   warn(&#39;The nilearn.glm module is experimental. &#39;
 </pre></div>
 </div>
@@ -600,8 +609,8 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </details>
 </div>
-<div class="section" id="plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time">
-<h2>Plot simulations of BOLD and non-BOLD signals as a function of echo time<a class="headerlink" href="#plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time" title="Permalink to this heading">#</a></h2>
+<section id="plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time">
+<h2>Plot simulations of BOLD and non-BOLD signals as a function of echo time<a class="headerlink" href="#plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -700,51 +709,53 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/69b19e06133906a1c7e79ab230346698d2742ed049392c2532d795212d7b0dd3.png" src="../_images/69b19e06133906a1c7e79ab230346698d2742ed049392c2532d795212d7b0dd3.png" />
+<img alt="../_images/9e5e05401581b3d3664db9b27577adf685728f7192b2f326447d0788bac69a70.png" src="../_images/9e5e05401581b3d3664db9b27577adf685728f7192b2f326447d0788bac69a70.png" />
 </div>
 </details>
 </div>
-<div class="figure align-center" id="fig-bold-nonbold-simulations">
-<img alt="../_images/69b19e06133906a1c7e79ab230346698d2742ed049392c2532d795212d7b0dd3.png" src="../_images/69b19e06133906a1c7e79ab230346698d2742ed049392c2532d795212d7b0dd3.png" />
-<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Simulations of BOLD and non-BOLD signals as a function of echo time</span><a class="headerlink" href="#fig-bold-nonbold-simulations" title="Permalink to this image">#</a></p>
-</div>
-</div>
-<div class="section" id="make-design-matrices">
-<h2>Make design matrices<a class="headerlink" href="#make-design-matrices" title="Permalink to this heading">#</a></h2>
+<figure class="align-center" id="fig-bold-nonbold-simulations">
+<img alt="../_images/9e5e05401581b3d3664db9b27577adf685728f7192b2f326447d0788bac69a70.png" src="../_images/9e5e05401581b3d3664db9b27577adf685728f7192b2f326447d0788bac69a70.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Simulations of BOLD and non-BOLD signals as a function of echo time</span><a class="headerlink" href="#fig-bold-nonbold-simulations" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="make-design-matrices">
+<h2>Make design matrices<a class="headerlink" href="#make-design-matrices" title="Link to this heading">#</a></h2>
 <p>For TEDPCA and TEDICA, we use regression to get parameter estimates (PEs; not beta values)
 for component time-series against echo-specific data, and substitute those PEs for <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span>.
 At some point, I would like to dig into why those parameter estimates are equivalent to <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span> for our purposes.</p>
-</div>
-<div class="section" id="te-independence-model">
-<h2>TE-independence model<a class="headerlink" href="#te-independence-model" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="te-independence-model">
+<h2>TE-independence model<a class="headerlink" href="#te-independence-model" title="Link to this heading">#</a></h2>
 <div class="math notranslate nohighlight" id="equation-te-independence-model1">
-<span class="eqno">(2)<a class="headerlink" href="#equation-te-independence-model1" title="Permalink to this equation">#</a></span>\[\frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}\]</div>
+<span class="eqno">(2)<a class="headerlink" href="#equation-te-independence-model1" title="Link to this equation">#</a></span>\[\frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}\]</div>
 <div class="math notranslate nohighlight" id="equation-te-independence-model2">
-<span class="eqno">(3)<a class="headerlink" href="#equation-te-independence-model2" title="Permalink to this equation">#</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}\]</div>
+<span class="eqno">(3)<a class="headerlink" href="#equation-te-independence-model2" title="Link to this equation">#</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)}\frac{{\Delta}S_0}{S_0}\]</div>
 <p><span class="math notranslate nohighlight">\(\frac{{\Delta}S_0}{S_0}\)</span> is a scalar (i.e., doesn’t change with TE), so we ignore that,
 which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span> (mean echo-wise signal).</p>
 <p>Thus,</p>
 <div class="math notranslate nohighlight" id="equation-te-independence-model3">
-<span class="eqno">(4)<a class="headerlink" href="#equation-te-independence-model3" title="Permalink to this equation">#</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)} * X\]</div>
+<span class="eqno">(4)<a class="headerlink" href="#equation-te-independence-model3" title="Link to this equation">#</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)} * X\]</div>
 <p>and for TEDPCA/TEDICA,</p>
 <div class="math notranslate nohighlight" id="equation-te-independence-model4">
-<span class="eqno">(5)<a class="headerlink" href="#equation-te-independence-model4" title="Permalink to this equation">#</a></span>\[PE(TE_k) = {\bar{S}(TE_k)} * X\]</div>
+<span class="eqno">(5)<a class="headerlink" href="#equation-te-independence-model4" title="Link to this equation">#</a></span>\[PE(TE_k) = {\bar{S}(TE_k)} * X\]</div>
 <p>Lastly, we fit X to the data and evaluate model fit.</p>
-</div>
-<div class="section" id="te-dependence-model">
-<h2>TE-dependence model<a class="headerlink" href="#te-dependence-model" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="te-dependence-model">
+<h2>TE-dependence model<a class="headerlink" href="#te-dependence-model" title="Link to this heading">#</a></h2>
 <div class="math notranslate nohighlight" id="equation-te-dependence-model1">
-<span class="eqno">(6)<a class="headerlink" href="#equation-te-dependence-model1" title="Permalink to this equation">#</a></span>\[\frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k\]</div>
+<span class="eqno">(6)<a class="headerlink" href="#equation-te-dependence-model1" title="Link to this equation">#</a></span>\[\frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = -{\Delta}{R_2^*}*TE_k\]</div>
 <div class="math notranslate nohighlight" id="equation-te-dependence-model2">
-<span class="eqno">(7)<a class="headerlink" href="#equation-te-dependence-model2" title="Permalink to this equation">#</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k\]</div>
+<span class="eqno">(7)<a class="headerlink" href="#equation-te-dependence-model2" title="Link to this equation">#</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)} * -{\Delta}{R_2^*}*TE_k\]</div>
 <p><span class="math notranslate nohighlight">\(-{\Delta}{R_2^*}\)</span> is a scalar, so we ignore it,
 which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE_k)}\)</span> (mean echo-wise-signal) and <span class="math notranslate nohighlight">\(TE_k\)</span> (echo time in milliseconds).</p>
 <p>Thus,</p>
 <div class="math notranslate nohighlight" id="equation-te-dependence-model3">
-<span class="eqno">(8)<a class="headerlink" href="#equation-te-dependence-model3" title="Permalink to this equation">#</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
+<span class="eqno">(8)<a class="headerlink" href="#equation-te-dependence-model3" title="Link to this equation">#</a></span>\[{\Delta}S(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
 <p>and for TEDPCA/TEDICA,</p>
 <div class="math notranslate nohighlight" id="equation-te-dependence-model4">
-<span class="eqno">(9)<a class="headerlink" href="#equation-te-dependence-model4" title="Permalink to this equation">#</a></span>\[PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
+<span class="eqno">(9)<a class="headerlink" href="#equation-te-dependence-model4" title="Link to this equation">#</a></span>\[PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
 <p>Lastly, we fit X to the data and evaluate model fit.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
@@ -762,9 +773,9 @@ which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE
 </div>
 </details>
 </div>
-</div>
-<div class="section" id="fitted-curves-for-s0-perturbed-signal">
-<h2>Fitted curves for S0-perturbed signal<a class="headerlink" href="#fitted-curves-for-s0-perturbed-signal" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="fitted-curves-for-s0-perturbed-signal">
+<h2>Fitted curves for S0-perturbed signal<a class="headerlink" href="#fitted-curves-for-s0-perturbed-signal" title="Link to this heading">#</a></h2>
 <p>The predicted curve for the S0 model matches the real curve perfectly!</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -813,9 +824,9 @@ Delta S0 from results: 3200.000000000006
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="fitted-curves-for-r2-perturbed-signal">
-<h2>Fitted curves for R2*-perturbed signal<a class="headerlink" href="#fitted-curves-for-r2-perturbed-signal" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="fitted-curves-for-r2-perturbed-signal">
+<h2>Fitted curves for R2*-perturbed signal<a class="headerlink" href="#fitted-curves-for-r2-perturbed-signal" title="Link to this heading">#</a></h2>
 <p>For some reason, the predicted curve for the R2 model doesn’t match the real signal curve.
 What’s with this mismatch?</p>
 <p>It seems like the mismatch increases as the difference between the fluctuating volume’s R2 and the mean R2 increase.
@@ -912,14 +923,16 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/883a3bd6794e883cb7b507ae648f2f7ecc4b43437c6905a089b14cbcc4c75629.png" src="../_images/883a3bd6794e883cb7b507ae648f2f7ecc4b43437c6905a089b14cbcc4c75629.png" />
+<img alt="../_images/e69af16b8595bce40e2969300d1c0438288650c71a5dca31cd4ff8730b0d715a.png" src="../_images/e69af16b8595bce40e2969300d1c0438288650c71a5dca31cd4ff8730b0d715a.png" />
 </div>
 </details>
 </div>
-<div class="figure align-center" id="fig-fitted-r2-curves">
-<img alt="../_images/883a3bd6794e883cb7b507ae648f2f7ecc4b43437c6905a089b14cbcc4c75629.png" src="../_images/883a3bd6794e883cb7b507ae648f2f7ecc4b43437c6905a089b14cbcc4c75629.png" />
-<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Fitted curves for R2*-perturbed signal</span><a class="headerlink" href="#fig-fitted-r2-curves" title="Permalink to this image">#</a></p>
-</div>
+<figure class="align-center" id="fig-fitted-r2-curves">
+<img alt="../_images/e69af16b8595bce40e2969300d1c0438288650c71a5dca31cd4ff8730b0d715a.png" src="../_images/e69af16b8595bce40e2969300d1c0438288650c71a5dca31cd4ff8730b0d715a.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Fitted curves for R2*-perturbed signal</span><a class="headerlink" href="#fig-fitted-r2-curves" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -942,9 +955,9 @@ Kappa: 31513.966302911744
 </div>
 </details>
 </div>
-</div>
-<div class="section" id="now-let-s-apply-this-approach-to-components">
-<h2>Now let’s apply this approach to components<a class="headerlink" href="#now-let-s-apply-this-approach-to-components" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="now-let-s-apply-this-approach-to-components">
+<h2>Now let’s apply this approach to components<a class="headerlink" href="#now-let-s-apply-this-approach-to-components" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1020,14 +1033,16 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/fadff3d3f00bed776c8402a27d08df86737598b35684915e710bc1273dfbba47.png" src="../_images/fadff3d3f00bed776c8402a27d08df86737598b35684915e710bc1273dfbba47.png" />
+<img alt="../_images/0ac90f164a48a35a99d343e6bc1f3086a1580b243c8dff58e6d6e0817bf0b701.png" src="../_images/0ac90f164a48a35a99d343e6bc1f3086a1580b243c8dff58e6d6e0817bf0b701.png" />
 </div>
 </details>
 </div>
-<div class="figure align-center" id="fig-component-curves">
-<img alt="../_images/fadff3d3f00bed776c8402a27d08df86737598b35684915e710bc1273dfbba47.png" src="../_images/fadff3d3f00bed776c8402a27d08df86737598b35684915e710bc1273dfbba47.png" />
-<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Now let’s apply this approach to components</span><a class="headerlink" href="#fig-component-curves" title="Permalink to this image">#</a></p>
-</div>
+<figure class="align-center" id="fig-component-curves">
+<img alt="../_images/0ac90f164a48a35a99d343e6bc1f3086a1580b243c8dff58e6d6e0817bf0b701.png" src="../_images/0ac90f164a48a35a99d343e6bc1f3086a1580b243c8dff58e6d6e0817bf0b701.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Now let’s apply this approach to components</span><a class="headerlink" href="#fig-component-curves" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1060,14 +1075,16 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2950a6a5832b45f26b7bc6a78b97ccb3881cc9979091d053f7797145f4836d56.png" src="../_images/2950a6a5832b45f26b7bc6a78b97ccb3881cc9979091d053f7797145f4836d56.png" />
+<img alt="../_images/9a2be7d4b1848675c8dbabe0f55e9dca4e8fe0136a9f68f3436c1c90006bde24.png" src="../_images/9a2be7d4b1848675c8dbabe0f55e9dca4e8fe0136a9f68f3436c1c90006bde24.png" />
 </div>
 </details>
 </div>
-<div class="figure align-center" id="fig-component-curves-2">
-<img alt="../_images/2950a6a5832b45f26b7bc6a78b97ccb3881cc9979091d053f7797145f4836d56.png" src="../_images/2950a6a5832b45f26b7bc6a78b97ccb3881cc9979091d053f7797145f4836d56.png" />
-<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-2" title="Permalink to this image">#</a></p>
-</div>
+<figure class="align-center" id="fig-component-curves-2">
+<img alt="../_images/9a2be7d4b1848675c8dbabe0f55e9dca4e8fe0136a9f68f3436c1c90006bde24.png" src="../_images/9a2be7d4b1848675c8dbabe0f55e9dca4e8fe0136a9f68f3436c1c90006bde24.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1097,14 +1114,16 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/663eb28ae2ff8115be1da823c7db6ced45614401ce49d4f12cf21a84c6c214b4.png" src="../_images/663eb28ae2ff8115be1da823c7db6ced45614401ce49d4f12cf21a84c6c214b4.png" />
+<img alt="../_images/d2aa0556dfd02b38144a9026d5670953924b98a08a4481a2b60ae8273518571d.png" src="../_images/d2aa0556dfd02b38144a9026d5670953924b98a08a4481a2b60ae8273518571d.png" />
 </div>
 </details>
 </div>
-<div class="figure align-center" id="fig-component-curves-3">
-<img alt="../_images/663eb28ae2ff8115be1da823c7db6ced45614401ce49d4f12cf21a84c6c214b4.png" src="../_images/663eb28ae2ff8115be1da823c7db6ced45614401ce49d4f12cf21a84c6c214b4.png" />
-<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-3" title="Permalink to this image">#</a></p>
-</div>
+<figure class="align-center" id="fig-component-curves-3">
+<img alt="../_images/d2aa0556dfd02b38144a9026d5670953924b98a08a4481a2b60ae8273518571d.png" src="../_images/d2aa0556dfd02b38144a9026d5670953924b98a08a4481a2b60ae8273518571d.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1135,17 +1154,19 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9e519e0cdd78cb3ce85d4145e3ae785433d7e6044ccd84b4cc6281e6328771f9.png" src="../_images/9e519e0cdd78cb3ce85d4145e3ae785433d7e6044ccd84b4cc6281e6328771f9.png" />
+<img alt="../_images/d9989102e09306c4ed47fd597b452e51f7282df879b95f17512557368096c6cc.png" src="../_images/d9989102e09306c4ed47fd597b452e51f7282df879b95f17512557368096c6cc.png" />
 </div>
 </details>
 </div>
-<div class="figure align-center" id="fig-component-curves-4">
-<img alt="../_images/9e519e0cdd78cb3ce85d4145e3ae785433d7e6044ccd84b4cc6281e6328771f9.png" src="../_images/9e519e0cdd78cb3ce85d4145e3ae785433d7e6044ccd84b4cc6281e6328771f9.png" />
-<p class="caption"><span class="caption-number">Fig. 19 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-4" title="Permalink to this image">#</a></p>
-</div>
+<figure class="align-center" id="fig-component-curves-4">
+<img alt="../_images/d9989102e09306c4ed47fd597b452e51f7282df879b95f17512557368096c6cc.png" src="../_images/d9989102e09306c4ed47fd597b452e51f7282df879b95f17512557368096c6cc.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="proof algorithm admonition" id="minimum-image-regression">
 <p class="admonition-title"><span class="caption-number">Algorithm 1 </span> (Minimum image regression)</p>
-<div class="algorithm-content section" id="proof-content">
+<section class="algorithm-content" id="proof-content">
 <!-- Written by Taylor Salo, Jessica Bartley, and Elizabeth DuPre -->
 <p><strong>Inputs</strong></p>
 <ul class="simple">
@@ -1278,9 +1299,9 @@ each component’s time series. Let <span class="math notranslate nohighlight">\
     \]</div>
 </li>
 </ol>
-</div>
-</div></div>
-</div>
+</section>
+</div></section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1338,6 +1359,7 @@ each component’s time series. Let <span class="math notranslate nohighlight">\
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1400,8 +1422,8 @@ By The tedana community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

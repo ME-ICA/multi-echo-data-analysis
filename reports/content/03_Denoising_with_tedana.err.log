@@ -1,17 +1,17 @@
 Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/client.py", line 1305, in execute
+  File "/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nbclient/client.py", line 1314, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+  File "/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
-  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+  File "/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
     return future.result()
-  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/client.py", line 705, in async_execute
+  File "/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/client.py", line 1058, in async_execute_cell
+  File "/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nbclient/client.py", line 914, in _check_raise_for_error
+  File "/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
@@ -103,6 +103,9 @@ INFO     collect:generate_metrics:314 Calculating decision table score
 ----- stderr -----
 INFO     pca:tedpca:397 Selected 46 components with 76.18% normalized variance explained using mdl dimensionality estimate
 ----- stderr -----
+/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/tedana/io.py:346: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  deblanked = data.replace("", np.nan)
+----- stderr -----
 INFO     ica:tedica:80 ICA with random seed 42 converged in 91 iterations
 ----- stderr -----
 INFO     collect:generate_metrics:121 Calculating weight maps
@@ -169,7 +172,7 @@ INFO     selection_utils:log_classification_counts:451 Step 2: Total component c
 ----- stderr -----
 INFO     selection_nodes:calc_median:653 Step 3: calc_median: Median(median_varex)
 ----- stderr -----
-INFO     selection_utils:log_decision_tree_step:418 Step 3: calc_median calculated: median_varex=0.544933448507172
+INFO     selection_utils:log_decision_tree_step:418 Step 3: calc_median calculated: median_varex=0.5449334485072186
 ----- stderr -----
 INFO     selection_utils:log_classification_counts:451 Step 3: Total component classifications: 22 rejected, 24 unclassified
 ----- stderr -----
@@ -189,7 +192,7 @@ INFO     selection_nodes:calc_kappa_elbow:757 Step 6: calc_kappa_elbow: Calc Kap
 ----- stderr -----
 INFO     selection_utils:kappa_elbow_kundu:621 Calculating kappa elbow based on min of all and nonsig components.
 ----- stderr -----
-INFO     selection_utils:log_decision_tree_step:418 Step 6: calc_kappa_elbow calculated: kappa_elbow_kundu=21.277964952353926, kappa_allcomps_elbow=40.1214389679341, kappa_nonsig_elbow=21.277964952353926, varex_upper_p=0.7802353000706737
+INFO     selection_utils:log_decision_tree_step:418 Step 6: calc_kappa_elbow calculated: kappa_elbow_kundu=21.277964952355223, kappa_allcomps_elbow=40.1214389679082, kappa_nonsig_elbow=21.277964952355223, varex_upper_p=0.7802353000706743
 ----- stderr -----
 INFO     selection_utils:log_classification_counts:451 Step 6: Total component classifications: 26 rejected, 20 unclassified
 ----- stderr -----
@@ -201,7 +204,7 @@ INFO     selection_utils:log_classification_counts:451 Step 7: Total component c
 ----- stderr -----
 INFO     selection_nodes:calc_rho_elbow:882 Step 8: calc_rho_elbow: Calc Rho Elbow
 ----- stderr -----
-INFO     selection_utils:log_decision_tree_step:418 Step 8: calc_rho_elbow calculated: rho_elbow_kundu=17.939325466584197, rho_allcomps_elbow=27.779814570576402, rho_unclassified_elbow=15.91019734316226, elbow_f05=10.127964486013928
+INFO     selection_utils:log_decision_tree_step:418 Step 8: calc_rho_elbow calculated: rho_elbow_kundu=17.93932546658279, rho_allcomps_elbow=27.779814570572192, rho_unclassified_elbow=15.910197343162249, elbow_f05=10.127964486013928
 ----- stderr -----
 INFO     selection_utils:log_classification_counts:451 Step 8: Total component classifications: 26 rejected, 2 unclass_highvar, 18 unclassified
 ----- stderr -----
@@ -227,13 +230,13 @@ INFO     selection_utils:log_classification_counts:451 Step 11: Total component 
 ----- stderr -----
 INFO     selection_nodes:calc_varex_thresh:1308 Step 12: calc_varex_thresh: Calc varex_upper_thresh, 90th percentile threshold
 ----- stderr -----
-INFO     selection_utils:log_decision_tree_step:418 Step 12: calc_varex_thresh calculated: varex_upper_thresh=0.8908095307208379, upper_perc=90
+INFO     selection_utils:log_decision_tree_step:418 Step 12: calc_varex_thresh calculated: varex_upper_thresh=0.8908095307208492, upper_perc=90
 ----- stderr -----
 INFO     selection_utils:log_classification_counts:451 Step 12: Total component classifications: 9 provisionalaccept, 26 rejected, 2 unclass_highvar, 9 unclassified
 ----- stderr -----
 INFO     selection_nodes:calc_varex_thresh:1308 Step 13: calc_varex_thresh: Calc varex_lower_thresh, 25th percentile threshold
 ----- stderr -----
-INFO     selection_utils:log_decision_tree_step:418 Step 13: calc_varex_thresh calculated: varex_lower_thresh=0.32109341064131836, lower_perc=25
+INFO     selection_utils:log_decision_tree_step:418 Step 13: calc_varex_thresh calculated: varex_lower_thresh=0.32109341064129754, lower_perc=25
 ----- stderr -----
 INFO     selection_utils:log_classification_counts:451 Step 13: Total component classifications: 9 provisionalaccept, 26 rejected, 2 unclass_highvar, 9 unclassified
 ----- stderr -----
@@ -247,7 +250,7 @@ INFO     selection_utils:log_decision_tree_step:418 Step 15: calc_max_good_meanm
 ----- stderr -----
 INFO     selection_utils:log_classification_counts:451 Step 15: Total component classifications: 9 provisionalaccept, 26 rejected, 2 unclass_highvar, 9 unclassified
 ----- stderr -----
-INFO     selection_utils:log_decision_tree_step:418 Step 16: calc_varex_kappa_ratio calculated: kappa_rate=75.59581211808485
+INFO     selection_utils:log_decision_tree_step:418 Step 16: calc_varex_kappa_ratio calculated: kappa_rate=75.59581211806685
 ----- stderr -----
 INFO     selection_utils:log_classification_counts:451 Step 16: Total component classifications: 9 provisionalaccept, 26 rejected, 2 unclass_highvar, 9 unclassified
 ----- stderr -----
@@ -301,7 +304,7 @@ INFO     selection_utils:log_classification_counts:451 Step 22: Total component 
 ----- stderr -----
 INFO     selection_nodes:calc_varex_thresh:1308 Step 23: calc_varex_thresh: Calc varex_new_lower_thresh, 25th percentile threshold
 ----- stderr -----
-INFO     selection_utils:log_decision_tree_step:418 Step 23: calc_varex_thresh calculated: varex_new_lower_thresh=0.3375094883119395, new_lower_perc=25
+INFO     selection_utils:log_decision_tree_step:418 Step 23: calc_varex_thresh calculated: varex_new_lower_thresh=0.33750948831195976, new_lower_perc=25
 ----- stderr -----
 INFO     selection_utils:log_classification_counts:451 Step 23: Total component classifications: 5 accepted, 9 provisionalaccept, 30 rejected, 2 unclassified
 ----- stderr -----
@@ -407,7 +410,7 @@ Cell [0;32mIn[3], line 1[0m
 [1;32m     10[0m [43m    [49m[43mgscontrol[49m[38;5;241;43m=[39;49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mmir[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m
 [1;32m     11[0m [43m)[49m
 
-File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/tedana/workflows/tedana.py:906[0m, in [0;36mtedana_workflow[0;34m(data, tes, out_dir, mask, convention, prefix, fittype, combmode, tree, tedpca, fixed_seed, maxit, maxrestart, tedort, gscontrol, no_reports, png_cmap, verbose, low_mem, debug, quiet, overwrite, t2smap, mixm, tedana_command)[0m
+File [0;32m/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/tedana/workflows/tedana.py:906[0m, in [0;36mtedana_workflow[0;34m(data, tes, out_dir, mask, convention, prefix, fittype, combmode, tree, tedpca, fixed_seed, maxit, maxrestart, tedort, gscontrol, no_reports, png_cmap, verbose, low_mem, debug, quiet, overwrite, t2smap, mixm, tedana_command)[0m
 [1;32m    889[0m reporting[38;5;241m.[39mstatic_figures[38;5;241m.[39mcarpet_plot(
 [1;32m    890[0m     optcom_ts[38;5;241m=[39mdata_oc,
 [1;32m    891[0m     denoised_ts[38;5;241m=[39mdn_ts,
@@ -424,7 +427,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/t
 [1;32m    908[0m LGR[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124mGenerating dynamic report[39m[38;5;124m"[39m)
 [1;32m    909[0m reporting[38;5;241m.[39mgenerate_report(io_generator)
 
-File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/tedana/reporting/static_figures.py:593[0m, in [0;36mplot_t2star_and_s0[0;34m(io_generator, mask)[0m
+File [0;32m/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/tedana/reporting/static_figures.py:593[0m, in [0;36mplot_t2star_and_s0[0;34m(io_generator, mask)[0m
 [1;32m    591[0m [38;5;66;03m# Plot T2* and S0 maps[39;00m
 [1;32m    592[0m t2star_plot [38;5;241m=[39m [38;5;124mf[39m[38;5;124m"[39m[38;5;132;01m{[39;00mio_generator[38;5;241m.[39mprefix[38;5;132;01m}[39;00m[38;5;124mt2star_brain.svg[39m[38;5;124m"[39m
 [0;32m--> 593[0m [43mplotting[49m[38;5;241;43m.[39;49m[43mplot_stat_map[49m[43m([49m
@@ -447,7 +450,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/t
 [1;32m    617[0m     output_file[38;5;241m=[39mos[38;5;241m.[39mpath[38;5;241m.[39mjoin(io_generator[38;5;241m.[39mout_dir, [38;5;124m"[39m[38;5;124mfigures[39m[38;5;124m"[39m, s0_plot),
 [1;32m    618[0m )
 
-File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nilearn/plotting/img_plotting.py:934[0m, in [0;36mplot_stat_map[0;34m(stat_map_img, bg_img, cut_coords, output_file, display_mode, colorbar, cbar_tick_format, figure, axes, title, threshold, annotate, draw_cross, black_bg, cmap, symmetric_cbar, dim, vmax, resampling_interpolation, **kwargs)[0m
+File [0;32m/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nilearn/plotting/img_plotting.py:934[0m, in [0;36mplot_stat_map[0;34m(stat_map_img, bg_img, cut_coords, output_file, display_mode, colorbar, cbar_tick_format, figure, axes, title, threshold, annotate, draw_cross, black_bg, cmap, symmetric_cbar, dim, vmax, resampling_interpolation, **kwargs)[0m
 [1;32m    929[0m bg_img, black_bg, bg_vmin, bg_vmax [38;5;241m=[39m _load_anat(bg_img, dim[38;5;241m=[39mdim,
 [1;32m    930[0m                                                 black_bg[38;5;241m=[39mblack_bg)
 [1;32m    932[0m stat_map_img [38;5;241m=[39m _utils[38;5;241m.[39mcheck_niimg_3d(stat_map_img, dtype[38;5;241m=[39m[38;5;124m'[39m[38;5;124mauto[39m[38;5;124m'[39m)
@@ -464,7 +467,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/n
 [1;32m    948[0m     resampling_interpolation[38;5;241m=[39mresampling_interpolation, [38;5;241m*[39m[38;5;241m*[39mkwargs)
 [1;32m    950[0m [38;5;28;01mreturn[39;00m display
 
-File [0;32m/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nilearn/plotting/img_plotting.py:76[0m, in [0;36m_get_colorbar_and_data_ranges[0;34m(stat_map_data, vmax, symmetric_cbar, kwargs, force_min_stat_map_value)[0m
+File [0;32m/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nilearn/plotting/img_plotting.py:76[0m, in [0;36m_get_colorbar_and_data_ranges[0;34m(stat_map_data, vmax, symmetric_cbar, kwargs, force_min_stat_map_value)[0m
 [1;32m     66[0m [38;5;250m[39m[38;5;124;03m"""Internal function for setting colormap and colorbar limits.[39;00m
 [1;32m     67[0m 
 [1;32m     68[0m [38;5;124;03mUsed by for plot_stat_map and plot_glass_brain.[39;00m
