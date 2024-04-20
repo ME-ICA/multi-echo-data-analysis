@@ -14,7 +14,7 @@ kernelspec:
 # Denoising Data with ICA
 
 ICA classification methods like `tedana` will produce two important outputs: component time series and component classifications.
-The component classifications will indicate whether each componet is "good" (accepted) or "bad" (rejected).
+The component classifications will indicate whether each component is "good" (accepted) or "bad" (rejected).
 To remove noise from your data, you can regress the "bad" components out of it, though there are multiple methods to accomplish this.
 
 Let's start by loading the necessary data.
