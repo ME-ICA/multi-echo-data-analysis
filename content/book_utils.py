@@ -1,4 +1,5 @@
 """Utility functions for the JupyterBook."""
+
 import numpy as np
 from nilearn import image, masking
 
@@ -95,7 +96,7 @@ def predict_bold_signal(echo_times, s0, t2s):
         Echo times for which to predict data, in milliseconds.
     s0 : numpy.ndarray of shape (time,)
         S0 time series.
-    t2s : numpy.ndarray of shpae (time,)
+    t2s : numpy.ndarray of shape (time,)
         T2* time series.
 
     Returns

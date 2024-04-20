@@ -80,7 +80,7 @@ Accessing this dataset requires a data access application.
 
 **Link**: https://doi.org/10.34894/R1TNL8
 
-**Citation**: {cite:t}`HEUNIS2021118244`
+**Citation**: {cite:t}`heunis2021effects`
 
 **Brief Description**: 28 participants, with one run of resting-state,
 one run of emotion-processing task, one run of imagined emotion-processing task,

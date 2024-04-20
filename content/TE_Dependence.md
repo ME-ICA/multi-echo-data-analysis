@@ -423,8 +423,15 @@ mean_s0 = 16000
 s0_std = mean_s0 * frac
 
 # simulate the T2*/S0 time series
-t2s_ts = np.random.normal(loc=mean_t2s, scale=t2s_std, size=(n_trs + 20,))
-t2s_ts = signal.convolve(t2s_ts, hrf)[20 : n_trs + 20]
+scales = np.random.random(5) * 3
+t2s_ts = []
+for section in range(10):
+    ts = np.hstack((np.zeros(10), np.ones(20), np.zeros(10)))
+    ts *= scales[section]
+    t2s_ts.append(ts)
+
+t2s_ts = np.hstack(t2s_ts)[:n_trs + 20]
+t2s_ts = signal.convolve(t2s_ts, hrf)[:n_trs]
 t2s_ts *= t2s_std / np.std(t2s_ts)
 t2s_ts += mean_t2s - np.mean(t2s_ts)
 
