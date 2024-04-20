@@ -140,8 +140,9 @@ For typically used parameters see the **ME-fMRI parameters** section below.
 
 It is possible to retain phase data when reconstructing multi-echo fMRI data.
 The phase data may be leveraged for a number of useful denoising and processing methods,
-including NORDIC {cite:p}`vizioli2021lowering,dowdle2021nordic,dowdle2023evaluating`
-and MEDIC dynamic distortion correction {cite:p}`van2023framewise`.
+including NORDIC {cite:p}`vizioli2021lowering,dowdle2021nordic,dowdle2023evaluating`,
+MEDIC dynamic distortion correction {cite:p}`van2023framewise`,
+and improved T2* estimation {cite:p}`cohen2012t2`.
 
 It's important to remember that retaining phase data for each echo will effectively double the
 amount of data you end up with.
