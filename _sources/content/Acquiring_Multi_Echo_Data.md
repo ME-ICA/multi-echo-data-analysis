@@ -87,8 +87,7 @@ used as an input to many functions in the tedana workflow.
 
 There are many ways to calculate T2* maps, with some using multi-echo acquisitions.
 We are not presenting an expansive review of this literature here,
-but [Cohen-Adad et al. (2012)](https://doi.org/10.1016/j.neuroimage.2012.01.053)
-and [Ruuth et al. (2019)](https://doi.org/10.1016/j.ejro.2018.12.006) are good places to start
+but {cite:t}`cohen2012t2` and {cite:t}`ruuth2019comparison` are good places to start
 learning more about this topic.
 
 ## Acquisition parameter recommendations
@@ -107,8 +106,8 @@ TE one would use for single-echo T2* weighted fMRI.
 
 ```{note}
 This is in contrast to the **dual echo** denoising method which uses a very early (~5ms)
-first echo in order to clean data. For more information on this method, see
-[Bright and Murphy (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3518782/).
+first echo in order to clean data.
+For more information on this method, see {cite:t}`bright2013removing`.
 ```
 
 More than 3 echoes may be useful, because that would allow for more accurate
@@ -124,13 +123,36 @@ We suggest new multi-echo fMRI users examine the :ref:`spreadsheet of publicatio
 multi-echo fMRI to identify studies with similar acquisition priorities,
 and use the parameters from those studies as a starting point.
 More complete recommendations and guidelines are discussed in the
-[appendix of Dipasquale et al. (2017)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173289).
+appendix of {cite:t}`dipasquale2017comparing`.
 
 ```{note}
 In order to increase the number of contrasts ("echoes") you may need to first increase the TR, shorten the
 first TE and/or enable in-plane acceleration.
 For typically used parameters see the **ME-fMRI parameters** section below.
 ```
+
+
+## Additional considerations
+
+
+### Complex reconstruction
+
+It is possible to retain phase data when reconstructing multi-echo fMRI data.
+The phase data may be leveraged for a number of useful denoising and processing methods,
+including NORDIC {cite:p}`vizioli2021lowering;dowdle2021nordic;dowdle2023evaluating`
+and MEDIC dynamic distortion correction {cite:p}`van2023framewise`.
+
+It's important to remember that retaining phase data for each echo will effectively double the
+amount of data you end up with.
+This can also cause problems with online reconstruction,
+for example with Siemens machines running XA30.
+
+
+### No-excitation-pulse noise volumes
+
+In order to best use NORDIC,
+researchers should acquire no-RF noise volumes at the end of their fMRI runs.
+
 
 ## ME-fMRI parameters
 

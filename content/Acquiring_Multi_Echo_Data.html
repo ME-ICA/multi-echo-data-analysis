@@ -464,6 +464,11 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-available-multi-echo-mri-sequences">Other available multi-echo MRI sequences</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acquisition-parameter-recommendations">Acquisition parameter recommendations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-considerations">Additional considerations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complex-reconstruction">Complex reconstruction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-excitation-pulse-noise-volumes">No-excitation-pulse noise volumes</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#me-fmri-parameters">ME-fMRI parameters</a></li>
 </ul>
             </nav>
@@ -549,8 +554,7 @@ accurate T2* map should lead to better results, this hasn’t been
 systematically evaluated yet.</p>
 <p>There are many ways to calculate T2* maps, with some using multi-echo acquisitions.
 We are not presenting an expansive review of this literature here,
-but <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2012.01.053">Cohen-Adad et al. (2012)</a>
-and <a class="reference external" href="https://doi.org/10.1016/j.ejro.2018.12.006">Ruuth et al. (2019)</a> are good places to start
+but <span id="id1">Cohen-Adad <em>et al.</em> [<a class="reference internal" href="bibliography.html#id16" title="Julien Cohen-Adad, Jonathan R Polimeni, Karl G Helmer, Thomas Benner, Jennifer A McNab, Lawrence L Wald, Bruce R Rosen, and Caterina Mainero. T2* mapping and b0 orientation-dependence at 7 t reveal cyto-and myeloarchitecture organization of the human cortex. Neuroimage, 60(2):1006–1014, 2012.">2012</a>]</span> and <span id="id2">Ruuth <em>et al.</em> [<a class="reference internal" href="bibliography.html#id17" title="Riikka Ruuth, Linda Kuusela, Teemu Mäkelä, Susanna Melkas, and Antti Korvenoja. Comparison of reconstruction and acquisition choices for quantitative t2* maps and synthetic contrasts. European journal of radiology open, 6:42–48, 2019.">2019</a>]</span> are good places to start
 learning more about this topic.</p>
 </div>
 <div class="section" id="acquisition-parameter-recommendations">
@@ -568,8 +572,8 @@ TE one would use for single-echo T2* weighted fMRI.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is in contrast to the <strong>dual echo</strong> denoising method which uses a very early (~5ms)
-first echo in order to clean data. For more information on this method, see
-<a class="reference external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3518782/">Bright and Murphy (2013)</a>.</p>
+first echo in order to clean data.
+For more information on this method, see <span id="id3">Bright and Murphy [<a class="reference internal" href="bibliography.html#id18" title="Molly G Bright and Kevin Murphy. Removing motion and physiological artifacts from intrinsic bold fluctuations using short echo data. Neuroimage, 64:526–537, 2013.">2013</a>]</span>.</p>
 </div>
 <p>More than 3 echoes may be useful, because that would allow for more accurate
 estimates of BOLD and non-BOLD weighted fluctuations, but more echoes have an
@@ -583,12 +587,31 @@ We suggest new multi-echo fMRI users examine the :ref:<code class="docutils lite
 multi-echo fMRI to identify studies with similar acquisition priorities,
 and use the parameters from those studies as a starting point.
 More complete recommendations and guidelines are discussed in the
-<a class="reference external" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173289">appendix of Dipasquale et al. (2017)</a>.</p>
+appendix of <span id="id4">Dipasquale <em>et al.</em> [<a class="reference internal" href="bibliography.html#id19" title="Ottavia Dipasquale, Arjun Sethi, Maria Marcella Laganà, Francesca Baglio, Giuseppe Baselli, Prantik Kundu, Neil A Harrison, and Mara Cercignani. Comparing resting state fmri de-noising approaches using multi-and single-echo acquisitions. PloS one, 12(3):e0173289, 2017.">2017</a>]</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In order to increase the number of contrasts (“echoes”) you may need to first increase the TR, shorten the
 first TE and/or enable in-plane acceleration.
 For typically used parameters see the <strong>ME-fMRI parameters</strong> section below.</p>
+</div>
+</div>
+<div class="section" id="additional-considerations">
+<h2>Additional considerations<a class="headerlink" href="#additional-considerations" title="Permalink to this heading">#</a></h2>
+<div class="section" id="complex-reconstruction">
+<h3>Complex reconstruction<a class="headerlink" href="#complex-reconstruction" title="Permalink to this heading">#</a></h3>
+<p>It is possible to retain phase data when reconstructing multi-echo fMRI data.
+The phase data may be leveraged for a number of useful denoising and processing methods,
+including NORDIC <span id="id5">[]</span>
+and MEDIC dynamic distortion correction <span id="id6">[<a class="reference internal" href="bibliography.html#id25" title="Andrew N Van, David F Montez, Timothy O Laumann, Vahdeta Suljic, Thomas Madison, Noah J Baden, Nadeshka Ramirez-Perez, Kristen M Scheidter, Julia S Monk, Forrest I Whiting, and others. Framewise multi-echo distortion correction for superior functional mri. Biorxiv, 2023.">Van <em>et al.</em>, 2023</a>]</span>.</p>
+<p>It’s important to remember that retaining phase data for each echo will effectively double the
+amount of data you end up with.
+This can also cause problems with online reconstruction,
+for example with Siemens machines running XA30.</p>
+</div>
+<div class="section" id="no-excitation-pulse-noise-volumes">
+<h3>No-excitation-pulse noise volumes<a class="headerlink" href="#no-excitation-pulse-noise-volumes" title="Permalink to this heading">#</a></h3>
+<p>In order to best use NORDIC,
+researchers should acquire no-RF noise volumes at the end of their fMRI runs.</p>
 </div>
 </div>
 <div class="section" id="me-fmri-parameters">
@@ -646,7 +669,7 @@ You can see the spreadsheet of publications at
 <div class="cell_output docutils container">
 <img alt="../_images/15bfc8783a59521224a65d8b5bb623154f98f8ccfd84bdf3d2c0ff0f2b9f2b71.png" src="../_images/15bfc8783a59521224a65d8b5bb623154f98f8ccfd84bdf3d2c0ff0f2b9f2b71.png" />
 <img alt="../_images/59eab0ce2420df70da139db85d7fed15e0ec5a1e57cbdd87d875b29a42279bcb.png" src="../_images/59eab0ce2420df70da139db85d7fed15e0ec5a1e57cbdd87d875b29a42279bcb.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2048/3298299946.py:36: RuntimeWarning: Mean of empty slice
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2013/3298299946.py:36: RuntimeWarning: Mean of empty slice
   plt.hist(np.nanmean([x_vox, y_vox, z_vox], 0))
 </pre></div>
 </div>
@@ -727,6 +750,11 @@ You can see the spreadsheet of publications at
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-available-multi-echo-mri-sequences">Other available multi-echo MRI sequences</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acquisition-parameter-recommendations">Acquisition parameter recommendations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-considerations">Additional considerations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complex-reconstruction">Complex reconstruction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-excitation-pulse-noise-volumes">No-excitation-pulse noise volumes</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#me-fmri-parameters">ME-fMRI parameters</a></li>
 </ul>
   </nav></div>
