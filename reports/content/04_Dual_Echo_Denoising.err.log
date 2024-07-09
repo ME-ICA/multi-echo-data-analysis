@@ -53,20 +53,22 @@ File [0;32m~/work/multi-echo-data-analysis/multi-echo-data-analysis/content/boo
 [1;32m     16[0m     avg_img[38;5;241m=[39mmean_data_img,
 [1;32m     17[0m )
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nilearn/image/image.py:531[0m, in [0;36mmean_img[0;34m(imgs, target_affine, target_shape, verbose, n_jobs)[0m
-[1;32m    528[0m     imgs [38;5;241m=[39m [imgs, ]
-[1;32m    530[0m imgs_iter [38;5;241m=[39m [38;5;28miter[39m(imgs)
-[0;32m--> 531[0m first_img [38;5;241m=[39m [43mcheck_niimg[49m[43m([49m[38;5;28;43mnext[39;49m[43m([49m[43mimgs_iter[49m[43m)[49m[43m)[49m
-[1;32m    533[0m [38;5;66;03m# Compute the first mean to retrieve the reference[39;00m
-[1;32m    534[0m [38;5;66;03m# target_affine and target_shape if_needed[39;00m
-[1;32m    535[0m n_imgs [38;5;241m=[39m [38;5;241m1[39m
+File [0;32m/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nilearn/image/image.py:548[0m, in [0;36mmean_img[0;34m(imgs, target_affine, target_shape, verbose, n_jobs)[0m
+[1;32m    543[0m     imgs [38;5;241m=[39m [
+[1;32m    544[0m         imgs,
+[1;32m    545[0m     ]
+[1;32m    547[0m imgs_iter [38;5;241m=[39m [38;5;28miter[39m(imgs)
+[0;32m--> 548[0m first_img [38;5;241m=[39m [43mcheck_niimg[49m[43m([49m[38;5;28;43mnext[39;49m[43m([49m[43mimgs_iter[49m[43m)[49m[43m)[49m
+[1;32m    550[0m [38;5;66;03m# Compute the first mean to retrieve the reference[39;00m
+[1;32m    551[0m [38;5;66;03m# target_affine and target_shape if_needed[39;00m
+[1;32m    552[0m n_imgs [38;5;241m=[39m [38;5;241m1[39m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:271[0m, in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
-[1;32m    269[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
-[1;32m    270[0m     [38;5;28;01melse[39;00m:
-[0;32m--> 271[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m%s[39;00m[38;5;124m'[39m[38;5;124m"[39m [38;5;241m%[39m niimg)
-[1;32m    272[0m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(niimg):
-[1;32m    273[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m%s[39;00m[38;5;124m'[39m[38;5;124m"[39m [38;5;241m%[39m niimg)
+File [0;32m/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300[0m, in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+[1;32m    298[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
+[1;32m    299[0m     [38;5;28;01melse[39;00m:
+[0;32m--> 300[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m"[39m)
+[1;32m    301[0m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(niimg):
+[1;32m    302[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m"[39m)
 
 [0;31mValueError[0m: File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz'
 
