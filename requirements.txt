@@ -12,4 +12,4 @@ sphinx-inline-tabs
 sphinx-jupyterbook-latex
 sphinx-proof
 sphinxcontrib-bibtex
-tedana==24.0.1
+tedana==24.0.2
