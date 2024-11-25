@@ -4,7 +4,7 @@ jupytext
 matplotlib
 myst_nb
 nitransforms
-repo2data==2.9.6
+repo2data==2.9.7
 pyspfm==0.0.3
 seaborn
 sphinx>=4
