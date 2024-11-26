@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -39,10 +41,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -70,6 +73,7 @@
     <link rel="prev" title="Processing Multi-Echo Data" href="Processing_Multi_Echo_Data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -85,19 +89,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -105,7 +98,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -113,8 +105,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -130,7 +122,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -160,21 +153,17 @@
     
     
     <img src="../_static/logo.png" class="logo__image only-light" alt="Multi-Echo fMRI Data Analysis - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Multi-Echo fMRI Data Analysis - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Multi-Echo fMRI Data Analysis - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -427,24 +416,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -581,94 +562,91 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:   0%|          | 0/2224 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:   3%|▎         | 56/2224 [00:00&lt;00:03, 556.64it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:   3%|▎         | 57/2224 [00:00&lt;00:03, 568.98it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:   6%|▌         | 133/2224 [00:00&lt;00:03, 678.73it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:   6%|▌         | 135/2224 [00:00&lt;00:03, 692.82it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  10%|▉         | 212/2224 [00:00&lt;00:02, 726.28it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  10%|▉         | 215/2224 [00:00&lt;00:02, 741.32it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  13%|█▎        | 290/2224 [00:00&lt;00:02, 742.82it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  13%|█▎        | 296/2224 [00:00&lt;00:02, 766.47it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  16%|█▋        | 365/2224 [00:00&lt;00:02, 740.70it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  17%|█▋        | 374/2224 [00:00&lt;00:02, 769.78it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  20%|█▉        | 444/2224 [00:00&lt;00:02, 753.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  20%|██        | 455/2224 [00:00&lt;00:02, 782.02it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  24%|██▎       | 523/2224 [00:00&lt;00:02, 761.47it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  24%|██▍       | 535/2224 [00:00&lt;00:02, 785.00it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  27%|██▋       | 600/2224 [00:00&lt;00:02, 754.52it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  28%|██▊       | 614/2224 [00:00&lt;00:02, 777.28it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  30%|███       | 677/2224 [00:00&lt;00:02, 755.99it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  31%|███       | 692/2224 [00:00&lt;00:01, 774.32it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  34%|███▍      | 753/2224 [00:01&lt;00:01, 750.42it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  35%|███▍      | 770/2224 [00:01&lt;00:01, 766.49it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  37%|███▋      | 832/2224 [00:01&lt;00:01, 760.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  38%|███▊      | 848/2224 [00:01&lt;00:01, 768.96it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  41%|████      | 909/2224 [00:01&lt;00:01, 761.68it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  42%|████▏     | 926/2224 [00:01&lt;00:01, 770.00it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  44%|████▍     | 986/2224 [00:01&lt;00:01, 761.38it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  45%|████▌     | 1004/2224 [00:01&lt;00:01, 768.86it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  48%|████▊     | 1063/2224 [00:01&lt;00:01, 758.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  49%|████▊     | 1084/2224 [00:01&lt;00:01, 776.46it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  51%|█████     | 1139/2224 [00:01&lt;00:01, 748.64it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  52%|█████▏    | 1162/2224 [00:01&lt;00:01, 768.33it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  55%|█████▍    | 1214/2224 [00:01&lt;00:01, 746.71it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  56%|█████▌    | 1241/2224 [00:01&lt;00:01, 772.86it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  58%|█████▊    | 1290/2224 [00:01&lt;00:01, 748.62it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  59%|█████▉    | 1319/2224 [00:01&lt;00:01, 773.26it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  61%|██████▏   | 1365/2224 [00:01&lt;00:01, 741.09it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  63%|██████▎   | 1397/2224 [00:01&lt;00:01, 771.84it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  65%|██████▍   | 1440/2224 [00:01&lt;00:01, 736.86it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  66%|██████▋   | 1475/2224 [00:01&lt;00:00, 772.90it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  68%|██████▊   | 1517/2224 [00:02&lt;00:00, 746.38it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  70%|██████▉   | 1553/2224 [00:02&lt;00:00, 765.46it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  72%|███████▏  | 1597/2224 [00:02&lt;00:00, 760.52it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  73%|███████▎  | 1632/2224 [00:02&lt;00:00, 771.66it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  75%|███████▌  | 1674/2224 [00:02&lt;00:00, 758.72it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  77%|███████▋  | 1710/2224 [00:02&lt;00:00, 769.59it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  79%|███████▊  | 1750/2224 [00:02&lt;00:00, 758.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  80%|████████  | 1788/2224 [00:02&lt;00:00, 771.92it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  82%|████████▏ | 1826/2224 [00:02&lt;00:00, 757.63it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  84%|████████▍ | 1869/2224 [00:02&lt;00:00, 780.59it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  86%|████████▌ | 1905/2224 [00:02&lt;00:00, 765.07it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  88%|████████▊ | 1950/2224 [00:02&lt;00:00, 786.98it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  89%|████████▉ | 1983/2224 [00:02&lt;00:00, 768.13it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  91%|█████████ | 2029/2224 [00:02&lt;00:00, 781.29it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  93%|█████████▎| 2060/2224 [00:02&lt;00:00, 759.27it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  95%|█████████▍| 2108/2224 [00:02&lt;00:00, 779.48it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  96%|█████████▌| 2136/2224 [00:02&lt;00:00, 749.11it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  98%|█████████▊| 2186/2224 [00:02&lt;00:00, 765.70it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential:  99%|█████████▉| 2211/2224 [00:02&lt;00:00, 749.18it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential: 100%|██████████| 2224/2224 [00:02&lt;00:00, 749.24it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-echo monoexponential: 100%|██████████| 2224/2224 [00:02&lt;00:00, 767.85it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -677,70 +655,70 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:   0%|          | 0/1092 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:   4%|▍         | 47/1092 [00:00&lt;00:02, 465.01it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:   4%|▍         | 48/1092 [00:00&lt;00:02, 473.50it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:   9%|▊         | 95/1092 [00:00&lt;00:02, 470.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:   9%|▉         | 98/1092 [00:00&lt;00:02, 484.00it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  13%|█▎        | 147/1092 [00:00&lt;00:01, 489.47it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  14%|█▎        | 150/1092 [00:00&lt;00:01, 500.23it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  18%|█▊        | 198/1092 [00:00&lt;00:01, 494.36it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  19%|█▊        | 203/1092 [00:00&lt;00:01, 506.27it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  23%|██▎       | 248/1092 [00:00&lt;00:01, 495.88it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  23%|██▎       | 255/1092 [00:00&lt;00:01, 508.12it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  27%|██▋       | 298/1092 [00:00&lt;00:01, 492.07it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  28%|██▊       | 306/1092 [00:00&lt;00:01, 503.98it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  32%|███▏      | 348/1092 [00:00&lt;00:01, 487.45it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  33%|███▎      | 357/1092 [00:00&lt;00:01, 501.42it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  36%|███▋      | 397/1092 [00:00&lt;00:01, 485.11it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  37%|███▋      | 408/1092 [00:00&lt;00:01, 493.54it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  41%|████      | 449/1092 [00:00&lt;00:01, 493.57it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  42%|████▏     | 459/1092 [00:00&lt;00:01, 494.58it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  46%|████▌     | 499/1092 [00:01&lt;00:01, 494.50it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  47%|████▋     | 510/1092 [00:01&lt;00:01, 496.85it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  50%|█████     | 549/1092 [00:01&lt;00:01, 493.56it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  51%|█████▏    | 561/1092 [00:01&lt;00:01, 497.86it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  55%|█████▍    | 599/1092 [00:01&lt;00:01, 483.04it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  56%|█████▌    | 611/1092 [00:01&lt;00:00, 490.78it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  60%|█████▉    | 651/1092 [00:01&lt;00:00, 493.72it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  61%|██████    | 664/1092 [00:01&lt;00:00, 500.32it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  64%|██████▍   | 701/1092 [00:01&lt;00:00, 491.04it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  65%|██████▌   | 715/1092 [00:01&lt;00:00, 492.44it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  69%|██████▉   | 751/1092 [00:01&lt;00:00, 483.55it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  70%|███████   | 765/1092 [00:01&lt;00:00, 490.45it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  73%|███████▎  | 800/1092 [00:01&lt;00:00, 481.33it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  75%|███████▍  | 815/1092 [00:01&lt;00:00, 490.66it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  78%|███████▊  | 850/1092 [00:01&lt;00:00, 485.46it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  79%|███████▉  | 865/1092 [00:01&lt;00:00, 491.48it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  82%|████████▏ | 900/1092 [00:01&lt;00:00, 488.10it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  84%|████████▍ | 918/1092 [00:01&lt;00:00, 501.43it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  87%|████████▋ | 951/1092 [00:01&lt;00:00, 492.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  89%|████████▉ | 970/1092 [00:01&lt;00:00, 505.52it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  92%|█████████▏| 1001/1092 [00:02&lt;00:00, 491.30it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  93%|█████████▎| 1021/1092 [00:02&lt;00:00, 506.02it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  96%|█████████▌| 1051/1092 [00:02&lt;00:00, 491.82it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential:  98%|█████████▊| 1072/1092 [00:02&lt;00:00, 499.11it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential: 100%|██████████| 1092/1092 [00:02&lt;00:00, 489.34it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-echo monoexponential: 100%|██████████| 1092/1092 [00:02&lt;00:00, 498.05it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -749,1012 +727,1000 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   0%|          | 0/20176 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   0%|          | 49/20176 [00:00&lt;00:41, 486.88it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   0%|          | 50/20176 [00:00&lt;00:40, 499.65it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   1%|          | 103/20176 [00:00&lt;00:39, 513.67it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   1%|          | 104/20176 [00:00&lt;00:38, 520.68it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   1%|          | 158/20176 [00:00&lt;00:37, 529.41it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   1%|          | 161/20176 [00:00&lt;00:37, 539.27it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   1%|          | 216/20176 [00:00&lt;00:36, 547.40it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   1%|          | 220/20176 [00:00&lt;00:35, 558.75it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   1%|▏         | 272/20176 [00:00&lt;00:36, 550.48it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   1%|▏         | 277/20176 [00:00&lt;00:35, 559.76it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   2%|▏         | 329/20176 [00:00&lt;00:35, 553.70it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   2%|▏         | 336/20176 [00:00&lt;00:34, 567.11it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   2%|▏         | 388/20176 [00:00&lt;00:35, 563.64it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   2%|▏         | 395/20176 [00:00&lt;00:34, 573.91it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   2%|▏         | 445/20176 [00:00&lt;00:35, 558.36it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   2%|▏         | 453/20176 [00:00&lt;00:34, 569.62it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   2%|▏         | 504/20176 [00:00&lt;00:34, 566.71it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   3%|▎         | 513/20176 [00:00&lt;00:34, 577.63it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   3%|▎         | 562/20176 [00:01&lt;00:34, 568.87it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   3%|▎         | 571/20176 [00:01&lt;00:34, 575.42it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   3%|▎         | 619/20176 [00:01&lt;00:34, 562.50it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   3%|▎         | 629/20176 [00:01&lt;00:34, 567.77it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   3%|▎         | 676/20176 [00:01&lt;00:35, 556.57it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   3%|▎         | 686/20176 [00:01&lt;00:34, 567.09it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   4%|▎         | 733/20176 [00:01&lt;00:34, 559.82it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   4%|▎         | 744/20176 [00:01&lt;00:34, 570.34it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   4%|▍         | 790/20176 [00:01&lt;00:34, 559.38it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   4%|▍         | 802/20176 [00:01&lt;00:33, 572.12it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   4%|▍         | 846/20176 [00:01&lt;00:34, 553.37it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   4%|▍         | 860/20176 [00:01&lt;00:33, 573.69it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   4%|▍         | 905/20176 [00:01&lt;00:34, 561.80it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   5%|▍         | 920/20176 [00:01&lt;00:33, 579.30it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   5%|▍         | 962/20176 [00:01&lt;00:34, 562.24it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   5%|▍         | 978/20176 [00:01&lt;00:33, 569.86it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   5%|▌         | 1019/20176 [00:01&lt;00:35, 535.35it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   5%|▌         | 1036/20176 [00:01&lt;00:34, 550.61it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   5%|▌         | 1075/20176 [00:01&lt;00:35, 539.14it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   5%|▌         | 1092/20176 [00:01&lt;00:34, 548.10it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   6%|▌         | 1133/20176 [00:02&lt;00:34, 548.99it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   6%|▌         | 1148/20176 [00:02&lt;00:34, 550.79it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   6%|▌         | 1190/20176 [00:02&lt;00:34, 553.46it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   6%|▌         | 1207/20176 [00:02&lt;00:33, 561.82it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   6%|▌         | 1248/20176 [00:02&lt;00:33, 560.06it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   6%|▋         | 1267/20176 [00:02&lt;00:33, 571.51it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   6%|▋         | 1309/20176 [00:02&lt;00:32, 572.39it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   7%|▋         | 1328/20176 [00:02&lt;00:32, 582.04it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   7%|▋         | 1370/20176 [00:02&lt;00:32, 581.57it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   7%|▋         | 1391/20176 [00:02&lt;00:31, 593.88it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   7%|▋         | 1429/20176 [00:02&lt;00:32, 571.21it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   7%|▋         | 1451/20176 [00:02&lt;00:32, 576.35it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   7%|▋         | 1487/20176 [00:02&lt;00:33, 550.66it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   7%|▋         | 1509/20176 [00:02&lt;00:33, 563.90it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   8%|▊         | 1544/20176 [00:02&lt;00:33, 555.91it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   8%|▊         | 1569/20176 [00:02&lt;00:32, 573.84it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   8%|▊         | 1602/20176 [00:02&lt;00:33, 560.71it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   8%|▊         | 1629/20176 [00:02&lt;00:32, 579.53it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   8%|▊         | 1662/20176 [00:02&lt;00:32, 569.47it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   8%|▊         | 1690/20176 [00:02&lt;00:31, 586.85it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   9%|▊         | 1722/20176 [00:03&lt;00:32, 576.05it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   9%|▊         | 1751/20176 [00:03&lt;00:31, 591.72it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   9%|▉         | 1780/20176 [00:03&lt;00:32, 574.33it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   9%|▉         | 1811/20176 [00:03&lt;00:30, 593.53it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   9%|▉         | 1839/20176 [00:03&lt;00:31, 578.53it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   9%|▉         | 1872/20176 [00:03&lt;00:30, 598.31it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:   9%|▉         | 1899/20176 [00:03&lt;00:31, 583.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  10%|▉         | 1932/20176 [00:03&lt;00:30, 598.60it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  10%|▉         | 1958/20176 [00:03&lt;00:31, 578.81it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  10%|▉         | 1992/20176 [00:03&lt;00:31, 574.63it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  10%|▉         | 2016/20176 [00:03&lt;00:32, 555.66it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  10%|█         | 2050/20176 [00:03&lt;00:31, 576.15it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  10%|█         | 2076/20176 [00:03&lt;00:31, 566.38it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  10%|█         | 2109/20176 [00:03&lt;00:31, 578.49it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  11%|█         | 2135/20176 [00:03&lt;00:31, 571.52it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  11%|█         | 2169/20176 [00:03&lt;00:30, 582.98it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  11%|█         | 2196/20176 [00:03&lt;00:30, 581.64it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  11%|█         | 2232/20176 [00:03&lt;00:30, 596.80it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  11%|█         | 2256/20176 [00:04&lt;00:30, 586.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  11%|█▏        | 2294/20176 [00:03&lt;00:29, 601.59it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  11%|█▏        | 2318/20176 [00:04&lt;00:29, 595.32it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  12%|█▏        | 2356/20176 [00:04&lt;00:29, 604.05it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  12%|█▏        | 2378/20176 [00:04&lt;00:29, 595.83it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  12%|█▏        | 2418/20176 [00:04&lt;00:29, 607.18it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  12%|█▏        | 2438/20176 [00:04&lt;00:29, 593.84it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  12%|█▏        | 2481/20176 [00:04&lt;00:28, 613.55it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  12%|█▏        | 2499/20176 [00:04&lt;00:29, 597.55it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  13%|█▎        | 2543/20176 [00:04&lt;00:28, 610.06it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  13%|█▎        | 2559/20176 [00:04&lt;00:30, 572.87it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  13%|█▎        | 2605/20176 [00:04&lt;00:30, 576.98it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  13%|█▎        | 2617/20176 [00:04&lt;00:32, 548.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  13%|█▎        | 2664/20176 [00:04&lt;00:30, 577.14it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  13%|█▎        | 2674/20176 [00:04&lt;00:31, 553.91it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  14%|█▎        | 2726/20176 [00:04&lt;00:29, 587.98it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  14%|█▎        | 2735/20176 [00:04&lt;00:30, 567.99it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  14%|█▍        | 2786/20176 [00:04&lt;00:29, 588.97it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  14%|█▍        | 2794/20176 [00:04&lt;00:30, 573.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  14%|█▍        | 2849/20176 [00:04&lt;00:28, 600.10it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  14%|█▍        | 2857/20176 [00:05&lt;00:29, 588.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  14%|█▍        | 2911/20176 [00:05&lt;00:28, 603.52it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  14%|█▍        | 2918/20176 [00:05&lt;00:29, 593.83it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  15%|█▍        | 2972/20176 [00:05&lt;00:28, 605.06it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  15%|█▍        | 2979/20176 [00:05&lt;00:28, 596.42it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  15%|█▌        | 3035/20176 [00:05&lt;00:27, 612.23it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  15%|█▌        | 3039/20176 [00:05&lt;00:28, 594.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  15%|█▌        | 3098/20176 [00:05&lt;00:27, 614.50it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  15%|█▌        | 3101/20176 [00:05&lt;00:28, 601.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  16%|█▌        | 3160/20176 [00:05&lt;00:27, 615.83it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  16%|█▌        | 3163/20176 [00:05&lt;00:28, 604.44it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  16%|█▌        | 3222/20176 [00:05&lt;00:28, 596.24it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  16%|█▌        | 3224/20176 [00:05&lt;00:28, 587.98it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  16%|█▋        | 3282/20176 [00:05&lt;00:28, 593.75it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  16%|█▋        | 3283/20176 [00:05&lt;00:28, 585.52it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  17%|█▋        | 3342/20176 [00:05&lt;00:28, 595.06it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  17%|█▋        | 3343/20176 [00:05&lt;00:28, 587.91it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  17%|█▋        | 3403/20176 [00:05&lt;00:28, 596.20it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  17%|█▋        | 3403/20176 [00:05&lt;00:28, 589.27it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  17%|█▋        | 3464/20176 [00:05&lt;00:27, 597.70it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  17%|█▋        | 3463/20176 [00:06&lt;00:28, 591.13it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  17%|█▋        | 3527/20176 [00:06&lt;00:27, 606.59it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  17%|█▋        | 3526/20176 [00:06&lt;00:27, 600.45it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  18%|█▊        | 3590/20176 [00:06&lt;00:27, 611.99it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  18%|█▊        | 3589/20176 [00:06&lt;00:27, 607.07it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  18%|█▊        | 3652/20176 [00:06&lt;00:27, 609.63it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  18%|█▊        | 3650/20176 [00:06&lt;00:27, 603.74it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  18%|█▊        | 3713/20176 [00:06&lt;00:27, 607.16it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  18%|█▊        | 3711/20176 [00:06&lt;00:27, 600.51it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  19%|█▊        | 3777/20176 [00:06&lt;00:26, 613.38it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  19%|█▊        | 3773/20176 [00:06&lt;00:27, 605.29it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  19%|█▉        | 3839/20176 [00:06&lt;00:26, 608.41it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  19%|█▉        | 3834/20176 [00:06&lt;00:27, 600.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  19%|█▉        | 3900/20176 [00:06&lt;00:27, 602.31it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  19%|█▉        | 3895/20176 [00:06&lt;00:27, 597.62it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  20%|█▉        | 3961/20176 [00:06&lt;00:27, 590.17it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  20%|█▉        | 3955/20176 [00:06&lt;00:27, 583.34it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  20%|█▉        | 4021/20176 [00:06&lt;00:27, 592.35it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  20%|█▉        | 4014/20176 [00:06&lt;00:27, 584.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  20%|██        | 4082/20176 [00:06&lt;00:27, 595.01it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  20%|██        | 4073/20176 [00:07&lt;00:27, 584.30it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  21%|██        | 4142/20176 [00:07&lt;00:27, 589.22it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  20%|██        | 4132/20176 [00:07&lt;00:27, 578.27it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  21%|██        | 4202/20176 [00:07&lt;00:27, 590.50it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  21%|██        | 4191/20176 [00:07&lt;00:27, 580.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  21%|██        | 4264/20176 [00:07&lt;00:26, 598.73it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  21%|██        | 4251/20176 [00:07&lt;00:27, 584.40it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  21%|██▏       | 4328/20176 [00:07&lt;00:26, 608.85it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  21%|██▏       | 4314/20176 [00:07&lt;00:26, 595.80it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  22%|██▏       | 4389/20176 [00:07&lt;00:26, 602.10it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  22%|██▏       | 4374/20176 [00:07&lt;00:26, 590.53it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  22%|██▏       | 4452/20176 [00:07&lt;00:25, 607.64it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  22%|██▏       | 4435/20176 [00:07&lt;00:26, 594.52it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  22%|██▏       | 4514/20176 [00:07&lt;00:25, 609.72it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  22%|██▏       | 4497/20176 [00:07&lt;00:26, 599.21it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  23%|██▎       | 4575/20176 [00:07&lt;00:25, 609.79it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  23%|██▎       | 4558/20176 [00:07&lt;00:26, 600.02it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  23%|██▎       | 4636/20176 [00:07&lt;00:25, 605.39it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  23%|██▎       | 4619/20176 [00:08&lt;00:25, 599.44it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  23%|██▎       | 4697/20176 [00:07&lt;00:26, 588.29it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  23%|██▎       | 4679/20176 [00:08&lt;00:26, 580.64it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  24%|██▎       | 4756/20176 [00:08&lt;00:26, 586.56it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  23%|██▎       | 4740/20176 [00:08&lt;00:26, 587.27it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  24%|██▍       | 4817/20176 [00:08&lt;00:25, 591.07it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  24%|██▍       | 4799/20176 [00:08&lt;00:26, 586.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  24%|██▍       | 4877/20176 [00:08&lt;00:25, 591.32it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  24%|██▍       | 4858/20176 [00:08&lt;00:26, 585.53it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  24%|██▍       | 4938/20176 [00:08&lt;00:25, 595.39it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  24%|██▍       | 4918/20176 [00:08&lt;00:25, 587.80it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  25%|██▍       | 5001/20176 [00:08&lt;00:25, 603.55it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  25%|██▍       | 4979/20176 [00:08&lt;00:25, 592.12it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  25%|██▌       | 5064/20176 [00:08&lt;00:24, 609.42it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  25%|██▍       | 5043/20176 [00:08&lt;00:25, 604.28it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  25%|██▌       | 5129/20176 [00:08&lt;00:24, 619.04it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  25%|██▌       | 5104/20176 [00:08&lt;00:25, 602.79it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  26%|██▌       | 5192/20176 [00:08&lt;00:24, 620.94it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  26%|██▌       | 5166/20176 [00:08&lt;00:24, 607.59it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  26%|██▌       | 5255/20176 [00:08&lt;00:24, 621.31it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  26%|██▌       | 5228/20176 [00:09&lt;00:24, 609.31it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  26%|██▋       | 5318/20176 [00:09&lt;00:23, 620.71it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  26%|██▌       | 5290/20176 [00:09&lt;00:24, 609.80it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  27%|██▋       | 5381/20176 [00:09&lt;00:24, 613.70it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  27%|██▋       | 5351/20176 [00:09&lt;00:24, 608.04it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  27%|██▋       | 5443/20176 [00:09&lt;00:24, 589.64it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  27%|██▋       | 5412/20176 [00:09&lt;00:25, 590.23it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  27%|██▋       | 5503/20176 [00:09&lt;00:24, 589.98it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  27%|██▋       | 5472/20176 [00:09&lt;00:25, 577.27it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  28%|██▊       | 5564/20176 [00:09&lt;00:24, 593.92it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  27%|██▋       | 5532/20176 [00:09&lt;00:25, 583.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  28%|██▊       | 5624/20176 [00:09&lt;00:24, 591.07it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  28%|██▊       | 5591/20176 [00:09&lt;00:24, 584.47it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  28%|██▊       | 5686/20176 [00:09&lt;00:24, 597.61it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  28%|██▊       | 5650/20176 [00:09&lt;00:25, 581.02it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  29%|██▊       | 5751/20176 [00:09&lt;00:23, 610.93it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  28%|██▊       | 5713/20176 [00:09&lt;00:24, 593.98it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  29%|██▉       | 5815/20176 [00:09&lt;00:23, 618.72it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  29%|██▊       | 5778/20176 [00:09&lt;00:23, 607.69it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  29%|██▉       | 5877/20176 [00:09&lt;00:23, 615.05it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  29%|██▉       | 5840/20176 [00:10&lt;00:23, 609.83it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  29%|██▉       | 5939/20176 [00:10&lt;00:23, 616.06it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  29%|██▉       | 5902/20176 [00:10&lt;00:23, 603.97it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  30%|██▉       | 6001/20176 [00:10&lt;00:23, 607.03it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  30%|██▉       | 5963/20176 [00:10&lt;00:23, 603.31it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  30%|███       | 6062/20176 [00:10&lt;00:23, 606.60it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  30%|██▉       | 6024/20176 [00:10&lt;00:23, 595.12it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  30%|███       | 6123/20176 [00:10&lt;00:23, 604.37it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  30%|███       | 6085/20176 [00:10&lt;00:23, 597.36it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  31%|███       | 6184/20176 [00:10&lt;00:23, 594.81it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  30%|███       | 6146/20176 [00:10&lt;00:23, 599.20it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  31%|███       | 6244/20176 [00:10&lt;00:24, 574.65it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  31%|███       | 6206/20176 [00:10&lt;00:24, 572.44it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  31%|███       | 6303/20176 [00:10&lt;00:23, 578.51it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  31%|███       | 6264/20176 [00:10&lt;00:24, 565.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  32%|███▏      | 6361/20176 [00:10&lt;00:23, 576.35it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  31%|███▏      | 6322/20176 [00:10&lt;00:24, 568.05it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  32%|███▏      | 6420/20176 [00:10&lt;00:23, 578.92it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  32%|███▏      | 6379/20176 [00:10&lt;00:24, 568.42it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  32%|███▏      | 6482/20176 [00:10&lt;00:23, 588.91it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  32%|███▏      | 6438/20176 [00:11&lt;00:23, 573.81it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  32%|███▏      | 6544/20176 [00:11&lt;00:22, 596.80it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  32%|███▏      | 6502/20176 [00:11&lt;00:23, 591.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  33%|███▎      | 6606/20176 [00:11&lt;00:22, 602.25it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  33%|███▎      | 6563/20176 [00:11&lt;00:22, 596.15it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  33%|███▎      | 6667/20176 [00:11&lt;00:22, 598.55it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  33%|███▎      | 6623/20176 [00:11&lt;00:22, 596.59it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  33%|███▎      | 6727/20176 [00:11&lt;00:22, 596.96it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  33%|███▎      | 6683/20176 [00:11&lt;00:22, 595.57it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  34%|███▎      | 6790/20176 [00:11&lt;00:22, 603.51it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  33%|███▎      | 6743/20176 [00:11&lt;00:22, 593.30it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  34%|███▍      | 6851/20176 [00:11&lt;00:22, 597.94it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  34%|███▎      | 6805/20176 [00:11&lt;00:22, 598.18it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  34%|███▍      | 6911/20176 [00:11&lt;00:22, 597.39it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  34%|███▍      | 6865/20176 [00:11&lt;00:22, 594.50it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  35%|███▍      | 6971/20176 [00:11&lt;00:22, 574.40it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  34%|███▍      | 6925/20176 [00:11&lt;00:22, 590.73it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  35%|███▍      | 7029/20176 [00:11&lt;00:23, 569.48it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  35%|███▍      | 6985/20176 [00:12&lt;00:23, 562.16it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  35%|███▌      | 7090/20176 [00:11&lt;00:22, 578.81it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  35%|███▍      | 7044/20176 [00:12&lt;00:23, 569.65it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  35%|███▌      | 7149/20176 [00:12&lt;00:22, 580.24it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  35%|███▌      | 7103/20176 [00:12&lt;00:22, 573.76it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  36%|███▌      | 7208/20176 [00:12&lt;00:22, 576.71it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  36%|███▌      | 7163/20176 [00:12&lt;00:22, 575.47it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  36%|███▌      | 7270/20176 [00:12&lt;00:21, 588.49it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  36%|███▌      | 7221/20176 [00:12&lt;00:23, 555.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  36%|███▋      | 7332/20176 [00:12&lt;00:21, 594.96it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  36%|███▌      | 7284/20176 [00:12&lt;00:22, 575.80it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  37%|███▋      | 7394/20176 [00:12&lt;00:21, 600.49it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  36%|███▋      | 7347/20176 [00:12&lt;00:21, 589.74it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  37%|███▋      | 7455/20176 [00:12&lt;00:21, 592.14it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  37%|███▋      | 7409/20176 [00:12&lt;00:21, 596.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  37%|███▋      | 7515/20176 [00:12&lt;00:21, 591.75it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  37%|███▋      | 7469/20176 [00:12&lt;00:21, 589.04it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  38%|███▊      | 7575/20176 [00:12&lt;00:21, 591.28it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  37%|███▋      | 7529/20176 [00:12&lt;00:21, 590.80it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  38%|███▊      | 7636/20176 [00:12&lt;00:21, 595.13it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  38%|███▊      | 7590/20176 [00:13&lt;00:21, 596.42it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  38%|███▊      | 7696/20176 [00:13&lt;00:21, 591.27it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  38%|███▊      | 7652/20176 [00:13&lt;00:20, 602.02it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  38%|███▊      | 7756/20176 [00:13&lt;00:21, 573.71it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  38%|███▊      | 7713/20176 [00:13&lt;00:20, 594.25it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  39%|███▊      | 7814/20176 [00:13&lt;00:21, 571.06it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  39%|███▊      | 7773/20176 [00:13&lt;00:21, 579.11it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  39%|███▉      | 7872/20176 [00:13&lt;00:21, 568.97it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  39%|███▉      | 7832/20176 [00:13&lt;00:21, 573.87it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  39%|███▉      | 7931/20176 [00:13&lt;00:21, 573.81it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  39%|███▉      | 7890/20176 [00:13&lt;00:21, 572.41it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  40%|███▉      | 7990/20176 [00:13&lt;00:21, 577.83it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  39%|███▉      | 7950/20176 [00:13&lt;00:21, 577.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  40%|███▉      | 8048/20176 [00:13&lt;00:21, 575.68it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  40%|███▉      | 8009/20176 [00:13&lt;00:20, 580.51it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  40%|████      | 8111/20176 [00:13&lt;00:20, 591.60it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  40%|███▉      | 8068/20176 [00:13&lt;00:20, 579.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  41%|████      | 8173/20176 [00:13&lt;00:20, 597.31it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  40%|████      | 8130/20176 [00:13&lt;00:20, 591.44it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  41%|████      | 8233/20176 [00:13&lt;00:20, 592.85it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  41%|████      | 8192/20176 [00:14&lt;00:20, 598.85it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  41%|████      | 8295/20176 [00:14&lt;00:19, 600.41it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  41%|████      | 8253/20176 [00:14&lt;00:19, 600.28it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  41%|████▏     | 8356/20176 [00:14&lt;00:19, 597.32it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  41%|████      | 8314/20176 [00:14&lt;00:19, 602.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  42%|████▏     | 8416/20176 [00:14&lt;00:19, 592.49it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  42%|████▏     | 8376/20176 [00:14&lt;00:19, 606.61it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  42%|████▏     | 8478/20176 [00:14&lt;00:19, 599.97it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  42%|████▏     | 8437/20176 [00:14&lt;00:19, 594.93it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  42%|████▏     | 8539/20176 [00:14&lt;00:19, 590.76it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  42%|████▏     | 8499/20176 [00:14&lt;00:19, 600.38it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  43%|████▎     | 8599/20176 [00:14&lt;00:20, 577.43it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  42%|████▏     | 8560/20176 [00:14&lt;00:19, 582.53it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  43%|████▎     | 8657/20176 [00:14&lt;00:19, 577.18it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  43%|████▎     | 8619/20176 [00:14&lt;00:20, 575.26it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  43%|████▎     | 8715/20176 [00:14&lt;00:20, 570.42it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  43%|████▎     | 8677/20176 [00:14&lt;00:19, 576.31it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  43%|████▎     | 8775/20176 [00:14&lt;00:19, 577.44it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  43%|████▎     | 8735/20176 [00:15&lt;00:19, 572.70it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  44%|████▍     | 8836/20176 [00:14&lt;00:19, 586.56it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  44%|████▎     | 8795/20176 [00:15&lt;00:19, 580.30it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  44%|████▍     | 8895/20176 [00:15&lt;00:19, 587.32it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  44%|████▍     | 8856/20176 [00:15&lt;00:19, 588.19it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  44%|████▍     | 8954/20176 [00:15&lt;00:19, 586.08it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  44%|████▍     | 8915/20176 [00:15&lt;00:19, 588.21it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  45%|████▍     | 9017/20176 [00:15&lt;00:18, 598.30it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  44%|████▍     | 8974/20176 [00:15&lt;00:19, 587.63it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  45%|████▍     | 9077/20176 [00:15&lt;00:18, 596.09it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  45%|████▍     | 9035/20176 [00:15&lt;00:18, 591.61it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  45%|████▌     | 9139/20176 [00:15&lt;00:18, 602.09it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  45%|████▌     | 9095/20176 [00:15&lt;00:18, 593.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  46%|████▌     | 9203/20176 [00:15&lt;00:17, 612.97it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  45%|████▌     | 9158/20176 [00:15&lt;00:18, 602.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  46%|████▌     | 9265/20176 [00:15&lt;00:17, 614.45it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  46%|████▌     | 9221/20176 [00:15&lt;00:17, 609.35it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  46%|████▌     | 9327/20176 [00:15&lt;00:17, 615.57it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  46%|████▌     | 9283/20176 [00:15&lt;00:17, 610.32it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  47%|████▋     | 9389/20176 [00:15&lt;00:18, 585.75it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  46%|████▋     | 9345/20176 [00:16&lt;00:17, 606.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  47%|████▋     | 9449/20176 [00:16&lt;00:18, 582.20it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  47%|████▋     | 9406/20176 [00:16&lt;00:18, 590.07it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  47%|████▋     | 9508/20176 [00:16&lt;00:18, 575.78it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  47%|████▋     | 9466/20176 [00:16&lt;00:18, 577.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  47%|████▋     | 9567/20176 [00:16&lt;00:18, 578.85it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  47%|████▋     | 9524/20176 [00:16&lt;00:18, 570.57it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  48%|████▊     | 9628/20176 [00:16&lt;00:18, 585.81it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  48%|████▊     | 9584/20176 [00:16&lt;00:18, 578.56it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  48%|████▊     | 9687/20176 [00:16&lt;00:17, 586.11it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  48%|████▊     | 9642/20176 [00:16&lt;00:18, 575.52it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  48%|████▊     | 9749/20176 [00:16&lt;00:17, 594.28it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  48%|████▊     | 9704/20176 [00:16&lt;00:17, 584.05it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  49%|████▊     | 9810/20176 [00:16&lt;00:17, 596.06it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  48%|████▊     | 9765/20176 [00:16&lt;00:17, 591.26it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  49%|████▉     | 9871/20176 [00:16&lt;00:17, 597.25it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  49%|████▊     | 9825/20176 [00:16&lt;00:17, 586.82it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  49%|████▉     | 9935/20176 [00:16&lt;00:16, 607.41it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  49%|████▉     | 9887/20176 [00:16&lt;00:17, 595.11it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  50%|████▉     | 10000/20176 [00:16&lt;00:16, 619.86it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  49%|████▉     | 9950/20176 [00:17&lt;00:16, 603.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  50%|████▉     | 10063/20176 [00:17&lt;00:16, 619.26it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  50%|████▉     | 10014/20176 [00:17&lt;00:16, 612.38it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  50%|█████     | 10125/20176 [00:17&lt;00:16, 609.22it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  50%|████▉     | 10076/20176 [00:17&lt;00:16, 606.66it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  50%|█████     | 10186/20176 [00:17&lt;00:17, 574.85it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  50%|█████     | 10137/20176 [00:17&lt;00:16, 599.69it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  51%|█████     | 10244/20176 [00:17&lt;00:17, 573.10it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  51%|█████     | 10197/20176 [00:17&lt;00:17, 580.32it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  51%|█████     | 10304/20176 [00:17&lt;00:17, 578.40it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  51%|█████     | 10256/20176 [00:17&lt;00:17, 576.74it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  51%|█████▏    | 10364/20176 [00:17&lt;00:16, 584.21it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  51%|█████     | 10314/20176 [00:17&lt;00:17, 575.96it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  52%|█████▏    | 10423/20176 [00:17&lt;00:16, 584.47it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  51%|█████▏    | 10373/20176 [00:17&lt;00:16, 579.97it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  52%|█████▏    | 10487/20176 [00:17&lt;00:16, 597.88it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  52%|█████▏    | 10432/20176 [00:17&lt;00:16, 582.61it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  52%|█████▏    | 10549/20176 [00:17&lt;00:15, 603.82it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  52%|█████▏    | 10494/20176 [00:17&lt;00:16, 591.41it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  53%|█████▎    | 10610/20176 [00:17&lt;00:15, 605.27it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  52%|█████▏    | 10557/20176 [00:18&lt;00:15, 602.39it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  53%|█████▎    | 10671/20176 [00:18&lt;00:15, 596.06it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  53%|█████▎    | 10618/20176 [00:18&lt;00:15, 601.77it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  53%|█████▎    | 10733/20176 [00:18&lt;00:15, 601.86it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  53%|█████▎    | 10679/20176 [00:18&lt;00:16, 592.46it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  54%|█████▎    | 10797/20176 [00:18&lt;00:15, 611.40it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  53%|█████▎    | 10741/20176 [00:18&lt;00:15, 600.26it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  54%|█████▍    | 10859/20176 [00:18&lt;00:15, 607.13it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  54%|█████▎    | 10802/20176 [00:18&lt;00:15, 595.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  54%|█████▍    | 10921/20176 [00:18&lt;00:15, 609.28it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  54%|█████▍    | 10862/20176 [00:18&lt;00:15, 586.03it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  54%|█████▍    | 10982/20176 [00:18&lt;00:15, 585.90it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  54%|█████▍    | 10922/20176 [00:18&lt;00:15, 588.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  55%|█████▍    | 11041/20176 [00:18&lt;00:15, 578.14it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  54%|█████▍    | 10981/20176 [00:18&lt;00:16, 566.87it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  55%|█████▌    | 11099/20176 [00:18&lt;00:15, 578.25it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  55%|█████▍    | 11038/20176 [00:18&lt;00:16, 561.52it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  55%|█████▌    | 11157/20176 [00:18&lt;00:15, 576.51it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  55%|█████▍    | 11096/20176 [00:19&lt;00:16, 565.25it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  56%|█████▌    | 11223/20176 [00:18&lt;00:14, 598.64it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  55%|█████▌    | 11154/20176 [00:19&lt;00:15, 568.41it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  56%|█████▌    | 11284/20176 [00:19&lt;00:14, 599.85it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  56%|█████▌    | 11219/20176 [00:19&lt;00:15, 591.86it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  56%|█████▌    | 11345/20176 [00:19&lt;00:14, 591.85it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  56%|█████▌    | 11282/20176 [00:19&lt;00:14, 602.23it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  57%|█████▋    | 11405/20176 [00:19&lt;00:14, 589.33it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  56%|█████▌    | 11343/20176 [00:19&lt;00:14, 599.32it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  57%|█████▋    | 11465/20176 [00:19&lt;00:14, 590.82it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  57%|█████▋    | 11403/20176 [00:19&lt;00:14, 598.81it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  57%|█████▋    | 11526/20176 [00:19&lt;00:14, 593.67it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  57%|█████▋    | 11465/20176 [00:19&lt;00:14, 604.38it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  57%|█████▋    | 11589/20176 [00:19&lt;00:14, 601.43it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  57%|█████▋    | 11527/20176 [00:19&lt;00:14, 606.75it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  58%|█████▊    | 11652/20176 [00:19&lt;00:14, 606.62it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  57%|█████▋    | 11590/20176 [00:19&lt;00:14, 611.89it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  58%|█████▊    | 11713/20176 [00:19&lt;00:13, 606.93it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  58%|█████▊    | 11652/20176 [00:19&lt;00:13, 612.05it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  58%|█████▊    | 11774/20176 [00:19&lt;00:15, 549.70it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  58%|█████▊    | 11714/20176 [00:20&lt;00:13, 607.98it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  59%|█████▊    | 11833/20176 [00:20&lt;00:14, 558.64it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  58%|█████▊    | 11775/20176 [00:20&lt;00:15, 553.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  59%|█████▉    | 11892/20176 [00:20&lt;00:14, 564.84it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  59%|█████▊    | 11833/20176 [00:20&lt;00:14, 559.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  59%|█████▉    | 11952/20176 [00:20&lt;00:14, 573.71it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  59%|█████▉    | 11892/20176 [00:20&lt;00:14, 567.83it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  60%|█████▉    | 12013/20176 [00:20&lt;00:13, 583.35it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  59%|█████▉    | 11950/20176 [00:20&lt;00:14, 568.86it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  60%|█████▉    | 12073/20176 [00:20&lt;00:13, 585.70it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  60%|█████▉    | 12010/20176 [00:20&lt;00:14, 577.65it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  60%|██████    | 12135/20176 [00:20&lt;00:13, 595.77it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  60%|█████▉    | 12069/20176 [00:20&lt;00:13, 580.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  60%|██████    | 12198/20176 [00:20&lt;00:13, 605.50it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  60%|██████    | 12133/20176 [00:20&lt;00:13, 595.83it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  61%|██████    | 12261/20176 [00:20&lt;00:12, 612.26it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  60%|██████    | 12194/20176 [00:20&lt;00:13, 599.48it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  61%|██████    | 12324/20176 [00:20&lt;00:12, 616.10it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  61%|██████    | 12257/20176 [00:20&lt;00:13, 604.97it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  61%|██████▏   | 12386/20176 [00:20&lt;00:12, 614.86it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  61%|██████    | 12320/20176 [00:21&lt;00:12, 609.90it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  62%|██████▏   | 12448/20176 [00:21&lt;00:12, 615.73it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  61%|██████▏   | 12382/20176 [00:21&lt;00:12, 610.68it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  62%|██████▏   | 12510/20176 [00:21&lt;00:12, 612.87it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  62%|██████▏   | 12444/20176 [00:21&lt;00:12, 611.96it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  62%|██████▏   | 12572/20176 [00:21&lt;00:13, 566.15it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  62%|██████▏   | 12506/20176 [00:21&lt;00:12, 610.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  63%|██████▎   | 12633/20176 [00:21&lt;00:13, 576.49it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  62%|██████▏   | 12568/20176 [00:21&lt;00:13, 558.54it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  63%|██████▎   | 12696/20176 [00:21&lt;00:12, 590.29it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  63%|██████▎   | 12627/20176 [00:21&lt;00:13, 565.81it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  63%|██████▎   | 12757/20176 [00:21&lt;00:12, 595.90it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  63%|██████▎   | 12689/20176 [00:21&lt;00:12, 581.16it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  64%|██████▎   | 12820/20176 [00:21&lt;00:12, 604.37it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  63%|██████▎   | 12751/20176 [00:21&lt;00:12, 590.54it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  64%|██████▍   | 12883/20176 [00:21&lt;00:11, 611.77it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  64%|██████▎   | 12813/20176 [00:21&lt;00:12, 597.37it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  64%|██████▍   | 12945/20176 [00:21&lt;00:11, 611.99it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  64%|██████▍   | 12876/20176 [00:22&lt;00:12, 606.26it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  64%|██████▍   | 13007/20176 [00:21&lt;00:11, 613.41it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  64%|██████▍   | 12938/20176 [00:22&lt;00:11, 606.27it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  65%|██████▍   | 13070/20176 [00:22&lt;00:11, 615.79it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  64%|██████▍   | 13000/20176 [00:22&lt;00:11, 608.74it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  65%|██████▌   | 13132/20176 [00:22&lt;00:11, 611.92it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  65%|██████▍   | 13063/20176 [00:22&lt;00:11, 613.26it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  65%|██████▌   | 13194/20176 [00:22&lt;00:11, 608.30it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  65%|██████▌   | 13125/20176 [00:22&lt;00:11, 608.98it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  66%|██████▌   | 13255/20176 [00:22&lt;00:11, 604.32it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  65%|██████▌   | 13186/20176 [00:22&lt;00:11, 604.13it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  66%|██████▌   | 13316/20176 [00:22&lt;00:11, 597.31it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  66%|██████▌   | 13247/20176 [00:22&lt;00:11, 601.45it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  66%|██████▋   | 13376/20176 [00:22&lt;00:11, 571.65it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  66%|██████▌   | 13308/20176 [00:22&lt;00:11, 596.45it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  67%|██████▋   | 13437/20176 [00:22&lt;00:11, 580.55it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  66%|██████▋   | 13368/20176 [00:22&lt;00:11, 567.73it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  67%|██████▋   | 13497/20176 [00:22&lt;00:11, 585.43it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  67%|██████▋   | 13429/20176 [00:22&lt;00:11, 578.71it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  67%|██████▋   | 13557/20176 [00:22&lt;00:11, 589.08it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  67%|██████▋   | 13488/20176 [00:23&lt;00:11, 575.58it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  68%|██████▊   | 13619/20176 [00:23&lt;00:10, 597.70it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  67%|██████▋   | 13547/20176 [00:23&lt;00:11, 578.86it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  68%|██████▊   | 13682/20176 [00:23&lt;00:10, 605.48it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  67%|██████▋   | 13609/20176 [00:23&lt;00:11, 588.01it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  68%|██████▊   | 13745/20176 [00:23&lt;00:10, 611.35it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  68%|██████▊   | 13673/20176 [00:23&lt;00:10, 601.37it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  68%|██████▊   | 13808/20176 [00:23&lt;00:10, 614.55it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  68%|██████▊   | 13737/20176 [00:23&lt;00:10, 610.01it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  69%|██████▊   | 13870/20176 [00:23&lt;00:10, 614.97it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  68%|██████▊   | 13799/20176 [00:23&lt;00:10, 608.35it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  69%|██████▉   | 13932/20176 [00:23&lt;00:10, 611.95it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  69%|██████▊   | 13860/20176 [00:23&lt;00:10, 606.93it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  69%|██████▉   | 13995/20176 [00:23&lt;00:10, 615.57it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  69%|██████▉   | 13921/20176 [00:23&lt;00:10, 604.96it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  70%|██████▉   | 14057/20176 [00:23&lt;00:10, 610.84it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  69%|██████▉   | 13983/20176 [00:23&lt;00:10, 607.67it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  70%|██████▉   | 14119/20176 [00:23&lt;00:10, 596.34it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  70%|██████▉   | 14044/20176 [00:23&lt;00:10, 606.02it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  70%|███████   | 14179/20176 [00:23&lt;00:10, 584.41it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  70%|██████▉   | 14105/20176 [00:24&lt;00:10, 597.54it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  71%|███████   | 14238/20176 [00:24&lt;00:10, 575.81it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  70%|███████   | 14165/20176 [00:24&lt;00:10, 574.67it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  71%|███████   | 14300/20176 [00:24&lt;00:10, 586.22it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  70%|███████   | 14223/20176 [00:24&lt;00:10, 569.29it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  71%|███████   | 14361/20176 [00:24&lt;00:09, 590.76it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  71%|███████   | 14285/20176 [00:24&lt;00:10, 582.14it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  71%|███████▏  | 14425/20176 [00:24&lt;00:09, 604.53it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  71%|███████   | 14344/20176 [00:24&lt;00:10, 579.67it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  72%|███████▏  | 14492/20176 [00:24&lt;00:09, 619.79it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  71%|███████▏  | 14406/20176 [00:24&lt;00:09, 589.34it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  72%|███████▏  | 14555/20176 [00:24&lt;00:09, 621.33it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  72%|███████▏  | 14472/20176 [00:24&lt;00:09, 607.87it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  72%|███████▏  | 14618/20176 [00:24&lt;00:08, 621.99it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  72%|███████▏  | 14535/20176 [00:24&lt;00:09, 614.16it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  73%|███████▎  | 14681/20176 [00:24&lt;00:08, 616.96it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  72%|███████▏  | 14598/20176 [00:24&lt;00:09, 616.88it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  73%|███████▎  | 14743/20176 [00:24&lt;00:08, 609.02it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  73%|███████▎  | 14660/20176 [00:25&lt;00:09, 610.05it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  73%|███████▎  | 14804/20176 [00:24&lt;00:08, 607.74it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  73%|███████▎  | 14722/20176 [00:25&lt;00:09, 598.41it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  74%|███████▎  | 14865/20176 [00:25&lt;00:09, 584.26it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  73%|███████▎  | 14783/20176 [00:25&lt;00:08, 600.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  74%|███████▍  | 14925/20176 [00:25&lt;00:08, 588.03it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  74%|███████▎  | 14844/20176 [00:25&lt;00:09, 590.13it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  74%|███████▍  | 14985/20176 [00:25&lt;00:08, 591.17it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  74%|███████▍  | 14904/20176 [00:25&lt;00:09, 579.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  75%|███████▍  | 15046/20176 [00:25&lt;00:08, 593.20it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  74%|███████▍  | 14963/20176 [00:25&lt;00:09, 573.45it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  75%|███████▍  | 15108/20176 [00:25&lt;00:08, 600.53it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  74%|███████▍  | 15025/20176 [00:25&lt;00:08, 584.09it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  75%|███████▌  | 15172/20176 [00:25&lt;00:08, 609.77it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  75%|███████▍  | 15084/20176 [00:25&lt;00:08, 580.06it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  76%|███████▌  | 15234/20176 [00:25&lt;00:08, 606.00it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  75%|███████▌  | 15146/20176 [00:25&lt;00:08, 591.65it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  76%|███████▌  | 15296/20176 [00:25&lt;00:07, 610.05it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  75%|███████▌  | 15206/20176 [00:25&lt;00:08, 590.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  76%|███████▌  | 15360/20176 [00:25&lt;00:07, 616.58it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  76%|███████▌  | 15267/20176 [00:26&lt;00:08, 595.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  76%|███████▋  | 15422/20176 [00:25&lt;00:07, 609.18it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  76%|███████▌  | 15329/20176 [00:26&lt;00:08, 601.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  77%|███████▋  | 15485/20176 [00:26&lt;00:07, 612.11it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  76%|███████▋  | 15390/20176 [00:26&lt;00:07, 602.05it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  77%|███████▋  | 15547/20176 [00:26&lt;00:07, 608.70it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  77%|███████▋  | 15451/20176 [00:26&lt;00:07, 604.05it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  77%|███████▋  | 15608/20176 [00:26&lt;00:07, 584.36it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  77%|███████▋  | 15512/20176 [00:26&lt;00:07, 599.56it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  78%|███████▊  | 15670/20176 [00:26&lt;00:07, 591.74it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  77%|███████▋  | 15572/20176 [00:26&lt;00:07, 586.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  78%|███████▊  | 15734/20176 [00:26&lt;00:07, 605.56it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  77%|███████▋  | 15631/20176 [00:26&lt;00:07, 573.89it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  78%|███████▊  | 15795/20176 [00:26&lt;00:07, 584.53it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  78%|███████▊  | 15691/20176 [00:26&lt;00:07, 579.09it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  79%|███████▊  | 15855/20176 [00:26&lt;00:07, 588.56it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  78%|███████▊  | 15753/20176 [00:26&lt;00:07, 587.73it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  79%|███████▉  | 15919/20176 [00:26&lt;00:07, 601.82it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  78%|███████▊  | 15812/20176 [00:26&lt;00:07, 579.03it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  79%|███████▉  | 15983/20176 [00:26&lt;00:06, 610.33it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  79%|███████▊  | 15870/20176 [00:27&lt;00:07, 578.99it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  80%|███████▉  | 16048/20176 [00:27&lt;00:06, 619.82it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  79%|███████▉  | 15932/20176 [00:27&lt;00:07, 587.50it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  80%|███████▉  | 16111/20176 [00:27&lt;00:06, 620.94it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  79%|███████▉  | 15995/20176 [00:27&lt;00:06, 598.72it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  80%|████████  | 16174/20176 [00:27&lt;00:06, 608.20it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  80%|███████▉  | 16058/20176 [00:27&lt;00:06, 607.48it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  80%|████████  | 16236/20176 [00:27&lt;00:06, 608.51it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  80%|███████▉  | 16119/20176 [00:27&lt;00:06, 606.32it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  81%|████████  | 16297/20176 [00:27&lt;00:06, 591.94it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  80%|████████  | 16180/20176 [00:27&lt;00:06, 596.63it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  81%|████████  | 16357/20176 [00:27&lt;00:06, 578.13it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  80%|████████  | 16241/20176 [00:27&lt;00:06, 598.08it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  81%|████████▏ | 16418/20176 [00:27&lt;00:06, 584.51it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  81%|████████  | 16301/20176 [00:27&lt;00:06, 583.26it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  82%|████████▏ | 16477/20176 [00:27&lt;00:06, 575.47it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  81%|████████  | 16360/20176 [00:27&lt;00:06, 571.97it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  82%|████████▏ | 16537/20176 [00:27&lt;00:06, 581.00it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  81%|████████▏ | 16419/20176 [00:28&lt;00:06, 576.73it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  82%|████████▏ | 16598/20176 [00:27&lt;00:06, 589.25it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  82%|████████▏ | 16477/20176 [00:28&lt;00:06, 567.20it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  83%|████████▎ | 16659/20176 [00:28&lt;00:05, 595.07it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  82%|████████▏ | 16535/20176 [00:28&lt;00:06, 570.51it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  83%|████████▎ | 16725/20176 [00:28&lt;00:05, 612.21it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  82%|████████▏ | 16596/20176 [00:28&lt;00:06, 579.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  83%|████████▎ | 16788/20176 [00:28&lt;00:05, 615.71it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  83%|████████▎ | 16657/20176 [00:28&lt;00:06, 585.72it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  84%|████████▎ | 16850/20176 [00:28&lt;00:05, 613.21it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  83%|████████▎ | 16722/20176 [00:28&lt;00:05, 602.07it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  84%|████████▍ | 16912/20176 [00:28&lt;00:05, 606.15it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  83%|████████▎ | 16784/20176 [00:28&lt;00:05, 604.55it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  84%|████████▍ | 16973/20176 [00:28&lt;00:05, 603.43it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  83%|████████▎ | 16845/20176 [00:28&lt;00:05, 603.46it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  84%|████████▍ | 17034/20176 [00:28&lt;00:05, 572.15it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  84%|████████▍ | 16906/20176 [00:28&lt;00:05, 596.07it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  85%|████████▍ | 17097/20176 [00:28&lt;00:05, 587.80it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  84%|████████▍ | 16966/20176 [00:28&lt;00:05, 593.25it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  85%|████████▌ | 17157/20176 [00:28&lt;00:05, 576.48it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  84%|████████▍ | 17026/20176 [00:29&lt;00:05, 563.13it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  85%|████████▌ | 17215/20176 [00:29&lt;00:05, 575.03it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  85%|████████▍ | 17087/20176 [00:29&lt;00:05, 574.10it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  86%|████████▌ | 17275/20176 [00:29&lt;00:04, 581.26it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  85%|████████▍ | 17145/20176 [00:29&lt;00:05, 569.73it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  86%|████████▌ | 17335/20176 [00:29&lt;00:04, 586.09it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  85%|████████▌ | 17203/20176 [00:29&lt;00:05, 560.01it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  86%|████████▌ | 17399/20176 [00:29&lt;00:04, 601.65it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  86%|████████▌ | 17263/20176 [00:29&lt;00:05, 570.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  87%|████████▋ | 17460/20176 [00:29&lt;00:04, 603.47it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  86%|████████▌ | 17321/20176 [00:29&lt;00:04, 572.97it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  87%|████████▋ | 17521/20176 [00:29&lt;00:04, 595.31it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  86%|████████▌ | 17384/20176 [00:29&lt;00:04, 589.15it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  87%|████████▋ | 17583/20176 [00:29&lt;00:04, 600.97it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  86%|████████▋ | 17444/20176 [00:29&lt;00:04, 592.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  87%|████████▋ | 17644/20176 [00:29&lt;00:04, 578.03it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  87%|████████▋ | 17504/20176 [00:29&lt;00:04, 587.14it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  88%|████████▊ | 17703/20176 [00:29&lt;00:04, 573.27it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  87%|████████▋ | 17564/20176 [00:29&lt;00:04, 588.16it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  88%|████████▊ | 17761/20176 [00:29&lt;00:04, 570.61it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  87%|████████▋ | 17623/20176 [00:30&lt;00:04, 578.83it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  88%|████████▊ | 17820/20176 [00:30&lt;00:04, 575.21it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  88%|████████▊ | 17681/20176 [00:30&lt;00:04, 559.40it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  89%|████████▊ | 17880/20176 [00:30&lt;00:03, 581.11it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  88%|████████▊ | 17738/20176 [00:30&lt;00:04, 562.06it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  89%|████████▉ | 17942/20176 [00:30&lt;00:03, 590.19it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  88%|████████▊ | 17795/20176 [00:30&lt;00:04, 562.97it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  89%|████████▉ | 18007/20176 [00:30&lt;00:03, 605.66it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  88%|████████▊ | 17854/20176 [00:30&lt;00:04, 569.56it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  90%|████████▉ | 18070/20176 [00:30&lt;00:03, 609.81it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  89%|████████▉ | 17913/20176 [00:30&lt;00:03, 574.37it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  90%|████████▉ | 18132/20176 [00:30&lt;00:03, 606.12it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  89%|████████▉ | 17975/20176 [00:30&lt;00:03, 586.34it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  90%|█████████ | 18193/20176 [00:30&lt;00:03, 594.44it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  89%|████████▉ | 18040/20176 [00:30&lt;00:03, 603.07it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  90%|█████████ | 18253/20176 [00:30&lt;00:03, 571.54it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  90%|████████▉ | 18101/20176 [00:30&lt;00:03, 598.89it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  91%|█████████ | 18311/20176 [00:30&lt;00:03, 568.27it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  90%|█████████ | 18161/20176 [00:30&lt;00:03, 591.19it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  91%|█████████ | 18368/20176 [00:30&lt;00:03, 568.59it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  90%|█████████ | 18221/20176 [00:31&lt;00:03, 572.96it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  91%|█████████▏| 18425/20176 [00:31&lt;00:03, 567.12it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  91%|█████████ | 18279/20176 [00:31&lt;00:03, 558.15it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  92%|█████████▏| 18485/20176 [00:31&lt;00:02, 576.48it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  91%|█████████ | 18337/20176 [00:31&lt;00:03, 562.23it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  92%|█████████▏| 18544/20176 [00:31&lt;00:02, 577.20it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  91%|█████████ | 18394/20176 [00:31&lt;00:03, 553.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  92%|█████████▏| 18606/20176 [00:31&lt;00:02, 589.07it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  91%|█████████▏| 18453/20176 [00:31&lt;00:03, 563.94it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  93%|█████████▎| 18666/20176 [00:31&lt;00:02, 589.83it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  92%|█████████▏| 18511/20176 [00:31&lt;00:02, 568.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  93%|█████████▎| 18726/20176 [00:31&lt;00:02, 575.40it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  92%|█████████▏| 18570/20176 [00:31&lt;00:02, 574.45it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  93%|█████████▎| 18784/20176 [00:31&lt;00:02, 569.87it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  92%|█████████▏| 18631/20176 [00:31&lt;00:02, 583.88it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  93%|█████████▎| 18843/20176 [00:31&lt;00:02, 574.25it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  93%|█████████▎| 18690/20176 [00:31&lt;00:02, 577.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  94%|█████████▎| 18901/20176 [00:31&lt;00:02, 571.28it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  93%|█████████▎| 18748/20176 [00:32&lt;00:02, 564.00it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  94%|█████████▍| 18961/20176 [00:32&lt;00:02, 577.26it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  93%|█████████▎| 18805/20176 [00:32&lt;00:02, 561.30it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  94%|█████████▍| 19023/20176 [00:32&lt;00:01, 587.91it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  93%|█████████▎| 18862/20176 [00:32&lt;00:02, 560.33it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  95%|█████████▍| 19088/20176 [00:32&lt;00:01, 603.89it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  94%|█████████▍| 18920/20176 [00:32&lt;00:02, 563.15it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  95%|█████████▍| 19149/20176 [00:32&lt;00:01, 592.75it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  94%|█████████▍| 18981/20176 [00:32&lt;00:02, 574.70it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  95%|█████████▌| 19209/20176 [00:32&lt;00:01, 573.97it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  94%|█████████▍| 19044/20176 [00:32&lt;00:01, 588.34it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  95%|█████████▌| 19267/20176 [00:32&lt;00:01, 567.12it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  95%|█████████▍| 19107/20176 [00:32&lt;00:01, 597.97it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  96%|█████████▌| 19324/20176 [00:32&lt;00:01, 567.71it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  95%|█████████▍| 19167/20176 [00:32&lt;00:01, 584.30it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  96%|█████████▌| 19381/20176 [00:32&lt;00:01, 556.94it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  95%|█████████▌| 19226/20176 [00:32&lt;00:01, 565.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  96%|█████████▋| 19440/20176 [00:32&lt;00:01, 566.34it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  96%|█████████▌| 19283/20176 [00:32&lt;00:01, 559.82it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  97%|█████████▋| 19502/20176 [00:32&lt;00:01, 580.53it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  96%|█████████▌| 19340/20176 [00:33&lt;00:01, 553.46it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  97%|█████████▋| 19561/20176 [00:33&lt;00:01, 571.12it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  96%|█████████▌| 19396/20176 [00:33&lt;00:01, 548.87it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  97%|█████████▋| 19621/20176 [00:33&lt;00:00, 578.28it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  96%|█████████▋| 19453/20176 [00:33&lt;00:01, 554.93it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  98%|█████████▊| 19680/20176 [00:33&lt;00:00, 580.18it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  97%|█████████▋| 19515/20176 [00:33&lt;00:01, 571.29it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  98%|█████████▊| 19744/20176 [00:33&lt;00:00, 597.02it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  97%|█████████▋| 19573/20176 [00:33&lt;00:01, 559.92it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  98%|█████████▊| 19807/20176 [00:33&lt;00:00, 605.09it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  97%|█████████▋| 19632/20176 [00:33&lt;00:00, 566.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  98%|█████████▊| 19868/20176 [00:33&lt;00:00, 587.44it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  98%|█████████▊| 19691/20176 [00:33&lt;00:00, 571.83it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  99%|█████████▉| 19927/20176 [00:33&lt;00:00, 577.53it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  98%|█████████▊| 19756/20176 [00:33&lt;00:00, 591.69it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  99%|█████████▉| 19985/20176 [00:33&lt;00:00, 573.70it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  98%|█████████▊| 19816/20176 [00:33&lt;00:00, 591.73it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  99%|█████████▉| 20043/20176 [00:33&lt;00:00, 571.10it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  99%|█████████▊| 19876/20176 [00:34&lt;00:00, 573.10it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential: 100%|█████████▉| 20101/20176 [00:33&lt;00:00, 566.21it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  99%|█████████▉| 19934/20176 [00:34&lt;00:00, 566.65it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential: 100%|█████████▉| 20158/20176 [00:34&lt;00:00, 563.61it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  99%|█████████▉| 19991/20176 [00:34&lt;00:00, 564.10it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential:  99%|█████████▉| 20048/20176 [00:34&lt;00:00, 560.81it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential: 100%|█████████▉| 20105/20176 [00:34&lt;00:00, 557.45it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential: 100%|█████████▉| 20161/20176 [00:34&lt;00:00, 555.06it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential: 100%|██████████| 20176/20176 [00:34&lt;00:00, 583.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-echo monoexponential: 100%|██████████| 20176/20176 [00:34&lt;00:00, 591.39it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:319 Calculating model fit quality metrics
@@ -2114,8 +2080,8 @@ By The tedana community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>

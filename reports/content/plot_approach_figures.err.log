@@ -242,7 +242,7 @@ pal = sns.color_palette("cubehelix", n_echoes)
 ------------------
 
 ----- stderr -----
-/tmp/ipykernel_2378/3438617242.py:28: DeprecationWarning: This method is deprecated. Please use `nitransforms.resampling.apply` instead.
+/tmp/ipykernel_2325/3438617242.py:28: DeprecationWarning: This method is deprecated. Please use `nitransforms.resampling.apply` instead.
   bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 ------------------
 

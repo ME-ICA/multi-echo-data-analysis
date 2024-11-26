@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -39,10 +41,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -72,6 +75,7 @@
     <link rel="prev" title="Signal Decay" href="Signal_Decay.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -87,19 +91,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -107,7 +100,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -115,8 +107,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -132,7 +124,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -162,21 +155,17 @@
     
     
     <img src="../_static/logo.png" class="logo__image only-light" alt="Multi-Echo fMRI Data Analysis - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Multi-Echo fMRI Data Analysis - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Multi-Echo fMRI Data Analysis - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -429,24 +418,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -1032,12 +1013,12 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/25df219242899b532cdff2abb960fb21c3b090efab7794e94c0a8ba46e66105d.png" src="../_images/25df219242899b532cdff2abb960fb21c3b090efab7794e94c0a8ba46e66105d.png" />
+<img alt="../_images/a752ca594b2e1b8a2a8ead8cb0a66397348f7761772cff971163a738377fe174.png" src="../_images/a752ca594b2e1b8a2a8ead8cb0a66397348f7761772cff971163a738377fe174.png" />
 </div>
 </details>
 </div>
 <figure class="align-center" id="fig-component-curves">
-<img alt="../_images/25df219242899b532cdff2abb960fb21c3b090efab7794e94c0a8ba46e66105d.png" src="../_images/25df219242899b532cdff2abb960fb21c3b090efab7794e94c0a8ba46e66105d.png" />
+<img alt="../_images/a752ca594b2e1b8a2a8ead8cb0a66397348f7761772cff971163a738377fe174.png" src="../_images/a752ca594b2e1b8a2a8ead8cb0a66397348f7761772cff971163a738377fe174.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 16 </span><span class="caption-text">Now let’s apply this approach to components</span><a class="headerlink" href="#fig-component-curves" title="Link to this image">#</a></p>
 </figcaption>
@@ -1074,12 +1055,12 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ca3d3fc629fcdf5a53dbdcae8d09a245a011f2b3b517b0f0a8989e171464974c.png" src="../_images/ca3d3fc629fcdf5a53dbdcae8d09a245a011f2b3b517b0f0a8989e171464974c.png" />
+<img alt="../_images/fc1432f729aa675f416582989ac543a7a9ebcba7fa7a196ebbe0f9f8be4bd273.png" src="../_images/fc1432f729aa675f416582989ac543a7a9ebcba7fa7a196ebbe0f9f8be4bd273.png" />
 </div>
 </details>
 </div>
 <figure class="align-center" id="fig-component-curves-2">
-<img alt="../_images/ca3d3fc629fcdf5a53dbdcae8d09a245a011f2b3b517b0f0a8989e171464974c.png" src="../_images/ca3d3fc629fcdf5a53dbdcae8d09a245a011f2b3b517b0f0a8989e171464974c.png" />
+<img alt="../_images/fc1432f729aa675f416582989ac543a7a9ebcba7fa7a196ebbe0f9f8be4bd273.png" src="../_images/fc1432f729aa675f416582989ac543a7a9ebcba7fa7a196ebbe0f9f8be4bd273.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 17 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-2" title="Link to this image">#</a></p>
 </figcaption>
@@ -1113,12 +1094,12 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/54e8b3c39bfc5a6d8ceabdbba42a706d3a955e4807a88cc54f58e639ebbbed1a.png" src="../_images/54e8b3c39bfc5a6d8ceabdbba42a706d3a955e4807a88cc54f58e639ebbbed1a.png" />
+<img alt="../_images/d9121270931f8cc7e468e36e404b37268067e00b736b071bbe0dc1217d5b12c4.png" src="../_images/d9121270931f8cc7e468e36e404b37268067e00b736b071bbe0dc1217d5b12c4.png" />
 </div>
 </details>
 </div>
 <figure class="align-center" id="fig-component-curves-3">
-<img alt="../_images/54e8b3c39bfc5a6d8ceabdbba42a706d3a955e4807a88cc54f58e639ebbbed1a.png" src="../_images/54e8b3c39bfc5a6d8ceabdbba42a706d3a955e4807a88cc54f58e639ebbbed1a.png" />
+<img alt="../_images/d9121270931f8cc7e468e36e404b37268067e00b736b071bbe0dc1217d5b12c4.png" src="../_images/d9121270931f8cc7e468e36e404b37268067e00b736b071bbe0dc1217d5b12c4.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-3" title="Link to this image">#</a></p>
 </figcaption>
@@ -1153,12 +1134,12 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/d097b62a9b2716c0f5f02f06f928d180a5bab93070a257784e3373780ca9b9e5.png" src="../_images/d097b62a9b2716c0f5f02f06f928d180a5bab93070a257784e3373780ca9b9e5.png" />
+<img alt="../_images/a1e9414ac2764e72ac536c76708a6a7c4b6c8cf0521b0496a10a51e2eb9b822f.png" src="../_images/a1e9414ac2764e72ac536c76708a6a7c4b6c8cf0521b0496a10a51e2eb9b822f.png" />
 </div>
 </details>
 </div>
 <figure class="align-center" id="fig-component-curves-4">
-<img alt="../_images/d097b62a9b2716c0f5f02f06f928d180a5bab93070a257784e3373780ca9b9e5.png" src="../_images/d097b62a9b2716c0f5f02f06f928d180a5bab93070a257784e3373780ca9b9e5.png" />
+<img alt="../_images/a1e9414ac2764e72ac536c76708a6a7c4b6c8cf0521b0496a10a51e2eb9b822f.png" src="../_images/a1e9414ac2764e72ac536c76708a6a7c4b6c8cf0521b0496a10a51e2eb9b822f.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 19 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-4" title="Link to this image">#</a></p>
 </figcaption>
@@ -1357,7 +1338,8 @@ each component’s time series. Let <span class="math notranslate nohighlight">\
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1421,8 +1403,8 @@ By The tedana community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>
