@@ -1,17 +1,17 @@
 Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/nbclient/client.py", line 1314, in execute
+  File "/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/nbclient/client.py", line 1319, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+  File "/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
-  File "/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+  File "/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
     return future.result()
-  File "/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/nbclient/client.py", line 709, in async_execute
+  File "/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
@@ -53,7 +53,7 @@ File [0;32m~/work/multi-echo-data-analysis/multi-echo-data-analysis/content/boo
 [1;32m     16[0m     avg_img[38;5;241m=[39mmean_data_img,
 [1;32m     17[0m )
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/nilearn/image/image.py:548[0m, in [0;36mmean_img[0;34m(imgs, target_affine, target_shape, verbose, n_jobs)[0m
+File [0;32m/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/nilearn/image/image.py:548[0m, in [0;36mmean_img[0;34m(imgs, target_affine, target_shape, verbose, n_jobs)[0m
 [1;32m    543[0m     imgs [38;5;241m=[39m [
 [1;32m    544[0m         imgs,
 [1;32m    545[0m     ]
@@ -63,7 +63,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages
 [1;32m    551[0m [38;5;66;03m# target_affine and target_shape if_needed[39;00m
 [1;32m    552[0m n_imgs [38;5;241m=[39m [38;5;241m1[39m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300[0m, in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+File [0;32m/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300[0m, in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
 [1;32m    298[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
 [1;32m    299[0m     [38;5;28;01melse[39;00m:
 [0;32m--> 300[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m"[39m)
