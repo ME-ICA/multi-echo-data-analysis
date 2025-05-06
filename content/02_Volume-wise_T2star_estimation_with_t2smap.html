@@ -498,7 +498,7 @@ as in <span id="id2">Power <em>et al.</em> [<a class="reference internal" href="
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/repo2data
+/opt/hostedtoolcache/Python/3.10.17/x64/lib/python3.10/site-packages/repo2data
 Config from file :
 ../binder/data_requirement.json
 Destination:
@@ -507,7 +507,7 @@ Destination:
 Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.17/x64/lib/python3.10/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
   from .autonotebook import tqdm as notebook_tqdm
 </pre></div>
 </div>
@@ -562,38 +562,44 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:252 Using output directory: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/fit
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:290 Using output directory: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/fit
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:278 Loading input data: [&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:316 Loading input data: [&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&#39;]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:298 Using user-defined mask
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:338 Using user-defined mask
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:make_adaptive_mask:198 Echo-wise intensity thresholds for adaptive mask: [258.33994278 180.98638476 134.6796175   91.51006253]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:make_adaptive_mask:202 Echo-wise intensity thresholds for adaptive mask: [258.33994278 180.98638476 134.6796175   91.51006253]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING  utils:make_adaptive_mask:227 734 voxels in user-defined mask do not have good signal. Removing voxels from mask.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING  utils:make_adaptive_mask:231 734 voxels in user-defined mask do not have good signal. Removing voxels from mask.
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:306 Computing adaptive T2* map
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:347 Computing adaptive T2* map
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:319 Calculating model fit quality metrics
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:360 Calculating model fit quality metrics
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/tedana/decay.py:541: RuntimeWarning: Mean of empty slice
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.17/x64/lib/python3.10/site-packages/tedana/decay.py:541: RuntimeWarning: Mean of empty slice
   rmse_map = np.nanmean(rmse, axis=1)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:331 Computing optimal combination
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:372 Computing optimal combination
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     combine:make_optcom:192 Optimally combining data with voxel- and volume-wise T2* estimates
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:389 Workflow completed
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:430 Workflow completed
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:log_newsletter_info:705 Don&#39;t forget to subscribe to the tedana newsletter for updates! This is a very low volume email list.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:log_newsletter_info:709 https://groups.google.com/g/tedana-newsletter
 </pre></div>
 </div>
 </div>
@@ -820,7 +826,7 @@ sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;string&gt;:1: RuntimeWarning: invalid value encountered in divide
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/nilearn/plotting/img_plotting.py:1317: UserWarning: Non-finite values detected. These values will be replaced with zeros.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.17/x64/lib/python3.10/site-packages/nilearn/plotting/img_plotting.py:1317: UserWarning: Non-finite values detected. These values will be replaced with zeros.
   safe_get_data(stat_map_img, ensure_finite=True),
 </pre></div>
 </div>
