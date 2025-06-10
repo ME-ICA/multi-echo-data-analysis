@@ -545,7 +545,7 @@ and this chapter will be removed.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.10.17/x64/lib/python3.10/site-packages/repo2data
+/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data
 Config from file :
 ../binder/data_requirement.json
 Destination:
@@ -794,7 +794,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2555/3438617242.py:28: DeprecationWarning: This method is deprecated. Please use `nitransforms.resampling.apply` instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2630/3438617242.py:28: DeprecationWarning: This method is deprecated. Please use `nitransforms.resampling.apply` instead.
   bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 </pre></div>
 </div>
@@ -816,7 +816,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <span class="g g-Whitespace">     </span><span class="mi">56</span>     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv&quot;</span><span class="p">),</span>
 <span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="p">)</span><span class="o">.</span><span class="n">values</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.17/x64/lib/python3.10/site-packages/nilearn/masking.py:809,</span> in <span class="ni">apply_mask</span><span class="nt">(imgs, mask_img, dtype, smoothing_fwhm, ensure_finite)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/masking.py:809,</span> in <span class="ni">apply_mask</span><span class="nt">(imgs, mask_img, dtype, smoothing_fwhm, ensure_finite)</span>
 <span class="g g-Whitespace">    </span><span class="mi">807</span> <span class="n">mask</span><span class="p">,</span> <span class="n">mask_affine</span> <span class="o">=</span> <span class="n">load_mask_img</span><span class="p">(</span><span class="n">mask_img</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">808</span> <span class="n">mask_img</span> <span class="o">=</span> <span class="n">new_img_like</span><span class="p">(</span><span class="n">mask_img</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">mask_affine</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">809</span> <span class="k">return</span> <span class="n">apply_mask_fmri</span><span class="p">(</span>
@@ -827,14 +827,14 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <span class="g g-Whitespace">    </span><span class="mi">814</span>     <span class="n">ensure_finite</span><span class="o">=</span><span class="n">ensure_finite</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">815</span> <span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.17/x64/lib/python3.10/site-packages/nilearn/masking.py:835,</span> in <span class="ni">apply_mask_fmri</span><span class="nt">(imgs, mask_img, dtype, smoothing_fwhm, ensure_finite)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/masking.py:835,</span> in <span class="ni">apply_mask_fmri</span><span class="nt">(imgs, mask_img, dtype, smoothing_fwhm, ensure_finite)</span>
 <span class="g g-Whitespace">    </span><span class="mi">832</span> <span class="k">if</span> <span class="n">smoothing_fwhm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">833</span>     <span class="n">ensure_finite</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="ne">--&gt; </span><span class="mi">835</span> <span class="n">imgs_img</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">check_niimg</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">836</span> <span class="n">affine</span> <span class="o">=</span> <span class="n">imgs_img</span><span class="o">.</span><span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 <span class="g g-Whitespace">    </span><span class="mi">838</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">mask_affine</span><span class="p">,</span> <span class="n">imgs_img</span><span class="o">.</span><span class="n">affine</span><span class="p">):</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.17/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300,</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300,</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
 <span class="g g-Whitespace">    </span><span class="mi">298</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">299</span>     <span class="k">else</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">300</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File not found: &#39;</span><span class="si">{</span><span class="n">niimg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
