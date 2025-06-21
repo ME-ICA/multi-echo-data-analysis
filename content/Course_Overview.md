@@ -12,3 +12,22 @@ kernelspec:
 ---
 
 # Course Overview
+
+This book is a work-in-progress.
+
+The overall goal is to provide an understanding of how to think through
+collecting, analyzing, and interpreting multi-echo fMRI data.
+We tried to make this book accessible to someone without much
+math and physics expertise,
+but we also include equations to support people who want to understand
+multi-echo fMRI at a deeper level.
+Whenever we include equations, we try to explain the take-home message
+so that readers can follow the overall message without needing to study
+and understand every equation.
+
+This book covers several topics:
+
+- How to install the data and programs needed for running interactive examples
+- Information for understanding and thinking about acquiring multi-echo fMRI
+- How multi-echo information can be used to support noise removal in data
+- Examples and pipelines for processing and visualizing multi-echo data using multiple tools, such as AFNI, fMRIPrep and tedana.

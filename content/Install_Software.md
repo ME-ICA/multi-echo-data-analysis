@@ -12,5 +12,3 @@ kernelspec:
 ---
 
 # Install Software
-
-Even more testing to see if this renders the gh_pages github action.
