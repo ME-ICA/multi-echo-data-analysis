@@ -265,6 +265,8 @@ Time series from a voxel for each echo.
 
 In this section, we investigate the two factors driving changes in the signal decay pattern: $T_{2}^{*}$ and $S_{0}$.
 
+Firstly, let us run some code to simulate the signal decay curve.
+
 ```{code-cell} ipython3
 # Simulate data
 SINGLEECHO_TE = np.array([30])
