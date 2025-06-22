@@ -235,7 +235,7 @@ Here, we visualize the temporal variation of a single voxel’s signal (y-axis) 
 
 ### The signal itself changes with echo time as well
 
-While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.
+Let us visualize the time series of one voxel acquired at different echo times. While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
