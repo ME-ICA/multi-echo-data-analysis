@@ -130,16 +130,16 @@ A simplified fMRI pulse sequence.
 For the purposes of understanding multi-echo fMRI,
 an fMRI pulse sequence has two main parts.
 The excitation pulse (black) and the readout (green).
-The excitation pulse sends out a radio frequence pulse that excites protons at a resonance frequency
+The excitation pulse sends out a radio frequency pulse that excites protons at a resonance frequency
 (The "resonance" part of Magnetic Resonance Imaging).
-The readout period (green) is when the magnetic oscillates
+The readout period (green) is when the gradient magnets oscillate
 to acquire data across a portion of k-space.
 In a typical fMRI study, each excitation pulse excites protons in
 one slice or several slices of the brain,
 and then the readout period collects data from those slice(s).
 Multiple excitation pulses and readout windows are necessary to collect a full volume.
 In this figure, there are 10 excitation pulses.
-If 4 slices were collected with each excitation pulse,
+If 4 slices were collected with each excitation pulse
 (called simultaneous multislice, multiband, or hyperband imaging),
 this figure represents acquiring 40 slices.
 In this example, each excitation + readout cycle takes around 37ms,
@@ -157,7 +157,7 @@ For example, for a 3T MRI, the BOLD contrast is largest at approximately 28ms.
 Also note that the readout period is not instantaneous.
 It takes time to have the magnetic gradients to move around in ways that collect the desired information across k-space.
 The TE is the center of this readout period.
-In this figure, the TE is 28ms, but the readout period is acquiring data from around 19-36ms.
+In this figure, the TE is 28ms, but data is acquire during the readout period from around 19-36ms.
 
 ## A multi-echo fMRI pulse sequence
 
@@ -183,3 +183,43 @@ glue("fig_sample_multiecho_pulse_seq", fig, display=False)
 
 A sample multi-echo fMRI pulse sequence.
 ```
+
+The top plot in the above figure shows two cycles of single echo acquisition.
+The middle figure shows the same readout duration, but with 3 acquired echoes.
+Instead of the gap between the excitation pulse and a single echo,
+the same readout pattern is repeated 3 time as quickly as possible.
+This results in data to create 3 images from every excitation pulse.
+The key benefit of this is,
+instead of having a single echo at what is expected to be the optimal TE for BOLD constrast,
+there are multiple echoes that can be fit to a model of how BOLD constrast is expected to evolve over time.
+
+Note that the first echo can often fit mostly within the intial gap and is essentially free.
+There are some methods and use and benefit from just 2 echoes {cite:t}`bright2013removing`.
+
+The third echo noticabily expands the time between two excitation pulses.
+This means, if no other parameters change, the TR will be longer to acquire 3 echoes vs single echo data
+and even longer if more than 3 echoes are acquired.
+
+Acquiring multi-echo fMRI data typcially requires mild compromises on other parameters.
+This can include a mix of:
+
+- Longer TR
+- Fewer slices
+- Larger voxels: shorter readout time
+- More in-slice accelleration (sometimes called GRAPPA, iPat, or ASSET): shorter readout time
+
+The bottom figure above has identical parameters, but uses GRAPPA=3 inslice acceleration instead of GRAPPA=2.
+With just this change, the readout time for each echo has a shorter duration
+and the TR is nearly identical to the single echo example.
+Continuing on this example, in-slice acceleration has a cost.
+The Signal to Noise Ratio (SNR) for fMRI data drops roughly by the square root of the acceleration factor.
+That is GRAPPA=2 has an SNR reduction of roughly $\sqrt{2}$.
+That means going from GRAPPA=2 to GRAPPA=3 has an SNR reduction of $\sqrt{3}-\sqrt{2}$.
+
+Collecting 3 echoes and just averaging them together gives an SNR increase that is close to $\sqrt{3}$ is this is a net positive even without any fancier multi-echo denoising approaches.
+More acceleration and faster readouts also means all the data is acquired closer to the desired echo time,
+and a faster readout often means less distortion.
+That said, more acceleration can also results in more MRI artifacts,
+so it is critial to collect data to evaluate parameters before collecting data for a full study.
+
+More information on what to consider when setting multi-echo fMRI parameters is in the [Practical Resources: Acquiring Multi-Echo Data](./Acquiring_Multi_Echo_Data.html) section.
