@@ -115,7 +115,7 @@ def create_simple_pulse_seq(tes, read_time=None, x_axis_duration=None, n_acq = 2
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-plt.figure(figsize=(20,8))
+fig = plt.figure(figsize=(20,8))
 create_simple_pulse_seq([28], read_time=17.347, n_acq=10, title="Acquiring an fMRI volume")
 glue("fig_sample_pulse_seq", fig, display=False)
 ```
@@ -163,8 +163,7 @@ In this figure, the TE is 28ms, but the readout period is acquiring data from ar
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-
-plt.figure(figsize=(20,16))
+fig, axes = plt.subplots(3, 1, figsize=(20,16))
 
 plt.subplot(3,1,2)
 read_time, x_axis_duration = create_simple_pulse_seq([13, 31.26, 49.52], title="3 echoes. In-slice accelleration=2")
