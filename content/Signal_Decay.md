@@ -231,6 +231,8 @@ glue("fig_echo_scatter", fig, display=False)
 Scatter plot of voxel's values by echo time.
 ```
 
+Here, we visualize the temporal variation of a single voxel’s signal (y-axis) across four different echo times (TE) on the x-axis. As expected, the signal magnitude decreases with increasing TE.
+
 ### The signal itself changes with echo time as well
 
 While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.
