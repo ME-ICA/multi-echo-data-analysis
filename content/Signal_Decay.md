@@ -202,6 +202,8 @@ plt.style.use("default")
 Signal decay in the brain.
 ```
 
+The nature of multi-echo (ME) acquisition leads to signal decay, with high signal-to-noise ratio (SNR) at short echo times (TE) and lower SNR at longer TEs. You may notice that the images appear darker as the signal decays with increasing TE. Additionally, image contrast tends to increase with longer echo times.
+
 ### Echo-specific data and echo time
 
 ```{code-cell} ipython3
