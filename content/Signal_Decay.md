@@ -316,6 +316,12 @@ ax.plot(
     alpha=0.5,
     color="black",
 )
+# Example for TE=30ms
+x_cross = 30
+y_cross = predict_bold_signal(np.array([x_cross]), [MEAN_S0], [30])[0, 0]
+ax.plot(x_cross, y_cross, marker='x', color='red', markersize=10, label='TE=30 ms')
+ax.axvline(x=x_cross, ymax=y_cross[0], color='red', linestyle='--', alpha=0.3)
+ax.axhline(y=y_cross, xmax=x_cross, color='red', linestyle='--', alpha=0.3)
 
 ax.set_ylabel("Recorded BOLD signal", fontsize=24)
 ax.set_xlabel("Echo Time (ms)", fontsize=24)
@@ -332,6 +338,8 @@ glue("fig_signal_decay_single-echo", fig, display=False)
 
 BOLD signal decay for a standard single-echo scan
 ```
+
+At a given time point in an fMRI scan, the signal magnitude of a voxel varies depending on the echo time at which the signal is acquired. Here, we observe how the signal decays as TE increases (black curve). For example, if a single-echo scan is acquired at TE = 30 ms, the signal magnitude is approximately 5886 (red cross and dashed lines).
 
 ### Plot BOLD signal decay and BOLD contrast
 
