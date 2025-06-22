@@ -19,6 +19,7 @@ In this chapter, we give a high level overview of MRI pulse sequences with the g
 :tags: [hide-cell]
 import numpy as np
 from matplotlib import pyplot as plt
+from myst_nb import glue
 ```
 
 ```{code-cell} ipython3
@@ -114,11 +115,8 @@ def create_simple_pulse_seq(tes, read_time=None, x_axis_duration=None, n_acq = 2
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-
 plt.figure(figsize=(20,8))
-
 create_simple_pulse_seq([28], read_time=17.347, n_acq=10, title="Acquiring an fMRI volume")
-
 glue("fig_sample_pulse_seq", fig, display=False)
 ```
 
@@ -126,7 +124,7 @@ glue("fig_sample_pulse_seq", fig, display=False)
 :name: fig_sample_pulse_seq
 :align: center
 
-A simplified fMRI pulse sequence
+A simplified fMRI pulse sequence.
 ```
 
 For the purposes of understanding multi-echo fMRI,
@@ -184,5 +182,5 @@ glue("fig_sample_multiecho_pulse_seq", fig, display=False)
 :name: fig_sample_multiecho_pulse_seq
 :align: center
 
-A sample multi-echo fMRI pulse sequence
+A sample multi-echo fMRI pulse sequence.
 ```
