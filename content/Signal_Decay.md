@@ -381,6 +381,9 @@ glue("fig_signal_decay_contrast", fig, display=False)
 BOLD signal decay and BOLD contrast
 ```
 
+This plot shows the signal decay for two different activity levels: one with high activity and one with low activity. Due to differences in activity and the associated T2 effects, the decay curve for low activity is steeper than that for high activity.
+The contrast — represented by the distance between the two curves — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., >50 ms). In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.
+
 ### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 This shows how fMRI data fluctuates over time.
