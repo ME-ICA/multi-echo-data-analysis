@@ -222,4 +222,21 @@ and a faster readout often means less distortion.
 That said, more acceleration can also results in more MRI artifacts,
 so it is critial to collect data to evaluate parameters before collecting data for a full study.
 
+One additional consideration is why the readout windows are the length they are.
+This is partially the limits of the MRI hardware.
+The readout gradients are rapidly changing magnetic fields using electromagnets.
+There are limits to how fast a given system can alter electric currents to drive these magnetic field changes without overheating.
+A second key factor is that a rapidly changing magnetic field surrounding a conductive material can generate electric current in that material.
+People are conductive materials.
+This is why people sometimes experience
+[peripheral nerve stimulation (PNS)](https://mriquestions.com/nerve-stimulation.html)
+in MRI machines.
+Modern MRI hardware is capable of driving faster magnetic field changes,
+but they have build-in safety controls that limit on how fast the graidents can change to prevent dangerous levesl of PNS.
+Innovations in how to span k-space with slower changes in gradient fields
+and magnetic gradient hardware that only spans the head,
+rather than the entire scanner bore,
+are some ways MRI physicists are working to shorten readout times.
+
+
 More information on what to consider when setting multi-echo fMRI parameters is in the [Practical Resources: Acquiring Multi-Echo Data](./Acquiring_Multi_Echo_Data.html) section.
