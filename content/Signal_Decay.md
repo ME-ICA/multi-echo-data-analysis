@@ -352,17 +352,32 @@ fig, ax = plt.subplots(figsize=(14, 7.5))
 ax.plot(
     FULLCURVE_TES,
     fullcurve_signal_active[:, 0],
-    alpha=0.5,
+    alpha=0.7,
     color="red",
     label="High Activity",
 )
 ax.plot(
     FULLCURVE_TES,
     fullcurve_signal_inactive[:, 0],
-    alpha=0.5,
+    alpha=0.7,
     color="blue",
     label="Low Activity",
 )
+
+# vertical lines to explain how the contrast evolves
+max_plot = np.ceil(np.max(fullcurve_signal) / 1000) * 1000
+# 10ms
+ymin = fullcurve_signal_inactive[:, 0][10][0]/max_plot
+ymax = fullcurve_signal_active[:, 0][10][0]/max_plot
+ax.axvline(x=FULLCURVE_TES[10], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
+# 30ms
+ymin = fullcurve_signal_inactive[:, 0][30][0]/max_plot
+ymax = fullcurve_signal_active[:, 0][30][0]/max_plot
+ax.axvline(x=FULLCURVE_TES[30], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
+# 50ms
+ymin = fullcurve_signal_inactive[:, 0][50][0]/max_plot
+ymax = fullcurve_signal_active[:, 0][50][0]/max_plot
+ax.axvline(x=FULLCURVE_TES[50], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
 
 ax.set_ylabel("Recorded BOLD signal", fontsize=24)
 ax.set_xlabel("Echo Time (ms)", fontsize=24)
@@ -382,7 +397,8 @@ BOLD signal decay and BOLD contrast
 ```
 
 This plot shows the signal decay for two different activity levels: one with high activity and one with low activity. Due to differences in activity and the associated T2 effects, the decay curve for low activity is steeper than that for high activity.
-The contrast — represented by the distance between the two curves — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., >50 ms). In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.
+The contrast — represented by the distance between the two curves (see green dashed lines in the figure) — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., >50 ms). In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.
+
 
 ### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
