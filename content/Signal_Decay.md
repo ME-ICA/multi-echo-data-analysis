@@ -834,7 +834,9 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 
-This shows how single-echo data, on its own, cannot distinguish between S0 and T2* fluctuations.
+Let us visualize again the case of a single echo acquisition. 
+Because the signal is acquired for only one TE (see the red and blue dot points in the figure), it is impossible to model the $S_0$- and $T_2^{*}$- driven curves !
+This shows how single-echo data, on its own, cannot distinguish between $S_0$ and $T_2^{*}$ fluctuations.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
