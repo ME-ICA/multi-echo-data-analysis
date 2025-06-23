@@ -402,7 +402,7 @@ The contrast — represented by the distance between the two curves (see green d
 
 ### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-This shows how fMRI data fluctuates over time.
+Let us visualize the case of a single echo acquisition with TE = 30ms. The top panel shows the time series of an example voxel, while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms). This shows how fMRI data fluctuates over time.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
