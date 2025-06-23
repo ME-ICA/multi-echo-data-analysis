@@ -402,7 +402,7 @@ The contrast — represented by the distance between the two curves (see green d
 
 ### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-Let us visualize the case of a single echo acquisition with TE = 30ms. The top panel shows the time series of an example voxel, while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms). This shows how fMRI data fluctuates over time.
+Let us visualize the case of a single echo fMRI acquisition with TE = 30ms. The top panel shows the time series of an example voxel , while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms). This shows how fMRI data fluctuates over time.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -482,7 +482,7 @@ Single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 ### Plot single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-This shows how single-echo data is a sample from a signal decay curve.
+Building on the previous figure, we visualize here how the signal of a voxel at each time point of a single-echo fMRI scan (TE=30ms) is part of a decay curve. In other words, this shows how single-echo data is a sample from a signal decay curve.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
