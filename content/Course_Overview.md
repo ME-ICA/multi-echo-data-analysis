@@ -31,3 +31,11 @@ This book covers several topics:
 - Information for understanding and thinking about acquiring multi-echo fMRI
 - How multi-echo information can be used to support noise removal in data
 - Examples and pipelines for processing and visualizing multi-echo data using multiple tools, such as AFNI, fMRIPrep and tedana.
+
+A good place to ask additional questions about multi-echo fMRI and processing is at
+[neurostars.org/](https://neurostars.org/) using the `multi-echo` or `tedana` tags.
+
+If you have ideas for future multi-echo fMRI methods or issues with the tedana code,
+you can post issues at [github.com/ME-ICA/tedana/issues](https://github.com/ME-ICA/tedana/issues) or
+start a discussion at [github.com/ME-ICA/tedana/discussions](https://github.com/ME-ICA/tedana/discussions).
+You can also join [mattermost.brainhack.org/brainhack/channels/tedana](https://mattermost.brainhack.org/brainhack/channels/tedana) for additional discussions with tedana developers.
