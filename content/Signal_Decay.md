@@ -721,7 +721,11 @@ Single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting fr
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-This shows how fluctuations in S0 and T2* produce different patterns in the full signal decay curves.
+Let us visualize $S_0$ and $T_2^{*}$ effects more closely. 
+The bottom figure shows how the $S_0$ and $T_2^{*}$ curves changes compared to the original average signal decay curve. 
+In red, the decay curve is shown when only the $S_0$ values fluctuate (for a fixed $T_2^{*}$ for any t).
+In blue the decay curve is shown when the $T_2^{*}$ values fluctuate (for a fixed $S_0$ for any t). The top panel represents the fluctuations of the ratio $\frac{S_0}{T_2^{*}}.
+This shows how fluctuations in $S_0$ and $T_2^{*}$ produce different patterns in the full signal decay curves.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
