@@ -1134,7 +1134,8 @@ $T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
 
 #### Plot $S_{0}$ against BOLD signal from single-echo data (TE=30ms)
 
-When the BOLD signal is driven entirely by S0 fluctuations, the BOLD signal ends up being a scaled version of the S0 fluctuations.
+When the BOLD signal is driven entirely by $T_2^{*}$ fluctuations, the BOLD signal is very similar to a scaled version of those $T_2^{*}$ fluctuations, but there are small differences.
+You may understand this intuitively by looking back to the equation {eq}`monoexponential_decay_undeveloped_single_echo`. You can see that if $S_0$ is fixed, the relationship between $S$ and $T_2^{*}$ is not purely linear over time.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
