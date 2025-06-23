@@ -13,6 +13,67 @@ kernelspec:
 
 # Acquiring Multi-Echo Data
 
+## How to approach setting multi-echo acquisition parameters
+
+There is no definitively optimal parameter set for multi-echo fMRI acquisition or any fMRI acqusition.
+The guidelines for optimizing parameters are similar to single-echo fMRI.
+An overall recommendation is to choose single-echo sequence parameters that meet the priorities of a study with regards to spatial resolution,
+spatial coverage, sample rate, signal-to-noise ratio, signal drop-out, distortion, and artifacts.
+Then make the least significant parameter changes needed to acquire multi-echo fMRI data.
+"Least significant" is study-specific.
+In one study, one might have a 1.5 sec TR with single echo
+and multi-echo echo is possible with a 1.75 sec TR without impacting study goals.
+In another study, slices might cover cortex and cerebellum with the largest plausible participant brains, but 10% less coverage would include full brain coverage for most participants and all key study-specific regions-of-interest.
+
+A minimum of 3 echoes is required for methods like [tedana](https://tedana.readthedocs.io/en/stable/index.html) that fit echoes to a decay curve.
+There is typically at least one echo that is earlier and one that is later
+than the TE one would use for single-echo $T_2^*$ weighted fMRI.
+It is also important to make sure at least 3 echoes retain a useful amount of signal.
+On a 3T MRI, a few regions, particularly areas like orbitofrontal cortex, won't have sufficient signal for $TE\geq45ms$,
+and there will be more noticable signal loss with $TE\geq50ms$.
+There are multi-echo fMRI studies that successfully use longer 3rd echo times,
+but being aware of this signal loss is important,
+and one might benefit from keeping echo times shorter if one is prioritizing
+acquisitions in typically high signal dropout regions.
+
+More than 3 echoes may be useful, because that would allow for more accurate
+estimates of BOLD and non-BOLD weighted fluctuations, but more echoes have an
+additional time cost, which would result in either less spatiotemporal coverage
+or more acceleration.
+Whether the benefits of more echoes balance out the additional costs is an open research question.
+
+Additional recommendations and guidelines for acquiring multi-echo fMRI data
+are discussed in the [appendix of Dipasquale et al. (2017)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173289)
+
+It is also useful to look at existing publications.
+
+- [Here is an always outdated list of multi-echo fMRI publications](https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/edit?gid=0#gid=0)
+- [Here is an often outdated list of multi-echo fMRI open datasets](https://me-ica.github.io/open-multi-echo-data/)
+that may be useful to visualize and measure data quality in datasets with similar scientific goals.
+
+[Here is a spreadsheet that shows possible acquisition parameters on a specfic 3T scanner](https://docs.google.com/spreadsheets/d/14iM6ENHrq9TGv6GhEe2dF9IzlM26y3aR9FmZGYXzmHA/edit?usp=sharing).
+This is useful to get a sense of what is possible when evaluating parameter options.
+That is, one can see how much a TR will increase for 3, 4, and 5 echoes for a given
+set of parameters and how different parameter changes, such as more acceleration,
+will alter the echo times and the TR.
+Note that this spreadsheet maps a wide range of parameter options
+and that go beyond advisable options.
+Just because it is possible to collect data with in-slice acceleration of 3
+and multi-slice acceleration of 4
+(a $\sqrt{12}$ drop in signal-to-noise ratio & more artifacts)
+doesn't mean it's advisable.
+
+Collecting and examining pilot scans is always recommended.
+Look at some data collected for your specific study.
+Look at signal quality, artifacts, dropout,
+and if potential effects of interest are sufficiently statistically robust.
+
+```{note}
+    There are other methods and use multi-echo acqusitions.
+    For example a **dual echo** method which uses a very early (~5ms)
+    first echo in order to clean data. For more information on this method, see [Bright and Murphy (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3518782/)
+```
+
 ## Available multi-echo fMRI sequences
 
 We have attempted to compile some basic multi-echo fMRI protocols in an [OSF project](https://osf.io/ebkrp/).
@@ -74,7 +135,7 @@ In addition to ME-fMRI, other MR sequences benefit from acquiring multiple
 echoes, including T1-weighted imaging (MEMPRAGE) and susceptibility weighted imaging.
 While most of these kinds of sequences fall outside the purview of this documentation,
 quantitative T2* mapping is relevant since a baseline T2* map is used in several
-processing steps including :ref:`optimal combination`.
+processing steps including optimal combination.
 While the T2* map estimated directly from fMRI time series is noisy, no current
 study quantifies the benefit to optimal combination or tedana denoising if a
 higher quality T2* map is used.
@@ -105,12 +166,6 @@ A minimum of 3 echoes is required for running the current implementation fo TE-d
 ``tedana``.
 It may be useful to have at least one echo that is earlier and one echo that is later than the
 TE one would use for single-echo T2* weighted fMRI.
-
-```{note}
-This is in contrast to the **dual echo** denoising method which uses a very early (~5ms)
-first echo in order to clean data.
-For more information on this method, see {cite:t}`bright2013removing`.
-```
 
 More than 3 echoes may be useful, because that would allow for more accurate
 estimates of BOLD and non-BOLD weighted fluctuations, but more echoes have an

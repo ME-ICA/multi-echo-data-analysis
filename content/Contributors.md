@@ -17,9 +17,10 @@ Taylor Salo ([@tsalo](https://github.com/tsalo/)) created this book by setting u
 designing the overall framework that builds into an html Jupyter book,
 and wrote a substantial portion of the text.
 
-Daniel Handwerker ([@handwerkerd](https://github.com/handwerkerd)) led a project to expand and update this book at the [OHBM 2025 BrainHack](https://ohbm.github.io/hackathon2025). Additional contributors at the hackathon include
+Daniel Handwerker ([@handwerkerd](https://github.com/handwerkerd)) led a project to expand and update this book at the [OHBM 2025 BrainHack](https://ohbm.github.io/hackathon2025).
+Mélanie Garcia ([@garciaml](https://github.com/garciaml)) made many substantial contributions.
 
-- Mélanie Garcia [@garciaml](https://github.com/garciaml)
+Additional contributors at the hackathon include
+
 - Merel van der Thiel [@merelvdthiel](https://github.com/merelvdthiel)
 - Korbinian Eckstein [@korbinian90](https://github.com/korbinian90)
-- Benjamin Ely [@elyb01](https://github.com/elyb01)
