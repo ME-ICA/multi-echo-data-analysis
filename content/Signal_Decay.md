@@ -966,7 +966,8 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 
-This shows how S0 and T2* fluctuations produce different patterns in multi-echo data.
+Let us now visualize again the case of a multi-echo acquisition. 
+Because the signal is acquired at four echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the $S_0$- and $T_2^{*}$- driven curves from the signal ! 
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
