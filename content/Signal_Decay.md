@@ -575,7 +575,9 @@ Single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuatio
 
 ### Plot single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-This shows how changes in fMRI data can be driven by both S0 and T2* fluctuations.
+We are still in the case of a single-echo fMRI acquisition with TE=30ms. For a given voxel, the signal magnitude $S(t)$ is linked with $S_0(t)$ and $T_2^{\*}$ through the formula: $S(t, TE) = S_0(t) * e^{\frac{-TE}{T_2^{\*}}} + noise$.
+Both factors of the product - $S_0$ and the exponential with $T_2^{\*}$ - capture local fluctuations happening during MRI acquisition, but from different origins.
+The figure represents how the signal of a voxel is associated to $S_0$ and $T_2^{\*}$, showing how changes in fMRI data can be driven by both factors.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
