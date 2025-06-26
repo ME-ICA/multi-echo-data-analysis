@@ -14,8 +14,16 @@ kernelspec:
 (content:open-datasets)=
 # Open Multi-Echo Datasets
 
-A number of multi-echo datasets have been made public so far.
-This list is not necessarily up to date, so please check out OpenNeuro to potentially find more.
+A running list of openly accessible multi-echo fMRI datasets is at:
+[me-ica.github.io/open-multi-echo-data/](https://me-ica.github.io/open-multi-echo-data/).
+If you know of other datasets that should be added,
+submit an issue at [github.com/ME-ICA/open-multi-echo-data/issues](https://github.com/ME-ICA/open-multi-echo-data/issues)
+or each out to a [tedana developer](https://github.com/ME-ICA/tedana/graphs/contributors)
+
+```{important}
+The datasets below were added before the above spreadsheet was created. They do have some additional context.
+Need to decide how much of that context is worth preserving vs just deleting.
+```
 
 ## Multi-echo fMRI replication sample of autobiographical memory, prospection and theory of mind reasoning tasks
 
