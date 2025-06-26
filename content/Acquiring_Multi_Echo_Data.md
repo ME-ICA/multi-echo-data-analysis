@@ -102,7 +102,7 @@ and make sure to run pilot scans to test your choices.
   The number of echoes can be specified on the **Sequence, Special** tab in this sequence.
 
 ### GE
- 
+
 GE users can request access to the HyperMEPI ATSM sequence.
 Request can be made through [GE's WeConnect Portal](https://collaborate.mr.gehealthcare.com).
 This sequence has both hyperband,
@@ -110,8 +110,6 @@ This sequence has both hyperband,
 Depending on scanner and software version,
 GE scanners have a limit on the total number of slices that can be collected during a single acquisition.
 This has the potential to limit the maximum duration of a multi-echo fMRI run.
-
-
 
 ### Philips
 
