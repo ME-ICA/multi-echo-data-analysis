@@ -575,11 +575,11 @@ Single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuatio
 
 ### Plot single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-We are still in the case of a single-echo fMRI acquisition with TE=30ms. For a given voxel, the signal magnitude $S(t)$ is linked with $S_0(t)$ and $T_2^{*}$ through the formula:
+We are still in the case of a single-echo fMRI acquisition with TE=30ms. For a given voxel, the signal magnitude $S$ is linked with $S_0$ and $T_2^{*}$ over time $t$ through the formula:
 
 ```{math}
 :label: monoexponential_decay_undeveloped_single_echo
-S(t, TE) = S_0(t) \times e^{\frac{-TE}{T_2^{*}}} + noise
+S(t, TE) = S_0(t) \times e^{\frac{-TE}{T_2^{*}(t)}} + noise
 ```
 
 Both factors of the product - $S_0$ and the exponential with $T_2^{*}$ - capture local fluctuations happening during MRI acquisition, but from different origins.
