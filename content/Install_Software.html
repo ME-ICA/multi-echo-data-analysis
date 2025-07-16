@@ -188,6 +188,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Course_Overview.html">Course Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributors.html">Contributors</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="current nav bd-sidenav">
@@ -445,7 +446,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -461,6 +464,16 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tedana">tedana</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afni">AFNI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fmriprep">fMRIPrep</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -472,6 +485,24 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="install-software">
 <h1>Install Software<a class="headerlink" href="#install-software" title="Link to this heading">#</a></h1>
+<section id="tedana">
+<h2>tedana<a class="headerlink" href="#tedana" title="Link to this heading">#</a></h2>
+<p>Instructions for installing tedana are <a class="reference external" href="https://tedana.readthedocs.io/en/stable/installation.html">in the tedana documentation</a></p>
+<p><a class="reference external" href="https://github.com/ME-ICA/tedana/blob/main/pyproject.toml">Here is a list of tedana’s python dependencies</a></p>
+<p>If you are interested in using a pre-release version of tedana
+or are interested in contributing to the tedana code,
+<a class="reference external" href="https://github.com/ME-ICA/tedana/blob/main/CONTRIBUTING.md#3-run-the-developer-setup">instructions for cloning the code, and installing as a developer are here.</a></p>
+</section>
+<section id="afni">
+<h2>AFNI<a class="headerlink" href="#afni" title="Link to this heading">#</a></h2>
+<p>AFNI can preprocess multi-echo fMRI data run it through tedana for denoising.
+<a class="reference external" href="https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/background_install/main_toc.html">Instructions for installing AFNI are here</a></p>
+</section>
+<section id="fmriprep">
+<h2>fMRIPrep<a class="headerlink" href="#fmriprep" title="Link to this heading">#</a></h2>
+<p>fMRIPRep can preprocess multi-echo fMRI data and run the optimal combination of echoes through tedana.
+<a class="reference external" href="https://fmriprep.org/en/stable/installation.html">Instructions for installing fMRIPrep are here</a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -528,6 +559,23 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tedana">tedana</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afni">AFNI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fmriprep">fMRIPrep</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

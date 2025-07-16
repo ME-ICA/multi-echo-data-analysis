@@ -56,13 +56,13 @@ Destination:
 Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds006193.git ...
 ----- stderr -----
 [INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
-[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis
------ stderr -----
+[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
 [INFO] Start enumerating objects 
 [INFO] Start counting objects 
 [INFO] Start compressing objects 
 [INFO] Start receiving objects 
-[INFO] Start resolving deltas 
+[INFO] Start resolving deltas
+----- stderr -----
 [INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis)
 ----- stdout -----
 install(error): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis (dataset) [No working git-annex installation of version >= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.] [No working git-annex installation of version >= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.]

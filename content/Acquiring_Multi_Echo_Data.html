@@ -62,6 +62,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'content/Acquiring_Multi_Echo_Data';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -188,6 +190,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Course_Overview.html">Course Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributors.html">Contributors</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
@@ -468,6 +471,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-approach-setting-multi-echo-acquisition-parameters">How to approach setting multi-echo acquisition parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-multi-echo-fmri-sequences">Available multi-echo fMRI sequences</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#siemens">Siemens</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ge">GE</a></li>
@@ -495,6 +499,64 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="acquiring-multi-echo-data">
 <h1>Acquiring Multi-Echo Data<a class="headerlink" href="#acquiring-multi-echo-data" title="Link to this heading">#</a></h1>
+<section id="how-to-approach-setting-multi-echo-acquisition-parameters">
+<h2>How to approach setting multi-echo acquisition parameters<a class="headerlink" href="#how-to-approach-setting-multi-echo-acquisition-parameters" title="Link to this heading">#</a></h2>
+<p>There is no definitively optimal parameter set for multi-echo fMRI acquisition or any fMRI acqusition.
+The guidelines for optimizing parameters are similar to single-echo fMRI.
+An overall recommendation is to choose single-echo sequence parameters that meet the priorities of a study with regards to spatial resolution,
+spatial coverage, sample rate, signal-to-noise ratio, signal drop-out, distortion, and artifacts.
+Then make the least significant parameter changes needed to acquire multi-echo fMRI data.
+“Least significant” is study-specific.
+In one study, one might have a 1.5 sec TR with single echo
+and multi-echo echo is possible with a 1.75 sec TR without impacting study goals.
+In another study, slices might cover cortex and cerebellum with the largest plausible participant brains, but 10% less coverage would include full brain coverage for most participants and all key study-specific regions-of-interest.</p>
+<p>A minimum of 3 echoes is required for methods like <a class="reference external" href="https://tedana.readthedocs.io/en/stable/index.html">tedana</a> that fit echoes to a decay curve.
+There is typically at least one echo that is earlier and one that is later
+than the TE one would use for single-echo <span class="math notranslate nohighlight">\(T_2^*\)</span> weighted fMRI.
+It is also important to make sure at least 3 echoes retain a useful amount of signal.
+On a 3T MRI, a few regions, particularly areas like orbitofrontal cortex, won’t have sufficient signal for <span class="math notranslate nohighlight">\(TE\geq45ms\)</span>,
+and there will be more noticable signal loss with <span class="math notranslate nohighlight">\(TE\geq50ms\)</span>.
+There are multi-echo fMRI studies that successfully use longer 3rd echo times,
+but being aware of this signal loss is important,
+and one might benefit from keeping echo times shorter if one is prioritizing
+acquisitions in typically high signal dropout regions.</p>
+<p>More than 3 echoes may be useful, because that would allow for more accurate
+estimates of BOLD and non-BOLD weighted fluctuations, but more echoes have an
+additional time cost, which would result in either less spatiotemporal coverage
+or more acceleration.
+Whether the benefits of more echoes balance out the additional costs is an open research question.</p>
+<p>Additional recommendations and guidelines for acquiring multi-echo fMRI data
+are discussed in the <a class="reference external" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173289">appendix of Dipasquale et al. (2017)</a></p>
+<p>It is also useful to look at existing publications.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/edit?gid=0#gid=0">Here is an always outdated list of multi-echo fMRI publications</a></p></li>
+<li><p><a class="reference external" href="https://me-ica.github.io/open-multi-echo-data/">Here is an often outdated list of multi-echo fMRI open datasets</a>
+that may be useful to visualize and measure data quality in datasets with similar scientific goals.</p></li>
+</ul>
+<p><a class="reference external" href="https://docs.google.com/spreadsheets/d/14iM6ENHrq9TGv6GhEe2dF9IzlM26y3aR9FmZGYXzmHA/edit?usp=sharing">Here is a spreadsheet that shows possible acquisition parameters on a specfic 3T scanner</a>.
+This is useful to get a sense of what is possible when evaluating parameter options.
+That is, one can see how much a TR will increase for 3, 4, and 5 echoes for a given
+set of parameters and how different parameter changes, such as more acceleration,
+will alter the echo times and the TR.
+Note that this spreadsheet maps a wide range of parameter options
+and that go beyond advisable options.
+Just because it is possible to collect data with in-slice acceleration of 3
+and multi-slice acceleration of 4
+(a <span class="math notranslate nohighlight">\(\sqrt{12}\)</span> drop in signal-to-noise ratio &amp; more artifacts)
+doesn’t mean it’s advisable.</p>
+<p>Collecting and examining pilot scans is always recommended.
+Look at some data collected for your specific study.
+Look at signal quality, artifacts, dropout,
+and if potential effects of interest are sufficiently statistically robust.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>There are other methods and use multi-echo acqusitions.
+For example a **dual echo** method which uses a very early (~5ms)
+first echo in order to clean data. For more information on this method, see [Bright and Murphy (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3518782/)
+</pre></div>
+</div>
+</div>
+</section>
 <section id="available-multi-echo-fmri-sequences">
 <h2>Available multi-echo fMRI sequences<a class="headerlink" href="#available-multi-echo-fmri-sequences" title="Link to this heading">#</a></h2>
 <p>We have attempted to compile some basic multi-echo fMRI protocols in an <a class="reference external" href="https://osf.io/ebkrp/">OSF project</a>.
@@ -524,17 +586,13 @@ The number of echoes can be specified on the <strong>Sequence, Special</strong> 
 </section>
 <section id="ge">
 <h3>GE<a class="headerlink" href="#ge" title="Link to this heading">#</a></h3>
-<p><strong>For GE users</strong>, there are currently two sharable pulse sequences:</p>
-<ul class="simple">
-<li><p>Multi-echo EPI (MEPI) – Software releases: DV24, MP24 and DV25 (with offline recon)</p></li>
-<li><p>Hyperband Multi-echo EPI (HyperMEPI) - Software releases: DV26, MP26, DV27, RX27
-(here hyperband can be deactivated to do simple Multi-echo EPI – online recon)</p></li>
-</ul>
-<p>Please reach out to the GE Research Operation team or each pulse sequence’s
-author to begin the process of obtaining this software.
-More information can be found on the <a class="reference external" href="https://collaborate.mr.gehealthcare.com">GE Collaboration Portal</a>.</p>
-<p>Once logged in, go to Groups &gt; GE Works-in-Progress you can find the description
-of the current ATSM (i.e. prototypes).</p>
+<p>GE users can request access to the HyperMEPI ATSM sequence.
+Request can be made through <a class="reference external" href="https://collaborate.mr.gehealthcare.com">GE’s WeConnect Portal</a>.
+This sequence has both hyperband,
+(GE’s term for simultaneous-multislice or multiband) and multi-echo.
+Depending on scanner and software version,
+GE scanners have a limit on the total number of slices that can be collected during a single acquisition.
+This has the potential to limit the maximum duration of a multi-echo fMRI run.</p>
 </section>
 <section id="philips">
 <h3>Philips<a class="headerlink" href="#philips" title="Link to this heading">#</a></h3>
@@ -555,7 +613,7 @@ set to 3mm isotropic voxels and adjust TEs to your preference.</p>
 echoes, including T1-weighted imaging (MEMPRAGE) and susceptibility weighted imaging.
 While most of these kinds of sequences fall outside the purview of this documentation,
 quantitative T2* mapping is relevant since a baseline T2* map is used in several
-processing steps including :ref:<code class="docutils literal notranslate"><span class="pre">optimal</span> <span class="pre">combination</span></code>.
+processing steps including optimal combination.
 While the T2* map estimated directly from fMRI time series is noisy, no current
 study quantifies the benefit to optimal combination or tedana denoising if a
 higher quality T2* map is used.
@@ -584,12 +642,6 @@ spatial coverage, sample rate, signal-to-noise ratio, signal drop-out, distortio
 <code class="docutils literal notranslate"><span class="pre">tedana</span></code>.
 It may be useful to have at least one echo that is earlier and one echo that is later than the
 TE one would use for single-echo T2* weighted fMRI.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is in contrast to the <strong>dual echo</strong> denoising method which uses a very early (~5ms)
-first echo in order to clean data.
-For more information on this method, see <span id="id3">Bright and Murphy [<a class="reference internal" href="bibliography.html#id18" title="Molly G Bright and Kevin Murphy. Removing motion and physiological artifacts from intrinsic bold fluctuations using short echo data. Neuroimage, 64:526–537, 2013.">2013</a>]</span>.</p>
-</div>
 <p>More than 3 echoes may be useful, because that would allow for more accurate
 estimates of BOLD and non-BOLD weighted fluctuations, but more echoes have an
 additional time cost, which would result in either less spatiotemporal coverage
@@ -602,7 +654,7 @@ We suggest new multi-echo fMRI users examine the spreadsheet of publications tha
 multi-echo fMRI to identify studies with similar acquisition priorities,
 and use the parameters from those studies as a starting point.
 More complete recommendations and guidelines are discussed in the
-appendix of <span id="id4">Dipasquale <em>et al.</em> [<a class="reference internal" href="bibliography.html#id19" title="Ottavia Dipasquale, Arjun Sethi, Maria Marcella Laganà, Francesca Baglio, Giuseppe Baselli, Prantik Kundu, Neil A Harrison, and Mara Cercignani. Comparing resting state fmri de-noising approaches using multi-and single-echo acquisitions. PloS one, 12(3):e0173289, 2017.">2017</a>]</span>.</p>
+appendix of <span id="id3">Dipasquale <em>et al.</em> [<a class="reference internal" href="bibliography.html#id19" title="Ottavia Dipasquale, Arjun Sethi, Maria Marcella Laganà, Francesca Baglio, Giuseppe Baselli, Prantik Kundu, Neil A Harrison, and Mara Cercignani. Comparing resting state fmri de-noising approaches using multi-and single-echo acquisitions. PloS one, 12(3):e0173289, 2017.">2017</a>]</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In order to increase the number of contrasts (“echoes”) you may need to first increase the TR, shorten the
@@ -616,9 +668,9 @@ For typically used parameters see the <strong>ME-fMRI parameters</strong> sectio
 <h3>Complex reconstruction<a class="headerlink" href="#complex-reconstruction" title="Link to this heading">#</a></h3>
 <p>It is possible to retain phase data when reconstructing multi-echo fMRI data.
 The phase data may be leveraged for a number of useful denoising and processing methods,
-including NORDIC <span id="id5">[<a class="reference internal" href="bibliography.html#id22" title="Luca Vizioli, Steen Moeller, Logan Dowdle, Mehmet Akçakaya, Federico De Martino, Essa Yacoub, and Kamil Uğurbil. Lowering the thermal noise barrier in functional brain mapping with magnetic resonance imaging. Nature communications, 12(1):5181, 2021.">Vizioli <em>et al.</em>, 2021</a>, <a class="reference internal" href="bibliography.html#id23" title="Logan T Dowdle, Luca Vizioli, Steen Moeller, Mehmet Akçakaya, Cheryl Olman, Geoffrey Ghose, Essa Yacoub, and Kâmil Uğurbil. Nordic increases the sensitivity and preserves the spatiotemporal precision of fmri responses. bioRxiv, pages 2021–08, 2021.">Dowdle <em>et al.</em>, 2021</a>, <a class="reference internal" href="bibliography.html#id24" title="Logan T Dowdle, Luca Vizioli, Steen Moeller, Mehmet Akçakaya, Cheryl Olman, Geoffrey Ghose, Essa Yacoub, and Kâmil Uğurbil. Evaluating increases in sensitivity from nordic for diverse fmri acquisition strategies. NeuroImage, 270:119949, 2023.">Dowdle <em>et al.</em>, 2023</a>]</span>,
-MEDIC dynamic distortion correction <span id="id6">[<a class="reference internal" href="bibliography.html#id25" title="Andrew N Van, David F Montez, Timothy O Laumann, Vahdeta Suljic, Thomas Madison, Noah J Baden, Nadeshka Ramirez-Perez, Kristen M Scheidter, Julia S Monk, Forrest I Whiting, and others. Framewise multi-echo distortion correction for superior functional mri. Biorxiv, 2023.">Van <em>et al.</em>, 2023</a>]</span>,
-and improved T2* estimation <span id="id7">[<a class="reference internal" href="bibliography.html#id16" title="Julien Cohen-Adad, Jonathan R Polimeni, Karl G Helmer, Thomas Benner, Jennifer A McNab, Lawrence L Wald, Bruce R Rosen, and Caterina Mainero. T2* mapping and b0 orientation-dependence at 7 t reveal cyto-and myeloarchitecture organization of the human cortex. Neuroimage, 60(2):1006–1014, 2012.">Cohen-Adad <em>et al.</em>, 2012</a>]</span>.</p>
+including NORDIC <span id="id4">[<a class="reference internal" href="bibliography.html#id22" title="Luca Vizioli, Steen Moeller, Logan Dowdle, Mehmet Akçakaya, Federico De Martino, Essa Yacoub, and Kamil Uğurbil. Lowering the thermal noise barrier in functional brain mapping with magnetic resonance imaging. Nature communications, 12(1):5181, 2021.">Vizioli <em>et al.</em>, 2021</a>, <a class="reference internal" href="bibliography.html#id23" title="Logan T Dowdle, Luca Vizioli, Steen Moeller, Mehmet Akçakaya, Cheryl Olman, Geoffrey Ghose, Essa Yacoub, and Kâmil Uğurbil. Nordic increases the sensitivity and preserves the spatiotemporal precision of fmri responses. bioRxiv, pages 2021–08, 2021.">Dowdle <em>et al.</em>, 2021</a>, <a class="reference internal" href="bibliography.html#id24" title="Logan T Dowdle, Luca Vizioli, Steen Moeller, Mehmet Akçakaya, Cheryl Olman, Geoffrey Ghose, Essa Yacoub, and Kâmil Uğurbil. Evaluating increases in sensitivity from nordic for diverse fmri acquisition strategies. NeuroImage, 270:119949, 2023.">Dowdle <em>et al.</em>, 2023</a>]</span>,
+MEDIC dynamic distortion correction <span id="id5">[<a class="reference internal" href="bibliography.html#id25" title="Andrew N Van, David F Montez, Timothy O Laumann, Vahdeta Suljic, Thomas Madison, Noah J Baden, Nadeshka Ramirez-Perez, Kristen M Scheidter, Julia S Monk, Forrest I Whiting, and others. Framewise multi-echo distortion correction for superior functional mri. Biorxiv, 2023.">Van <em>et al.</em>, 2023</a>]</span>,
+and improved T2* estimation <span id="id6">[<a class="reference internal" href="bibliography.html#id16" title="Julien Cohen-Adad, Jonathan R Polimeni, Karl G Helmer, Thomas Benner, Jennifer A McNab, Lawrence L Wald, Bruce R Rosen, and Caterina Mainero. T2* mapping and b0 orientation-dependence at 7 t reveal cyto-and myeloarchitecture organization of the human cortex. Neuroimage, 60(2):1006–1014, 2012.">Cohen-Adad <em>et al.</em>, 2012</a>]</span>.</p>
 <p>It’s important to remember that retaining phase data for each echo will effectively double the
 amount of data you end up with.
 This can also cause problems with online reconstruction,
@@ -877,6 +929,7 @@ You can see the spreadsheet of publications at
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-approach-setting-multi-echo-acquisition-parameters">How to approach setting multi-echo acquisition parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-multi-echo-fmri-sequences">Available multi-echo fMRI sequences</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#siemens">Siemens</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ge">GE</a></li>

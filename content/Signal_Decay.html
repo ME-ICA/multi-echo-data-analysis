@@ -190,6 +190,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Course_Overview.html">Course Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributors.html">Contributors</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
@@ -508,7 +509,7 @@ document.write(`
 <h1>Signal Decay<a class="headerlink" href="#signal-decay" title="Link to this heading">#</a></h1>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>This chapter should differentiate itself from TE_Dependence by focusing on the application of <a class="reference internal" href="TE_Dependence.html#equation-monoexponential-decay">(1)</a>
+<p>This chapter should differentiate itself from TE_Dependence by focusing on the application of <a class="reference internal" href="TE_Dependence.html#equation-monoexponential-decay">(2)</a>
 to raw signal, rather than decompositions.</p>
 </div>
 <div class="admonition important">
@@ -798,6 +799,7 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </details>
 </div>
+<p>The nature of multi-echo (ME) acquisition leads to signal decay, with high signal-to-noise ratio (SNR) at short echo times (TE) and lower SNR at longer TEs. You may notice that the images appear darker as the signal decays with increasing TE. Additionally, image contrast tends to increase with longer echo times.</p>
 <section id="echo-specific-data-and-echo-time">
 <h3>Echo-specific data and echo time<a class="headerlink" href="#echo-specific-data-and-echo-time" title="Link to this heading">#</a></h3>
 <div class="cell tag_hide-cell docutils container">
@@ -826,10 +828,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </details>
 </div>
+<p>Here, we visualize the temporal variation of a single voxel’s signal (y-axis) across four different echo times (TE) on the x-axis. As expected, the signal magnitude decreases with increasing TE.</p>
 </section>
 <section id="the-signal-itself-changes-with-echo-time-as-well">
 <h3>The signal itself changes with echo time as well<a class="headerlink" href="#the-signal-itself-changes-with-echo-time-as-well" title="Link to this heading">#</a></h3>
-<p>While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.</p>
+<p>Let us visualize the time series of one voxel acquired at different echo times. While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -860,6 +863,7 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 <section id="the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal">
 <h2>The impact of <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> fluctuations on BOLD signal<a class="headerlink" href="#the-impact-of-t-2-and-s-0-fluctuations-on-bold-signal" title="Link to this heading">#</a></h2>
 <p>In this section, we investigate the two factors driving changes in the signal decay pattern: <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span>.</p>
+<p>Firstly, let us run some code to simulate the signal decay curve.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate data</span>
@@ -920,6 +924,12 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="c1"># Example for TE=30ms</span>
+<span class="n">x_cross</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">y_cross</span> <span class="o">=</span> <span class="n">predict_bold_signal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_cross</span><span class="p">]),</span> <span class="p">[</span><span class="n">MEAN_S0</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_cross</span><span class="p">,</span> <span class="n">y_cross</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;TE=30 ms&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_cross</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="n">y_cross</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_cross</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="n">x_cross</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Recorded BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
@@ -933,6 +943,7 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </details>
 </div>
+<p>At a given time point in an fMRI scan, the signal magnitude of a voxel varies depending on the echo time at which the signal is acquired. Here, we observe how the signal decays as TE increases (black curve). For example, if a single-echo scan is acquired at TE = 30 ms, the signal magnitude is approximately 5886 (red cross and dashed lines).</p>
 </section>
 </section>
 <section id="plot-bold-signal-decay-and-bold-contrast">
@@ -951,17 +962,32 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">FULLCURVE_TES</span><span class="p">,</span>
     <span class="n">fullcurve_signal_active</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;High Activity&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">FULLCURVE_TES</span><span class="p">,</span>
     <span class="n">fullcurve_signal_inactive</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Low Activity&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="c1"># vertical lines to explain how the contrast evolves</span>
+<span class="n">max_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">fullcurve_signal</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+<span class="c1"># 10ms</span>
+<span class="n">ymin</span> <span class="o">=</span> <span class="n">fullcurve_signal_inactive</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">10</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">max_plot</span>
+<span class="n">ymax</span> <span class="o">=</span> <span class="n">fullcurve_signal_active</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">10</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">max_plot</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">FULLCURVE_TES</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">ymin</span><span class="o">=</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="n">ymax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="c1"># 30ms</span>
+<span class="n">ymin</span> <span class="o">=</span> <span class="n">fullcurve_signal_inactive</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">30</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">max_plot</span>
+<span class="n">ymax</span> <span class="o">=</span> <span class="n">fullcurve_signal_active</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">30</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">max_plot</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">FULLCURVE_TES</span><span class="p">[</span><span class="mi">30</span><span class="p">],</span> <span class="n">ymin</span><span class="o">=</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="n">ymax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="c1"># 50ms</span>
+<span class="n">ymin</span> <span class="o">=</span> <span class="n">fullcurve_signal_inactive</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">50</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">max_plot</span>
+<span class="n">ymax</span> <span class="o">=</span> <span class="n">fullcurve_signal_active</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">50</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">max_plot</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">FULLCURVE_TES</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="n">ymin</span><span class="o">=</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="n">ymax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Recorded BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
@@ -976,10 +1002,12 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 </details>
 </div>
+<p>This plot shows the signal decay for two different activity levels: one with high activity and one with low activity. Due to differences in activity and the associated T2 effects, the decay curve for low activity is steeper than that for high activity.
+The contrast — represented by the distance between the two curves (see green dashed lines in the figure) — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., &gt;50 ms). In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.</p>
 </section>
 <section id="plot-single-echo-data-resulting-from-s-0-and-t-2-fluctuations">
 <h3>Plot single-echo data resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-resulting-from-s-0-and-t-2-fluctuations" title="Link to this heading">#</a></h3>
-<p>This shows how fMRI data fluctuates over time.</p>
+<p>Let us visualize the case of a single echo fMRI acquisition with TE = 30ms. The top panel shows the time series of an example voxel , while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms). This shows how fMRI data fluctuates over time.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1060,7 +1088,7 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </section>
 <section id="plot-single-echo-data-and-the-curve-resulting-from-s-0-and-t-2-fluctuations">
 <h3>Plot single-echo data and the curve resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-and-the-curve-resulting-from-s-0-and-t-2-fluctuations" title="Link to this heading">#</a></h3>
-<p>This shows how single-echo data is a sample from a signal decay curve.</p>
+<p>Building on the previous figure, we visualize here how the signal of a voxel at each time point of a single-echo fMRI scan (TE=30ms) is part of a decay curve. In other words, this shows how single-echo data is a sample from a signal decay curve.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1154,7 +1182,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </section>
 <section id="plot-single-echo-data-the-curve-and-the-s-0-and-t-2-values-resulting-from-s-0-and-t-2-fluctuations">
 <h3>Plot single-echo data, the curve, and the <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> values resulting from <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-single-echo-data-the-curve-and-the-s-0-and-t-2-values-resulting-from-s-0-and-t-2-fluctuations" title="Link to this heading">#</a></h3>
-<p>This shows how changes in fMRI data can be driven by both S0 and T2* fluctuations.</p>
+<p>We are still in the case of a single-echo fMRI acquisition with TE=30ms. For a given voxel, the signal magnitude <span class="math notranslate nohighlight">\(S\)</span> is linked with <span class="math notranslate nohighlight">\(S_0\)</span> and <span class="math notranslate nohighlight">\(T_2^{*}\)</span> over time <span class="math notranslate nohighlight">\(t\)</span> through the formula:</p>
+<div class="math notranslate nohighlight" id="equation-monoexponential-decay-undeveloped-single-echo">
+<span class="eqno">(1)<a class="headerlink" href="#equation-monoexponential-decay-undeveloped-single-echo" title="Link to this equation">#</a></span>\[S(t, TE) = S_0(t) \times e^{\frac{-TE}{T_2^{*}(t)}} + noise\]</div>
+<p>Both factors of the product - <span class="math notranslate nohighlight">\(S_0\)</span> and the exponential with <span class="math notranslate nohighlight">\(T_2^{*}\)</span> - capture local fluctuations happening during MRI acquisition, but from different origins.
+The figure represents how the signal of a voxel is associated to <span class="math notranslate nohighlight">\(S_0\)</span> and <span class="math notranslate nohighlight">\(T_2^{*}\)</span>, showing how changes in fMRI data can be driven by both factors.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1293,7 +1325,11 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </section>
 <section id="plot-s-0-and-t-2-fluctuations">
 <h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations" title="Link to this heading">#</a></h3>
-<p>This shows how fluctuations in S0 and T2* produce different patterns in the full signal decay curves.</p>
+<p>Let us visualize <span class="math notranslate nohighlight">\(S_0\)</span> and <span class="math notranslate nohighlight">\(T_2^{*}\)</span> effects more closely.
+The bottom figure shows how the <span class="math notranslate nohighlight">\(S_0\)</span> and <span class="math notranslate nohighlight">\(T_2^{*}\)</span> curves changes compared to the original average signal decay curve.
+In red, the decay curve is shown when only the <span class="math notranslate nohighlight">\(S_0\)</span> values fluctuate (for a fixed <span class="math notranslate nohighlight">\(T_2^{*}\)</span> for any t).
+In blue the decay curve is shown when the <span class="math notranslate nohighlight">\(T_2^{*}\)</span> values fluctuate (for a fixed <span class="math notranslate nohighlight">\(S_0\)</span> for any t). The top panel represents the fluctuations of the ratio <span class="math notranslate nohighlight">\(\frac{S_0}{T_2^{*}}\)</span>.
+This shows how fluctuations in <span class="math notranslate nohighlight">\(S_0\)</span> and <span class="math notranslate nohighlight">\(T_2^{*}\)</span> produce different patterns in the full signal decay curves.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1403,7 +1439,9 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </section>
 <section id="plot-s-0-and-t-2-fluctuations-and-resulting-single-echo-data">
 <h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting single-echo data<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations-and-resulting-single-echo-data" title="Link to this heading">#</a></h3>
-<p>This shows how single-echo data, on its own, cannot distinguish between S0 and T2* fluctuations.</p>
+<p>Let us visualize again the case of a single echo acquisition.
+Because the signal is acquired for only one TE (see the red and blue dot points in the figure), it is impossible to model the <span class="math notranslate nohighlight">\(S_0\)</span>- and <span class="math notranslate nohighlight">\(T_2^{*}\)</span>- driven curves !
+This shows how single-echo data, on its own, cannot distinguish between <span class="math notranslate nohighlight">\(S_0\)</span> and <span class="math notranslate nohighlight">\(T_2^{*}\)</span> fluctuations.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1534,7 +1572,8 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </section>
 <section id="plot-s-0-and-t-2-fluctuations-and-resulting-multi-echo-data">
 <h3>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> fluctuations and resulting multi-echo data<a class="headerlink" href="#plot-s-0-and-t-2-fluctuations-and-resulting-multi-echo-data" title="Link to this heading">#</a></h3>
-<p>This shows how S0 and T2* fluctuations produce different patterns in multi-echo data.</p>
+<p>Let us now visualize again the case of a multi-echo acquisition.
+Because the signal is acquired at four echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the <span class="math notranslate nohighlight">\(S_0\)</span>- and <span class="math notranslate nohighlight">\(T_2^{*}\)</span>- driven curves from the signal !</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1667,8 +1706,8 @@ The data we use is a single resting-state run, with echo times of 12, 28, 44, an
 </div>
 <section id="plot-t-2-against-bold-signal-from-single-echo-data-te-30ms">
 <h4>Plot <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span> against BOLD signal from single-echo data (TE=30ms)<a class="headerlink" href="#plot-t-2-against-bold-signal-from-single-echo-data-te-30ms" title="Link to this heading">#</a></h4>
-<p>When the BOLD signal is driven entirely by T2* fluctuations,
-the BOLD signal is very similar to a scaled version of those T2* fluctuations, but there are small differences.</p>
+<p>When the BOLD signal is driven entirely by <span class="math notranslate nohighlight">\(T_2^{*}\)</span> fluctuations, the BOLD signal is very similar to a scaled version of those <span class="math notranslate nohighlight">\(T_2^{*}\)</span> fluctuations, but there are small differences.
+You may understand this intuitively by looking back to the equation <a class="reference internal" href="#equation-monoexponential-decay-undeveloped-single-echo">(1)</a>. You can see that if <span class="math notranslate nohighlight">\(S_0\)</span> is fixed, the relationship between <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T_2^{*}\)</span> is not purely linear over time.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1702,7 +1741,8 @@ the BOLD signal is very similar to a scaled version of those T2* fluctuations, b
 </section>
 <section id="plot-s-0-against-bold-signal-from-single-echo-data-te-30ms">
 <h4>Plot <span class="math notranslate nohighlight">\(S_{0}\)</span> against BOLD signal from single-echo data (TE=30ms)<a class="headerlink" href="#plot-s-0-against-bold-signal-from-single-echo-data-te-30ms" title="Link to this heading">#</a></h4>
-<p>When the BOLD signal is driven entirely by S0 fluctuations, the BOLD signal ends up being a scaled version of the S0 fluctuations.</p>
+<p>When the BOLD signal is driven entirely by <span class="math notranslate nohighlight">\(S_0\)</span> fluctuations, the BOLD signal ends up being a scaled version of the <span class="math notranslate nohighlight">\(S_0\)</span> fluctuations.
+You may understand this intuitively by looking back to the equation <a class="reference internal" href="#equation-monoexponential-decay-undeveloped-single-echo">(1)</a>. You can see that if <span class="math notranslate nohighlight">\(T_2^{*}\)</span> is fixed, the relationship between <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> is linear over time.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
