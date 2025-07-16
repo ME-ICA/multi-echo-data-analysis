@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
@@ -497,20 +497,84 @@ as in <span id="id2">Power <em>et al.</em> [<a class="reference internal" href="
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+It is highly recommended to configure Git before using DataLad. Set both &#39;user.name&#39; and &#39;user.email&#39; configuration variables.
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
 /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data
 Config from file :
 ../binder/data_requirement.json
 Destination:
-./../data/multi-echo-data-analysis
+./../data/ds006193/multi-echo-data-analysis
 
-Info : ./../data/multi-echo-data-analysis already downloaded
+Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds006193.git ...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pybtex/plugin/__init__.py:26: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.
-  import pkg_resources
-/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
-  from .autonotebook import tqdm as notebook_tqdm
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
+[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start enumerating objects 
+[INFO] Start counting objects 
+[INFO] Start compressing objects 
+[INFO] Start receiving objects 
+[INFO] Start resolving deltas 
+[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>install(error): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis (dataset) [No working git-annex installation of version &gt;= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.] [No working git-annex installation of version &gt;= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.]
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">CalledProcessError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">16</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="c1"># Download data</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">16</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:106,</span> in <span class="ni">Repo2Data.install</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">103</span>     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span>         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span>             <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">,</span>
+<span class="ne">--&gt; </span><span class="mi">106</span>                                    <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_path</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_server_dst_folder</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
+<span class="g g-Whitespace">    </span><span class="mi">107</span> <span class="c1"># if not, it is a single assignment</span>
+<span class="g g-Whitespace">    </span><span class="mi">108</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">109</span>     <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">110</span>                            <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_path</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_dst_folder</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:364,</span> in <span class="ni">Repo2DataChild.install</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">362</span>     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">363</span> <span class="c1"># Downloading with the right method, depending on the src type</span>
+<span class="ne">--&gt; </span><span class="mi">364</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scan_dl_type</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">365</span> <span class="c1"># If needed, decompression of the data</span>
+<span class="g g-Whitespace">    </span><span class="mi">366</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_decompress</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:332,</span> in <span class="ni">Repo2DataChild._scan_dl_type</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">330</span> <span class="c1"># if the source link has a .git, we use datalad</span>
+<span class="g g-Whitespace">    </span><span class="mi">331</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?</span><span class="se">\\</span><span class="s2">.git$&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
+<span class="ne">--&gt; </span><span class="mi">332</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_datalad_download</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">333</span> <span class="c1"># or coming from google drive</span>
+<span class="g g-Whitespace">    </span><span class="mi">334</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?(drive</span><span class="se">\\</span><span class="s2">.google</span><span class="se">\\</span><span class="s2">.com).*?&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:263,</span> in <span class="ni">Repo2DataChild._datalad_download</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">260</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info : Starting to download from datalad </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span>
+<span class="g g-Whitespace">    </span><span class="mi">261</span>       <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]))</span>
+<span class="g g-Whitespace">    </span><span class="mi">262</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">263</span>     <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">264</span>         <span class="p">[</span><span class="s1">&#39;datalad&#39;</span><span class="p">,</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]])</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span> <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: datalad does not appear to be installed&quot;</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/subprocess.py:369,</span> in <span class="ni">check_call</span><span class="nt">(*popenargs, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">367</span>     <span class="k">if</span> <span class="n">cmd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">368</span>         <span class="n">cmd</span> <span class="o">=</span> <span class="n">popenargs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="ne">--&gt; </span><span class="mi">369</span>     <span class="k">raise</span> <span class="n">CalledProcessError</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">370</span> <span class="k">return</span> <span class="mi">0</span>
+
+<span class="ne">CalledProcessError</span>: Command &#39;[&#39;datalad&#39;, &#39;install&#39;, &#39;./../data/ds006193/multi-echo-data-analysis&#39;, &#39;-s&#39;, &#39;https://github.com/OpenNeuroDatasets/ds006193.git&#39;]&#39; returned non-zero exit status 1.
 </pre></div>
 </div>
 </div>
@@ -563,67 +627,12 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:300 Using output directory: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/fit
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:326 Loading input data: [&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz&#39;, &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/func/sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz&#39;]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:348 Using user-defined mask
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:make_adaptive_mask:202 Echo-wise intensity thresholds for adaptive mask: [258.33994278 180.98638476 134.6796175   91.51006253]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING  utils:make_adaptive_mask:231 734 voxels in user-defined mask do not have good signal. Removing voxels from mask.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:357 Computing adaptive T2* map
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:370 Calculating model fit quality metrics
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/tedana/decay.py:541: RuntimeWarning: Mean of empty slice
-  rmse_map = np.nanmean(rmse, axis=1)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:382 Computing optimal combination
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     combine:make_optcom:192 Optimally combining data with voxel- and volume-wise T2* estimates
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:440 Workflow completed
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:log_newsletter_info:705 Don&#39;t forget to subscribe to the tedana newsletter for updates! This is a very low volume email list.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:log_newsletter_info:709 https://groups.google.com/g/tedana-newsletter
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)))</span>
 <span class="n">out_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">out_files</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_files</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sub-04570_task-rest_space-scanner_S0map.nii.gz
-sub-04570_task-rest_space-scanner_T2starmap.nii.gz
-sub-04570_task-rest_space-scanner_dataset_description.json
-sub-04570_task-rest_space-scanner_desc-confounds_timeseries.tsv
-sub-04570_task-rest_space-scanner_desc-limited_S0map.nii.gz
-sub-04570_task-rest_space-scanner_desc-limited_T2starmap.nii.gz
-sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz
-sub-04570_task-rest_space-scanner_desc-rmse_statmap.nii.gz
-sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 </pre></div>
 </div>
 </div>
@@ -661,14 +670,6 @@ sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 </div>
 </div>
 </div>
-<figure class="align-center" id="figure-volumewise-t2ss0-carpets">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1600x1600 with 3 Axes&gt;
-</pre></div>
-</div>
-<figcaption>
-<p><span class="caption-number">Fig. 26 </span><span class="caption-text">Carpet plots of optimally combined data, along with volume-wise T2* and S0 estimates.</span><a class="headerlink" href="#figure-volumewise-t2ss0-carpets" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -687,14 +688,6 @@ sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 </div>
 </div>
 </div>
-<figure class="align-center" id="figure-mean-volumewise-t2s">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1600x800 with 5 Axes&gt;
-</pre></div>
-</div>
-<figcaption>
-<p><span class="caption-number">Fig. 27 </span><span class="caption-text">Mean map from the volume-wise T2* estimation.</span><a class="headerlink" href="#figure-mean-volumewise-t2s" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -713,14 +706,6 @@ sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 </div>
 </div>
 </div>
-<figure class="align-center" id="figure-mean-volumewise-s0">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1600x800 with 5 Axes&gt;
-</pre></div>
-</div>
-<figcaption>
-<p><span class="caption-number">Fig. 28 </span><span class="caption-text">Mean map from the volume-wise S0 estimation.</span><a class="headerlink" href="#figure-mean-volumewise-s0" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -773,14 +758,6 @@ sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 </div>
 </div>
 </div>
-<figure class="align-center" id="figure-mean-echos-and-optcom">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1600x1500 with 50 Axes&gt;
-</pre></div>
-</div>
-<figcaption>
-<p><span class="caption-number">Fig. 29 </span><span class="caption-text">Mean images of the echo-wise data and the optimally combined data.</span><a class="headerlink" href="#figure-mean-echos-and-optcom" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">te30_tsnr</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span>
@@ -824,24 +801,7 @@ sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;string&gt;:1: RuntimeWarning: invalid value encountered in divide
-</pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/plotting/img_plotting.py:1317: UserWarning: Non-finite values detected. These values will be replaced with zeros.
-  safe_get_data(stat_map_img, ensure_finite=True),
-</pre></div>
-</div>
-</div>
-</div>
-<figure class="align-center" id="figure-t2snr-te30-and-optcom">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x800 with 10 Axes&gt;
-</pre></div>
-</div>
-<figcaption>
-<p><span class="caption-number">Fig. 30 </span><span class="caption-text">TSNR map of the second echo (TE30) and the optimally combined data.</span><a class="headerlink" href="#figure-t2snr-te30-and-optcom" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -854,14 +814,6 @@ sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 </div>
 </div>
 </div>
-<figure class="align-center" id="figure-echo3-carpet">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1600x800 with 1 Axes&gt;
-</pre></div>
-</div>
-<figcaption>
-<p><span class="caption-number">Fig. 31 </span><span class="caption-text">Carpet plot of the third echo.</span><a class="headerlink" href="#figure-echo3-carpet" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -874,14 +826,6 @@ sub-04570_task-rest_space-scanner_desc-tedana_registry.json
 </div>
 </div>
 </div>
-<figure class="align-center" id="figure-carpet-optcom">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1600x800 with 1 Axes&gt;
-</pre></div>
-</div>
-<figcaption>
-<p><span class="caption-number">Fig. 32 </span><span class="caption-text">Carpet plot of the optimally combined data.</span><a class="headerlink" href="#figure-carpet-optcom" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 </section>
 
     <script type="text/x-thebe-config">

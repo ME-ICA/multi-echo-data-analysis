@@ -23,17 +23,14 @@ Traceback (most recent call last):
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
 import os
+from glob import glob
 
 import matplotlib.pyplot as plt
-import nitransforms as nit
 import numpy as np
-import pandas as pd
-import seaborn as sns
 from myst_nb import glue
-from nilearn import image, masking, plotting
+from nilearn import image, plotting
 from repo2data.repo2data import Repo2Data
-from tedana.io import load_data, new_nii_like
-from tedana.utils import make_adaptive_mask
+from tedana import workflows
 
 # Install the data if running locally, or point to cached data if running on neurolibre
 DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
@@ -42,10 +39,12 @@ DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
 repo2data = Repo2Data(DATA_REQ_FILE)
 data_path = repo2data.install()
 data_path = os.path.abspath(data_path[0])
-
-ted_dir = os.path.join(data_path, "tedana")
 ------------------
 
+----- stderr -----
+/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+It is highly recommended to configure Git before using DataLad. Set both 'user.name' and 'user.email' configuration variables.
 ----- stdout -----
 ---- repo2data starting ----
 /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data
@@ -56,7 +55,6 @@ Destination:
 
 Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds006193.git ...
 ----- stderr -----
-It is highly recommended to configure Git before using DataLad. Set both 'user.name' and 'user.email' configuration variables.
 [INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
 [INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis
 ----- stderr -----
@@ -72,12 +70,11 @@ install(error): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analy
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mCalledProcessError[0m                        Traceback (most recent call last)
-Cell [0;32mIn[1], line 19[0m
-[1;32m     17[0m [38;5;66;03m# Download data[39;00m
-[1;32m     18[0m repo2data [38;5;241m=[39m Repo2Data(DATA_REQ_FILE)
-[0;32m---> 19[0m data_path [38;5;241m=[39m [43mrepo2data[49m[38;5;241;43m.[39;49m[43minstall[49m[43m([49m[43m)[49m
-[1;32m     20[0m data_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mabspath(data_path[[38;5;241m0[39m])
-[1;32m     22[0m ted_dir [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(data_path, [38;5;124m"[39m[38;5;124mtedana[39m[38;5;124m"[39m)
+Cell [0;32mIn[1], line 16[0m
+[1;32m     14[0m [38;5;66;03m# Download data[39;00m
+[1;32m     15[0m repo2data [38;5;241m=[39m Repo2Data(DATA_REQ_FILE)
+[0;32m---> 16[0m data_path [38;5;241m=[39m [43mrepo2data[49m[38;5;241;43m.[39;49m[43minstall[49m[43m([49m[43m)[49m
+[1;32m     17[0m data_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mabspath(data_path[[38;5;241m0[39m])
 
 File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:106[0m, in [0;36mRepo2Data.install[0;34m(self)[0m
 [1;32m    103[0m     [38;5;28;01mfor[39;00m key, value [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[38;5;241m.[39mitems():

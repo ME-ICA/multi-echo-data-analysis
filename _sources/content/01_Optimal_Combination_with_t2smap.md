@@ -36,6 +36,7 @@ data_path = os.path.abspath(data_path[0])
 ```
 
 ```{code-cell} ipython3
+print(os.listdir(data_path))
 func_dir = os.path.join(data_path, "func/")
 data_files = [
     os.path.join(

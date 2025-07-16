@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
@@ -525,10 +525,10 @@ is generally considered too noisy for practical application.</p></li>
 <div class="math notranslate nohighlight" id="equation-monoexponential-decay">
 <span class="eqno">(1)<a class="headerlink" href="#equation-monoexponential-decay" title="Link to this equation">#</a></span>\[S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{R_2^*}(t)*TE_k)\]</div>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -563,19 +563,86 @@ is generally considered too noisy for practical application.</p></li>
 Config from file :
 ../binder/data_requirement.json
 Destination:
-./../data/multi-echo-data-analysis
+./../data/ds006193/multi-echo-data-analysis
 
-Info : ./../data/multi-echo-data-analysis already downloaded
+Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds006193.git ...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>It is highly recommended to configure Git before using DataLad. Set both &#39;user.name&#39; and &#39;user.email&#39; configuration variables.
+[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
+[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start enumerating objects 
+[INFO] Start counting objects 
+[INFO] Start compressing objects 
+[INFO] Start receiving objects 
+[INFO] Start resolving deltas 
+[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis) 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>install(error): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis (dataset) [No working git-annex installation of version &gt;= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.] [No working git-annex installation of version &gt;= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.]
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">CalledProcessError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">19</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Download data</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">19</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;te-dependence&quot;</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:106,</span> in <span class="ni">Repo2Data.install</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">103</span>     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span>         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span>             <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">,</span>
+<span class="ne">--&gt; </span><span class="mi">106</span>                                    <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_path</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_server_dst_folder</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
+<span class="g g-Whitespace">    </span><span class="mi">107</span> <span class="c1"># if not, it is a single assignment</span>
+<span class="g g-Whitespace">    </span><span class="mi">108</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">109</span>     <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">110</span>                            <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_path</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_dst_folder</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:364,</span> in <span class="ni">Repo2DataChild.install</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">362</span>     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">363</span> <span class="c1"># Downloading with the right method, depending on the src type</span>
+<span class="ne">--&gt; </span><span class="mi">364</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scan_dl_type</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">365</span> <span class="c1"># If needed, decompression of the data</span>
+<span class="g g-Whitespace">    </span><span class="mi">366</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_decompress</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:332,</span> in <span class="ni">Repo2DataChild._scan_dl_type</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">330</span> <span class="c1"># if the source link has a .git, we use datalad</span>
+<span class="g g-Whitespace">    </span><span class="mi">331</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?</span><span class="se">\\</span><span class="s2">.git$&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
+<span class="ne">--&gt; </span><span class="mi">332</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_datalad_download</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">333</span> <span class="c1"># or coming from google drive</span>
+<span class="g g-Whitespace">    </span><span class="mi">334</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?(drive</span><span class="se">\\</span><span class="s2">.google</span><span class="se">\\</span><span class="s2">.com).*?&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:263,</span> in <span class="ni">Repo2DataChild._datalad_download</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">260</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info : Starting to download from datalad </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span>
+<span class="g g-Whitespace">    </span><span class="mi">261</span>       <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]))</span>
+<span class="g g-Whitespace">    </span><span class="mi">262</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">263</span>     <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">264</span>         <span class="p">[</span><span class="s1">&#39;datalad&#39;</span><span class="p">,</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]])</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span> <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: datalad does not appear to be installed&quot;</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/subprocess.py:369,</span> in <span class="ni">check_call</span><span class="nt">(*popenargs, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">367</span>     <span class="k">if</span> <span class="n">cmd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">368</span>         <span class="n">cmd</span> <span class="o">=</span> <span class="n">popenargs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="ne">--&gt; </span><span class="mi">369</span>     <span class="k">raise</span> <span class="n">CalledProcessError</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">370</span> <span class="k">return</span> <span class="mi">0</span>
+
+<span class="ne">CalledProcessError</span>: Command &#39;[&#39;datalad&#39;, &#39;install&#39;, &#39;./../data/ds006193/multi-echo-data-analysis&#39;, &#39;-s&#39;, &#39;https://github.com/OpenNeuroDatasets/ds006193.git&#39;]&#39; returned non-zero exit status 1.
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate data</span>
@@ -611,10 +678,10 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <section id="plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time">
 <h2>Plot simulations of BOLD and non-BOLD signals as a function of echo time<a class="headerlink" href="#plot-simulations-of-bold-and-non-bold-signals-as-a-function-of-echo-time" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change s0</span>
@@ -707,17 +774,8 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/6260d1ab91fe0d91ecd31e516ff79499d22b5a82ef428dddc31440356fefedbc.png" src="../_images/6260d1ab91fe0d91ecd31e516ff79499d22b5a82ef428dddc31440356fefedbc.png" />
-</div>
 </details>
 </div>
-<figure class="align-center" id="fig-bold-nonbold-simulations">
-<img alt="../_images/6260d1ab91fe0d91ecd31e516ff79499d22b5a82ef428dddc31440356fefedbc.png" src="../_images/6260d1ab91fe0d91ecd31e516ff79499d22b5a82ef428dddc31440356fefedbc.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Simulations of BOLD and non-BOLD signals as a function of echo time</span><a class="headerlink" href="#fig-bold-nonbold-simulations" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 </section>
 <section id="make-design-matrices">
 <h2>Make design matrices<a class="headerlink" href="#make-design-matrices" title="Link to this heading">#</a></h2>
@@ -757,10 +815,10 @@ which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE
 <span class="eqno">(9)<a class="headerlink" href="#equation-te-dependence-model4" title="Link to this equation">#</a></span>\[PE(TE_k) = {\bar{S}(TE_k)}*TE_k * X\]</div>
 <p>Lastly, we fit X to the data and evaluate model fit.</p>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X1</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean_sig</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1"># Model 1</span>
@@ -777,10 +835,10 @@ which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE
 <h2>Fitted curves for S0-perturbed signal<a class="headerlink" href="#fitted-curves-for-s0-perturbed-signal" title="Link to this heading">#</a></h2>
 <p>The predicted curve for the S0 model matches the real curve perfectly!</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">d_sig2</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1"># (E x S)</span>
@@ -813,15 +871,6 @@ which means we only use <span class="math notranslate nohighlight">\({\bar{S}(TE
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rho: 4.467769094175043e+32
-Kappa: 187.14447409804956
-
-Real delta S0: 3200.0
-Delta S0 from results: 3200.000000000006
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="fitted-curves-for-r2-perturbed-signal">
@@ -831,10 +880,10 @@ What’s with this mismatch?</p>
 <p>It seems like the mismatch increases as the difference between the fluctuating volume’s R2 and the mean R2 increase.
 The fitted curve seems to actually match the mean signal, not the perturbed signal!</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">d_sig3</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1"># (E x S)</span>
@@ -862,18 +911,12 @@ The fitted curve seems to actually match the mean signal, not the perturbed sign
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rho: 156.88794104788448
-Kappa: 31513.966302911744
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
@@ -921,22 +964,13 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/1aa8e9b0dc060739e06f489d53e720111b9cf36b079ca64a52cd61dea308c247.png" src="../_images/1aa8e9b0dc060739e06f489d53e720111b9cf36b079ca64a52cd61dea308c247.png" />
-</div>
 </details>
 </div>
-<figure class="align-center" id="fig-fitted-r2-curves">
-<img alt="../_images/1aa8e9b0dc060739e06f489d53e720111b9cf36b079ca64a52cd61dea308c247.png" src="../_images/1aa8e9b0dc060739e06f489d53e720111b9cf36b079ca64a52cd61dea308c247.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Fitted curves for R2*-perturbed signal</span><a class="headerlink" href="#fig-fitted-r2-curves" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># lstsq gives same result as model fit method by kundu, which is great to see</span>
@@ -946,22 +980,16 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.19006077]
-[0.19006077]
-</pre></div>
-</div>
-</div>
 </details>
 </div>
 </section>
 <section id="now-let-s-apply-this-approach-to-components">
 <h2>Now let’s apply this approach to components<a class="headerlink" href="#now-let-s-apply-this-approach-to-components" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate data</span>
@@ -1031,22 +1059,13 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/9fe2970440c80265eb95c93671333df6abe08a74055030fdaa27be15db95daaa.png" src="../_images/9fe2970440c80265eb95c93671333df6abe08a74055030fdaa27be15db95daaa.png" />
-</div>
 </details>
 </div>
-<figure class="align-center" id="fig-component-curves">
-<img alt="../_images/9fe2970440c80265eb95c93671333df6abe08a74055030fdaa27be15db95daaa.png" src="../_images/9fe2970440c80265eb95c93671333df6abe08a74055030fdaa27be15db95daaa.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Now let’s apply this approach to components</span><a class="headerlink" href="#fig-component-curves" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">n_echoes</span> <span class="o">/</span> <span class="mi">7</span><span class="p">))</span>
@@ -1073,22 +1092,13 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/2981bd5b98b9f007cd9b04b1d14d8932c8f35798c73e647772263e9fbeb05dd1.png" src="../_images/2981bd5b98b9f007cd9b04b1d14d8932c8f35798c73e647772263e9fbeb05dd1.png" />
-</div>
 </details>
 </div>
-<figure class="align-center" id="fig-component-curves-2">
-<img alt="../_images/2981bd5b98b9f007cd9b04b1d14d8932c8f35798c73e647772263e9fbeb05dd1.png" src="../_images/2981bd5b98b9f007cd9b04b1d14d8932c8f35798c73e647772263e9fbeb05dd1.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-2" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">n_echoes</span> <span class="o">/</span> <span class="mi">7</span><span class="p">))</span>
@@ -1112,22 +1122,13 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/6493bdbd713d84f841b3aaf3000657ed1d08f2095a5de048e6eeb9e0f6c5bdac.png" src="../_images/6493bdbd713d84f841b3aaf3000657ed1d08f2095a5de048e6eeb9e0f6c5bdac.png" />
-</div>
 </details>
 </div>
-<figure class="align-center" id="fig-component-curves-3">
-<img alt="../_images/6493bdbd713d84f841b3aaf3000657ed1d08f2095a5de048e6eeb9e0f6c5bdac.png" src="../_images/6493bdbd713d84f841b3aaf3000657ed1d08f2095a5de048e6eeb9e0f6c5bdac.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-3" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -1152,17 +1153,8 @@ Kappa: 31513.966302911744
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/2aaa8516c103b4f78c66c04107c31f958577ddd5ca1afafbbb38d689212608e4.png" src="../_images/2aaa8516c103b4f78c66c04107c31f958577ddd5ca1afafbbb38d689212608e4.png" />
-</div>
 </details>
 </div>
-<figure class="align-center" id="fig-component-curves-4">
-<img alt="../_images/2aaa8516c103b4f78c66c04107c31f958577ddd5ca1afafbbb38d689212608e4.png" src="../_images/2aaa8516c103b4f78c66c04107c31f958577ddd5ca1afafbbb38d689212608e4.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-4" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="proof algorithm admonition" id="minimum-image-regression">
 <p class="admonition-title"><span class="caption-number">Algorithm 1 </span> (Minimum image regression)</p>
 <section class="algorithm-content" id="proof-content">
