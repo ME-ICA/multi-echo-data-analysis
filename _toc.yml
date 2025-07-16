@@ -8,6 +8,7 @@ parts:
   - caption: Course Overview
     chapters:
     - file: content/Course_Overview
+    - file: content/Contributors
   - caption: Getting Started
     chapters:
     - file: content/00_Download_Data

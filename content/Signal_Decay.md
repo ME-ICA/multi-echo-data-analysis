@@ -202,6 +202,8 @@ plt.style.use("default")
 Signal decay in the brain.
 ```
 
+The nature of multi-echo (ME) acquisition leads to signal decay, with high signal-to-noise ratio (SNR) at short echo times (TE) and lower SNR at longer TEs. You may notice that the images appear darker as the signal decays with increasing TE. Additionally, image contrast tends to increase with longer echo times.
+
 ### Echo-specific data and echo time
 
 ```{code-cell} ipython3
@@ -229,9 +231,11 @@ glue("fig_echo_scatter", fig, display=False)
 Scatter plot of voxel's values by echo time.
 ```
 
+Here, we visualize the temporal variation of a single voxel’s signal (y-axis) across four different echo times (TE) on the x-axis. As expected, the signal magnitude decreases with increasing TE.
+
 ### The signal itself changes with echo time as well
 
-While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.
+Let us visualize the time series of one voxel acquired at different echo times. While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -260,6 +264,8 @@ Time series from a voxel for each echo.
 ## The impact of $T_{2}^{*}$ and $S_{0}$ fluctuations on BOLD signal
 
 In this section, we investigate the two factors driving changes in the signal decay pattern: $T_{2}^{*}$ and $S_{0}$.
+
+Firstly, let us run some code to simulate the signal decay curve.
 
 ```{code-cell} ipython3
 # Simulate data
@@ -310,6 +316,12 @@ ax.plot(
     alpha=0.5,
     color="black",
 )
+# Example for TE=30ms
+x_cross = 30
+y_cross = predict_bold_signal(np.array([x_cross]), [MEAN_S0], [30])[0, 0]
+ax.plot(x_cross, y_cross, marker='x', color='red', markersize=10, label='TE=30 ms')
+ax.axvline(x=x_cross, ymax=y_cross[0], color='red', linestyle='--', alpha=0.3)
+ax.axhline(y=y_cross, xmax=x_cross, color='red', linestyle='--', alpha=0.3)
 
 ax.set_ylabel("Recorded BOLD signal", fontsize=24)
 ax.set_xlabel("Echo Time (ms)", fontsize=24)
@@ -327,6 +339,8 @@ glue("fig_signal_decay_single-echo", fig, display=False)
 BOLD signal decay for a standard single-echo scan
 ```
 
+At a given time point in an fMRI scan, the signal magnitude of a voxel varies depending on the echo time at which the signal is acquired. Here, we observe how the signal decays as TE increases (black curve). For example, if a single-echo scan is acquired at TE = 30 ms, the signal magnitude is approximately 5886 (red cross and dashed lines).
+
 ### Plot BOLD signal decay and BOLD contrast
 
 ```{code-cell} ipython3
@@ -338,17 +352,32 @@ fig, ax = plt.subplots(figsize=(14, 7.5))
 ax.plot(
     FULLCURVE_TES,
     fullcurve_signal_active[:, 0],
-    alpha=0.5,
+    alpha=0.7,
     color="red",
     label="High Activity",
 )
 ax.plot(
     FULLCURVE_TES,
     fullcurve_signal_inactive[:, 0],
-    alpha=0.5,
+    alpha=0.7,
     color="blue",
     label="Low Activity",
 )
+
+# vertical lines to explain how the contrast evolves
+max_plot = np.ceil(np.max(fullcurve_signal) / 1000) * 1000
+# 10ms
+ymin = fullcurve_signal_inactive[:, 0][10][0]/max_plot
+ymax = fullcurve_signal_active[:, 0][10][0]/max_plot
+ax.axvline(x=FULLCURVE_TES[10], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
+# 30ms
+ymin = fullcurve_signal_inactive[:, 0][30][0]/max_plot
+ymax = fullcurve_signal_active[:, 0][30][0]/max_plot
+ax.axvline(x=FULLCURVE_TES[30], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
+# 50ms
+ymin = fullcurve_signal_inactive[:, 0][50][0]/max_plot
+ymax = fullcurve_signal_active[:, 0][50][0]/max_plot
+ax.axvline(x=FULLCURVE_TES[50], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
 
 ax.set_ylabel("Recorded BOLD signal", fontsize=24)
 ax.set_xlabel("Echo Time (ms)", fontsize=24)
@@ -367,9 +396,13 @@ glue("fig_signal_decay_contrast", fig, display=False)
 BOLD signal decay and BOLD contrast
 ```
 
+This plot shows the signal decay for two different activity levels: one with high activity and one with low activity. Due to differences in activity and the associated T2 effects, the decay curve for low activity is steeper than that for high activity.
+The contrast — represented by the distance between the two curves (see green dashed lines in the figure) — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., >50 ms). In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.
+
+
 ### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-This shows how fMRI data fluctuates over time.
+Let us visualize the case of a single echo fMRI acquisition with TE = 30ms. The top panel shows the time series of an example voxel , while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms). This shows how fMRI data fluctuates over time.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -449,7 +482,7 @@ Single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 ### Plot single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-This shows how single-echo data is a sample from a signal decay curve.
+Building on the previous figure, we visualize here how the signal of a voxel at each time point of a single-echo fMRI scan (TE=30ms) is part of a decay curve. In other words, this shows how single-echo data is a sample from a signal decay curve.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -542,7 +575,15 @@ Single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuatio
 
 ### Plot single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-This shows how changes in fMRI data can be driven by both S0 and T2* fluctuations.
+We are still in the case of a single-echo fMRI acquisition with TE=30ms. For a given voxel, the signal magnitude $S$ is linked with $S_0$ and $T_2^{*}$ over time $t$ through the formula:
+
+```{math}
+:label: monoexponential_decay_undeveloped_single_echo
+S(t, TE) = S_0(t) \times e^{\frac{-TE}{T_2^{*}(t)}} + noise
+```
+
+Both factors of the product - $S_0$ and the exponential with $T_2^{*}$ - capture local fluctuations happening during MRI acquisition, but from different origins.
+The figure represents how the signal of a voxel is associated to $S_0$ and $T_2^{*}$, showing how changes in fMRI data can be driven by both factors.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -680,7 +721,11 @@ Single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting fr
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-This shows how fluctuations in S0 and T2* produce different patterns in the full signal decay curves.
+Let us visualize $S_0$ and $T_2^{*}$ effects more closely. 
+The bottom figure shows how the $S_0$ and $T_2^{*}$ curves changes compared to the original average signal decay curve. 
+In red, the decay curve is shown when only the $S_0$ values fluctuate (for a fixed $T_2^{*}$ for any t).
+In blue the decay curve is shown when the $T_2^{*}$ values fluctuate (for a fixed $S_0$ for any t). The top panel represents the fluctuations of the ratio $\frac{S_0}{T_2^{*}}$.
+This shows how fluctuations in $S_0$ and $T_2^{*}$ produce different patterns in the full signal decay curves.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -789,7 +834,9 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 
-This shows how single-echo data, on its own, cannot distinguish between S0 and T2* fluctuations.
+Let us visualize again the case of a single echo acquisition. 
+Because the signal is acquired for only one TE (see the red and blue dot points in the figure), it is impossible to model the $S_0$- and $T_2^{*}$- driven curves !
+This shows how single-echo data, on its own, cannot distinguish between $S_0$ and $T_2^{*}$ fluctuations.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -919,7 +966,8 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 
-This shows how S0 and T2* fluctuations produce different patterns in multi-echo data.
+Let us now visualize again the case of a multi-echo acquisition. 
+Because the signal is acquired at four echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the $S_0$- and $T_2^{*}$- driven curves from the signal ! 
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -1052,8 +1100,8 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 
 #### Plot $T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
 
-When the BOLD signal is driven entirely by T2* fluctuations,
-the BOLD signal is very similar to a scaled version of those T2* fluctuations, but there are small differences.
+When the BOLD signal is driven entirely by $T_2^{*}$ fluctuations, the BOLD signal is very similar to a scaled version of those $T_2^{*}$ fluctuations, but there are small differences.
+You may understand this intuitively by looking back to the equation {eq}`monoexponential_decay_undeveloped_single_echo`. You can see that if $S_0$ is fixed, the relationship between $S$ and $T_2^{*}$ is not purely linear over time.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -1086,7 +1134,8 @@ $T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
 
 #### Plot $S_{0}$ against BOLD signal from single-echo data (TE=30ms)
 
-When the BOLD signal is driven entirely by S0 fluctuations, the BOLD signal ends up being a scaled version of the S0 fluctuations.
+When the BOLD signal is driven entirely by $S_0$ fluctuations, the BOLD signal ends up being a scaled version of the $S_0$ fluctuations.
+You may understand this intuitively by looking back to the equation {eq}`monoexponential_decay_undeveloped_single_echo`. You can see that if $T_2^{*}$ is fixed, the relationship between $S$ and $S_0$ is linear over time.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
