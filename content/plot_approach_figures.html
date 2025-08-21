@@ -550,76 +550,9 @@ and this chapter will be removed.</p>
 Config from file :
 ../binder/data_requirement.json
 Destination:
-./../data/ds006193/multi-echo-data-analysis
+./../data/multi-echo-data-analysis
 
-Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds006193.git ...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>It is highly recommended to configure Git before using DataLad. Set both &#39;user.name&#39; and &#39;user.email&#39; configuration variables.
-[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
-[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start enumerating objects 
-[INFO] Start counting objects 
-[INFO] Start compressing objects 
-[INFO] Start receiving objects 
-[INFO] Start resolving deltas 
-[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis) 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>install(error): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis (dataset) [No working git-annex installation of version &gt;= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.] [No working git-annex installation of version &gt;= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.]
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">CalledProcessError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">19</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Download data</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">19</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="n">ted_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;tedana&quot;</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:106,</span> in <span class="ni">Repo2Data.install</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">103</span>     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="g g-Whitespace">    </span><span class="mi">104</span>         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">105</span>             <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">,</span>
-<span class="ne">--&gt; </span><span class="mi">106</span>                                    <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_path</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_server_dst_folder</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
-<span class="g g-Whitespace">    </span><span class="mi">107</span> <span class="c1"># if not, it is a single assignment</span>
-<span class="g g-Whitespace">    </span><span class="mi">108</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">109</span>     <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">110</span>                            <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_path</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_dst_folder</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:364,</span> in <span class="ni">Repo2DataChild.install</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">362</span>     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">363</span> <span class="c1"># Downloading with the right method, depending on the src type</span>
-<span class="ne">--&gt; </span><span class="mi">364</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scan_dl_type</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">365</span> <span class="c1"># If needed, decompression of the data</span>
-<span class="g g-Whitespace">    </span><span class="mi">366</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_decompress</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:332,</span> in <span class="ni">Repo2DataChild._scan_dl_type</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">330</span> <span class="c1"># if the source link has a .git, we use datalad</span>
-<span class="g g-Whitespace">    </span><span class="mi">331</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?</span><span class="se">\\</span><span class="s2">.git$&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
-<span class="ne">--&gt; </span><span class="mi">332</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_datalad_download</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">333</span> <span class="c1"># or coming from google drive</span>
-<span class="g g-Whitespace">    </span><span class="mi">334</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?(drive</span><span class="se">\\</span><span class="s2">.google</span><span class="se">\\</span><span class="s2">.com).*?&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:263,</span> in <span class="ni">Repo2DataChild._datalad_download</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">260</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info : Starting to download from datalad </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span>
-<span class="g g-Whitespace">    </span><span class="mi">261</span>       <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]))</span>
-<span class="g g-Whitespace">    </span><span class="mi">262</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">263</span>     <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">264</span>         <span class="p">[</span><span class="s1">&#39;datalad&#39;</span><span class="p">,</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]])</span>
-<span class="g g-Whitespace">    </span><span class="mi">265</span> <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">266</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: datalad does not appear to be installed&quot;</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/subprocess.py:369,</span> in <span class="ni">check_call</span><span class="nt">(*popenargs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">367</span>     <span class="k">if</span> <span class="n">cmd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">368</span>         <span class="n">cmd</span> <span class="o">=</span> <span class="n">popenargs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="ne">--&gt; </span><span class="mi">369</span>     <span class="k">raise</span> <span class="n">CalledProcessError</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">370</span> <span class="k">return</span> <span class="mi">0</span>
-
-<span class="ne">CalledProcessError</span>: Command &#39;[&#39;datalad&#39;, &#39;install&#39;, &#39;./../data/ds006193/multi-echo-data-analysis&#39;, &#39;-s&#39;, &#39;https://github.com/OpenNeuroDatasets/ds006193.git&#39;]&#39; returned non-zero exit status 1.
+Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
@@ -858,6 +791,58 @@ Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds
 <span class="n">n_trs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="n">pal</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;cubehelix&quot;</span><span class="p">,</span> <span class="n">n_echoes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2745/3438617242.py:28: DeprecationWarning: This method is deprecated. Please use `nitransforms.resampling.apply` instead.
+  bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">47</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="c1"># Results from MEPCA</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span> <span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span>     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="ne">---&gt; </span><span class="mi">47</span> <span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">48</span>     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">49</span>         <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">50</span>     <span class="p">),</span>
+<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="n">mask</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">52</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">54</span> <span class="c1"># Results from MEICA</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span> <span class="n">meica_mmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">56</span>     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/masking.py:809,</span> in <span class="ni">apply_mask</span><span class="nt">(imgs, mask_img, dtype, smoothing_fwhm, ensure_finite)</span>
+<span class="g g-Whitespace">    </span><span class="mi">807</span> <span class="n">mask</span><span class="p">,</span> <span class="n">mask_affine</span> <span class="o">=</span> <span class="n">load_mask_img</span><span class="p">(</span><span class="n">mask_img</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">808</span> <span class="n">mask_img</span> <span class="o">=</span> <span class="n">new_img_like</span><span class="p">(</span><span class="n">mask_img</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">mask_affine</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">809</span> <span class="k">return</span> <span class="n">apply_mask_fmri</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">810</span>     <span class="n">imgs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">811</span>     <span class="n">mask_img</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">812</span>     <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">813</span>     <span class="n">smoothing_fwhm</span><span class="o">=</span><span class="n">smoothing_fwhm</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">814</span>     <span class="n">ensure_finite</span><span class="o">=</span><span class="n">ensure_finite</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">815</span> <span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/masking.py:835,</span> in <span class="ni">apply_mask_fmri</span><span class="nt">(imgs, mask_img, dtype, smoothing_fwhm, ensure_finite)</span>
+<span class="g g-Whitespace">    </span><span class="mi">832</span> <span class="k">if</span> <span class="n">smoothing_fwhm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">833</span>     <span class="n">ensure_finite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="ne">--&gt; </span><span class="mi">835</span> <span class="n">imgs_img</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">check_niimg</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">836</span> <span class="n">affine</span> <span class="o">=</span> <span class="n">imgs_img</span><span class="o">.</span><span class="n">affine</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">838</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">mask_affine</span><span class="p">,</span> <span class="n">imgs_img</span><span class="o">.</span><span class="n">affine</span><span class="p">):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300,</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
+<span class="g g-Whitespace">    </span><span class="mi">298</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">299</span>     <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">300</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File not found: &#39;</span><span class="si">{</span><span class="n">niimg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">301</span> <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">niimg</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">302</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File not found: &#39;</span><span class="si">{</span><span class="n">niimg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+<span class="ne">ValueError</span>: File not found: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/tedana/sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz&#39;
 </pre></div>
 </div>
 </div>

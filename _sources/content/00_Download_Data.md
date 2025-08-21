@@ -40,7 +40,7 @@ cambridge_dataset = datasets.fetch_cambridge(
 pprint(cambridge_dataset)
 ```
 
-For now, we will use repo2data to download data from OpenNeuro.
+For now, we will use repo2data to download some data we're storing on Google Drive.
 
 ```{code-cell} ipython3
 import os

@@ -22,101 +22,279 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import os
+func_dir = os.path.join(data_path, "func/")
+data_files = [
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+    os.path.join(
+        func_dir,
+        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
+    ),
+]
+echo_times = np.array([12.0, 28.0, 44.0, 60.0])
 
-import matplotlib.pyplot as plt
-import nitransforms as nit
-import numpy as np
-import pandas as pd
-import seaborn as sns
-from myst_nb import glue
-from nilearn import image, masking, plotting
-from repo2data.repo2data import Repo2Data
-from tedana.io import load_data, new_nii_like
-from tedana.utils import make_adaptive_mask
+# Background anatomical image
+xfm = os.path.join(
+    func_dir, "sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt"
+)
+xfm = nit.linear.load(xfm, fmt="itk")
+t1_file = os.path.join(data_path, "anat/sub-04570_desc-preproc_T1w.nii.gz")
+bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+# Tedana outputs
+adaptive_mask_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"
+)
+mask = image.math_img("img >= 3", img=adaptive_mask_file)
 
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+# Optimally combined data
+oc = masking.apply_mask(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
+    mask,
+)
+oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
-ted_dir = os.path.join(data_path, "tedana")
+# Results from MEPCA
+mepca_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
+).values
+oc_red = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Results from MEICA
+meica_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
+).values
+norm_weights = masking.apply_mask(
+    os.path.join(
+        ted_dir,
+        "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz",
+    ),
+    mask,
+)
+meica_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
+meica_betas = np.swapaxes(meica_betas, 1, 2)
+r2_pred_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
+r2_pred_betas = np.swapaxes(r2_pred_betas, 1, 2)
+s0_pred_betas = np.dstack(
+    (
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+    )
+)
+s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
+
+# Component parameter estimates
+betas_file = os.path.join(
+    ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz"
+)
+beta_maps = masking.apply_mask(betas_file, mask)
+
+# Multi-echo denoised data
+dn_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"
+    ),
+    mask,
+)
+hk_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Post-processed data
+dn_t1c_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"
+    ),
+    mask,
+)
+hk_t1c_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Component table
+comp_tbl = pd.read_table(
+    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    index_col="Component",
+)
+
+# Get voxel index for voxel most related to component with highest kappa value
+acc_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "accepted"]
+high_kappa_comp = acc_comp_tbl.sort_values(by="kappa", ascending=False).index.values[0]
+high_kappa_comp_val = int(high_kappa_comp.split("_")[1])
+voxel_idx = np.where(
+    beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :])
+)[0][0]
+
+rej_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "rejected"]
+low_kappa_comp = rej_comp_tbl.sort_values(by="rho", ascending=False).index.values[0]
+
+# load data
+data = [masking.apply_mask(f, mask) for f in data_files]
+ts = [d[:, voxel_idx] for d in data]
+ts_1d = np.hstack(ts)
+
+n_echoes = len(echo_times)
+n_trs = data[0].shape[0]
+
+pal = sns.color_palette("cubehelix", n_echoes)
 ------------------
 
------ stdout -----
----- repo2data starting ----
-/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data
-Config from file :
-../binder/data_requirement.json
-Destination:
-./../data/ds006193/multi-echo-data-analysis
-
-Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds006193.git ...
 ----- stderr -----
-It is highly recommended to configure Git before using DataLad. Set both 'user.name' and 'user.email' configuration variables.
-[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
-[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis
------ stderr -----
-[INFO] Start enumerating objects 
-[INFO] Start counting objects 
-[INFO] Start compressing objects 
-[INFO] Start receiving objects 
-[INFO] Start resolving deltas 
-[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis)
------ stdout -----
-install(error): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis (dataset) [No working git-annex installation of version >= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.] [No working git-annex installation of version >= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.]
+/tmp/ipykernel_2745/3438617242.py:28: DeprecationWarning: This method is deprecated. Please use `nitransforms.resampling.apply` instead.
+  bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mCalledProcessError[0m                        Traceback (most recent call last)
-Cell [0;32mIn[1], line 19[0m
-[1;32m     17[0m [38;5;66;03m# Download data[39;00m
-[1;32m     18[0m repo2data [38;5;241m=[39m Repo2Data(DATA_REQ_FILE)
-[0;32m---> 19[0m data_path [38;5;241m=[39m [43mrepo2data[49m[38;5;241;43m.[39;49m[43minstall[49m[43m([49m[43m)[49m
-[1;32m     20[0m data_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mabspath(data_path[[38;5;241m0[39m])
-[1;32m     22[0m ted_dir [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(data_path, [38;5;124m"[39m[38;5;124mtedana[39m[38;5;124m"[39m)
+[0;31mValueError[0m                                Traceback (most recent call last)
+Cell [0;32mIn[2], line 47[0m
+[1;32m     43[0m [38;5;66;03m# Results from MEPCA[39;00m
+[1;32m     44[0m mepca_mmix [38;5;241m=[39m pd[38;5;241m.[39mread_table(
+[1;32m     45[0m     os[38;5;241m.[39mpath[38;5;241m.[39mjoin(ted_dir, [38;5;124m"[39m[38;5;124msub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv[39m[38;5;124m"[39m),
+[1;32m     46[0m )[38;5;241m.[39mvalues
+[0;32m---> 47[0m oc_red [38;5;241m=[39m [43mmasking[49m[38;5;241;43m.[39;49m[43mapply_mask[49m[43m([49m
+[1;32m     48[0m [43m    [49m[43mos[49m[38;5;241;43m.[39;49m[43mpath[49m[38;5;241;43m.[39;49m[43mjoin[49m[43m([49m
+[1;32m     49[0m [43m        [49m[43mted_dir[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43msub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz[39;49m[38;5;124;43m"[39;49m
+[1;32m     50[0m [43m    [49m[43m)[49m[43m,[49m
+[1;32m     51[0m [43m    [49m[43mmask[49m[43m,[49m
+[1;32m     52[0m [43m)[49m
+[1;32m     54[0m [38;5;66;03m# Results from MEICA[39;00m
+[1;32m     55[0m meica_mmix [38;5;241m=[39m pd[38;5;241m.[39mread_table(
+[1;32m     56[0m     os[38;5;241m.[39mpath[38;5;241m.[39mjoin(ted_dir, [38;5;124m"[39m[38;5;124msub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv[39m[38;5;124m"[39m),
+[1;32m     57[0m )[38;5;241m.[39mvalues
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:106[0m, in [0;36mRepo2Data.install[0;34m(self)[0m
-[1;32m    103[0m     [38;5;28;01mfor[39;00m key, value [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[38;5;241m.[39mitems():
-[1;32m    104[0m         [38;5;28;01mif[39;00m [38;5;28misinstance[39m(value, [38;5;28mdict[39m):
-[1;32m    105[0m             ret [38;5;241m+[39m[38;5;241m=[39m [[43mRepo2DataChild[49m[43m([49m[43mvalue[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_use_server[49m[43m,[49m
-[0;32m--> 106[0m [43m                                   [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_data_requirement_path[49m[43m,[49m[43mkey[49m[43m,[49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_server_dst_folder[49m[43m)[49m[38;5;241;43m.[39;49m[43minstall[49m[43m([49m[43m)[49m]
-[1;32m    107[0m [38;5;66;03m# if not, it is a single assignment[39;00m
-[1;32m    108[0m [38;5;28;01melse[39;00m:
-[1;32m    109[0m     ret [38;5;241m+[39m[38;5;241m=[39m [Repo2DataChild([38;5;28mself[39m[38;5;241m.[39m_data_requirement_file,
-[1;32m    110[0m                            [38;5;28mself[39m[38;5;241m.[39m_use_server, [38;5;28mself[39m[38;5;241m.[39m_data_requirement_path, [38;5;28;01mNone[39;00m, [38;5;28mself[39m[38;5;241m.[39m_server_dst_folder)[38;5;241m.[39minstall()]
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/masking.py:809[0m, in [0;36mapply_mask[0;34m(imgs, mask_img, dtype, smoothing_fwhm, ensure_finite)[0m
+[1;32m    807[0m mask, mask_affine [38;5;241m=[39m load_mask_img(mask_img)
+[1;32m    808[0m mask_img [38;5;241m=[39m new_img_like(mask_img, mask, mask_affine)
+[0;32m--> 809[0m [38;5;28;01mreturn[39;00m [43mapply_mask_fmri[49m[43m([49m
+[1;32m    810[0m [43m    [49m[43mimgs[49m[43m,[49m
+[1;32m    811[0m [43m    [49m[43mmask_img[49m[43m,[49m
+[1;32m    812[0m [43m    [49m[43mdtype[49m[38;5;241;43m=[39;49m[43mdtype[49m[43m,[49m
+[1;32m    813[0m [43m    [49m[43msmoothing_fwhm[49m[38;5;241;43m=[39;49m[43msmoothing_fwhm[49m[43m,[49m
+[1;32m    814[0m [43m    [49m[43mensure_finite[49m[38;5;241;43m=[39;49m[43mensure_finite[49m[43m,[49m
+[1;32m    815[0m [43m[49m[43m)[49m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:364[0m, in [0;36mRepo2DataChild.install[0;34m(self)[0m
-[1;32m    362[0m     os[38;5;241m.[39mmakedirs([38;5;28mself[39m[38;5;241m.[39m_dst_path)
-[1;32m    363[0m [38;5;66;03m# Downloading with the right method, depending on the src type[39;00m
-[0;32m--> 364[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_scan_dl_type[49m[43m([49m[43m)[49m
-[1;32m    365[0m [38;5;66;03m# If needed, decompression of the data[39;00m
-[1;32m    366[0m [38;5;28mself[39m[38;5;241m.[39m_archive_decompress()
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/masking.py:835[0m, in [0;36mapply_mask_fmri[0;34m(imgs, mask_img, dtype, smoothing_fwhm, ensure_finite)[0m
+[1;32m    832[0m [38;5;28;01mif[39;00m smoothing_fwhm [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    833[0m     ensure_finite [38;5;241m=[39m [38;5;28;01mTrue[39;00m
+[0;32m--> 835[0m imgs_img [38;5;241m=[39m [43m_utils[49m[38;5;241;43m.[39;49m[43mcheck_niimg[49m[43m([49m[43mimgs[49m[43m)[49m
+[1;32m    836[0m affine [38;5;241m=[39m imgs_img[38;5;241m.[39maffine[:[38;5;241m3[39m, :[38;5;241m3[39m]
+[1;32m    838[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m np[38;5;241m.[39mallclose(mask_affine, imgs_img[38;5;241m.[39maffine):
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:332[0m, in [0;36mRepo2DataChild._scan_dl_type[0;34m(self)[0m
-[1;32m    330[0m [38;5;66;03m# if the source link has a .git, we use datalad[39;00m
-[1;32m    331[0m [38;5;28;01melif[39;00m re[38;5;241m.[39mmatch([38;5;124m"[39m[38;5;124m.*?[39m[38;5;130;01m\\[39;00m[38;5;124m.git$[39m[38;5;124m"[39m, [38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[[38;5;124m"[39m[38;5;124msrc[39m[38;5;124m"[39m]):
-[0;32m--> 332[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_datalad_download[49m[43m([49m[43m)[49m
-[1;32m    333[0m [38;5;66;03m# or coming from google drive[39;00m
-[1;32m    334[0m [38;5;28;01melif[39;00m re[38;5;241m.[39mmatch([38;5;124m"[39m[38;5;124m.*?(drive[39m[38;5;130;01m\\[39;00m[38;5;124m.google[39m[38;5;130;01m\\[39;00m[38;5;124m.com).*?[39m[38;5;124m"[39m, [38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[[38;5;124m"[39m[38;5;124msrc[39m[38;5;124m"[39m]):
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300[0m, in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+[1;32m    298[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
+[1;32m    299[0m     [38;5;28;01melse[39;00m:
+[0;32m--> 300[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m"[39m)
+[1;32m    301[0m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(niimg):
+[1;32m    302[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m"[39m)
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:263[0m, in [0;36mRepo2DataChild._datalad_download[0;34m(self)[0m
-[1;32m    260[0m [38;5;28mprint[39m([38;5;124m"[39m[38;5;124mInfo : Starting to download from datalad [39m[38;5;132;01m%s[39;00m[38;5;124m ...[39m[38;5;124m"[39m [38;5;241m%[39m
-[1;32m    261[0m       ([38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[[38;5;124m"[39m[38;5;124msrc[39m[38;5;124m"[39m]))
-[1;32m    262[0m [38;5;28;01mtry[39;00m:
-[0;32m--> 263[0m     [43msubprocess[49m[38;5;241;43m.[39;49m[43mcheck_call[49m[43m([49m
-[1;32m    264[0m [43m        [49m[43m[[49m[38;5;124;43m'[39;49m[38;5;124;43mdatalad[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43minstall[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_dst_path[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43m-s[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_data_requirement_file[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43msrc[39;49m[38;5;124;43m"[39;49m[43m][49m[43m][49m[43m)[49m
-[1;32m    265[0m [38;5;28;01mexcept[39;00m [38;5;167;01mFileNotFoundError[39;00m:
-[1;32m    266[0m     [38;5;28mprint[39m([38;5;124m"[39m[38;5;124mError: datalad does not appear to be installed[39m[38;5;124m"[39m)
-
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/subprocess.py:369[0m, in [0;36mcheck_call[0;34m(*popenargs, **kwargs)[0m
-[1;32m    367[0m     [38;5;28;01mif[39;00m cmd [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-[1;32m    368[0m         cmd [38;5;241m=[39m popenargs[[38;5;241m0[39m]
-[0;32m--> 369[0m     [38;5;28;01mraise[39;00m CalledProcessError(retcode, cmd)
-[1;32m    370[0m [38;5;28;01mreturn[39;00m [38;5;241m0[39m
-
-[0;31mCalledProcessError[0m: Command '['datalad', 'install', './../data/ds006193/multi-echo-data-analysis', '-s', 'https://github.com/OpenNeuroDatasets/ds006193.git']' returned non-zero exit status 1.
+[0;31mValueError[0m: File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/tedana/sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz'
 

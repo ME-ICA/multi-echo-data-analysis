@@ -119,33 +119,33 @@ File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages
 [1;32m    452[0m         name[38;5;241m=[39mname, obj_type[38;5;241m=[39m[38;5;124mf[39m[38;5;124m"[39m[38;5;124mparameter of [39m[38;5;132;01m{[39;00mfunc[38;5;241m.[39m[38;5;18m__name__[39m[38;5;132;01m}[39;00m[38;5;124m()[39m[38;5;124m"[39m)
 [0;32m--> 453[0m [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/__init__.py:1521[0m, in [0;36m_preprocess_data.<locals>.inner[0;34m(ax, data, *args, **kwargs)[0m
-[1;32m   1518[0m [38;5;129m@functools[39m[38;5;241m.[39mwraps(func)
-[1;32m   1519[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21minner[39m(ax, [38;5;241m*[39margs, data[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-[1;32m   1520[0m     [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-[0;32m-> 1521[0m         [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m
-[1;32m   1522[0m [43m            [49m[43max[49m[43m,[49m
-[1;32m   1523[0m [43m            [49m[38;5;241;43m*[39;49m[38;5;28;43mmap[39;49m[43m([49m[43mcbook[49m[38;5;241;43m.[39;49m[43msanitize_sequence[49m[43m,[49m[43m [49m[43margs[49m[43m)[49m[43m,[49m
-[1;32m   1524[0m [43m            [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43m{[49m[43mk[49m[43m:[49m[43m [49m[43mcbook[49m[38;5;241;43m.[39;49m[43msanitize_sequence[49m[43m([49m[43mv[49m[43m)[49m[43m [49m[38;5;28;43;01mfor[39;49;00m[43m [49m[43mk[49m[43m,[49m[43m [49m[43mv[49m[43m [49m[38;5;129;43;01min[39;49;00m[43m [49m[43mkwargs[49m[38;5;241;43m.[39;49m[43mitems[49m[43m([49m[43m)[49m[43m}[49m[43m)[49m
-[1;32m   1526[0m     bound [38;5;241m=[39m new_sig[38;5;241m.[39mbind(ax, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)
-[1;32m   1527[0m     auto_label [38;5;241m=[39m (bound[38;5;241m.[39marguments[38;5;241m.[39mget(label_namer)
-[1;32m   1528[0m                   [38;5;129;01mor[39;00m bound[38;5;241m.[39mkwargs[38;5;241m.[39mget(label_namer))
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/__init__.py:1524[0m, in [0;36m_preprocess_data.<locals>.inner[0;34m(ax, data, *args, **kwargs)[0m
+[1;32m   1521[0m [38;5;129m@functools[39m[38;5;241m.[39mwraps(func)
+[1;32m   1522[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21minner[39m(ax, [38;5;241m*[39margs, data[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+[1;32m   1523[0m     [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[0;32m-> 1524[0m         [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m
+[1;32m   1525[0m [43m            [49m[43max[49m[43m,[49m
+[1;32m   1526[0m [43m            [49m[38;5;241;43m*[39;49m[38;5;28;43mmap[39;49m[43m([49m[43mcbook[49m[38;5;241;43m.[39;49m[43msanitize_sequence[49m[43m,[49m[43m [49m[43margs[49m[43m)[49m[43m,[49m
+[1;32m   1527[0m [43m            [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43m{[49m[43mk[49m[43m:[49m[43m [49m[43mcbook[49m[38;5;241;43m.[39;49m[43msanitize_sequence[49m[43m([49m[43mv[49m[43m)[49m[43m [49m[38;5;28;43;01mfor[39;49;00m[43m [49m[43mk[49m[43m,[49m[43m [49m[43mv[49m[43m [49m[38;5;129;43;01min[39;49;00m[43m [49m[43mkwargs[49m[38;5;241;43m.[39;49m[43mitems[49m[43m([49m[43m)[49m[43m}[49m[43m)[49m
+[1;32m   1529[0m     bound [38;5;241m=[39m new_sig[38;5;241m.[39mbind(ax, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+[1;32m   1530[0m     auto_label [38;5;241m=[39m (bound[38;5;241m.[39marguments[38;5;241m.[39mget(label_namer)
+[1;32m   1531[0m                   [38;5;129;01mor[39;00m bound[38;5;241m.[39mkwargs[38;5;241m.[39mget(label_namer))
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/axes/_axes.py:7050[0m, in [0;36mAxes.hist[0;34m(self, x, bins, range, density, weights, cumulative, bottom, histtype, align, orientation, rwidth, log, color, label, stacked, **kwargs)[0m
-[1;32m   7048[0m [38;5;28;01mif[39;00m orientation [38;5;241m==[39m [38;5;124m"[39m[38;5;124mvertical[39m[38;5;124m"[39m:
-[1;32m   7049[0m     convert_units [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mconvert_xunits
-[0;32m-> 7050[0m     x [38;5;241m=[39m [[38;5;241m*[39m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_process_unit_info[49m[43m([49m[43m[[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mx[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mx[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m[43m)[49m[43m][49m[43m,[49m[43m [49m[43mkwargs[49m[43m)[49m,
-[1;32m   7051[0m          [38;5;241m*[39m[38;5;28mmap[39m(convert_units, x[[38;5;241m1[39m:])]
-[1;32m   7052[0m [38;5;28;01melse[39;00m:  [38;5;66;03m# horizontal[39;00m
-[1;32m   7053[0m     convert_units [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mconvert_yunits
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/axes/_axes.py:7053[0m, in [0;36mAxes.hist[0;34m(self, x, bins, range, density, weights, cumulative, bottom, histtype, align, orientation, rwidth, log, color, label, stacked, **kwargs)[0m
+[1;32m   7051[0m [38;5;28;01mif[39;00m orientation [38;5;241m==[39m [38;5;124m"[39m[38;5;124mvertical[39m[38;5;124m"[39m:
+[1;32m   7052[0m     convert_units [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mconvert_xunits
+[0;32m-> 7053[0m     x [38;5;241m=[39m [[38;5;241m*[39m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_process_unit_info[49m[43m([49m[43m[[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mx[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mx[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m[43m)[49m[43m][49m[43m,[49m[43m [49m[43mkwargs[49m[43m)[49m,
+[1;32m   7054[0m          [38;5;241m*[39m[38;5;28mmap[39m(convert_units, x[[38;5;241m1[39m:])]
+[1;32m   7055[0m [38;5;28;01melse[39;00m:  [38;5;66;03m# horizontal[39;00m
+[1;32m   7056[0m     convert_units [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mconvert_yunits
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/axes/_base.py:2653[0m, in [0;36m_AxesBase._process_unit_info[0;34m(self, datasets, kwargs, convert)[0m
-[1;32m   2651[0m     [38;5;66;03m# Update from data if axis is already set but no unit is set yet.[39;00m
-[1;32m   2652[0m     [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m data [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m axis[38;5;241m.[39mhave_units():
-[0;32m-> 2653[0m         [43maxis[49m[38;5;241;43m.[39;49m[43mupdate_units[49m[43m([49m[43mdata[49m[43m)[49m
-[1;32m   2654[0m [38;5;28;01mfor[39;00m axis_name, axis [38;5;129;01min[39;00m axis_map[38;5;241m.[39mitems():
-[1;32m   2655[0m     [38;5;66;03m# Return if no axis is set.[39;00m
-[1;32m   2656[0m     [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/axes/_base.py:2663[0m, in [0;36m_AxesBase._process_unit_info[0;34m(self, datasets, kwargs, convert)[0m
+[1;32m   2661[0m     [38;5;66;03m# Update from data if axis is already set but no unit is set yet.[39;00m
+[1;32m   2662[0m     [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m data [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m axis[38;5;241m.[39mhave_units():
+[0;32m-> 2663[0m         [43maxis[49m[38;5;241;43m.[39;49m[43mupdate_units[49m[43m([49m[43mdata[49m[43m)[49m
+[1;32m   2664[0m [38;5;28;01mfor[39;00m axis_name, axis [38;5;129;01min[39;00m axis_map[38;5;241m.[39mitems():
+[1;32m   2665[0m     [38;5;66;03m# Return if no axis is set.[39;00m
+[1;32m   2666[0m     [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 
 File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/axis.py:1754[0m, in [0;36mAxis.update_units[0;34m(self, data)[0m
 [1;32m   1752[0m neednew [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_converter [38;5;241m!=[39m converter

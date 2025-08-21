@@ -22,90 +22,29 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import os
-from glob import glob
+from pySPFM import pySPFM
 
-from repo2data.repo2data import Repo2Data
-
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+pySPFM.pySPFM(
+    data_fn=data_files,
+    mask_fn=mask_file,
+    output_filename=os.path.join(out_dir, "out"),
+    tr=2.47,
+    out_dir=out_dir,
+    te=echo_times,
+)
 ------------------
 
------ stdout -----
----- repo2data starting ----
-/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data
-Config from file :
-../binder/data_requirement.json
-Destination:
-./../data/ds006193/multi-echo-data-analysis
-
-Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds006193.git ...
------ stderr -----
-It is highly recommended to configure Git before using DataLad. Set both 'user.name' and 'user.email' configuration variables.
-[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
-[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis
------ stderr -----
-[INFO] Start enumerating objects 
-[INFO] Start counting objects 
-[INFO] Start compressing objects 
-[INFO] Start receiving objects 
-[INFO] Start resolving deltas 
-[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis)
------ stdout -----
-install(error): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis (dataset) [No working git-annex installation of version >= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.] [No working git-annex installation of version >= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.]
-------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mCalledProcessError[0m                        Traceback (most recent call last)
-Cell [0;32mIn[1], line 11[0m
-[1;32m      9[0m [38;5;66;03m# Download data[39;00m
-[1;32m     10[0m repo2data [38;5;241m=[39m Repo2Data(DATA_REQ_FILE)
-[0;32m---> 11[0m data_path [38;5;241m=[39m [43mrepo2data[49m[38;5;241;43m.[39;49m[43minstall[49m[43m([49m[43m)[49m
-[1;32m     12[0m data_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mabspath(data_path[[38;5;241m0[39m])
+[0;31mImportError[0m                               Traceback (most recent call last)
+Cell [0;32mIn[3], line 1[0m
+[0;32m----> 1[0m [38;5;28;01mfrom[39;00m[38;5;250m [39m[38;5;21;01mpySPFM[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m pySPFM
+[1;32m      3[0m pySPFM[38;5;241m.[39mpySPFM(
+[1;32m      4[0m     data_fn[38;5;241m=[39mdata_files,
+[1;32m      5[0m     mask_fn[38;5;241m=[39mmask_file,
+[0;32m   (...)[0m
+[1;32m      9[0m     te[38;5;241m=[39mecho_times,
+[1;32m     10[0m )
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:106[0m, in [0;36mRepo2Data.install[0;34m(self)[0m
-[1;32m    103[0m     [38;5;28;01mfor[39;00m key, value [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[38;5;241m.[39mitems():
-[1;32m    104[0m         [38;5;28;01mif[39;00m [38;5;28misinstance[39m(value, [38;5;28mdict[39m):
-[1;32m    105[0m             ret [38;5;241m+[39m[38;5;241m=[39m [[43mRepo2DataChild[49m[43m([49m[43mvalue[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_use_server[49m[43m,[49m
-[0;32m--> 106[0m [43m                                   [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_data_requirement_path[49m[43m,[49m[43mkey[49m[43m,[49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_server_dst_folder[49m[43m)[49m[38;5;241;43m.[39;49m[43minstall[49m[43m([49m[43m)[49m]
-[1;32m    107[0m [38;5;66;03m# if not, it is a single assignment[39;00m
-[1;32m    108[0m [38;5;28;01melse[39;00m:
-[1;32m    109[0m     ret [38;5;241m+[39m[38;5;241m=[39m [Repo2DataChild([38;5;28mself[39m[38;5;241m.[39m_data_requirement_file,
-[1;32m    110[0m                            [38;5;28mself[39m[38;5;241m.[39m_use_server, [38;5;28mself[39m[38;5;241m.[39m_data_requirement_path, [38;5;28;01mNone[39;00m, [38;5;28mself[39m[38;5;241m.[39m_server_dst_folder)[38;5;241m.[39minstall()]
-
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:364[0m, in [0;36mRepo2DataChild.install[0;34m(self)[0m
-[1;32m    362[0m     os[38;5;241m.[39mmakedirs([38;5;28mself[39m[38;5;241m.[39m_dst_path)
-[1;32m    363[0m [38;5;66;03m# Downloading with the right method, depending on the src type[39;00m
-[0;32m--> 364[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_scan_dl_type[49m[43m([49m[43m)[49m
-[1;32m    365[0m [38;5;66;03m# If needed, decompression of the data[39;00m
-[1;32m    366[0m [38;5;28mself[39m[38;5;241m.[39m_archive_decompress()
-
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:332[0m, in [0;36mRepo2DataChild._scan_dl_type[0;34m(self)[0m
-[1;32m    330[0m [38;5;66;03m# if the source link has a .git, we use datalad[39;00m
-[1;32m    331[0m [38;5;28;01melif[39;00m re[38;5;241m.[39mmatch([38;5;124m"[39m[38;5;124m.*?[39m[38;5;130;01m\\[39;00m[38;5;124m.git$[39m[38;5;124m"[39m, [38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[[38;5;124m"[39m[38;5;124msrc[39m[38;5;124m"[39m]):
-[0;32m--> 332[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_datalad_download[49m[43m([49m[43m)[49m
-[1;32m    333[0m [38;5;66;03m# or coming from google drive[39;00m
-[1;32m    334[0m [38;5;28;01melif[39;00m re[38;5;241m.[39mmatch([38;5;124m"[39m[38;5;124m.*?(drive[39m[38;5;130;01m\\[39;00m[38;5;124m.google[39m[38;5;130;01m\\[39;00m[38;5;124m.com).*?[39m[38;5;124m"[39m, [38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[[38;5;124m"[39m[38;5;124msrc[39m[38;5;124m"[39m]):
-
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:263[0m, in [0;36mRepo2DataChild._datalad_download[0;34m(self)[0m
-[1;32m    260[0m [38;5;28mprint[39m([38;5;124m"[39m[38;5;124mInfo : Starting to download from datalad [39m[38;5;132;01m%s[39;00m[38;5;124m ...[39m[38;5;124m"[39m [38;5;241m%[39m
-[1;32m    261[0m       ([38;5;28mself[39m[38;5;241m.[39m_data_requirement_file[[38;5;124m"[39m[38;5;124msrc[39m[38;5;124m"[39m]))
-[1;32m    262[0m [38;5;28;01mtry[39;00m:
-[0;32m--> 263[0m     [43msubprocess[49m[38;5;241;43m.[39;49m[43mcheck_call[49m[43m([49m
-[1;32m    264[0m [43m        [49m[43m[[49m[38;5;124;43m'[39;49m[38;5;124;43mdatalad[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43minstall[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_dst_path[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43m-s[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_data_requirement_file[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43msrc[39;49m[38;5;124;43m"[39;49m[43m][49m[43m][49m[43m)[49m
-[1;32m    265[0m [38;5;28;01mexcept[39;00m [38;5;167;01mFileNotFoundError[39;00m:
-[1;32m    266[0m     [38;5;28mprint[39m([38;5;124m"[39m[38;5;124mError: datalad does not appear to be installed[39m[38;5;124m"[39m)
-
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/subprocess.py:369[0m, in [0;36mcheck_call[0;34m(*popenargs, **kwargs)[0m
-[1;32m    367[0m     [38;5;28;01mif[39;00m cmd [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-[1;32m    368[0m         cmd [38;5;241m=[39m popenargs[[38;5;241m0[39m]
-[0;32m--> 369[0m     [38;5;28;01mraise[39;00m CalledProcessError(retcode, cmd)
-[1;32m    370[0m [38;5;28;01mreturn[39;00m [38;5;241m0[39m
-
-[0;31mCalledProcessError[0m: Command '['datalad', 'install', './../data/ds006193/multi-echo-data-analysis', '-s', 'https://github.com/OpenNeuroDatasets/ds006193.git']' returned non-zero exit status 1.
+[0;31mImportError[0m: cannot import name 'pySPFM' from 'pySPFM' (/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pySPFM/__init__.py)
 

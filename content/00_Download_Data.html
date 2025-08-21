@@ -498,7 +498,7 @@ For more information about these datasets, see <a class="reference internal" hre
 <span class="n">pprint</span><span class="p">(</span><span class="n">cambridge_dataset</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For now, we will use repo2data to download data from OpenNeuro.</p>
+<p>For now, we will use repo2data to download some data we’re storing on Google Drive.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -521,75 +521,123 @@ For more information about these datasets, see <a class="reference internal" hre
 Config from file :
 ../binder/data_requirement.json
 Destination:
-./../data/ds006193/multi-echo-data-analysis
+./../data/multi-echo-data-analysis
 
-Info : Starting to download from datalad https://github.com/OpenNeuroDatasets/ds006193.git ...
+Info : Starting to download from Google drive https://drive.google.com/uc?id=1SVPP1vd2UobKf1djztpi-DcYAFOFXQtF ...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>It is highly recommended to configure Git before using DataLad. Set both &#39;user.name&#39; and &#39;user.email&#39; configuration variables.
-[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
-[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006193.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
+From (original): https://drive.google.com/uc?id=1SVPP1vd2UobKf1djztpi-DcYAFOFXQtF
+From (redirected): https://drive.google.com/uc?id=1SVPP1vd2UobKf1djztpi-DcYAFOFXQtF&amp;confirm=t&amp;uuid=6d432c4f-5c04-4742-b6f7-04e357de58ec
+To: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/sub-04570.zip
+
+  0%|          | 0.00/315M [00:00&lt;?, ?B/s]
+  0%|          | 524k/315M [00:00&lt;01:13, 4.28MB/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start enumerating objects 
-[INFO] Start counting objects 
-[INFO] Start compressing objects 
-[INFO] Start receiving objects 
-[INFO] Start resolving deltas 
-[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis) 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  2%|▏         | 6.82M/315M [00:00&lt;00:15, 20.5MB/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>install(error): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006193/multi-echo-data-analysis (dataset) [No working git-annex installation of version &gt;= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.] [No working git-annex installation of version &gt;= 8.20200309. Visit http://handbook.datalad.org/r.html?install for instructions on how to install DataLad and git-annex.]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  3%|▎         | 8.91M/315M [00:00&lt;00:21, 14.4MB/s]
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">CalledProcessError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">10</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># Download data</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">10</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:106,</span> in <span class="ni">Repo2Data.install</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">103</span>     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="g g-Whitespace">    </span><span class="mi">104</span>         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">105</span>             <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">,</span>
-<span class="ne">--&gt; </span><span class="mi">106</span>                                    <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_path</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_server_dst_folder</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
-<span class="g g-Whitespace">    </span><span class="mi">107</span> <span class="c1"># if not, it is a single assignment</span>
-<span class="g g-Whitespace">    </span><span class="mi">108</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">109</span>     <span class="n">ret</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Repo2DataChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">110</span>                            <span class="bp">self</span><span class="o">.</span><span class="n">_use_server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_path</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_dst_folder</span><span class="p">)</span><span class="o">.</span><span class="n">install</span><span class="p">()]</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:364,</span> in <span class="ni">Repo2DataChild.install</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">362</span>     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">363</span> <span class="c1"># Downloading with the right method, depending on the src type</span>
-<span class="ne">--&gt; </span><span class="mi">364</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scan_dl_type</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">365</span> <span class="c1"># If needed, decompression of the data</span>
-<span class="g g-Whitespace">    </span><span class="mi">366</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archive_decompress</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:332,</span> in <span class="ni">Repo2DataChild._scan_dl_type</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">330</span> <span class="c1"># if the source link has a .git, we use datalad</span>
-<span class="g g-Whitespace">    </span><span class="mi">331</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?</span><span class="se">\\</span><span class="s2">.git$&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
-<span class="ne">--&gt; </span><span class="mi">332</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_datalad_download</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">333</span> <span class="c1"># or coming from google drive</span>
-<span class="g g-Whitespace">    </span><span class="mi">334</span> <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?(drive</span><span class="se">\\</span><span class="s2">.google</span><span class="se">\\</span><span class="s2">.com).*?&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]):</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data/repo2data.py:263,</span> in <span class="ni">Repo2DataChild._datalad_download</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">260</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info : Starting to download from datalad </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span>
-<span class="g g-Whitespace">    </span><span class="mi">261</span>       <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]))</span>
-<span class="g g-Whitespace">    </span><span class="mi">262</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">263</span>     <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">264</span>         <span class="p">[</span><span class="s1">&#39;datalad&#39;</span><span class="p">,</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dst_path</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_requirement_file</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]])</span>
-<span class="g g-Whitespace">    </span><span class="mi">265</span> <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">266</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: datalad does not appear to be installed&quot;</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/subprocess.py:369,</span> in <span class="ni">check_call</span><span class="nt">(*popenargs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">367</span>     <span class="k">if</span> <span class="n">cmd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">368</span>         <span class="n">cmd</span> <span class="o">=</span> <span class="n">popenargs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="ne">--&gt; </span><span class="mi">369</span>     <span class="k">raise</span> <span class="n">CalledProcessError</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">370</span> <span class="k">return</span> <span class="mi">0</span>
-
-<span class="ne">CalledProcessError</span>: Command &#39;[&#39;datalad&#39;, &#39;install&#39;, &#39;./../data/ds006193/multi-echo-data-analysis&#39;, &#39;-s&#39;, &#39;https://github.com/OpenNeuroDatasets/ds006193.git&#39;]&#39; returned non-zero exit status 1.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4%|▍         | 13.1M/315M [00:00&lt;00:18, 16.3MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  5%|▍         | 15.2M/315M [00:01&lt;00:21, 13.9MB/s]
+  6%|▌         | 19.4M/315M [00:01&lt;00:17, 16.7MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8%|▊         | 23.6M/315M [00:01&lt;00:19, 14.6MB/s]
+  9%|▊         | 27.3M/315M [00:01&lt;00:16, 17.9MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|▉         | 29.9M/315M [00:01&lt;00:16, 17.1MB/s]
+ 10%|█         | 32.0M/315M [00:01&lt;00:16, 16.8MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 12%|█▏        | 36.2M/315M [00:02&lt;00:17, 15.5MB/s]
+ 14%|█▎        | 42.5M/315M [00:02&lt;00:12, 21.6MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 15%|█▍        | 46.7M/315M [00:02&lt;00:10, 25.3MB/s]
+ 16%|█▌        | 50.9M/315M [00:02&lt;00:09, 26.5MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 18%|█▊        | 57.1M/315M [00:02&lt;00:08, 30.4MB/s]
+ 20%|██        | 63.4M/315M [00:02&lt;00:07, 35.7MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 22%|██▏       | 69.7M/315M [00:03&lt;00:06, 40.6MB/s]
+ 25%|██▍       | 77.6M/315M [00:03&lt;00:04, 49.7MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 27%|██▋       | 83.4M/315M [00:03&lt;00:05, 44.8MB/s]
+ 28%|██▊       | 88.6M/315M [00:03&lt;00:04, 46.2MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 31%|███       | 97.0M/315M [00:03&lt;00:03, 55.6MB/s]
+ 33%|███▎      | 103M/315M [00:03&lt;00:04, 52.0MB/s] 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 35%|███▍      | 109M/315M [00:03&lt;00:03, 52.2MB/s]
+ 37%|███▋      | 115M/315M [00:03&lt;00:03, 52.3MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 38%|███▊      | 121M/315M [00:04&lt;00:04, 47.0MB/s]
+ 41%|████      | 127M/315M [00:04&lt;00:03, 51.9MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 42%|████▏     | 133M/315M [00:04&lt;00:03, 49.3MB/s]
+ 46%|████▌     | 143M/315M [00:04&lt;00:03, 52.9MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 47%|████▋     | 149M/315M [00:04&lt;00:03, 43.5MB/s]
+ 51%|█████     | 160M/315M [00:04&lt;00:03, 50.3MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 54%|█████▍    | 169M/315M [00:04&lt;00:02, 59.4MB/s]
+ 56%|█████▌    | 176M/315M [00:05&lt;00:02, 58.7MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 59%|█████▊    | 184M/315M [00:05&lt;00:02, 63.4MB/s]
+ 61%|██████    | 191M/315M [00:05&lt;00:01, 63.9MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 63%|██████▎   | 198M/315M [00:05&lt;00:03, 36.9MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 67%|██████▋   | 210M/315M [00:05&lt;00:02, 43.1MB/s]
+ 71%|███████   | 224M/315M [00:05&lt;00:01, 58.9MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 74%|███████▎  | 232M/315M [00:06&lt;00:01, 58.5MB/s]
+ 76%|███████▌  | 239M/315M [00:06&lt;00:01, 59.8MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 80%|███████▉  | 250M/315M [00:06&lt;00:00, 66.0MB/s]
+ 82%|████████▏ | 257M/315M [00:06&lt;00:00, 67.1MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 86%|████████▌ | 271M/315M [00:06&lt;00:00, 83.6MB/s]
+ 90%|████████▉ | 282M/315M [00:06&lt;00:00, 86.9MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 94%|█████████▎| 294M/315M [00:06&lt;00:00, 95.2MB/s]
+ 97%|█████████▋| 304M/315M [00:06&lt;00:00, 92.0MB/s]
+100%|██████████| 315M/315M [00:06&lt;00:00, 45.3MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO patool: Extracting ./../data/multi-echo-data-analysis/sub-04570.zip ...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO patool: running /usr/bin/7z x -y -p- -aou -o./../data/multi-echo-data-analysis -- ./../data/multi-echo-data-analysis/sub-04570.zip
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO patool: ... ./../data/multi-echo-data-analysis/sub-04570.zip extracted to `./../data/multi-echo-data-analysis&#39;.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info : sub-04570.zip Decompressed
 </pre></div>
 </div>
 </div>
