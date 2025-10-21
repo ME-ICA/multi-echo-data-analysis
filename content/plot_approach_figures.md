@@ -116,7 +116,7 @@ norm_weights = masking.apply_mask(
 meica_beta_files = sorted(
     glob(
         os.path.join(
-            func_dir,
+            ted_dir,
             "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICA_components.nii.gz",
         ),
     ),
