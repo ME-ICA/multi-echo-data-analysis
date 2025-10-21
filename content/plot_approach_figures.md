@@ -57,7 +57,7 @@ for f in data_files:
     with open(json_file, 'r') as fo:
         metadata = json.load(fo)
     echo_times.append(metadata['EchoTime'] * 1000)
-echo_times = np.array(echo_times)
+echo_times = np.round(np.array(echo_times), 2)
 mask_file = os.path.join(
     func_dir,
     "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
@@ -79,7 +79,7 @@ bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 
 # Tedana outputs
 adaptive_mask_file = os.path.join(
-    ted_dir, 
+    ted_dir,
     "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-adaptiveGoodSignal_mask.nii.gz",
 )
 mask = image.math_img("img >= 3", img=adaptive_mask_file)
@@ -113,125 +113,36 @@ norm_weights = masking.apply_mask(
     ),
     mask,
 )
-meica_betas = np.dstack(
-    (
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-1_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-3_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-4_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-5_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-    )
+meica_beta_files = sorted(
+    glob(
+        os.path.join(
+            func_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICA_components.nii.gz",
+        ),
+    ),
 )
+meica_betas = np.dstack([masking.apply_mask(f, mask).T for f in meica_beta_files])
 meica_betas = np.swapaxes(meica_betas, 1, 2)
-r2_pred_betas = np.dstack(
-    (
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-1_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-3_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-4_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-5_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-    )
+
+r2_pred_beta_files = sorted(
+    glob(
+        os.path.join(
+            ted_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAT2ModelPredictions_components.nii.gz",
+        ),
+    ),
 )
+r2_pred_betas = np.dstack([masking.apply_mask(f, mask).T for f in r2_pred_beta_files])
 r2_pred_betas = np.swapaxes(r2_pred_betas, 1, 2)
-s0_pred_betas = np.dstack(
-    (
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-1_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-3_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-4_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-5_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-    )
+s0_pred_beta_files = sorted(
+    glob(
+        os.path.join(
+            ted_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAS0ModelPredictions_components.nii.gz",
+        ),
+    ),
 )
+s0_pred_betas = np.dstack([masking.apply_mask(f, mask).T for f in s0_pred_beta_files])
 s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
 
 # Component parameter estimates
