@@ -3,8 +3,7 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -16,51 +15,43 @@ kernelspec:
 Use `t2smap` {cite:p}`DuPre2021` to combine data.
 
 ```{code-cell} ipython3
+import json
 import os
 from glob import glob
 
 import matplotlib.pyplot as plt
+import nibabel as nb
 import numpy as np
 from myst_nb import glue
 from nilearn import image, plotting
-from repo2data.repo2data import Repo2Data
 from tedana import workflows
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+data_path = os.path.abspath('../DATA')
 ```
 
 ```{code-cell} ipython3
-func_dir = os.path.join(data_path, "func/")
-data_files = [
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
+data_files = sorted(
+    glob(
+        os.path.join(
+            func_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+        ),
     ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-]
-echo_times = [12.0, 28.0, 44.0, 60.0]
+)
+echo_times = []
+for f in data_files:
+    json_file = f.replace('.nii.gz', '.json')
+    with open(json_file, 'r') as fo:
+        metadata = json.load(fo)
+    echo_times.append(metadata['EchoTime'] * 1000)
 mask_file = os.path.join(
-    func_dir, "sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 confounds_file = os.path.join(
-    func_dir, "sub-04570_task-rest_desc-confounds_timeseries.tsv"
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
 )
 
 out_dir = os.path.join(data_path, "t2smap")
@@ -72,8 +63,8 @@ workflows.t2smap_workflow(
     echo_times,
     out_dir=out_dir,
     mask=mask_file,
-    prefix="sub-04570_task-rest_space-scanner",
-    fittype="curvefit",
+    prefix="sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01",
+    fittype="loglin",
 )
 ```
 
@@ -86,7 +77,7 @@ print("\n".join(out_files))
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
-    os.path.join(out_dir, "sub-04570_task-rest_space-scanner_T2starmap.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_T2starmap.nii.gz"),
     vmax=0.6,
     draw_cross=False,
     bg_img=None,
@@ -106,7 +97,7 @@ T2* map estimated from multi-echo data using tedana's {py:func}`~tedana.workflow
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
-    os.path.join(out_dir, "sub-04570_task-rest_space-scanner_S0map.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_S0map.nii.gz"),
     vmax=8000,
     draw_cross=False,
     bg_img=None,
@@ -164,7 +155,7 @@ plotting.plot_epi(
 plotting.plot_epi(
     image.mean_img(
         os.path.join(
-            out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"
+            out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"
         )
     ),
     draw_cross=False,
@@ -193,7 +184,7 @@ te30_tsnr = image.math_img(
 oc_tsnr = image.math_img(
     "(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask",
     img=os.path.join(
-        out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"
+        out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"
     ),
     mask=mask_file,
 )
@@ -254,7 +245,7 @@ Carpet plot of the second echo's data.
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_carpet(
-    os.path.join(out_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"),
     axes=ax,
 )
 glue("figure_optcom_carpet", fig, display=False)

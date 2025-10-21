@@ -3,8 +3,7 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -28,21 +27,17 @@ Dual-echo denoising was originally proposed in [Bright & Murphy (2013)](https://
 
 
 ```{code-cell} ipython3
+import json
 import os
+from glob import glob
 
 import matplotlib.pyplot as plt
+import nibabel as nb
 from book_utils import regress_one_image_out_of_another
 from myst_nb import glue
 from nilearn import plotting
-from repo2data.repo2data import Repo2Data
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+data_path = os.path.abspath('../DATA')
 ```
 
 ```{code-cell} ipython3
@@ -55,7 +50,7 @@ te2_img = os.path.join(
     "sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
 )
 mask_img = os.path.join(
-    data_path, "sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
+    data_path, "sub-04570/func/sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-brain_mask.nii.gz"
 )
 denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 ```

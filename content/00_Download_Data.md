@@ -3,8 +3,7 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -19,39 +18,49 @@ For more information about these datasets, see {ref}`content:open-datasets`.
 
 ```python
 import os
-from pprint import pprint
 
-from tedana import datasets
+from datalad import api as dapi
 
-DATA_DIR = os.path.abspath("../data")
+DATA_DIR = os.path.abspath('../data')
 
-euskalibur_dataset = datasets.fetch_euskalibur(
-    n_subjects=5,
-    low_resolution=False,
-    data_dir=DATA_DIR,
+# Download PAFIN fMRIPrep data
+dset_dir = os.path.join(DATA_DIR, 'ds006185')
+os.makedirs(dset_dir, exist_ok=True)
+dapi.install(
+    path=dset_dir,
+    source='https://github.com/OpenNeuroDatasets/ds006185.git',
 )
-pprint(euskalibur_dataset)
-
-cambridge_dataset = datasets.fetch_cambridge(
-    n_subjects=5,
-    low_resolution=False,
-    data_dir=DATA_DIR,
-)
-pprint(cambridge_dataset)
+dapi.get(os.path.join(dset_dir, 'sub-24053', 'ses-1', 'func', 'sub-24053_ses-1_task-rat_rec-nordic_*'), recursive=True)
+dapi.get(os.path.join(dset_dir, 'sub-24053', 'ses-1', 'anat', 'sub-24053_ses-1_*'), recursive=True)
 ```
 
-For now, we will use repo2data to download some data we're storing on Google Drive.
+For now, we will use the Datalab API to download some data we're storing on OpenNeuro.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 import os
+from pathlib import Path
 
-from repo2data.repo2data import Repo2Data
+from datalad import api as dapi
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
+DATA_DIR = os.path.abspath('../data')
 
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+# Download PAFIN fMRIPrep data
+dset_dir = os.path.join(DATA_DIR, 'ds006185')
+os.makedirs(dset_dir, exist_ok=True)
+dapi.install(
+    path=dset_dir,
+    source='https://github.com/OpenNeuroDatasets/ds006185.git',
+)
+subj_dir = os.path.join(dset_dir, 'sub-24053', 'ses-1')
+func_dir = Path(os.path.join(subj_dir, 'func'))
+func_files = list(func_dir.glob('sub-24053_ses-1_task-rat_rec-nordic_*'))
+for f in func_files:
+    dapi.get(f)
+
+anat_dir = Path(os.path.join(subj_dir, 'anat'))
+anat_files = list(anat_dir.glob('*'))
+for f in anat_files:
+    dapi.get(f)
 ```

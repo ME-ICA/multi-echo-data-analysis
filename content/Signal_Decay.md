@@ -3,8 +3,7 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -52,10 +51,12 @@ To do this, we will use a combination of simulated and real multi-echo data.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
+import json
 import os
+from glob import glob
 
 import matplotlib.pyplot as plt
-import nibabel as nib
+import nibabel as nb
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -64,20 +65,13 @@ from matplotlib.animation import FuncAnimation
 from myst_nb import glue
 from nilearn import image, masking, plotting
 from nilearn.glm import first_level
-from repo2data.repo2data import Repo2Data
 from scipy import signal
 
 from book_utils import predict_bold_signal
 
 sns.set_style("whitegrid")
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+data_path = os.path.abspath("../DATA")
 
 out_dir = os.path.join(data_path, "signal-decay")
 os.makedirs(out_dir, exist_ok=True)
@@ -85,28 +79,31 @@ os.makedirs(out_dir, exist_ok=True)
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-func_dir = os.path.join(data_path, "func/")
-data_files = [
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
+data_files = sorted(
+    glob(
+        os.path.join(
+            func_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+        ),
     ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-]
+)
+echo_times = []
+for f in data_files:
+    json_file = f.replace('.nii.gz', '.json')
+    with open(json_file, 'r') as fo:
+        metadata = json.load(fo)
+    echo_times.append(metadata['EchoTime'] * 1000)
+mask_file = os.path.join(
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
+)
+confounds_file = os.path.join(
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
+)
 ted_dir = os.path.join(data_path, "tedana")
-ECHO_TIMES = [12, 28, 44, 60]
-n_echoes = len(ECHO_TIMES)
+n_echoes = len(echo_times)
 
 pal = sns.color_palette("cubehelix", n_echoes)
 
@@ -123,24 +120,20 @@ for f in data_files:
     img = image.index_img(f, 0)
     data = img.get_fdata()
     data = data[min_x:max_x, min_y:max_y, min_z:max_z]
-    img = nib.Nifti1Image(data, img.affine, img.header)
+    img = nb.Nifti1Image(data, img.affine, img.header)
     imgs.append(img)
 
-# Create binary mask from adaptive mask
-adaptive_mask_file = os.path.join(
-    ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"
-)
-mask = image.math_img("img >= 3", img=adaptive_mask_file)
+mask = nb.load(mask_file)
 
 # Component parameter estimates
 betas_file = os.path.join(
-    ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz"
+    ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_components.nii.gz"
 )
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Component table
 comp_tbl = pd.read_table(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-tedana_metrics.tsv"),
     index_col="Component",
 )
 
@@ -163,15 +156,15 @@ n_trs = ts[0].shape[0]
 ## Signal decays as echo time increases
 
 To start, let us look at how BOLD signal changes with increasing echo time in real data.
-The data we use is a single resting-state run, with echo times of 12, 28, 44, and 60 milliseconds.
+The data we use is a single resting-state run, with five echo times.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [hide-cell, hide-output]
 plt.style.use("dark_background")
 
 fig, axes = plt.subplots(figsize=(26, 16), nrows=len(data_files))
 for i_echo, img in enumerate(imgs):
-    te = ECHO_TIMES[i_echo]
+    te = echo_times[i_echo]
     if i_echo == 0:
         data = img.get_fdata()
         vmax = np.max(data)
@@ -202,7 +195,9 @@ plt.style.use("default")
 Signal decay in the brain.
 ```
 
-The nature of multi-echo (ME) acquisition leads to signal decay, with high signal-to-noise ratio (SNR) at short echo times (TE) and lower SNR at longer TEs. You may notice that the images appear darker as the signal decays with increasing TE. Additionally, image contrast tends to increase with longer echo times.
+The nature of multi-echo (ME) acquisition leads to signal decay, with high signal-to-noise ratio (SNR) at short echo times (TE) and lower SNR at longer TEs.
+You may notice that the images appear darker as the signal decays with increasing TE.
+Additionally, image contrast tends to increase with longer echo times.
 
 ### Echo-specific data and echo time
 
@@ -211,12 +206,12 @@ The nature of multi-echo (ME) acquisition leads to signal decay, with high signa
 fig, ax = plt.subplots(figsize=(14, 6))
 values = [i[0] for i in ts]
 for i_echo in range(n_echoes):
-    rep_echo_times = np.ones(n_trs) * ECHO_TIMES[i_echo]
+    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
     ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
-ax.set_xticks(ECHO_TIMES)
+ax.set_xticks(echo_times)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.set_xlim(0, 70)
 ax.set_ylim(0, 3000)
@@ -243,7 +238,7 @@ fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
     axes[i_echo].set_ylabel(
-        f"{ECHO_TIMES[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
+        f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
     )
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
@@ -272,7 +267,7 @@ Firstly, let us run some code to simulate the signal decay curve.
 SINGLEECHO_TE = np.array([30])
 
 # For a nice, smooth curve
-FULLCURVE_TES = np.arange(0, 101, 1)
+FULLCURVE_TES = np.arange(0, 121, 1)
 
 n_echoes = len(FULLCURVE_TES)
 pal = sns.color_palette("cubehelix", 8)
@@ -339,7 +334,9 @@ glue("fig_signal_decay_single-echo", fig, display=False)
 BOLD signal decay for a standard single-echo scan
 ```
 
-At a given time point in an fMRI scan, the signal magnitude of a voxel varies depending on the echo time at which the signal is acquired. Here, we observe how the signal decays as TE increases (black curve). For example, if a single-echo scan is acquired at TE = 30 ms, the signal magnitude is approximately 5886 (red cross and dashed lines).
+At a given time point in an fMRI scan, the signal magnitude of a voxel varies depending on the echo time at which the signal is acquired.
+Here, we observe how the signal decays as TE increases (black curve).
+For example, if a single-echo scan is acquired at TE = 30 ms, the signal magnitude is approximately 5886 (red cross and dashed lines).
 
 ### Plot BOLD signal decay and BOLD contrast
 
@@ -396,13 +393,17 @@ glue("fig_signal_decay_contrast", fig, display=False)
 BOLD signal decay and BOLD contrast
 ```
 
-This plot shows the signal decay for two different activity levels: one with high activity and one with low activity. Due to differences in activity and the associated T2 effects, the decay curve for low activity is steeper than that for high activity.
-The contrast — represented by the distance between the two curves (see green dashed lines in the figure) — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., >50 ms). In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.
+This plot shows the signal decay for two different activity levels: one with high activity and one with low activity.
+Due to differences in activity and the associated T2 effects, the decay curve for low activity is steeper than that for high activity.
+The contrast — represented by the distance between the two curves (see green dashed lines in the figure) — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., >50 ms).
+In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.
 
 
 ### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-Let us visualize the case of a single echo fMRI acquisition with TE = 30ms. The top panel shows the time series of an example voxel , while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms). This shows how fMRI data fluctuates over time.
+Let us visualize the case of a single echo fMRI acquisition with TE = 30ms.
+The top panel shows the time series of an example voxel , while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms).
+This shows how fMRI data fluctuates over time.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -421,7 +422,7 @@ axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(ECHO_TIMES)
+axes[1].set_xticks(echo_times)
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -482,7 +483,8 @@ Single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 ### Plot single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-Building on the previous figure, we visualize here how the signal of a voxel at each time point of a single-echo fMRI scan (TE=30ms) is part of a decay curve. In other words, this shows how single-echo data is a sample from a signal decay curve.
+Building on the previous figure, we visualize here how the signal of a voxel at each time point of a single-echo fMRI scan (TE=30ms) is part of a decay curve.
+In other words, this shows how single-echo data is a sample from a signal decay curve.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -501,7 +503,7 @@ axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(ECHO_TIMES)
+axes[1].set_xticks(echo_times)
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -575,7 +577,8 @@ Single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuatio
 
 ### Plot single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-We are still in the case of a single-echo fMRI acquisition with TE=30ms. For a given voxel, the signal magnitude $S$ is linked with $S_0$ and $T_2^{*}$ over time $t$ through the formula:
+We are still in the case of a single-echo fMRI acquisition with TE=30ms.
+For a given voxel, the signal magnitude $S$ is linked with $S_0$ and $T_2^{*}$ over time $t$ through the formula:
 
 ```{math}
 :label: monoexponential_decay_undeveloped_single_echo
@@ -653,7 +656,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(ECHO_TIMES)
+axes[1].set_xticks(echo_times)
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -724,7 +727,8 @@ Single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting fr
 Let us visualize $S_0$ and $T_2^{*}$ effects more closely. 
 The bottom figure shows how the $S_0$ and $T_2^{*}$ curves changes compared to the original average signal decay curve. 
 In red, the decay curve is shown when only the $S_0$ values fluctuate (for a fixed $T_2^{*}$ for any t).
-In blue the decay curve is shown when the $T_2^{*}$ values fluctuate (for a fixed $S_0$ for any t). The top panel represents the fluctuations of the ratio $\frac{S_0}{T_2^{*}}$.
+In blue the decay curve is shown when the $T_2^{*}$ values fluctuate (for a fixed $S_0$ for any t).
+The top panel represents the fluctuations of the ratio $\frac{S_0}{T_2^{*}}$.
 This shows how fluctuations in $S_0$ and $T_2^{*}$ produce different patterns in the full signal decay curves.
 
 ```{code-cell} ipython3
@@ -788,7 +792,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(ECHO_TIMES)
+axes[1].set_xticks(echo_times)
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -904,7 +908,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(ECHO_TIMES)
+axes[1].set_xticks(echo_times)
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -977,8 +981,8 @@ s0based_fullcurve_signal = predict_bold_signal(
 t2sbased_fullcurve_signal = predict_bold_signal(
     FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts
 )
-s0based_multiecho_signal = s0based_fullcurve_signal[ECHO_TIMES, :]
-t2sbased_multiecho_signal = t2sbased_fullcurve_signal[ECHO_TIMES, :]
+s0based_multiecho_signal = s0based_fullcurve_signal[echo_times, :]
+t2sbased_multiecho_signal = t2sbased_fullcurve_signal[echo_times, :]
 
 fig, axes = plt.subplots(
     nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
@@ -1013,7 +1017,7 @@ ax1_t2s_line_plot = axes[1].plot(
     zorder=1,
 )[0]
 ax1_s0_scatter_plot = axes[1].scatter(
-    ECHO_TIMES,
+    echo_times,
     s0based_multiecho_signal[:, 0],
     color="red",
     s=150,
@@ -1022,7 +1026,7 @@ ax1_s0_scatter_plot = axes[1].scatter(
     zorder=2,
 )
 ax1_t2s_scatter_plot = axes[1].scatter(
-    ECHO_TIMES,
+    echo_times,
     t2sbased_multiecho_signal[:, 0],
     color="blue",
     s=150,
@@ -1038,7 +1042,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(ECHO_TIMES)
+axes[1].set_xticks(echo_times)
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -1071,7 +1075,7 @@ def AnimationFunction(frame):
     ax1_s0_scatter_plot.set_offsets(
         np.column_stack(
             (
-                ECHO_TIMES,
+                echo_times,
                 s0based_multiecho_signal[:, frame],
             )
         )
@@ -1079,7 +1083,7 @@ def AnimationFunction(frame):
     ax1_t2s_scatter_plot.set_offsets(
         np.column_stack(
             (
-                ECHO_TIMES,
+                echo_times,
                 t2sbased_multiecho_signal[:, frame],
             )
         )
