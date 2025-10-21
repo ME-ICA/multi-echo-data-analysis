@@ -104,6 +104,7 @@ confounds_file = os.path.join(
 )
 ted_dir = os.path.join(data_path, "tedana")
 n_echoes = len(echo_times)
+echo_times = [int(np.round(te)) for te in echo_times]
 
 pal = sns.color_palette("cubehelix", n_echoes)
 
@@ -213,8 +214,8 @@ ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
 ax.tick_params(axis="both", which="major", labelsize=14)
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 25000)
 fig.tight_layout()
 glue("fig_echo_scatter", fig, display=False)
 ```

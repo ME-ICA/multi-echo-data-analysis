@@ -57,6 +57,7 @@ for f in data_files:
     with open(json_file, 'r') as fo:
         metadata = json.load(fo)
     echo_times.append(metadata['EchoTime'] * 1000)
+echo_times = np.array(echo_times)
 mask_file = os.path.join(
     func_dir,
     "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
@@ -96,7 +97,7 @@ mepca_mmix = pd.read_table(
 ).values
 oc_red = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomPCAReduced_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_whitened_bold.nii.gz"
     ),
     mask,
 )
@@ -142,6 +143,13 @@ meica_betas = np.dstack(
             ),
             mask,
         ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-5_desc-ICA_components.nii.gz",
+            ),
+            mask,
+        ).T,
     )
 )
 meica_betas = np.swapaxes(meica_betas, 1, 2)
@@ -172,6 +180,13 @@ r2_pred_betas = np.dstack(
             os.path.join(
                 ted_dir,
                 "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-4_desc-ICAT2ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-5_desc-ICAT2ModelPredictions_components.nii.gz",
             ),
             mask,
         ).T,
@@ -208,6 +223,13 @@ s0_pred_betas = np.dstack(
             ),
             mask,
         ).T,
+        masking.apply_mask(
+            os.path.join(
+                ted_dir,
+                "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-5_desc-ICAS0ModelPredictions_components.nii.gz",
+            ),
+            mask,
+        ).T,
     )
 )
 s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
@@ -221,7 +243,7 @@ beta_maps = masking.apply_mask(betas_file, mask)
 # Multi-echo denoised data
 dn_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomDenoised_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-denoised_bold.nii.gz"
     ),
     mask,
 )
@@ -241,7 +263,7 @@ dn_t1c_data = masking.apply_mask(
 )
 hk_t1c_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAccepted_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAcceptedMIRDenoised_bold.nii.gz"
     ),
     mask,
 )
@@ -345,8 +367,8 @@ ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
 ax.tick_params(axis="both", which="major", labelsize=14)
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 24000)
 fig.tight_layout()
 glue("fig_echo_scatter2", fig, display=False)
 ```
@@ -368,11 +390,7 @@ where $n$ is the value for that voxel in the adaptive mask.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-mask_img = masking.compute_epi_mask(data_files[0])
-data, img = load_data(data_files, len(echo_times))
-mask, adaptive_mask = make_adaptive_mask(data, mask=mask_img, getsum=True)
-
-adaptive_mask_img = new_nii_like(img, adaptive_mask)
+adaptive_mask_img = nb.load(adaptive_mask_file)
 
 fig, ax = plt.subplots(figsize=(10, 4))
 palette = sns.color_palette("BuGn_r", 10)
@@ -412,7 +430,7 @@ for i_echo in range(n_echoes):
 ax.set_ylabel("log(BOLD signal)", fontsize=16)
 ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
 ax.set_xticks(-1 * echo_times)
-ax.set_xlim(-70, 0)
+ax.set_xlim(-120, 0)
 ax.set_ylim(4, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
 
@@ -471,13 +489,13 @@ ax.plot(log_x, log_y)
 ax.set_ylabel("log(BOLD signal)", fontsize=16)
 ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
 ax.set_xticks(-1 * echo_times)
-ax.set_xlim(-70, 0)
+ax.set_xlim(-120, 0)
 ax.set_ylim(5, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
 
 ax.annotate(
     "$B_0$: {0:.02f}\n$B_1$: {1:.02f}".format(betas[0], betas[1]),
-    xy=(-70, 9.5),
+    xy=(-120, 9.5),
     fontsize=16,
     bbox=dict(fc="white", ec="black", lw=1),
 )
@@ -518,8 +536,8 @@ ax.plot(mono_x, mono_y)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.annotate(
     "$S_0$: {0:.02f}\n$T_2^*$: {1:.02f}".format(s0, t2s),
@@ -554,8 +572,8 @@ ax.axvline(t2s, 0, 1, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.xaxis.get_major_ticks()[-1].set_pad(20)
 
@@ -612,8 +630,8 @@ ax.axvline(t2s, 0, 20000, label="$T_2^*$", color="black", linestyle="--", alpha=
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.xaxis.get_major_ticks()[-1].set_pad(20)
 

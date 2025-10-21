@@ -3,7 +3,6 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
     jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3
@@ -24,6 +23,7 @@ from glob import glob
 import matplotlib.pyplot as plt
 import nibabel as nb
 import numpy as np
+from IPython import display
 from myst_nb import glue
 from nilearn import image, plotting
 from tedana import workflows
@@ -68,6 +68,7 @@ workflows.t2smap_workflow(
     prefix="sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_",
     fittype="loglin",
     fitmode="ts",
+    overwrite=True,
 )
 ```
 
@@ -78,6 +79,7 @@ print("\n".join(out_files))
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-cell, hide-output]
 fig, axes = plt.subplots(figsize=(16, 16), nrows=3)
 
 plotting.plot_carpet(
@@ -104,11 +106,11 @@ axes[0].spines["bottom"].set_visible(False)
 axes[1].spines["bottom"].set_visible(False)
 fig.tight_layout()
 
-glue("figure_volumewise_t2ss0_carpets", fig, display=True)
+glue("figure_volumewise_t2ss0_carpets", fig, display=False)
 ```
 
 ```{glue:figure} figure_volumewise_t2ss0_carpets
-:name: "figure_volumewise_t2ss0_carpets"
+:name: figure_volumewise_t2ss0_carpets
 :align: center
 
 Carpet plots of optimally combined data, along with volume-wise T2* and S0 estimates.
