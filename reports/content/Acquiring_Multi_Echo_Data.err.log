@@ -59,124 +59,157 @@ plt.show()
 
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mTypeError[0m                                 Traceback (most recent call last)
-Cell [0;32mIn[1], line 27[0m
-[1;32m     24[0m plt[38;5;241m.[39mylabel([38;5;124m"[39m[38;5;124mEcho Time (ms)[39m[38;5;124m"[39m)
-[1;32m     25[0m plt[38;5;241m.[39mshow()
-[0;32m---> 27[0m [43mplt[49m[38;5;241;43m.[39;49m[43mhist[49m[43m([49m[43mmetable[49m[38;5;241;43m.[39;49m[43mTR[49m[38;5;241;43m.[39;49m[43mto_numpy[49m[43m([49m[43m)[49m[43m)[49m
-[1;32m     28[0m plt[38;5;241m.[39mtitle([38;5;124m"[39m[38;5;124mRepetition Times[39m[38;5;124m"[39m, fontsize[38;5;241m=[39m[38;5;241m18[39m)
-[1;32m     29[0m plt[38;5;241m.[39mxlabel([38;5;124m"[39m[38;5;124mRepetition Time (s)[39m[38;5;124m"[39m)
-
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/_api/deprecation.py:453[0m, in [0;36mmake_keyword_only.<locals>.wrapper[0;34m(*args, **kwargs)[0m
-[1;32m    447[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m(args) [38;5;241m>[39m name_idx:
-[1;32m    448[0m     warn_deprecated(
-[1;32m    449[0m         since, message[38;5;241m=[39m[38;5;124m"[39m[38;5;124mPassing the [39m[38;5;132;01m%(name)s[39;00m[38;5;124m [39m[38;5;132;01m%(obj_type)s[39;00m[38;5;124m [39m[38;5;124m"[39m
-[1;32m    450[0m         [38;5;124m"[39m[38;5;124mpositionally is deprecated since Matplotlib [39m[38;5;132;01m%(since)s[39;00m[38;5;124m; the [39m[38;5;124m"[39m
-[1;32m    451[0m         [38;5;124m"[39m[38;5;124mparameter will become keyword-only in [39m[38;5;132;01m%(removal)s[39;00m[38;5;124m.[39m[38;5;124m"[39m,
-[1;32m    452[0m         name[38;5;241m=[39mname, obj_type[38;5;241m=[39m[38;5;124mf[39m[38;5;124m"[39m[38;5;124mparameter of [39m[38;5;132;01m{[39;00mfunc[38;5;241m.[39m[38;5;18m__name__[39m[38;5;132;01m}[39;00m[38;5;124m()[39m[38;5;124m"[39m)
-[0;32m--> 453[0m [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
-
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/pyplot.py:3478[0m, in [0;36mhist[0;34m(x, bins, range, density, weights, cumulative, bottom, histtype, align, orientation, rwidth, log, color, label, stacked, data, **kwargs)[0m
-[1;32m   3453[0m [38;5;129m@_copy_docstring_and_deprecators[39m(Axes[38;5;241m.[39mhist)
-[1;32m   3454[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21mhist[39m(
-[1;32m   3455[0m     x: ArrayLike [38;5;241m|[39m Sequence[ArrayLike],
+[0;31mHTTPError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn[1], line 7[0m
+[1;32m      3[0m [38;5;28;01mimport[39;00m[38;5;250m [39m[38;5;21;01mpandas[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[38;5;21;01mpd[39;00m
+[1;32m      5[0m [38;5;66;03m# TODO: deal with the issue that the plot doesn't regenerate (ie isn't alive)[39;00m
+[1;32m      6[0m [38;5;66;03m# Unless the code is updated.[39;00m
+[0;32m----> 7[0m metable [38;5;241m=[39m [43mpd[49m[38;5;241;43m.[39;49m[43mread_csv[49m[43m([49m
+[1;32m      8[0m [43m    [49m[38;5;124;43m"[39;49m[38;5;124;43mhttps://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/export?gid=0&format=csv[39;49m[38;5;124;43m"[39;49m[43m,[49m
+[1;32m      9[0m [43m    [49m[43mheader[49m[38;5;241;43m=[39;49m[38;5;241;43m0[39;49m[43m,[49m
+[1;32m     10[0m [43m)[49m
+[1;32m     11[0m TEs [38;5;241m=[39m [
+[1;32m     12[0m     metable[38;5;241m.[39mTE1[38;5;241m.[39mmean(),
+[1;32m     13[0m     metable[38;5;241m.[39mTE2[38;5;241m.[39mmean(),
 [0;32m   (...)[0m
-[1;32m   3476[0m     BarContainer [38;5;241m|[39m Polygon [38;5;241m|[39m [38;5;28mlist[39m[BarContainer [38;5;241m|[39m Polygon],
-[1;32m   3477[0m ]:
-[0;32m-> 3478[0m     [38;5;28;01mreturn[39;00m [43mgca[49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[43mhist[49m[43m([49m
-[1;32m   3479[0m [43m        [49m[43mx[49m[43m,[49m
-[1;32m   3480[0m [43m        [49m[43mbins[49m[38;5;241;43m=[39;49m[43mbins[49m[43m,[49m
-[1;32m   3481[0m [43m        [49m[38;5;28;43mrange[39;49m[38;5;241;43m=[39;49m[38;5;28;43mrange[39;49m[43m,[49m
-[1;32m   3482[0m [43m        [49m[43mdensity[49m[38;5;241;43m=[39;49m[43mdensity[49m[43m,[49m
-[1;32m   3483[0m [43m        [49m[43mweights[49m[38;5;241;43m=[39;49m[43mweights[49m[43m,[49m
-[1;32m   3484[0m [43m        [49m[43mcumulative[49m[38;5;241;43m=[39;49m[43mcumulative[49m[43m,[49m
-[1;32m   3485[0m [43m        [49m[43mbottom[49m[38;5;241;43m=[39;49m[43mbottom[49m[43m,[49m
-[1;32m   3486[0m [43m        [49m[43mhisttype[49m[38;5;241;43m=[39;49m[43mhisttype[49m[43m,[49m
-[1;32m   3487[0m [43m        [49m[43malign[49m[38;5;241;43m=[39;49m[43malign[49m[43m,[49m
-[1;32m   3488[0m [43m        [49m[43morientation[49m[38;5;241;43m=[39;49m[43morientation[49m[43m,[49m
-[1;32m   3489[0m [43m        [49m[43mrwidth[49m[38;5;241;43m=[39;49m[43mrwidth[49m[43m,[49m
-[1;32m   3490[0m [43m        [49m[43mlog[49m[38;5;241;43m=[39;49m[43mlog[49m[43m,[49m
-[1;32m   3491[0m [43m        [49m[43mcolor[49m[38;5;241;43m=[39;49m[43mcolor[49m[43m,[49m
-[1;32m   3492[0m [43m        [49m[43mlabel[49m[38;5;241;43m=[39;49m[43mlabel[49m[43m,[49m
-[1;32m   3493[0m [43m        [49m[43mstacked[49m[38;5;241;43m=[39;49m[43mstacked[49m[43m,[49m
-[1;32m   3494[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43m([49m[43m{[49m[38;5;124;43m"[39;49m[38;5;124;43mdata[39;49m[38;5;124;43m"[39;49m[43m:[49m[43m [49m[43mdata[49m[43m}[49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mdata[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;129;43;01mnot[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43m{[49m[43m}[49m[43m)[49m[43m,[49m
-[1;32m   3495[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
-[1;32m   3496[0m [43m    [49m[43m)[49m
+[1;32m     16[0m     metable[38;5;241m.[39mTE5[38;5;241m.[39mmean(),
+[1;32m     17[0m ]
+[1;32m     18[0m TE_labels [38;5;241m=[39m [[38;5;124m"[39m[38;5;124mTE1[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mTE2[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mTE3[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mTE4[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mTE5[39m[38;5;124m"[39m]
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/_api/deprecation.py:453[0m, in [0;36mmake_keyword_only.<locals>.wrapper[0;34m(*args, **kwargs)[0m
-[1;32m    447[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m(args) [38;5;241m>[39m name_idx:
-[1;32m    448[0m     warn_deprecated(
-[1;32m    449[0m         since, message[38;5;241m=[39m[38;5;124m"[39m[38;5;124mPassing the [39m[38;5;132;01m%(name)s[39;00m[38;5;124m [39m[38;5;132;01m%(obj_type)s[39;00m[38;5;124m [39m[38;5;124m"[39m
-[1;32m    450[0m         [38;5;124m"[39m[38;5;124mpositionally is deprecated since Matplotlib [39m[38;5;132;01m%(since)s[39;00m[38;5;124m; the [39m[38;5;124m"[39m
-[1;32m    451[0m         [38;5;124m"[39m[38;5;124mparameter will become keyword-only in [39m[38;5;132;01m%(removal)s[39;00m[38;5;124m.[39m[38;5;124m"[39m,
-[1;32m    452[0m         name[38;5;241m=[39mname, obj_type[38;5;241m=[39m[38;5;124mf[39m[38;5;124m"[39m[38;5;124mparameter of [39m[38;5;132;01m{[39;00mfunc[38;5;241m.[39m[38;5;18m__name__[39m[38;5;132;01m}[39;00m[38;5;124m()[39m[38;5;124m"[39m)
-[0;32m--> 453[0m [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pandas/io/parsers/readers.py:1026[0m, in [0;36mread_csv[0;34m(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options, dtype_backend)[0m
+[1;32m   1013[0m kwds_defaults [38;5;241m=[39m _refine_defaults_read(
+[1;32m   1014[0m     dialect,
+[1;32m   1015[0m     delimiter,
+[0;32m   (...)[0m
+[1;32m   1022[0m     dtype_backend[38;5;241m=[39mdtype_backend,
+[1;32m   1023[0m )
+[1;32m   1024[0m kwds[38;5;241m.[39mupdate(kwds_defaults)
+[0;32m-> 1026[0m [38;5;28;01mreturn[39;00m [43m_read[49m[43m([49m[43mfilepath_or_buffer[49m[43m,[49m[43m [49m[43mkwds[49m[43m)[49m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/__init__.py:1524[0m, in [0;36m_preprocess_data.<locals>.inner[0;34m(ax, data, *args, **kwargs)[0m
-[1;32m   1521[0m [38;5;129m@functools[39m[38;5;241m.[39mwraps(func)
-[1;32m   1522[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21minner[39m(ax, [38;5;241m*[39margs, data[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-[1;32m   1523[0m     [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-[0;32m-> 1524[0m         [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m
-[1;32m   1525[0m [43m            [49m[43max[49m[43m,[49m
-[1;32m   1526[0m [43m            [49m[38;5;241;43m*[39;49m[38;5;28;43mmap[39;49m[43m([49m[43mcbook[49m[38;5;241;43m.[39;49m[43msanitize_sequence[49m[43m,[49m[43m [49m[43margs[49m[43m)[49m[43m,[49m
-[1;32m   1527[0m [43m            [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43m{[49m[43mk[49m[43m:[49m[43m [49m[43mcbook[49m[38;5;241;43m.[39;49m[43msanitize_sequence[49m[43m([49m[43mv[49m[43m)[49m[43m [49m[38;5;28;43;01mfor[39;49;00m[43m [49m[43mk[49m[43m,[49m[43m [49m[43mv[49m[43m [49m[38;5;129;43;01min[39;49;00m[43m [49m[43mkwargs[49m[38;5;241;43m.[39;49m[43mitems[49m[43m([49m[43m)[49m[43m}[49m[43m)[49m
-[1;32m   1529[0m     bound [38;5;241m=[39m new_sig[38;5;241m.[39mbind(ax, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)
-[1;32m   1530[0m     auto_label [38;5;241m=[39m (bound[38;5;241m.[39marguments[38;5;241m.[39mget(label_namer)
-[1;32m   1531[0m                   [38;5;129;01mor[39;00m bound[38;5;241m.[39mkwargs[38;5;241m.[39mget(label_namer))
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pandas/io/parsers/readers.py:620[0m, in [0;36m_read[0;34m(filepath_or_buffer, kwds)[0m
+[1;32m    617[0m _validate_names(kwds[38;5;241m.[39mget([38;5;124m"[39m[38;5;124mnames[39m[38;5;124m"[39m, [38;5;28;01mNone[39;00m))
+[1;32m    619[0m [38;5;66;03m# Create the parser.[39;00m
+[0;32m--> 620[0m parser [38;5;241m=[39m [43mTextFileReader[49m[43m([49m[43mfilepath_or_buffer[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwds[49m[43m)[49m
+[1;32m    622[0m [38;5;28;01mif[39;00m chunksize [38;5;129;01mor[39;00m iterator:
+[1;32m    623[0m     [38;5;28;01mreturn[39;00m parser
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/axes/_axes.py:7053[0m, in [0;36mAxes.hist[0;34m(self, x, bins, range, density, weights, cumulative, bottom, histtype, align, orientation, rwidth, log, color, label, stacked, **kwargs)[0m
-[1;32m   7051[0m [38;5;28;01mif[39;00m orientation [38;5;241m==[39m [38;5;124m"[39m[38;5;124mvertical[39m[38;5;124m"[39m:
-[1;32m   7052[0m     convert_units [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mconvert_xunits
-[0;32m-> 7053[0m     x [38;5;241m=[39m [[38;5;241m*[39m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_process_unit_info[49m[43m([49m[43m[[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mx[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mx[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m[43m)[49m[43m][49m[43m,[49m[43m [49m[43mkwargs[49m[43m)[49m,
-[1;32m   7054[0m          [38;5;241m*[39m[38;5;28mmap[39m(convert_units, x[[38;5;241m1[39m:])]
-[1;32m   7055[0m [38;5;28;01melse[39;00m:  [38;5;66;03m# horizontal[39;00m
-[1;32m   7056[0m     convert_units [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mconvert_yunits
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pandas/io/parsers/readers.py:1620[0m, in [0;36mTextFileReader.__init__[0;34m(self, f, engine, **kwds)[0m
+[1;32m   1617[0m     [38;5;28mself[39m[38;5;241m.[39moptions[[38;5;124m"[39m[38;5;124mhas_index_names[39m[38;5;124m"[39m] [38;5;241m=[39m kwds[[38;5;124m"[39m[38;5;124mhas_index_names[39m[38;5;124m"[39m]
+[1;32m   1619[0m [38;5;28mself[39m[38;5;241m.[39mhandles: IOHandles [38;5;241m|[39m [38;5;28;01mNone[39;00m [38;5;241m=[39m [38;5;28;01mNone[39;00m
+[0;32m-> 1620[0m [38;5;28mself[39m[38;5;241m.[39m_engine [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_make_engine[49m[43m([49m[43mf[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mengine[49m[43m)[49m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/axes/_base.py:2663[0m, in [0;36m_AxesBase._process_unit_info[0;34m(self, datasets, kwargs, convert)[0m
-[1;32m   2661[0m     [38;5;66;03m# Update from data if axis is already set but no unit is set yet.[39;00m
-[1;32m   2662[0m     [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m data [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m axis[38;5;241m.[39mhave_units():
-[0;32m-> 2663[0m         [43maxis[49m[38;5;241;43m.[39;49m[43mupdate_units[49m[43m([49m[43mdata[49m[43m)[49m
-[1;32m   2664[0m [38;5;28;01mfor[39;00m axis_name, axis [38;5;129;01min[39;00m axis_map[38;5;241m.[39mitems():
-[1;32m   2665[0m     [38;5;66;03m# Return if no axis is set.[39;00m
-[1;32m   2666[0m     [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pandas/io/parsers/readers.py:1880[0m, in [0;36mTextFileReader._make_engine[0;34m(self, f, engine)[0m
+[1;32m   1878[0m     [38;5;28;01mif[39;00m [38;5;124m"[39m[38;5;124mb[39m[38;5;124m"[39m [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m mode:
+[1;32m   1879[0m         mode [38;5;241m+[39m[38;5;241m=[39m [38;5;124m"[39m[38;5;124mb[39m[38;5;124m"[39m
+[0;32m-> 1880[0m [38;5;28mself[39m[38;5;241m.[39mhandles [38;5;241m=[39m [43mget_handle[49m[43m([49m
+[1;32m   1881[0m [43m    [49m[43mf[49m[43m,[49m
+[1;32m   1882[0m [43m    [49m[43mmode[49m[43m,[49m
+[1;32m   1883[0m [43m    [49m[43mencoding[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43moptions[49m[38;5;241;43m.[39;49m[43mget[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mencoding[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m)[49m[43m,[49m
+[1;32m   1884[0m [43m    [49m[43mcompression[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43moptions[49m[38;5;241;43m.[39;49m[43mget[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mcompression[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m)[49m[43m,[49m
+[1;32m   1885[0m [43m    [49m[43mmemory_map[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43moptions[49m[38;5;241;43m.[39;49m[43mget[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmemory_map[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;28;43;01mFalse[39;49;00m[43m)[49m[43m,[49m
+[1;32m   1886[0m [43m    [49m[43mis_text[49m[38;5;241;43m=[39;49m[43mis_text[49m[43m,[49m
+[1;32m   1887[0m [43m    [49m[43merrors[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43moptions[49m[38;5;241;43m.[39;49m[43mget[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mencoding_errors[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mstrict[39;49m[38;5;124;43m"[39;49m[43m)[49m[43m,[49m
+[1;32m   1888[0m [43m    [49m[43mstorage_options[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43moptions[49m[38;5;241;43m.[39;49m[43mget[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mstorage_options[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m)[49m[43m,[49m
+[1;32m   1889[0m [43m[49m[43m)[49m
+[1;32m   1890[0m [38;5;28;01massert[39;00m [38;5;28mself[39m[38;5;241m.[39mhandles [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
+[1;32m   1891[0m f [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mhandles[38;5;241m.[39mhandle
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/axis.py:1754[0m, in [0;36mAxis.update_units[0;34m(self, data)[0m
-[1;32m   1752[0m neednew [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_converter [38;5;241m!=[39m converter
-[1;32m   1753[0m [38;5;28mself[39m[38;5;241m.[39m_set_converter(converter)
-[0;32m-> 1754[0m default [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_converter[49m[38;5;241;43m.[39;49m[43mdefault_units[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[43m)[49m
-[1;32m   1755[0m [38;5;28;01mif[39;00m default [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39munits [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-[1;32m   1756[0m     [38;5;28mself[39m[38;5;241m.[39mset_units(default)
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pandas/io/common.py:728[0m, in [0;36mget_handle[0;34m(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)[0m
+[1;32m    725[0m     codecs[38;5;241m.[39mlookup_error(errors)
+[1;32m    727[0m [38;5;66;03m# open URLs[39;00m
+[0;32m--> 728[0m ioargs [38;5;241m=[39m [43m_get_filepath_or_buffer[49m[43m([49m
+[1;32m    729[0m [43m    [49m[43mpath_or_buf[49m[43m,[49m
+[1;32m    730[0m [43m    [49m[43mencoding[49m[38;5;241;43m=[39;49m[43mencoding[49m[43m,[49m
+[1;32m    731[0m [43m    [49m[43mcompression[49m[38;5;241;43m=[39;49m[43mcompression[49m[43m,[49m
+[1;32m    732[0m [43m    [49m[43mmode[49m[38;5;241;43m=[39;49m[43mmode[49m[43m,[49m
+[1;32m    733[0m [43m    [49m[43mstorage_options[49m[38;5;241;43m=[39;49m[43mstorage_options[49m[43m,[49m
+[1;32m    734[0m [43m[49m[43m)[49m
+[1;32m    736[0m handle [38;5;241m=[39m ioargs[38;5;241m.[39mfilepath_or_buffer
+[1;32m    737[0m handles: [38;5;28mlist[39m[BaseBuffer]
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/category.py:106[0m, in [0;36mStrCategoryConverter.default_units[0;34m(data, axis)[0m
-[1;32m    104[0m [38;5;66;03m# the conversion call stack is default_units -> axis_info -> convert[39;00m
-[1;32m    105[0m [38;5;28;01mif[39;00m axis[38;5;241m.[39munits [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-[0;32m--> 106[0m     axis[38;5;241m.[39mset_units([43mUnitData[49m[43m([49m[43mdata[49m[43m)[49m)
-[1;32m    107[0m [38;5;28;01melse[39;00m:
-[1;32m    108[0m     axis[38;5;241m.[39munits[38;5;241m.[39mupdate(data)
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pandas/io/common.py:384[0m, in [0;36m_get_filepath_or_buffer[0;34m(filepath_or_buffer, encoding, compression, mode, storage_options)[0m
+[1;32m    382[0m [38;5;66;03m# assuming storage_options is to be interpreted as headers[39;00m
+[1;32m    383[0m req_info [38;5;241m=[39m urllib[38;5;241m.[39mrequest[38;5;241m.[39mRequest(filepath_or_buffer, headers[38;5;241m=[39mstorage_options)
+[0;32m--> 384[0m [38;5;28;01mwith[39;00m [43murlopen[49m[43m([49m[43mreq_info[49m[43m)[49m [38;5;28;01mas[39;00m req:
+[1;32m    385[0m     content_encoding [38;5;241m=[39m req[38;5;241m.[39mheaders[38;5;241m.[39mget([38;5;124m"[39m[38;5;124mContent-Encoding[39m[38;5;124m"[39m, [38;5;28;01mNone[39;00m)
+[1;32m    386[0m     [38;5;28;01mif[39;00m content_encoding [38;5;241m==[39m [38;5;124m"[39m[38;5;124mgzip[39m[38;5;124m"[39m:
+[1;32m    387[0m         [38;5;66;03m# Override compression based on Content-Encoding header[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/category.py:182[0m, in [0;36mUnitData.__init__[0;34m(self, data)[0m
-[1;32m    180[0m [38;5;28mself[39m[38;5;241m.[39m_counter [38;5;241m=[39m itertools[38;5;241m.[39mcount()
-[1;32m    181[0m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-[0;32m--> 182[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mupdate[49m[43m([49m[43mdata[49m[43m)[49m
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pandas/io/common.py:289[0m, in [0;36murlopen[0;34m(*args, **kwargs)[0m
+[1;32m    283[0m [38;5;250m[39m[38;5;124;03m"""[39;00m
+[1;32m    284[0m [38;5;124;03mLazy-import wrapper for stdlib urlopen, as that imports a big chunk of[39;00m
+[1;32m    285[0m [38;5;124;03mthe stdlib.[39;00m
+[1;32m    286[0m [38;5;124;03m"""[39;00m
+[1;32m    287[0m [38;5;28;01mimport[39;00m[38;5;250m [39m[38;5;21;01murllib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mrequest[39;00m
+[0;32m--> 289[0m [38;5;28;01mreturn[39;00m [43murllib[49m[38;5;241;43m.[39;49m[43mrequest[49m[38;5;241;43m.[39;49m[43murlopen[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/category.py:217[0m, in [0;36mUnitData.update[0;34m(self, data)[0m
-[1;32m    214[0m convertible [38;5;241m=[39m [38;5;28;01mTrue[39;00m
-[1;32m    215[0m [38;5;28;01mfor[39;00m val [38;5;129;01min[39;00m OrderedDict[38;5;241m.[39mfromkeys(data):
-[1;32m    216[0m     [38;5;66;03m# OrderedDict just iterates over unique values in data.[39;00m
-[0;32m--> 217[0m     [43m_api[49m[38;5;241;43m.[39;49m[43mcheck_isinstance[49m[43m([49m[43m([49m[38;5;28;43mstr[39;49m[43m,[49m[43m [49m[38;5;28;43mbytes[39;49m[43m)[49m[43m,[49m[43m [49m[43mvalue[49m[38;5;241;43m=[39;49m[43mval[49m[43m)[49m
-[1;32m    218[0m     [38;5;28;01mif[39;00m convertible:
-[1;32m    219[0m         [38;5;66;03m# this will only be called so long as convertible is True.[39;00m
-[1;32m    220[0m         convertible [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_str_is_convertible(val)
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:216[0m, in [0;36murlopen[0;34m(url, data, timeout, cafile, capath, cadefault, context)[0m
+[1;32m    214[0m [38;5;28;01melse[39;00m:
+[1;32m    215[0m     opener [38;5;241m=[39m _opener
+[0;32m--> 216[0m [38;5;28;01mreturn[39;00m [43mopener[49m[38;5;241;43m.[39;49m[43mopen[49m[43m([49m[43murl[49m[43m,[49m[43m [49m[43mdata[49m[43m,[49m[43m [49m[43mtimeout[49m[43m)[49m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/matplotlib/_api/__init__.py:92[0m, in [0;36mcheck_isinstance[0;34m(types, **kwargs)[0m
-[1;32m     90[0m     names[38;5;241m.[39mremove([38;5;124m"[39m[38;5;124mNone[39m[38;5;124m"[39m)
-[1;32m     91[0m     names[38;5;241m.[39mappend([38;5;124m"[39m[38;5;124mNone[39m[38;5;124m"[39m)
-[0;32m---> 92[0m [38;5;28;01mraise[39;00m [38;5;167;01mTypeError[39;00m(
-[1;32m     93[0m     [38;5;124m"[39m[38;5;132;01m{!r}[39;00m[38;5;124m must be an instance of [39m[38;5;132;01m{}[39;00m[38;5;124m, not a [39m[38;5;132;01m{}[39;00m[38;5;124m"[39m[38;5;241m.[39mformat(
-[1;32m     94[0m         k,
-[1;32m     95[0m         [38;5;124m"[39m[38;5;124m, [39m[38;5;124m"[39m[38;5;241m.[39mjoin(names[:[38;5;241m-[39m[38;5;241m1[39m]) [38;5;241m+[39m [38;5;124m"[39m[38;5;124m or [39m[38;5;124m"[39m [38;5;241m+[39m names[[38;5;241m-[39m[38;5;241m1[39m]
-[1;32m     96[0m         [38;5;28;01mif[39;00m [38;5;28mlen[39m(names) [38;5;241m>[39m [38;5;241m1[39m [38;5;28;01melse[39;00m names[[38;5;241m0[39m],
-[1;32m     97[0m         type_name([38;5;28mtype[39m(v))))
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:525[0m, in [0;36mOpenerDirector.open[0;34m(self, fullurl, data, timeout)[0m
+[1;32m    523[0m [38;5;28;01mfor[39;00m processor [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39mprocess_response[38;5;241m.[39mget(protocol, []):
+[1;32m    524[0m     meth [38;5;241m=[39m [38;5;28mgetattr[39m(processor, meth_name)
+[0;32m--> 525[0m     response [38;5;241m=[39m [43mmeth[49m[43m([49m[43mreq[49m[43m,[49m[43m [49m[43mresponse[49m[43m)[49m
+[1;32m    527[0m [38;5;28;01mreturn[39;00m response
 
-[0;31mTypeError[0m: 'value' must be an instance of str or bytes, not a float
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:634[0m, in [0;36mHTTPErrorProcessor.http_response[0;34m(self, request, response)[0m
+[1;32m    631[0m [38;5;66;03m# According to RFC 2616, "2xx" code indicates that the client's[39;00m
+[1;32m    632[0m [38;5;66;03m# request was successfully received, understood, and accepted.[39;00m
+[1;32m    633[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ([38;5;241m200[39m [38;5;241m<[39m[38;5;241m=[39m code [38;5;241m<[39m [38;5;241m300[39m):
+[0;32m--> 634[0m     response [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mparent[49m[38;5;241;43m.[39;49m[43merror[49m[43m([49m
+[1;32m    635[0m [43m        [49m[38;5;124;43m'[39;49m[38;5;124;43mhttp[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mrequest[49m[43m,[49m[43m [49m[43mresponse[49m[43m,[49m[43m [49m[43mcode[49m[43m,[49m[43m [49m[43mmsg[49m[43m,[49m[43m [49m[43mhdrs[49m[43m)[49m
+[1;32m    637[0m [38;5;28;01mreturn[39;00m response
+
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:557[0m, in [0;36mOpenerDirector.error[0;34m(self, proto, *args)[0m
+[1;32m    555[0m     http_err [38;5;241m=[39m [38;5;241m0[39m
+[1;32m    556[0m args [38;5;241m=[39m ([38;5;28mdict[39m, proto, meth_name) [38;5;241m+[39m args
+[0;32m--> 557[0m result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_call_chain[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m)[49m
+[1;32m    558[0m [38;5;28;01mif[39;00m result:
+[1;32m    559[0m     [38;5;28;01mreturn[39;00m result
+
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:496[0m, in [0;36mOpenerDirector._call_chain[0;34m(self, chain, kind, meth_name, *args)[0m
+[1;32m    494[0m [38;5;28;01mfor[39;00m handler [38;5;129;01min[39;00m handlers:
+[1;32m    495[0m     func [38;5;241m=[39m [38;5;28mgetattr[39m(handler, meth_name)
+[0;32m--> 496[0m     result [38;5;241m=[39m [43mfunc[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m)[49m
+[1;32m    497[0m     [38;5;28;01mif[39;00m result [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    498[0m         [38;5;28;01mreturn[39;00m result
+
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:749[0m, in [0;36mHTTPRedirectHandler.http_error_302[0;34m(self, req, fp, code, msg, headers)[0m
+[1;32m    746[0m fp[38;5;241m.[39mread()
+[1;32m    747[0m fp[38;5;241m.[39mclose()
+[0;32m--> 749[0m [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mparent[49m[38;5;241;43m.[39;49m[43mopen[49m[43m([49m[43mnew[49m[43m,[49m[43m [49m[43mtimeout[49m[38;5;241;43m=[39;49m[43mreq[49m[38;5;241;43m.[39;49m[43mtimeout[49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:525[0m, in [0;36mOpenerDirector.open[0;34m(self, fullurl, data, timeout)[0m
+[1;32m    523[0m [38;5;28;01mfor[39;00m processor [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39mprocess_response[38;5;241m.[39mget(protocol, []):
+[1;32m    524[0m     meth [38;5;241m=[39m [38;5;28mgetattr[39m(processor, meth_name)
+[0;32m--> 525[0m     response [38;5;241m=[39m [43mmeth[49m[43m([49m[43mreq[49m[43m,[49m[43m [49m[43mresponse[49m[43m)[49m
+[1;32m    527[0m [38;5;28;01mreturn[39;00m response
+
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:634[0m, in [0;36mHTTPErrorProcessor.http_response[0;34m(self, request, response)[0m
+[1;32m    631[0m [38;5;66;03m# According to RFC 2616, "2xx" code indicates that the client's[39;00m
+[1;32m    632[0m [38;5;66;03m# request was successfully received, understood, and accepted.[39;00m
+[1;32m    633[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ([38;5;241m200[39m [38;5;241m<[39m[38;5;241m=[39m code [38;5;241m<[39m [38;5;241m300[39m):
+[0;32m--> 634[0m     response [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mparent[49m[38;5;241;43m.[39;49m[43merror[49m[43m([49m
+[1;32m    635[0m [43m        [49m[38;5;124;43m'[39;49m[38;5;124;43mhttp[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mrequest[49m[43m,[49m[43m [49m[43mresponse[49m[43m,[49m[43m [49m[43mcode[49m[43m,[49m[43m [49m[43mmsg[49m[43m,[49m[43m [49m[43mhdrs[49m[43m)[49m
+[1;32m    637[0m [38;5;28;01mreturn[39;00m response
+
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:563[0m, in [0;36mOpenerDirector.error[0;34m(self, proto, *args)[0m
+[1;32m    561[0m [38;5;28;01mif[39;00m http_err:
+[1;32m    562[0m     args [38;5;241m=[39m ([38;5;28mdict[39m, [38;5;124m'[39m[38;5;124mdefault[39m[38;5;124m'[39m, [38;5;124m'[39m[38;5;124mhttp_error_default[39m[38;5;124m'[39m) [38;5;241m+[39m orig_args
+[0;32m--> 563[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_call_chain[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:496[0m, in [0;36mOpenerDirector._call_chain[0;34m(self, chain, kind, meth_name, *args)[0m
+[1;32m    494[0m [38;5;28;01mfor[39;00m handler [38;5;129;01min[39;00m handlers:
+[1;32m    495[0m     func [38;5;241m=[39m [38;5;28mgetattr[39m(handler, meth_name)
+[0;32m--> 496[0m     result [38;5;241m=[39m [43mfunc[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m)[49m
+[1;32m    497[0m     [38;5;28;01mif[39;00m result [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    498[0m         [38;5;28;01mreturn[39;00m result
+
+File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/urllib/request.py:643[0m, in [0;36mHTTPDefaultErrorHandler.http_error_default[0;34m(self, req, fp, code, msg, hdrs)[0m
+[1;32m    642[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21mhttp_error_default[39m([38;5;28mself[39m, req, fp, code, msg, hdrs):
+[0;32m--> 643[0m     [38;5;28;01mraise[39;00m HTTPError(req[38;5;241m.[39mfull_url, code, msg, hdrs, fp)
+
+[0;31mHTTPError[0m: HTTP Error 500: Internal Server Error
 
