@@ -41,16 +41,18 @@ data_path = os.path.abspath('../DATA')
 ```
 
 ```{code-cell} ipython3
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
 te1_img = os.path.join(
-    data_path,
-    "sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-1_part-mag_desc-preproc_bold.nii.gz",
 )
 te2_img = os.path.join(
-    data_path,
-    "sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz",
 )
 mask_img = os.path.join(
-    data_path, "sub-04570/func/sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-brain_mask.nii.gz"
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 ```
