@@ -1,10 +1,12 @@
+datalad
+git-annex
 imageio
 jupyter-book
 jupytext
 matplotlib
 myst_nb
+nilearn
 nitransforms
-repo2data==2.9.7
 pyspfm==1.0.0
 seaborn
 sphinx>=4
