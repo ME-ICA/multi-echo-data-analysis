@@ -1,74 +1,80 @@
 Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nbclient/client.py", line 1319, in execute
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
-  File "/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
     return future.result()
-  File "/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nbclient/client.py", line 709, in async_execute
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
 te1_img = os.path.join(
-    data_path,
-    "sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-1_part-mag_desc-preproc_bold.nii.gz",
 )
 te2_img = os.path.join(
-    data_path,
-    "sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz",
 )
 mask_img = os.path.join(
-    data_path, "sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 ------------------
 
 
-[0;31m---------------------------------------------------------------------------[0m
-[0;31mValueError[0m                                Traceback (most recent call last)
-Cell [0;32mIn[2], line 12[0m
-[1;32m      5[0m te2_img [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(
-[1;32m      6[0m     data_path,
-[1;32m      7[0m     [38;5;124m"[39m[38;5;124msub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz[39m[38;5;124m"[39m,
-[1;32m      8[0m )
-[1;32m      9[0m mask_img [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(
-[1;32m     10[0m     data_path, [38;5;124m"[39m[38;5;124msub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz[39m[38;5;124m"[39m
-[1;32m     11[0m )
-[0;32m---> 12[0m denoised_img [38;5;241m=[39m [43mregress_one_image_out_of_another[49m[43m([49m[43mte2_img[49m[43m,[49m[43m [49m[43mte1_img[49m[43m,[49m[43m [49m[43mmask_img[49m[43m)[49m
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 14[39m
+[32m      6[39m te2_img = os.path.join(
+[32m      7[39m     func_dir,
+[32m      8[39m     [33m"[39m[33msub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz[39m[33m"[39m,
+[32m      9[39m )
+[32m     10[39m mask_img = os.path.join(
+[32m     11[39m     func_dir,
+[32m     12[39m     [33m"[39m[33msub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz[39m[33m"[39m
+[32m     13[39m )
+[32m---> [39m[32m14[39m denoised_img = [43mregress_one_image_out_of_another[49m[43m([49m[43mte2_img[49m[43m,[49m[43m [49m[43mte1_img[49m[43m,[49m[43m [49m[43mmask_img[49m[43m)[49m
 
-File [0;32m~/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py:10[0m, in [0;36mregress_one_image_out_of_another[0;34m(data_img, nuis_img, mask_img)[0m
-[1;32m      8[0m [38;5;250m[39m[38;5;124;03m"""Do what it says on the tin."""[39;00m
-[1;32m      9[0m [38;5;66;03m# First, mean-center each image over time[39;00m
-[0;32m---> 10[0m mean_data_img [38;5;241m=[39m [43mimage[49m[38;5;241;43m.[39;49m[43mmean_img[49m[43m([49m[43mdata_img[49m[43m)[49m
-[1;32m     11[0m mean_nuis_img [38;5;241m=[39m image[38;5;241m.[39mmean_img(nuis_img)
-[1;32m     13[0m data_img_mc [38;5;241m=[39m image[38;5;241m.[39mmath_img(
-[1;32m     14[0m     [38;5;124m"[39m[38;5;124mimg - avg_img[..., None][39m[38;5;124m"[39m,
-[1;32m     15[0m     img[38;5;241m=[39mdata_img,
-[1;32m     16[0m     avg_img[38;5;241m=[39mmean_data_img,
-[1;32m     17[0m )
+[36mFile [39m[32m~/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py:10[39m, in [36mregress_one_image_out_of_another[39m[34m(data_img, nuis_img, mask_img)[39m
+[32m      8[39m [38;5;250m[39m[33;03m"""Do what it says on the tin."""[39;00m
+[32m      9[39m [38;5;66;03m# First, mean-center each image over time[39;00m
+[32m---> [39m[32m10[39m mean_data_img = [43mimage[49m[43m.[49m[43mmean_img[49m[43m([49m[43mdata_img[49m[43m)[49m
+[32m     11[39m mean_nuis_img = image.mean_img(nuis_img)
+[32m     13[39m data_img_mc = image.math_img(
+[32m     14[39m     [33m"[39m[33mimg - avg_img[..., None][39m[33m"[39m,
+[32m     15[39m     img=data_img,
+[32m     16[39m     avg_img=mean_data_img,
+[32m     17[39m )
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/image/image.py:548[0m, in [0;36mmean_img[0;34m(imgs, target_affine, target_shape, verbose, n_jobs)[0m
-[1;32m    543[0m     imgs [38;5;241m=[39m [
-[1;32m    544[0m         imgs,
-[1;32m    545[0m     ]
-[1;32m    547[0m imgs_iter [38;5;241m=[39m [38;5;28miter[39m(imgs)
-[0;32m--> 548[0m first_img [38;5;241m=[39m [43mcheck_niimg[49m[43m([49m[38;5;28;43mnext[39;49m[43m([49m[43mimgs_iter[49m[43m)[49m[43m)[49m
-[1;32m    550[0m [38;5;66;03m# Compute the first mean to retrieve the reference[39;00m
-[1;32m    551[0m [38;5;66;03m# target_affine and target_shape if_needed[39;00m
-[1;32m    552[0m n_imgs [38;5;241m=[39m [38;5;241m1[39m
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nilearn/image/image.py:548[39m, in [36mmean_img[39m[34m(imgs, target_affine, target_shape, verbose, n_jobs)[39m
+[32m    543[39m     imgs = [
+[32m    544[39m         imgs,
+[32m    545[39m     ]
+[32m    547[39m imgs_iter = [38;5;28miter[39m(imgs)
+[32m--> [39m[32m548[39m first_img = [43mcheck_niimg[49m[43m([49m[38;5;28;43mnext[39;49m[43m([49m[43mimgs_iter[49m[43m)[49m[43m)[49m
+[32m    550[39m [38;5;66;03m# Compute the first mean to retrieve the reference[39;00m
+[32m    551[39m [38;5;66;03m# target_affine and target_shape if_needed[39;00m
+[32m    552[39m n_imgs = [32m1[39m
 
-File [0;32m/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300[0m, in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
-[1;32m    298[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
-[1;32m    299[0m     [38;5;28;01melse[39;00m:
-[0;32m--> 300[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m"[39m)
-[1;32m    301[0m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(niimg):
-[1;32m    302[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mFile not found: [39m[38;5;124m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m"[39m)
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nilearn/_utils/niimg_conversions.py:300[39m, in [36mcheck_niimg[39m[34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[39m
+[32m    298[39m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
+[32m    299[39m     [38;5;28;01melse[39;00m:
+[32m--> [39m[32m300[39m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([33mf[39m[33m"[39m[33mFile not found: [39m[33m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[33m'[39m[33m"[39m)
+[32m    301[39m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m os.path.exists(niimg):
+[32m    302[39m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([33mf[39m[33m"[39m[33mFile not found: [39m[33m'[39m[38;5;132;01m{[39;00mniimg[38;5;132;01m}[39;00m[33m'[39m[33m"[39m)
 
-[0;31mValueError[0m: File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz'
+[31mValueError[39m: File not found: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/DATA/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz'
 

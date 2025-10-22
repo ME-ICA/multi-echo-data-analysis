@@ -3,8 +3,7 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -20,26 +19,22 @@ and this chapter will be removed.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
+import json
 import os
+from glob import glob
 
 import matplotlib.pyplot as plt
+import nibabel as nb
 import nitransforms as nit
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from myst_nb import glue
 from nilearn import image, masking, plotting
-from repo2data.repo2data import Repo2Data
 from tedana.io import load_data, new_nii_like
 from tedana.utils import make_adaptive_mask
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+data_path = os.path.abspath('../DATA')
 
 ted_dir = os.path.join(data_path, "tedana")
 ```
@@ -47,186 +42,125 @@ ted_dir = os.path.join(data_path, "tedana")
 ## Load data
 ```{code-cell} ipython3
 :tags: [hide-cell]
-func_dir = os.path.join(data_path, "func/")
-data_files = [
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
+data_files = sorted(
+    glob(
+        os.path.join(
+            func_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+        ),
     ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-]
-echo_times = np.array([12.0, 28.0, 44.0, 60.0])
+)
+echo_times = []
+for f in data_files:
+    json_file = f.replace('.nii.gz', '.json')
+    with open(json_file, 'r') as fo:
+        metadata = json.load(fo)
+    echo_times.append(metadata['EchoTime'] * 1000)
+echo_times = np.round(np.array(echo_times), 2)
+mask_file = os.path.join(
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
+)
+confounds_file = os.path.join(
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
+)
 
 # Background anatomical image
+anat_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/anat/")
 xfm = os.path.join(
-    func_dir, "sub-04570_task-rest_from-T1w_to-scanner_mode-image_xfm.txt"
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt",
 )
 xfm = nit.linear.load(xfm, fmt="itk")
-t1_file = os.path.join(data_path, "anat/sub-04570_desc-preproc_T1w.nii.gz")
+t1_file = os.path.join(anat_dir, "sub-24053_ses-1_rec-norm_desc-preproc_T1w.nii.gz")
 bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 
 # Tedana outputs
 adaptive_mask_file = os.path.join(
-    ted_dir, "sub-04570_task-rest_space-scanner_desc-adaptiveGoodSignal_mask.nii.gz"
+    ted_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-adaptiveGoodSignal_mask.nii.gz",
 )
 mask = image.math_img("img >= 3", img=adaptive_mask_file)
 
 # Optimally combined data
 oc = masking.apply_mask(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-optcom_bold.nii.gz"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"),
     mask,
 )
 oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
 # Results from MEPCA
 mepca_mmix = pd.read_table(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-PCA_mixing.tsv"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-PCA_mixing.tsv"),
 ).values
 oc_red = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomPCAReduced_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_whitened_bold.nii.gz"
     ),
     mask,
 )
 
 # Results from MEICA
 meica_mmix = pd.read_table(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_mixing.tsv"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_mixing.tsv"),
 ).values
 norm_weights = masking.apply_mask(
     os.path.join(
         ted_dir,
-        "sub-04570_task-rest_space-scanner_desc-ICAAveragingWeights_components.nii.gz",
+        "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICAAveragingWeights_components.nii.gz",
     ),
     mask,
 )
-meica_betas = np.dstack(
-    (
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-1_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-2_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-3_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-4_desc-ICA_components.nii.gz",
-            ),
-            mask,
-        ).T,
-    )
+meica_beta_files = sorted(
+    glob(
+        os.path.join(
+            ted_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICA_components.nii.gz",
+        ),
+    ),
 )
+meica_betas = np.dstack([masking.apply_mask(f, mask).T for f in meica_beta_files])
 meica_betas = np.swapaxes(meica_betas, 1, 2)
-r2_pred_betas = np.dstack(
-    (
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-1_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-2_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-3_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-4_desc-ICAT2ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-    )
+
+r2_pred_beta_files = sorted(
+    glob(
+        os.path.join(
+            ted_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAT2ModelPredictions_components.nii.gz",
+        ),
+    ),
 )
+r2_pred_betas = np.dstack([masking.apply_mask(f, mask).T for f in r2_pred_beta_files])
 r2_pred_betas = np.swapaxes(r2_pred_betas, 1, 2)
-s0_pred_betas = np.dstack(
-    (
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-1_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-2_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-3_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-        masking.apply_mask(
-            os.path.join(
-                ted_dir,
-                "sub-04570_task-rest_space-scanner_echo-4_desc-ICAS0ModelPredictions_components.nii.gz",
-            ),
-            mask,
-        ).T,
-    )
+s0_pred_beta_files = sorted(
+    glob(
+        os.path.join(
+            ted_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAS0ModelPredictions_components.nii.gz",
+        ),
+    ),
 )
+s0_pred_betas = np.dstack([masking.apply_mask(f, mask).T for f in s0_pred_beta_files])
 s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
 
 # Component parameter estimates
 betas_file = os.path.join(
-    ted_dir, "sub-04570_task-rest_space-scanner_desc-ICA_components.nii.gz"
+    ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_components.nii.gz"
 )
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Multi-echo denoised data
 dn_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomDenoised_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-denoised_bold.nii.gz"
     ),
     mask,
 )
 hk_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAccepted_bold.nii.gz"
     ),
     mask,
 )
@@ -234,20 +168,20 @@ hk_data = masking.apply_mask(
 # Post-processed data
 dn_t1c_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomMIRDenoised_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomMIRDenoised_bold.nii.gz"
     ),
     mask,
 )
 hk_t1c_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-04570_task-rest_space-scanner_desc-optcomAccepted_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAcceptedMIRDenoised_bold.nii.gz"
     ),
     mask,
 )
 
 # Component table
 comp_tbl = pd.read_table(
-    os.path.join(ted_dir, "sub-04570_task-rest_space-scanner_desc-tedana_metrics.tsv"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-tedana_metrics.tsv"),
     index_col="Component",
 )
 
@@ -344,8 +278,8 @@ ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
 ax.tick_params(axis="both", which="major", labelsize=14)
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 24000)
 fig.tight_layout()
 glue("fig_echo_scatter2", fig, display=False)
 ```
@@ -367,11 +301,7 @@ where $n$ is the value for that voxel in the adaptive mask.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-mask_img = masking.compute_epi_mask(data_files[0])
-data, img = load_data(data_files, len(echo_times))
-mask, adaptive_mask = make_adaptive_mask(data, mask=mask_img, getsum=True)
-
-adaptive_mask_img = new_nii_like(img, adaptive_mask)
+adaptive_mask_img = nb.load(adaptive_mask_file)
 
 fig, ax = plt.subplots(figsize=(10, 4))
 palette = sns.color_palette("BuGn_r", 10)
@@ -411,7 +341,7 @@ for i_echo in range(n_echoes):
 ax.set_ylabel("log(BOLD signal)", fontsize=16)
 ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
 ax.set_xticks(-1 * echo_times)
-ax.set_xlim(-70, 0)
+ax.set_xlim(-120, 0)
 ax.set_ylim(4, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
 
@@ -470,13 +400,13 @@ ax.plot(log_x, log_y)
 ax.set_ylabel("log(BOLD signal)", fontsize=16)
 ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
 ax.set_xticks(-1 * echo_times)
-ax.set_xlim(-70, 0)
+ax.set_xlim(-120, 0)
 ax.set_ylim(5, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
 
 ax.annotate(
     "$B_0$: {0:.02f}\n$B_1$: {1:.02f}".format(betas[0], betas[1]),
-    xy=(-70, 9.5),
+    xy=(-120, 9.5),
     fontsize=16,
     bbox=dict(fc="white", ec="black", lw=1),
 )
@@ -517,8 +447,8 @@ ax.plot(mono_x, mono_y)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(echo_times)
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.annotate(
     "$S_0$: {0:.02f}\n$T_2^*$: {1:.02f}".format(s0, t2s),
@@ -553,8 +483,8 @@ ax.axvline(t2s, 0, 1, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.xaxis.get_major_ticks()[-1].set_pad(20)
 
@@ -611,8 +541,8 @@ ax.axvline(t2s, 0, 20000, label="$T_2^*$", color="black", linestyle="--", alpha=
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
-ax.set_xlim(0, 70)
-ax.set_ylim(0, 3000)
+ax.set_xlim(0, 120)
+ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.xaxis.get_major_ticks()[-1].set_pad(20)
 

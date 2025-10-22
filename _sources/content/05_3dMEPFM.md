@@ -3,8 +3,7 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -14,46 +13,38 @@ kernelspec:
 # Model-free deconvolution with `pySPFM`
 
 ```{code-cell} ipython3
+import json
 import os
 from glob import glob
 
-from repo2data.repo2data import Repo2Data
+import nibabel as nb
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+data_path = os.path.abspath('../DATA')
 ```
 
 ```{code-cell} ipython3
-func_dir = os.path.join(data_path, "func/")
-data_files = [
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz",
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
+data_files = sorted(
+    glob(
+        os.path.join(
+            func_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+        ),
     ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-3_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-    os.path.join(
-        func_dir,
-        "sub-04570_task-rest_echo-4_space-scanner_desc-partialPreproc_bold.nii.gz",
-    ),
-]
-echo_times = [12.0, 28.0, 44.0, 60.0]
+)
+echo_times = []
+for f in data_files:
+    json_file = f.replace('.nii.gz', '.json')
+    with open(json_file, 'r') as fo:
+        metadata = json.load(fo)
+    echo_times.append(metadata['EchoTime'] * 1000)
 mask_file = os.path.join(
-    func_dir, "sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz"
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 confounds_file = os.path.join(
-    func_dir, "sub-04570_task-rest_desc-confounds_timeseries.tsv"
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
 )
 
 out_dir = os.path.join(data_path, "pySPFM")

@@ -477,141 +477,187 @@ document.write(`
 we will use partially-preprocessed data from two open multi-echo datasets: Euskalibur and Cambridge.
 For more information about these datasets, see <a class="reference internal" href="Multi_Echo_Datasets.html#content-open-datasets"><span class="std std-ref">Open Multi-Echo Datasets</span></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">tedana</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datalad</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span> <span class="k">as</span> <span class="n">dapi</span>
 
-<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../data&quot;</span><span class="p">)</span>
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../data&#39;</span><span class="p">)</span>
 
-<span class="n">euskalibur_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_euskalibur</span><span class="p">(</span>
-    <span class="n">n_subjects</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="n">low_resolution</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">DATA_DIR</span><span class="p">,</span>
+<span class="c1"># Download PAFIN fMRIPrep data</span>
+<span class="n">dset_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;ds006185&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dapi</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">dset_dir</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">euskalibur_dataset</span><span class="p">)</span>
-
-<span class="n">cambridge_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_cambridge</span><span class="p">(</span>
-    <span class="n">n_subjects</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="n">low_resolution</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">DATA_DIR</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">cambridge_dataset</span><span class="p">)</span>
+<span class="n">dapi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="s1">&#39;sub-24053&#39;</span><span class="p">,</span> <span class="s1">&#39;ses-1&#39;</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">,</span> <span class="s1">&#39;sub-24053_ses-1_task-rat_rec-nordic_*&#39;</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dapi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="s1">&#39;sub-24053&#39;</span><span class="p">,</span> <span class="s1">&#39;ses-1&#39;</span><span class="p">,</span> <span class="s1">&#39;anat&#39;</span><span class="p">,</span> <span class="s1">&#39;sub-24053_ses-1_*&#39;</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For now, we will use repo2data to download some data we’re storing on Google Drive.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
+<p>For now, we will use the Datalab API to download some data we’re storing on OpenNeuro.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">repo2data.repo2data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Repo2Data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datalad</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span> <span class="k">as</span> <span class="n">dapi</span>
 
-<span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-<span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../data&#39;</span><span class="p">)</span>
 
-<span class="c1"># Download data</span>
-<span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># Download PAFIN fMRIPrep data</span>
+<span class="n">dset_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;ds006185&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dapi</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">dset_dir</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">subj_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="s1">&#39;sub-24053&#39;</span><span class="p">,</span> <span class="s1">&#39;ses-1&#39;</span><span class="p">)</span>
+<span class="n">func_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subj_dir</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">))</span>
+<span class="n">func_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">func_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;sub-24053_ses-1_task-rat_rec-nordic_*&#39;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">func_files</span><span class="p">:</span>
+    <span class="n">dapi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">anat_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subj_dir</span><span class="p">,</span> <span class="s1">&#39;anat&#39;</span><span class="p">))</span>
+<span class="n">anat_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">anat_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">anat_files</span><span class="p">:</span>
+    <span class="n">dapi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data
-Config from file :
-../binder/data_requirement.json
-Destination:
-./../data/multi-echo-data-analysis
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>It is highly recommended to configure Git before using DataLad. Set both &#39;user.name&#39; and &#39;user.email&#39; configuration variables.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006185.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start enumerating objects 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start counting objects 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start compressing objects 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start receiving objects 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start resolving deltas 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185) 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Remote origin not usable by git-annex; setting annex-ignore 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] https://github.com/OpenNeuroDatasets/ds006185.git/config download failed: Not Found 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Cannot run git-annex-remote-openneuro -- It is not installed in PATH (/usr/lib/git-core:/opt/hostedtoolcache/Python/3.12.11/x64/bin:/opt/hostedtoolcache/Python/3.12.11/x64:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin) 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Cannot run git-annex-remote-openneuro -- It is not installed in PATH (/usr/lib/git-core:/opt/hostedtoolcache/Python/3.12.11/x64/bin:/opt/hostedtoolcache/Python/3.12.11/x64:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin) 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] unable to use external special remote git-annex-remote-openneuro 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Author identity unknown
+| 
+| *** Please tell me who you are.
+| 
+| Run
+| 
+|   git config --global user.email &quot;you@example.com&quot;
+|   git config --global user.name &quot;Your Name&quot;
+| 
+| to set your account&#39;s default identity.
+| Omit --global to set the identity only in this repository.
+| 
+| fatal: unable to auto-detect email address (got &#39;runner@runnervmwhb2z.(none)&#39;) 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] git-annex: failed to read sha from git commit-tree 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">install</span>(<span class=" -Color -Color-Bold -Color-Bold-Red">error</span>): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185 (<span class=" -Color -Color-Bold -Color-Bold-Magenta">dataset</span>) [CommandError: &#39;git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true&#39; failed with exitcode 1 under /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185]<span class=" -Color -Color-Bold -Color-Bold-Red"> [CommandError: &#39;git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true&#39; failed with exitcode 1 under /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185]</span>
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">IncompleteResultsError</span><span class="g g-Whitespace">                    </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">11</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">dset_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;ds006185&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">dapi</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="n">path</span><span class="o">=</span><span class="n">dset_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="n">source</span><span class="o">=</span><span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">subj_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="s1">&#39;sub-24053&#39;</span><span class="p">,</span> <span class="s1">&#39;ses-1&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">func_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subj_dir</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">))</span>
 
-Info : Starting to download from Google drive https://drive.google.com/uc?id=1SVPP1vd2UobKf1djztpi-DcYAFOFXQtF ...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
-From (original): https://drive.google.com/uc?id=1SVPP1vd2UobKf1djztpi-DcYAFOFXQtF
-From (redirected): https://drive.google.com/uc?id=1SVPP1vd2UobKf1djztpi-DcYAFOFXQtF&amp;confirm=t&amp;uuid=6451ed4f-f574-4281-8b15-5ebb3dc0fb43
-To: /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/sub-04570.zip
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/datalad/interface/base.py:772,</span> in <span class="ni">eval_results.&lt;locals&gt;.eval_func</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">767</span>         <span class="k">return</span> <span class="n">results</span>
+<span class="g g-Whitespace">    </span><span class="mi">769</span> <span class="n">lgr</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">770</span>         <span class="s2">&quot;Returning return_func from eval_func for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">771</span>         <span class="n">wrapped_class</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">772</span> <span class="k">return</span> <span class="n">return_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-  0%|          | 0.00/315M [00:00&lt;?, ?B/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  2%|▏         | 4.72M/315M [00:00&lt;00:08, 35.0MB/s]
-  4%|▍         | 12.6M/315M [00:00&lt;00:05, 57.2MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  6%|▌         | 19.4M/315M [00:00&lt;00:04, 61.7MB/s]
-  8%|▊         | 26.2M/315M [00:00&lt;00:04, 59.8MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|█         | 32.5M/315M [00:00&lt;00:06, 41.2MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 15%|█▍        | 46.7M/315M [00:00&lt;00:05, 47.6MB/s]
- 19%|█▉        | 59.2M/315M [00:01&lt;00:04, 55.6MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 21%|██        | 65.5M/315M [00:01&lt;00:04, 55.3MB/s]
- 25%|██▍       | 78.1M/315M [00:01&lt;00:03, 64.9MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 27%|██▋       | 84.9M/315M [00:01&lt;00:04, 55.7MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 32%|███▏      | 99.1M/315M [00:01&lt;00:03, 59.2MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 34%|███▎      | 105M/315M [00:02&lt;00:05, 40.6MB/s] 
- 38%|███▊      | 118M/315M [00:02&lt;00:03, 52.3MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 40%|███▉      | 125M/315M [00:02&lt;00:03, 54.6MB/s]
- 42%|████▏     | 132M/315M [00:02&lt;00:03, 49.9MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46%|████▌     | 144M/315M [00:02&lt;00:02, 63.9MB/s]
- 48%|████▊     | 152M/315M [00:02&lt;00:02, 59.9MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 52%|█████▏    | 164M/315M [00:03&lt;00:02, 55.8MB/s]
- 54%|█████▍    | 170M/315M [00:03&lt;00:02, 54.8MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 59%|█████▉    | 185M/315M [00:03&lt;00:01, 66.7MB/s]
- 62%|██████▏   | 196M/315M [00:03&lt;00:01, 71.0MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 65%|██████▍   | 203M/315M [00:03&lt;00:01, 71.8MB/s]
- 69%|██████▊   | 216M/315M [00:03&lt;00:01, 84.6MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72%|███████▏  | 225M/315M [00:03&lt;00:01, 80.4MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 76%|███████▌  | 238M/315M [00:04&lt;00:01, 51.0MB/s]
- 78%|███████▊  | 246M/315M [00:04&lt;00:01, 57.4MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 83%|████████▎ | 261M/315M [00:04&lt;00:00, 66.1MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 88%|████████▊ | 275M/315M [00:04&lt;00:00, 64.4MB/s]
- 90%|████████▉ | 283M/315M [00:04&lt;00:00, 64.9MB/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 96%|█████████▌| 303M/315M [00:04&lt;00:00, 85.8MB/s]
-100%|██████████| 315M/315M [00:05&lt;00:00, 62.8MB/s]
-INFO patool: Extracting ./../data/multi-echo-data-analysis/sub-04570.zip ...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO patool: running /usr/bin/7z x -y -p- -aou -o./../data/multi-echo-data-analysis -- ./../data/multi-echo-data-analysis/sub-04570.zip
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO patool: ... ./../data/multi-echo-data-analysis/sub-04570.zip extracted to `./../data/multi-echo-data-analysis&#39;.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info : sub-04570.zip Decompressed
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/datalad/interface/base.py:762,</span> in <span class="ni">eval_results.&lt;locals&gt;.eval_func.&lt;locals&gt;.return_func</span><span class="nt">(*args_, **kwargs_)</span>
+<span class="g g-Whitespace">    </span><span class="mi">752</span> <span class="n">results</span> <span class="o">=</span> <span class="n">_execute_command_</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">753</span>     <span class="n">interface</span><span class="o">=</span><span class="n">wrapped_class</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">754</span>     <span class="n">cmd</span><span class="o">=</span><span class="n">wrapped</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">757</span>     <span class="n">exec_kwargs</span><span class="o">=</span><span class="n">common_params</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">758</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">759</span> <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgenerator</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">760</span>     <span class="c1"># unwind generator if there is one, this actually runs</span>
+<span class="g g-Whitespace">    </span><span class="mi">761</span>     <span class="c1"># any processing</span>
+<span class="ne">--&gt; </span><span class="mi">762</span>     <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">763</span> <span class="k">if</span> <span class="n">return_type</span> <span class="o">==</span> <span class="s1">&#39;item-or-list&#39;</span> <span class="ow">and</span> \
+<span class="g g-Whitespace">    </span><span class="mi">764</span>         <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">765</span>     <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">results</span> <span class="k">else</span> <span class="kc">None</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/datalad/interface/base.py:939,</span> in <span class="ni">_execute_command_</span><span class="nt">(interface, cmd, cmd_args, cmd_kwargs, exec_kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">936</span>     <span class="n">render_action_summary</span><span class="p">(</span><span class="n">action_summary</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">938</span> <span class="k">if</span> <span class="n">incomplete_results</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">939</span>     <span class="k">raise</span> <span class="n">IncompleteResultsError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">940</span>         <span class="n">failed</span><span class="o">=</span><span class="n">incomplete_results</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">941</span>         <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Command did not complete successfully&quot;</span><span class="p">)</span>
+
+<span class="ne">IncompleteResultsError</span>: Command did not complete successfully. 1 failed:
+<span class="p">[{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;error_message&#39;</span><span class="p">:</span> <span class="s2">&quot;CommandError: &#39;git -c diff.ignoreSubmodules=none -c &quot;</span>
+                   <span class="s2">&quot;core.quotepath=false annex init -c annex.dotfiles=true&#39; &quot;</span>
+                   <span class="s1">&#39;failed with exitcode 1 under &#39;</span>
+                   <span class="s1">&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;exception&#39;</span><span class="p">:</span> <span class="n">CommandError</span><span class="p">:</span> <span class="s1">&#39;git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true&#39;</span> <span class="n">failed</span> <span class="k">with</span> <span class="n">exitcode</span> <span class="mi">1</span> <span class="n">under</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">runner</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="n">multi</span><span class="o">-</span><span class="n">echo</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">multi</span><span class="o">-</span><span class="n">echo</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">ds006185</span> <span class="p">[</span><span class="n">clone</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">clone_dataset</span><span class="p">:</span><span class="mi">521</span><span class="p">,</span><span class="n">clone</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">_post_gitclone_processing_</span><span class="p">:</span><span class="mi">589</span><span class="p">,</span><span class="n">clone</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">_annex_init</span><span class="p">:</span><span class="mi">700</span><span class="p">,</span><span class="n">annexrepo</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">_init</span><span class="p">:</span><span class="mi">1539</span><span class="p">,</span><span class="n">annexrepo</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">_call_annex</span><span class="p">:</span><span class="mi">996</span><span class="p">,</span><span class="n">runner</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">run</span><span class="p">:</span><span class="mi">243</span><span class="p">],</span>
+  <span class="s1">&#39;exception_traceback&#39;</span><span class="p">:</span> <span class="s1">&#39;[clone.py:clone_dataset:521,clone.py:_post_gitclone_processing_:589,clone.py:_annex_init:700,annexrepo.py:_init:1539,annexrepo.py:_call_annex:996,runner.py:run:243]&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s2">&quot;CommandError: &#39;git -c diff.ignoreSubmodules=none -c &quot;</span>
+             <span class="s2">&quot;core.quotepath=false annex init -c annex.dotfiles=true&#39; failed &quot;</span>
+             <span class="s1">&#39;with exitcode 1 under &#39;</span>
+             <span class="s1">&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;refds&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+  <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;default_destpath&#39;</span><span class="p">:</span> <span class="s1">&#39;ds006185&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;giturl&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;giturl&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+  <span class="s1">&#39;source_url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;dataset&#39;</span><span class="p">}]</span>
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 </section>
 

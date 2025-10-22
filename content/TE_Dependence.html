@@ -532,41 +532,25 @@ is generally considered too noisy for practical application.</p></li>
 <p class="expanded admonition-title">Hide code cell content</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="kn">import</span> <span class="n">glob</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">nibabel</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nb</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">book_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_te_dependence_statistics</span><span class="p">,</span> <span class="n">predict_bold_signal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">myst_nb</span><span class="w"> </span><span class="kn">import</span> <span class="n">glue</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.glm</span><span class="w"> </span><span class="kn">import</span> <span class="n">first_level</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">repo2data.repo2data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Repo2Data</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">signal</span><span class="p">,</span> <span class="n">stats</span>
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
 
-<span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-<span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
-
-<span class="c1"># Download data</span>
-<span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../DATA&quot;</span><span class="p">)</span>
 
 <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;te-dependence&quot;</span><span class="p">)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data
-Config from file :
-../binder/data_requirement.json
-Destination:
-./../data/multi-echo-data-analysis
-
-Info : ./../data/multi-echo-data-analysis already downloaded
 </pre></div>
 </div>
 </div>
@@ -716,7 +700,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <figure class="align-center" id="fig-bold-nonbold-simulations">
 <img alt="../_images/3cfa9e2ebf700c5a740e9924d5aee31123ad1db5af1c14131a8988472869e12f.png" src="../_images/3cfa9e2ebf700c5a740e9924d5aee31123ad1db5af1c14131a8988472869e12f.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Simulations of BOLD and non-BOLD signals as a function of echo time</span><a class="headerlink" href="#fig-bold-nonbold-simulations" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Simulations of BOLD and non-BOLD signals as a function of echo time</span><a class="headerlink" href="#fig-bold-nonbold-simulations" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -930,7 +914,7 @@ Kappa: 31513.966302911744
 <figure class="align-center" id="fig-fitted-r2-curves">
 <img alt="../_images/85705713833a1af4c6f7207e5bb4197f41856fa839e31301fb71fddeb193b0d5.png" src="../_images/85705713833a1af4c6f7207e5bb4197f41856fa839e31301fb71fddeb193b0d5.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Fitted curves for R2*-perturbed signal</span><a class="headerlink" href="#fig-fitted-r2-curves" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Fitted curves for R2*-perturbed signal</span><a class="headerlink" href="#fig-fitted-r2-curves" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell tag_hide-cell docutils container">
@@ -1033,14 +1017,14 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/16af6d85c088623b11072f1b99f6be56479fb427651cc0cab9eb3c676c37e676.png" src="../_images/16af6d85c088623b11072f1b99f6be56479fb427651cc0cab9eb3c676c37e676.png" />
+<img alt="../_images/46ec322f15f2af6ed3d054245403b6e5ee32612ca493fd4f324c0542e19e7050.png" src="../_images/46ec322f15f2af6ed3d054245403b6e5ee32612ca493fd4f324c0542e19e7050.png" />
 </div>
 </details>
 </div>
 <figure class="align-center" id="fig-component-curves">
-<img alt="../_images/16af6d85c088623b11072f1b99f6be56479fb427651cc0cab9eb3c676c37e676.png" src="../_images/16af6d85c088623b11072f1b99f6be56479fb427651cc0cab9eb3c676c37e676.png" />
+<img alt="../_images/46ec322f15f2af6ed3d054245403b6e5ee32612ca493fd4f324c0542e19e7050.png" src="../_images/46ec322f15f2af6ed3d054245403b6e5ee32612ca493fd4f324c0542e19e7050.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Now let’s apply this approach to components</span><a class="headerlink" href="#fig-component-curves" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Now let’s apply this approach to components</span><a class="headerlink" href="#fig-component-curves" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell tag_hide-cell docutils container">
@@ -1075,14 +1059,14 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3ddc036adde02bd2e4c380548f606803e89892c33b143ddc2e87cd6db75471f7.png" src="../_images/3ddc036adde02bd2e4c380548f606803e89892c33b143ddc2e87cd6db75471f7.png" />
+<img alt="../_images/6daeba6d50c0fbe59a18b15e6549a1006e9d691f993ecb50dfcba020cba41260.png" src="../_images/6daeba6d50c0fbe59a18b15e6549a1006e9d691f993ecb50dfcba020cba41260.png" />
 </div>
 </details>
 </div>
 <figure class="align-center" id="fig-component-curves-2">
-<img alt="../_images/3ddc036adde02bd2e4c380548f606803e89892c33b143ddc2e87cd6db75471f7.png" src="../_images/3ddc036adde02bd2e4c380548f606803e89892c33b143ddc2e87cd6db75471f7.png" />
+<img alt="../_images/6daeba6d50c0fbe59a18b15e6549a1006e9d691f993ecb50dfcba020cba41260.png" src="../_images/6daeba6d50c0fbe59a18b15e6549a1006e9d691f993ecb50dfcba020cba41260.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-2" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell tag_hide-cell docutils container">
@@ -1114,14 +1098,14 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/0f1eeb4d05e9903a4c51e202d523dc937958aec030ecf3fe9bef0ef6834858a5.png" src="../_images/0f1eeb4d05e9903a4c51e202d523dc937958aec030ecf3fe9bef0ef6834858a5.png" />
+<img alt="../_images/f223d75fa571f77dd4e22202fa27481bb81bd417a411df770338dd4bdf6a6d33.png" src="../_images/f223d75fa571f77dd4e22202fa27481bb81bd417a411df770338dd4bdf6a6d33.png" />
 </div>
 </details>
 </div>
 <figure class="align-center" id="fig-component-curves-3">
-<img alt="../_images/0f1eeb4d05e9903a4c51e202d523dc937958aec030ecf3fe9bef0ef6834858a5.png" src="../_images/0f1eeb4d05e9903a4c51e202d523dc937958aec030ecf3fe9bef0ef6834858a5.png" />
+<img alt="../_images/f223d75fa571f77dd4e22202fa27481bb81bd417a411df770338dd4bdf6a6d33.png" src="../_images/f223d75fa571f77dd4e22202fa27481bb81bd417a411df770338dd4bdf6a6d33.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-3" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell tag_hide-cell docutils container">
@@ -1154,14 +1138,14 @@ Kappa: 31513.966302911744
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/dc1e6a2f3f3854e4e0ef63284ef9a5d557839d1e2cc89767651012bd9fffd4f9.png" src="../_images/dc1e6a2f3f3854e4e0ef63284ef9a5d557839d1e2cc89767651012bd9fffd4f9.png" />
+<img alt="../_images/31522ce8e60d03ae07a9ef9132dd876b07ef7f80ba910d923cb07b980ffe54bf.png" src="../_images/31522ce8e60d03ae07a9ef9132dd876b07ef7f80ba910d923cb07b980ffe54bf.png" />
 </div>
 </details>
 </div>
 <figure class="align-center" id="fig-component-curves-4">
-<img alt="../_images/dc1e6a2f3f3854e4e0ef63284ef9a5d557839d1e2cc89767651012bd9fffd4f9.png" src="../_images/dc1e6a2f3f3854e4e0ef63284ef9a5d557839d1e2cc89767651012bd9fffd4f9.png" />
+<img alt="../_images/31522ce8e60d03ae07a9ef9132dd876b07ef7f80ba910d923cb07b980ffe54bf.png" src="../_images/31522ce8e60d03ae07a9ef9132dd876b07ef7f80ba910d923cb07b980ffe54bf.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-4" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Now let’s apply this approach to components again.</span><a class="headerlink" href="#fig-component-curves-4" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="proof algorithm admonition" id="minimum-image-regression">

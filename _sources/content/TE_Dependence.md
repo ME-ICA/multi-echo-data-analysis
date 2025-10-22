@@ -3,8 +3,7 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -48,26 +47,22 @@ S(t, TE_k) = \bar{S}(TE_k) * (1 + \frac{{\Delta}{S_0}(t)}{\bar{S}_0} - {\Delta}{
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
+import json
 import os
+from glob import glob
 
 import matplotlib.pyplot as plt
+import nibabel as nb
 import numpy as np
 import seaborn as sns
 from book_utils import compute_te_dependence_statistics, predict_bold_signal
 from myst_nb import glue
 from nilearn.glm import first_level
-from repo2data.repo2data import Repo2Data
 from scipy import signal, stats
 
 sns.set_style("whitegrid")
 
-# Install the data if running locally, or point to cached data if running on neurolibre
-DATA_REQ_FILE = os.path.join("../binder/data_requirement.json")
-
-# Download data
-repo2data = Repo2Data(DATA_REQ_FILE)
-data_path = repo2data.install()
-data_path = os.path.abspath(data_path[0])
+data_path = os.path.abspath("../DATA")
 
 out_dir = os.path.join(data_path, "te-dependence")
 os.makedirs(out_dir, exist_ok=True)

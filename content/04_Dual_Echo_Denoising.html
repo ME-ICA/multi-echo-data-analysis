@@ -485,49 +485,35 @@ you only need a <em>shorter</em> echo time, which occurs in what is essentially 
 <p>Dual-echo denoising was originally proposed in <a class="reference external" href="https://dx.doi.org/10.1016%2Fj.neuroimage.2012.09.043">Bright &amp; Murphy (2013)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="kn">import</span> <span class="n">glob</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">nibabel</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nb</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">book_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">regress_one_image_out_of_another</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">myst_nb</span><span class="w"> </span><span class="kn">import</span> <span class="n">glue</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nilearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">plotting</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">repo2data.repo2data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Repo2Data</span>
 
-<span class="c1"># Install the data if running locally, or point to cached data if running on neurolibre</span>
-<span class="n">DATA_REQ_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;../binder/data_requirement.json&quot;</span><span class="p">)</span>
-
-<span class="c1"># Download data</span>
-<span class="n">repo2data</span> <span class="o">=</span> <span class="n">Repo2Data</span><span class="p">(</span><span class="n">DATA_REQ_FILE</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">repo2data</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">data_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>---- repo2data starting ----
-/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/repo2data
-Config from file :
-../binder/data_requirement.json
-Destination:
-./../data/multi-echo-data-analysis
-
-Info : ./../data/multi-echo-data-analysis already downloaded
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../DATA&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">te1_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">data_path</span><span class="p">,</span>
-    <span class="s2">&quot;sub-04570/func/sub-04570_task-rest_echo-1_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;ds006185/sub-24053/ses-1/func/&quot;</span><span class="p">)</span>
+<span class="n">te1_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">func_dir</span><span class="p">,</span>
+    <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-1_part-mag_desc-preproc_bold.nii.gz&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">te2_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">data_path</span><span class="p">,</span>
-    <span class="s2">&quot;sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
+    <span class="n">func_dir</span><span class="p">,</span>
+    <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">mask_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz&quot;</span>
+    <span class="n">func_dir</span><span class="p">,</span>
+    <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz&quot;</span>
 <span class="p">)</span>
 <span class="n">denoised_img</span> <span class="o">=</span> <span class="n">regress_one_image_out_of_another</span><span class="p">(</span><span class="n">te2_img</span><span class="p">,</span> <span class="n">te1_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
 </pre></div>
@@ -536,15 +522,16 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">12</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">te2_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">data_path</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="s2">&quot;sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">mask_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;sub-04570/func/sub-04570_task-rest_space-scanner_desc-brain_mask.nii.gz&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">12</span> <span class="n">denoised_img</span> <span class="o">=</span> <span class="n">regress_one_image_out_of_another</span><span class="p">(</span><span class="n">te2_img</span><span class="p">,</span> <span class="n">te1_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">14</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">te2_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="n">func_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">mask_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="n">func_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">14</span> <span class="n">denoised_img</span> <span class="o">=</span> <span class="n">regress_one_image_out_of_another</span><span class="p">(</span><span class="n">te2_img</span><span class="p">,</span> <span class="n">te1_img</span><span class="p">,</span> <span class="n">mask_img</span><span class="p">)</span>
 
 <span class="nn">File ~/work/multi-echo-data-analysis/multi-echo-data-analysis/content/book_utils.py:10,</span> in <span class="ni">regress_one_image_out_of_another</span><span class="nt">(data_img, nuis_img, mask_img)</span>
 <span class="g g-Whitespace">      </span><span class="mi">8</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Do what it says on the tin.&quot;&quot;&quot;</span>
@@ -557,7 +544,7 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <span class="g g-Whitespace">     </span><span class="mi">16</span>     <span class="n">avg_img</span><span class="o">=</span><span class="n">mean_data_img</span><span class="p">,</span>
 <span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/image/image.py:548,</span> in <span class="ni">mean_img</span><span class="nt">(imgs, target_affine, target_shape, verbose, n_jobs)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nilearn/image/image.py:548,</span> in <span class="ni">mean_img</span><span class="nt">(imgs, target_affine, target_shape, verbose, n_jobs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">543</span>     <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span>
 <span class="g g-Whitespace">    </span><span class="mi">544</span>         <span class="n">imgs</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">545</span>     <span class="p">]</span>
@@ -567,14 +554,14 @@ Info : ./../data/multi-echo-data-analysis already downloaded
 <span class="g g-Whitespace">    </span><span class="mi">551</span> <span class="c1"># target_affine and target_shape if_needed</span>
 <span class="g g-Whitespace">    </span><span class="mi">552</span> <span class="n">n_imgs</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/nilearn/_utils/niimg_conversions.py:300,</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nilearn/_utils/niimg_conversions.py:300,</span> in <span class="ni">check_niimg</span><span class="nt">(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)</span>
 <span class="g g-Whitespace">    </span><span class="mi">298</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">299</span>     <span class="k">else</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">300</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File not found: &#39;</span><span class="si">{</span><span class="n">niimg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">301</span> <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">niimg</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">302</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File not found: &#39;</span><span class="si">{</span><span class="n">niimg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
-<span class="ne">ValueError</span>: File not found: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/multi-echo-data-analysis/sub-04570/func/sub-04570_task-rest_echo-2_space-scanner_desc-partialPreproc_bold.nii.gz&#39;
+<span class="ne">ValueError</span>: File not found: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/DATA/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz&#39;
 </pre></div>
 </div>
 </div>

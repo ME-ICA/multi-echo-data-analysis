@@ -1,0 +1,157 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import os
+from pathlib import Path
+
+from datalad import api as dapi
+
+DATA_DIR = os.path.abspath('../data')
+
+# Download PAFIN fMRIPrep data
+dset_dir = os.path.join(DATA_DIR, 'ds006185')
+os.makedirs(dset_dir, exist_ok=True)
+dapi.install(
+    path=dset_dir,
+    source='https://github.com/OpenNeuroDatasets/ds006185.git',
+)
+subj_dir = os.path.join(dset_dir, 'sub-24053', 'ses-1')
+func_dir = Path(os.path.join(subj_dir, 'func'))
+func_files = list(func_dir.glob('sub-24053_ses-1_task-rat_rec-nordic_*'))
+for f in func_files:
+    dapi.get(f)
+
+anat_dir = Path(os.path.join(subj_dir, 'anat'))
+anat_files = list(anat_dir.glob('*'))
+for f in anat_files:
+    dapi.get(f)
+------------------
+
+----- stderr -----
+It is highly recommended to configure Git before using DataLad. Set both 'user.name' and 'user.email' configuration variables.
+----- stderr -----
+[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185
+----- stderr -----
+[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006185.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185
+----- stderr -----
+[INFO] Start enumerating objects
+----- stderr -----
+[INFO] Start counting objects
+----- stderr -----
+[INFO] Start compressing objects
+----- stderr -----
+[INFO] Start receiving objects
+----- stderr -----
+[INFO] Start resolving deltas
+----- stderr -----
+[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185)
+----- stderr -----
+[INFO] Remote origin not usable by git-annex; setting annex-ignore
+----- stderr -----
+[INFO] https://github.com/OpenNeuroDatasets/ds006185.git/config download failed: Not Found
+----- stderr -----
+[INFO] Cannot run git-annex-remote-openneuro -- It is not installed in PATH (/usr/lib/git-core:/opt/hostedtoolcache/Python/3.12.11/x64/bin:/opt/hostedtoolcache/Python/3.12.11/x64:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin)
+----- stderr -----
+[INFO] Cannot run git-annex-remote-openneuro -- It is not installed in PATH (/usr/lib/git-core:/opt/hostedtoolcache/Python/3.12.11/x64/bin:/opt/hostedtoolcache/Python/3.12.11/x64:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin)
+----- stderr -----
+[INFO] unable to use external special remote git-annex-remote-openneuro
+----- stderr -----
+[INFO] Author identity unknown
+| 
+| *** Please tell me who you are.
+| 
+| Run
+| 
+|   git config --global user.email "you@example.com"
+|   git config --global user.name "Your Name"
+| 
+| to set your account's default identity.
+| Omit --global to set the identity only in this repository.
+| 
+| fatal: unable to auto-detect email address (got 'runner@runnervmwhb2z.(none)')
+----- stderr -----
+[INFO] git-annex: failed to read sha from git commit-tree
+----- stdout -----
+[1;1minstall[0m([1;31merror[0m): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185 ([1;35mdataset[0m) [CommandError: 'git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true' failed with exitcode 1 under /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185][1;31m [CommandError: 'git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true' failed with exitcode 1 under /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185][0m
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mIncompleteResultsError[39m                    Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 11[39m
+[32m      9[39m dset_dir = os.path.join(DATA_DIR, [33m'[39m[33mds006185[39m[33m'[39m)
+[32m     10[39m os.makedirs(dset_dir, exist_ok=[38;5;28;01mTrue[39;00m)
+[32m---> [39m[32m11[39m [43mdapi[49m[43m.[49m[43minstall[49m[43m([49m
+[32m     12[39m [43m    [49m[43mpath[49m[43m=[49m[43mdset_dir[49m[43m,[49m
+[32m     13[39m [43m    [49m[43msource[49m[43m=[49m[33;43m'[39;49m[33;43mhttps://github.com/OpenNeuroDatasets/ds006185.git[39;49m[33;43m'[39;49m[43m,[49m
+[32m     14[39m [43m)[49m
+[32m     15[39m subj_dir = os.path.join(dset_dir, [33m'[39m[33msub-24053[39m[33m'[39m, [33m'[39m[33mses-1[39m[33m'[39m)
+[32m     16[39m func_dir = Path(os.path.join(subj_dir, [33m'[39m[33mfunc[39m[33m'[39m))
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/datalad/interface/base.py:772[39m, in [36meval_results.<locals>.eval_func[39m[34m(*args, **kwargs)[39m
+[32m    767[39m         [38;5;28;01mreturn[39;00m results
+[32m    769[39m lgr.log([32m2[39m,
+[32m    770[39m         [33m"[39m[33mReturning return_func from eval_func for [39m[38;5;132;01m%s[39;00m[33m"[39m,
+[32m    771[39m         wrapped_class)
+[32m--> [39m[32m772[39m [38;5;28;01mreturn[39;00m [43mreturn_func[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/datalad/interface/base.py:762[39m, in [36meval_results.<locals>.eval_func.<locals>.return_func[39m[34m(*args_, **kwargs_)[39m
+[32m    752[39m results = _execute_command_(
+[32m    753[39m     interface=wrapped_class,
+[32m    754[39m     cmd=wrapped,
+[32m   (...)[39m[32m    757[39m     exec_kwargs=common_params,
+[32m    758[39m )
+[32m    759[39m [38;5;28;01mif[39;00m inspect.isgenerator(results):
+[32m    760[39m     [38;5;66;03m# unwind generator if there is one, this actually runs[39;00m
+[32m    761[39m     [38;5;66;03m# any processing[39;00m
+[32m--> [39m[32m762[39m     results = [38;5;28;43mlist[39;49m[43m([49m[43mresults[49m[43m)[49m
+[32m    763[39m [38;5;28;01mif[39;00m return_type == [33m'[39m[33mitem-or-list[39m[33m'[39m [38;5;129;01mand[39;00m \
+[32m    764[39m         [38;5;28mlen[39m(results) < [32m2[39m:
+[32m    765[39m     [38;5;28;01mreturn[39;00m results[[32m0[39m] [38;5;28;01mif[39;00m results [38;5;28;01melse[39;00m [38;5;28;01mNone[39;00m
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/datalad/interface/base.py:939[39m, in [36m_execute_command_[39m[34m(interface, cmd, cmd_args, cmd_kwargs, exec_kwargs)[39m
+[32m    936[39m     render_action_summary(action_summary)
+[32m    938[39m [38;5;28;01mif[39;00m incomplete_results:
+[32m--> [39m[32m939[39m     [38;5;28;01mraise[39;00m IncompleteResultsError(
+[32m    940[39m         failed=incomplete_results,
+[32m    941[39m         msg=[33m"[39m[33mCommand did not complete successfully[39m[33m"[39m)
+
+[31mIncompleteResultsError[39m: Command did not complete successfully. 1 failed:
+[{'action': 'install',
+  'error_message': "CommandError: 'git -c diff.ignoreSubmodules=none -c "
+                   "core.quotepath=false annex init -c annex.dotfiles=true' "
+                   'failed with exitcode 1 under '
+                   '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185',
+  'exception': CommandError: 'git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true' failed with exitcode 1 under /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185 [clone.py:clone_dataset:521,clone.py:_post_gitclone_processing_:589,clone.py:_annex_init:700,annexrepo.py:_init:1539,annexrepo.py:_call_annex:996,runner.py:run:243],
+  'exception_traceback': '[clone.py:clone_dataset:521,clone.py:_post_gitclone_processing_:589,clone.py:_annex_init:700,annexrepo.py:_init:1539,annexrepo.py:_call_annex:996,runner.py:run:243]',
+  'message': "CommandError: 'git -c diff.ignoreSubmodules=none -c "
+             "core.quotepath=false annex init -c annex.dotfiles=true' failed "
+             'with exitcode 1 under '
+             '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185',
+  'path': '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185',
+  'refds': None,
+  'source': {'default_destpath': 'ds006185',
+             'giturl': 'https://github.com/OpenNeuroDatasets/ds006185.git',
+             'source': 'https://github.com/OpenNeuroDatasets/ds006185.git',
+             'type': 'giturl',
+             'version': None},
+  'source_url': 'https://github.com/OpenNeuroDatasets/ds006185.git',
+  'status': 'error',
+  'type': 'dataset'}]
+
