@@ -1,7 +1,7 @@
 datalad
 git-annex
 imageio
-jupyter-book
+jupyter-book<2.0.0
 jupytext
 matplotlib
 myst_nb
