@@ -32,6 +32,8 @@ jobs:
     # Build the book
     - name: Build the book
       run: |
+        git config --global user.email ${{ secrets.CONFIG_EMAIL }}
+        git config --global user.name ${{ secrets.CONFIG_NAME }}
         jupyter-book build .
 
     # Push the book's HTML to github-pages
