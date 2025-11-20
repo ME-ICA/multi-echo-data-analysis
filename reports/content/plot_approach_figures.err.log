@@ -1,0 +1,224 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
+data_files = sorted(
+    glob(
+        os.path.join(
+            func_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+        ),
+    ),
+)
+echo_times = []
+for f in data_files:
+    json_file = f.replace('.nii.gz', '.json')
+    with open(json_file, 'r') as fo:
+        metadata = json.load(fo)
+    echo_times.append(metadata['EchoTime'] * 1000)
+echo_times = np.round(np.array(echo_times), 2)
+mask_file = os.path.join(
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
+)
+confounds_file = os.path.join(
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
+)
+
+# Background anatomical image
+anat_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/anat/")
+xfm = os.path.join(
+    func_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt",
+)
+xfm = nit.linear.load(xfm, fmt="itk")
+t1_file = os.path.join(anat_dir, "sub-24053_ses-1_rec-norm_desc-preproc_T1w.nii.gz")
+bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
+
+# Tedana outputs
+adaptive_mask_file = os.path.join(
+    ted_dir,
+    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-adaptiveGoodSignal_mask.nii.gz",
+)
+mask = image.math_img("img >= 3", img=adaptive_mask_file)
+
+# Optimally combined data
+oc = masking.apply_mask(
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"),
+    mask,
+)
+oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
+
+# Results from MEPCA
+mepca_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-PCA_mixing.tsv"),
+).values
+oc_red = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_whitened_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Results from MEICA
+meica_mmix = pd.read_table(
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_mixing.tsv"),
+).values
+norm_weights = masking.apply_mask(
+    os.path.join(
+        ted_dir,
+        "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICAAveragingWeights_components.nii.gz",
+    ),
+    mask,
+)
+meica_beta_files = sorted(
+    glob(
+        os.path.join(
+            ted_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICA_components.nii.gz",
+        ),
+    ),
+)
+meica_betas = np.dstack([masking.apply_mask(f, mask).T for f in meica_beta_files])
+meica_betas = np.swapaxes(meica_betas, 1, 2)
+
+r2_pred_beta_files = sorted(
+    glob(
+        os.path.join(
+            ted_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAT2ModelPredictions_components.nii.gz",
+        ),
+    ),
+)
+r2_pred_betas = np.dstack([masking.apply_mask(f, mask).T for f in r2_pred_beta_files])
+r2_pred_betas = np.swapaxes(r2_pred_betas, 1, 2)
+s0_pred_beta_files = sorted(
+    glob(
+        os.path.join(
+            ted_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAS0ModelPredictions_components.nii.gz",
+        ),
+    ),
+)
+s0_pred_betas = np.dstack([masking.apply_mask(f, mask).T for f in s0_pred_beta_files])
+s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
+
+# Component parameter estimates
+betas_file = os.path.join(
+    ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_components.nii.gz"
+)
+beta_maps = masking.apply_mask(betas_file, mask)
+
+# Multi-echo denoised data
+dn_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-denoised_bold.nii.gz"
+    ),
+    mask,
+)
+hk_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAccepted_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Post-processed data
+dn_t1c_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomMIRDenoised_bold.nii.gz"
+    ),
+    mask,
+)
+hk_t1c_data = masking.apply_mask(
+    os.path.join(
+        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAcceptedMIRDenoised_bold.nii.gz"
+    ),
+    mask,
+)
+
+# Component table
+comp_tbl = pd.read_table(
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-tedana_metrics.tsv"),
+    index_col="Component",
+)
+
+# Get voxel index for voxel most related to component with highest kappa value
+acc_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "accepted"]
+high_kappa_comp = acc_comp_tbl.sort_values(by="kappa", ascending=False).index.values[0]
+high_kappa_comp_val = int(high_kappa_comp.split("_")[1])
+voxel_idx = np.where(
+    beta_maps[high_kappa_comp_val, :] == np.max(beta_maps[high_kappa_comp_val, :])
+)[0][0]
+
+rej_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "rejected"]
+low_kappa_comp = rej_comp_tbl.sort_values(by="rho", ascending=False).index.values[0]
+
+# load data
+data = [masking.apply_mask(f, mask) for f in data_files]
+ts = [d[:, voxel_idx] for d in data]
+ts_1d = np.hstack(ts)
+
+n_echoes = len(echo_times)
+n_trs = data[0].shape[0]
+
+pal = sns.color_palette("cubehelix", n_echoes)
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mFileNotFoundError[39m                         Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 32[39m
+[32m     27[39m anat_dir = os.path.join(data_path, [33m"[39m[33mds006185/sub-24053/ses-1/anat/[39m[33m"[39m)
+[32m     28[39m xfm = os.path.join(
+[32m     29[39m     func_dir,
+[32m     30[39m     [33m"[39m[33msub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt[39m[33m"[39m,
+[32m     31[39m )
+[32m---> [39m[32m32[39m xfm = [43mnit[49m[43m.[49m[43mlinear[49m[43m.[49m[43mload[49m[43m([49m[43mxfm[49m[43m,[49m[43m [49m[43mfmt[49m[43m=[49m[33;43m"[39;49m[33;43mitk[39;49m[33;43m"[39;49m[43m)[49m
+[32m     33[39m t1_file = os.path.join(anat_dir, [33m"[39m[33msub-24053_ses-1_rec-norm_desc-preproc_T1w.nii.gz[39m[33m"[39m)
+[32m     34[39m bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[[32m0[39m])
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nitransforms/linear.py:447[39m, in [36mload[39m[34m(filename, fmt, reference, moving)[39m
+[32m    432[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mload[39m(filename, fmt=[38;5;28;01mNone[39;00m, reference=[38;5;28;01mNone[39;00m, moving=[38;5;28;01mNone[39;00m):
+[32m    433[39m [38;5;250m    [39m[33;03m"""[39;00m
+[32m    434[39m [33;03m    Load a linear transform file.[39;00m
+[32m    435[39m 
+[32m   (...)[39m[32m    445[39m 
+[32m    446[39m [33;03m    """[39;00m
+[32m--> [39m[32m447[39m     xfm = [43mLinearTransformsMapping[49m[43m.[49m[43mfrom_filename[49m[43m([49m
+[32m    448[39m [43m        [49m[43mfilename[49m[43m,[49m[43m [49m[43mfmt[49m[43m=[49m[43mfmt[49m[43m,[49m[43m [49m[43mreference[49m[43m=[49m[43mreference[49m[43m,[49m[43m [49m[43mmoving[49m[43m=[49m[43mmoving[49m
+[32m    449[39m [43m    [49m[43m)[49m
+[32m    451[39m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(xfm, LinearTransformsMapping) [38;5;129;01mand[39;00m [38;5;28mlen[39m(xfm) == [32m1[39m:
+[32m    452[39m         xfm = xfm[[32m0[39m]
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nitransforms/linear.py:204[39m, in [36mAffine.from_filename[39m[34m(cls, filename, fmt, reference, moving, x5_position)[39m
+[32m    202[39m [38;5;28;01mif[39;00m fmt [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m Path(filename).exists():
+[32m    203[39m     [38;5;28;01mif[39;00m fmt != [33m"[39m[33mfsl[39m[33m"[39m:
+[32m--> [39m[32m204[39m         [38;5;28;01mraise[39;00m [38;5;167;01mFileNotFoundError[39;00m(
+[32m    205[39m             [33mf[39m[33m"[39m[33m[Errno 2] No such file or directory: [39m[33m'[39m[38;5;132;01m{[39;00mfilename[38;5;132;01m}[39;00m[33m'[39m[33m"[39m
+[32m    206[39m         )
+[32m    207[39m     [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m Path([33mf[39m[33m"[39m[38;5;132;01m{[39;00mfilename[38;5;132;01m}[39;00m[33m.000[39m[33m"[39m).exists():
+[32m    208[39m         [38;5;28;01mraise[39;00m [38;5;167;01mFileNotFoundError[39;00m(
+[32m    209[39m             [33mf[39m[33m"[39m[33m[Errno 2] No such file or directory: [39m[33m'[39m[38;5;132;01m{[39;00mfilename[38;5;132;01m}[39;00m[33m[.000][39m[33m'[39m[33m"[39m
+[32m    210[39m         )
+
+[31mFileNotFoundError[39m: [Errno 2] No such file or directory: '/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/DATA/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt'
+

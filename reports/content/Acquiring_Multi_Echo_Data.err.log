@@ -1,0 +1,184 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+# TODO: deal with the issue that the plot doesn't regenerate (ie isn't alive)
+# Unless the code is updated.
+metable = pd.read_csv(
+    "https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/export?gid=0&format=csv",
+    header=0,
+)
+TEs = [
+    metable.TE1.mean(),
+    metable.TE2.mean(),
+    metable.TE3.mean(),
+    metable.TE4.mean(),
+    metable.TE5.mean(),
+]
+TE_labels = ["TE1", "TE2", "TE3", "TE4", "TE5"]
+plt.bar([1, 2, 3, 4, 5], TEs)
+plt.title("Echo Times", fontsize=18)
+pub_count = metable.TE1.count()
+plt.text(0.5, 60, "Average from {} studies".format(pub_count))
+plt.xlabel("Echo Number")
+plt.ylabel("Echo Time (ms)")
+plt.show()
+
+plt.hist(metable.TR.to_numpy())
+plt.title("Repetition Times", fontsize=18)
+plt.xlabel("Repetition Time (s)")
+plt.ylabel("Count")
+plt.show()
+
+x_vox = metable.x.to_numpy()
+y_vox = metable.y.to_numpy()
+z_vox = metable.z.to_numpy()
+plt.hist(np.nanmean([x_vox, y_vox, z_vox], 0))
+plt.title("Voxel Dimensions", fontsize=18)
+plt.xlabel("Average Voxel dimension (mm)")
+plt.ylabel("Count")
+plt.show()
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mTypeError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 27[39m
+[32m     24[39m plt.ylabel([33m"[39m[33mEcho Time (ms)[39m[33m"[39m)
+[32m     25[39m plt.show()
+[32m---> [39m[32m27[39m [43mplt[49m[43m.[49m[43mhist[49m[43m([49m[43mmetable[49m[43m.[49m[43mTR[49m[43m.[49m[43mto_numpy[49m[43m([49m[43m)[49m[43m)[49m
+[32m     28[39m plt.title([33m"[39m[33mRepetition Times[39m[33m"[39m, fontsize=[32m18[39m)
+[32m     29[39m plt.xlabel([33m"[39m[33mRepetition Time (s)[39m[33m"[39m)
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/_api/deprecation.py:453[39m, in [36mmake_keyword_only.<locals>.wrapper[39m[34m(*args, **kwargs)[39m
+[32m    447[39m [38;5;28;01mif[39;00m [38;5;28mlen[39m(args) > name_idx:
+[32m    448[39m     warn_deprecated(
+[32m    449[39m         since, message=[33m"[39m[33mPassing the [39m[38;5;132;01m%(name)s[39;00m[33m [39m[38;5;132;01m%(obj_type)s[39;00m[33m [39m[33m"[39m
+[32m    450[39m         [33m"[39m[33mpositionally is deprecated since Matplotlib [39m[38;5;132;01m%(since)s[39;00m[33m; the [39m[33m"[39m
+[32m    451[39m         [33m"[39m[33mparameter will become keyword-only in [39m[38;5;132;01m%(removal)s[39;00m[33m.[39m[33m"[39m,
+[32m    452[39m         name=name, obj_type=[33mf[39m[33m"[39m[33mparameter of [39m[38;5;132;01m{[39;00mfunc.[34m__name__[39m[38;5;132;01m}[39;00m[33m()[39m[33m"[39m)
+[32m--> [39m[32m453[39m [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/pyplot.py:3478[39m, in [36mhist[39m[34m(x, bins, range, density, weights, cumulative, bottom, histtype, align, orientation, rwidth, log, color, label, stacked, data, **kwargs)[39m
+[32m   3453[39m [38;5;129m@_copy_docstring_and_deprecators[39m(Axes.hist)
+[32m   3454[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mhist[39m(
+[32m   3455[39m     x: ArrayLike | Sequence[ArrayLike],
+[32m   (...)[39m[32m   3476[39m     BarContainer | Polygon | [38;5;28mlist[39m[BarContainer | Polygon],
+[32m   3477[39m ]:
+[32m-> [39m[32m3478[39m     [38;5;28;01mreturn[39;00m [43mgca[49m[43m([49m[43m)[49m[43m.[49m[43mhist[49m[43m([49m
+[32m   3479[39m [43m        [49m[43mx[49m[43m,[49m
+[32m   3480[39m [43m        [49m[43mbins[49m[43m=[49m[43mbins[49m[43m,[49m
+[32m   3481[39m [43m        [49m[38;5;28;43mrange[39;49m[43m=[49m[38;5;28;43mrange[39;49m[43m,[49m
+[32m   3482[39m [43m        [49m[43mdensity[49m[43m=[49m[43mdensity[49m[43m,[49m
+[32m   3483[39m [43m        [49m[43mweights[49m[43m=[49m[43mweights[49m[43m,[49m
+[32m   3484[39m [43m        [49m[43mcumulative[49m[43m=[49m[43mcumulative[49m[43m,[49m
+[32m   3485[39m [43m        [49m[43mbottom[49m[43m=[49m[43mbottom[49m[43m,[49m
+[32m   3486[39m [43m        [49m[43mhisttype[49m[43m=[49m[43mhisttype[49m[43m,[49m
+[32m   3487[39m [43m        [49m[43malign[49m[43m=[49m[43malign[49m[43m,[49m
+[32m   3488[39m [43m        [49m[43morientation[49m[43m=[49m[43morientation[49m[43m,[49m
+[32m   3489[39m [43m        [49m[43mrwidth[49m[43m=[49m[43mrwidth[49m[43m,[49m
+[32m   3490[39m [43m        [49m[43mlog[49m[43m=[49m[43mlog[49m[43m,[49m
+[32m   3491[39m [43m        [49m[43mcolor[49m[43m=[49m[43mcolor[49m[43m,[49m
+[32m   3492[39m [43m        [49m[43mlabel[49m[43m=[49m[43mlabel[49m[43m,[49m
+[32m   3493[39m [43m        [49m[43mstacked[49m[43m=[49m[43mstacked[49m[43m,[49m
+[32m   3494[39m [43m        [49m[43m*[49m[43m*[49m[43m([49m[43m{[49m[33;43m"[39;49m[33;43mdata[39;49m[33;43m"[39;49m[43m:[49m[43m [49m[43mdata[49m[43m}[49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mdata[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;129;43;01mnot[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43m{[49m[43m}[49m[43m)[49m[43m,[49m
+[32m   3495[39m [43m        [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m,[49m
+[32m   3496[39m [43m    [49m[43m)[49m
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/_api/deprecation.py:453[39m, in [36mmake_keyword_only.<locals>.wrapper[39m[34m(*args, **kwargs)[39m
+[32m    447[39m [38;5;28;01mif[39;00m [38;5;28mlen[39m(args) > name_idx:
+[32m    448[39m     warn_deprecated(
+[32m    449[39m         since, message=[33m"[39m[33mPassing the [39m[38;5;132;01m%(name)s[39;00m[33m [39m[38;5;132;01m%(obj_type)s[39;00m[33m [39m[33m"[39m
+[32m    450[39m         [33m"[39m[33mpositionally is deprecated since Matplotlib [39m[38;5;132;01m%(since)s[39;00m[33m; the [39m[33m"[39m
+[32m    451[39m         [33m"[39m[33mparameter will become keyword-only in [39m[38;5;132;01m%(removal)s[39;00m[33m.[39m[33m"[39m,
+[32m    452[39m         name=name, obj_type=[33mf[39m[33m"[39m[33mparameter of [39m[38;5;132;01m{[39;00mfunc.[34m__name__[39m[38;5;132;01m}[39;00m[33m()[39m[33m"[39m)
+[32m--> [39m[32m453[39m [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/__init__.py:1524[39m, in [36m_preprocess_data.<locals>.inner[39m[34m(ax, data, *args, **kwargs)[39m
+[32m   1521[39m [38;5;129m@functools[39m.wraps(func)
+[32m   1522[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34minner[39m(ax, *args, data=[38;5;28;01mNone[39;00m, **kwargs):
+[32m   1523[39m     [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[32m-> [39m[32m1524[39m         [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m
+[32m   1525[39m [43m            [49m[43max[49m[43m,[49m
+[32m   1526[39m [43m            [49m[43m*[49m[38;5;28;43mmap[39;49m[43m([49m[43mcbook[49m[43m.[49m[43msanitize_sequence[49m[43m,[49m[43m [49m[43margs[49m[43m)[49m[43m,[49m
+[32m   1527[39m [43m            [49m[43m*[49m[43m*[49m[43m{[49m[43mk[49m[43m:[49m[43m [49m[43mcbook[49m[43m.[49m[43msanitize_sequence[49m[43m([49m[43mv[49m[43m)[49m[43m [49m[38;5;28;43;01mfor[39;49;00m[43m [49m[43mk[49m[43m,[49m[43m [49m[43mv[49m[43m [49m[38;5;129;43;01min[39;49;00m[43m [49m[43mkwargs[49m[43m.[49m[43mitems[49m[43m([49m[43m)[49m[43m}[49m[43m)[49m
+[32m   1529[39m     bound = new_sig.bind(ax, *args, **kwargs)
+[32m   1530[39m     auto_label = (bound.arguments.get(label_namer)
+[32m   1531[39m                   [38;5;129;01mor[39;00m bound.kwargs.get(label_namer))
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/axes/_axes.py:7053[39m, in [36mAxes.hist[39m[34m(self, x, bins, range, density, weights, cumulative, bottom, histtype, align, orientation, rwidth, log, color, label, stacked, **kwargs)[39m
+[32m   7051[39m [38;5;28;01mif[39;00m orientation == [33m"[39m[33mvertical[39m[33m"[39m:
+[32m   7052[39m     convert_units = [38;5;28mself[39m.convert_xunits
+[32m-> [39m[32m7053[39m     x = [*[38;5;28;43mself[39;49m[43m.[49m[43m_process_unit_info[49m[43m([49m[43m[[49m[43m([49m[33;43m"[39;49m[33;43mx[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[43mx[49m[43m[[49m[32;43m0[39;49m[43m][49m[43m)[49m[43m][49m[43m,[49m[43m [49m[43mkwargs[49m[43m)[49m,
+[32m   7054[39m          *[38;5;28mmap[39m(convert_units, x[[32m1[39m:])]
+[32m   7055[39m [38;5;28;01melse[39;00m:  [38;5;66;03m# horizontal[39;00m
+[32m   7056[39m     convert_units = [38;5;28mself[39m.convert_yunits
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/axes/_base.py:2663[39m, in [36m_AxesBase._process_unit_info[39m[34m(self, datasets, kwargs, convert)[39m
+[32m   2661[39m     [38;5;66;03m# Update from data if axis is already set but no unit is set yet.[39;00m
+[32m   2662[39m     [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m data [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m axis.have_units():
+[32m-> [39m[32m2663[39m         [43maxis[49m[43m.[49m[43mupdate_units[49m[43m([49m[43mdata[49m[43m)[49m
+[32m   2664[39m [38;5;28;01mfor[39;00m axis_name, axis [38;5;129;01min[39;00m axis_map.items():
+[32m   2665[39m     [38;5;66;03m# Return if no axis is set.[39;00m
+[32m   2666[39m     [38;5;28;01mif[39;00m axis [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/axis.py:1754[39m, in [36mAxis.update_units[39m[34m(self, data)[39m
+[32m   1752[39m neednew = [38;5;28mself[39m._converter != converter
+[32m   1753[39m [38;5;28mself[39m._set_converter(converter)
+[32m-> [39m[32m1754[39m default = [38;5;28;43mself[39;49m[43m.[49m[43m_converter[49m[43m.[49m[43mdefault_units[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[43m)[49m
+[32m   1755[39m [38;5;28;01mif[39;00m default [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;28mself[39m.units [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[32m   1756[39m     [38;5;28mself[39m.set_units(default)
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/category.py:106[39m, in [36mStrCategoryConverter.default_units[39m[34m(data, axis)[39m
+[32m    104[39m [38;5;66;03m# the conversion call stack is default_units -> axis_info -> convert[39;00m
+[32m    105[39m [38;5;28;01mif[39;00m axis.units [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[32m--> [39m[32m106[39m     axis.set_units([43mUnitData[49m[43m([49m[43mdata[49m[43m)[49m)
+[32m    107[39m [38;5;28;01melse[39;00m:
+[32m    108[39m     axis.units.update(data)
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/category.py:182[39m, in [36mUnitData.__init__[39m[34m(self, data)[39m
+[32m    180[39m [38;5;28mself[39m._counter = itertools.count()
+[32m    181[39m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m--> [39m[32m182[39m     [38;5;28;43mself[39;49m[43m.[49m[43mupdate[49m[43m([49m[43mdata[49m[43m)[49m
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/category.py:217[39m, in [36mUnitData.update[39m[34m(self, data)[39m
+[32m    214[39m convertible = [38;5;28;01mTrue[39;00m
+[32m    215[39m [38;5;28;01mfor[39;00m val [38;5;129;01min[39;00m OrderedDict.fromkeys(data):
+[32m    216[39m     [38;5;66;03m# OrderedDict just iterates over unique values in data.[39;00m
+[32m--> [39m[32m217[39m     [43m_api[49m[43m.[49m[43mcheck_isinstance[49m[43m([49m[43m([49m[38;5;28;43mstr[39;49m[43m,[49m[43m [49m[38;5;28;43mbytes[39;49m[43m)[49m[43m,[49m[43m [49m[43mvalue[49m[43m=[49m[43mval[49m[43m)[49m
+[32m    218[39m     [38;5;28;01mif[39;00m convertible:
+[32m    219[39m         [38;5;66;03m# this will only be called so long as convertible is True.[39;00m
+[32m    220[39m         convertible = [38;5;28mself[39m._str_is_convertible(val)
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/matplotlib/_api/__init__.py:92[39m, in [36mcheck_isinstance[39m[34m(types, **kwargs)[39m
+[32m     90[39m     names.remove([33m"[39m[33mNone[39m[33m"[39m)
+[32m     91[39m     names.append([33m"[39m[33mNone[39m[33m"[39m)
+[32m---> [39m[32m92[39m [38;5;28;01mraise[39;00m [38;5;167;01mTypeError[39;00m(
+[32m     93[39m     [33m"[39m[38;5;132;01m{!r}[39;00m[33m must be an instance of [39m[38;5;132;01m{}[39;00m[33m, not a [39m[38;5;132;01m{}[39;00m[33m"[39m.format(
+[32m     94[39m         k,
+[32m     95[39m         [33m"[39m[33m, [39m[33m"[39m.join(names[:-[32m1[39m]) + [33m"[39m[33m or [39m[33m"[39m + names[-[32m1[39m]
+[32m     96[39m         [38;5;28;01mif[39;00m [38;5;28mlen[39m(names) > [32m1[39m [38;5;28;01melse[39;00m names[[32m0[39m],
+[32m     97[39m         type_name([38;5;28mtype[39m(v))))
+
+[31mTypeError[39m: 'value' must be an instance of str or bytes, not a float
+

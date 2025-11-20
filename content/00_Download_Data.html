@@ -1,0 +1,766 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Download Data &#8212; Multi-Echo fMRI Data Analysis</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'content/00_Download_Data';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Install Software" href="Install_Software.html" />
+    <link rel="prev" title="Contributors" href="Contributors.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Multi-Echo fMRI Data Analysis - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Multi-Echo fMRI Data Analysis - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Multi-Echo (fMRI) Data Analysis
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Course_Overview.html">Course Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributors.html">Contributors</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Download Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install_Software.html">Install Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Recommended_Reading.html">Recommended Reading</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Theoretical Background</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="MR_Physics.html">MR Physics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fMRI_Sequences.html">Multi-Echo fMRI Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Signal_Decay.html">Signal Decay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TE_Dependence.html">BOLD, non-BOLD, and TE-dependence with tedana</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_approach_figures.html">Generate tedana walkthrough figures</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practical Resources</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Multi_Echo_Datasets.html">Open Multi-Echo Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Acquiring_Multi_Echo_Data.html">Acquiring Multi-Echo Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Processing_Multi_Echo_Data.html">Processing Multi-Echo Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Analysis Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Optimal_Combination_with_t2smap.html">Optimal combination with <code class="docutils literal notranslate"><span class="pre">t2smap</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Volume-wise_T2star_estimation_with_t2smap.html">Volume-wise T2*/S0 estimation with <code class="docutils literal notranslate"><span class="pre">t2smap</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Denoising_with_tedana.html">Multi-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">tedana</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Dual_Echo_Denoising.html">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_3dMEPFM.html">Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Manual_Classification_with_rica.html">Manual Classification with <code class="docutils literal notranslate"><span class="pre">rica</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ICA_Based_Denoising.html">Denoising Data with ICA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Final Thoughts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_information.html">Build Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/ME-ICA/multi-echo-data-analysis/main?urlpath=tree/content/content/00_Download_Data.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ME-ICA/multi-echo-data-analysis" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ME-ICA/multi-echo-data-analysis/issues/new?title=Issue%20on%20page%20%2Fcontent/00_Download_Data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/content/00_Download_Data.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/content/00_Download_Data.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Download Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="download-data">
+<h1>Download Data<a class="headerlink" href="#download-data" title="Link to this heading">#</a></h1>
+<p>For the tutorials in this book,
+we will use partially-preprocessed data from two open multi-echo datasets: Euskalibur and Cambridge.
+For more information about these datasets, see <a class="reference internal" href="Multi_Echo_Datasets.html#content-open-datasets"><span class="std std-ref">Open Multi-Echo Datasets</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">datalad</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span> <span class="k">as</span> <span class="n">dapi</span>
+
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../data&#39;</span><span class="p">)</span>
+
+<span class="c1"># Download PAFIN fMRIPrep data</span>
+<span class="n">dset_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;ds006185&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dapi</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">dset_dir</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">dapi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="s1">&#39;sub-24053&#39;</span><span class="p">,</span> <span class="s1">&#39;ses-1&#39;</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">,</span> <span class="s1">&#39;sub-24053_ses-1_task-rat_rec-nordic_*&#39;</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dapi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="s1">&#39;sub-24053&#39;</span><span class="p">,</span> <span class="s1">&#39;ses-1&#39;</span><span class="p">,</span> <span class="s1">&#39;anat&#39;</span><span class="p">,</span> <span class="s1">&#39;sub-24053_ses-1_*&#39;</span><span class="p">),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For now, we will use the Datalab API to download some data we’re storing on OpenNeuro.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">datalad</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span> <span class="k">as</span> <span class="n">dapi</span>
+
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../data&#39;</span><span class="p">)</span>
+
+<span class="c1"># Download PAFIN fMRIPrep data</span>
+<span class="n">dset_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;ds006185&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dapi</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">dset_dir</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">subj_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="s1">&#39;sub-24053&#39;</span><span class="p">,</span> <span class="s1">&#39;ses-1&#39;</span><span class="p">)</span>
+<span class="n">func_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subj_dir</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">))</span>
+<span class="n">func_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">func_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;sub-24053_ses-1_task-rat_rec-nordic_*&#39;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">func_files</span><span class="p">:</span>
+    <span class="n">dapi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">anat_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subj_dir</span><span class="p">,</span> <span class="s1">&#39;anat&#39;</span><span class="p">))</span>
+<span class="n">anat_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">anat_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">anat_files</span><span class="p">:</span>
+    <span class="n">dapi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>It is highly recommended to configure Git before using DataLad. Set both &#39;user.name&#39; and &#39;user.email&#39; configuration variables.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Attempting a clone into /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds006185.git to /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start enumerating objects 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start counting objects 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start compressing objects 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start receiving objects 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Start resolving deltas 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Completed clone attempts for Dataset(/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185) 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Remote origin not usable by git-annex; setting annex-ignore 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] https://github.com/OpenNeuroDatasets/ds006185.git/config download failed: Not Found 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Cannot run git-annex-remote-openneuro -- It is not installed in PATH (/usr/lib/git-core:/opt/hostedtoolcache/Python/3.12.12/x64/bin:/opt/hostedtoolcache/Python/3.12.12/x64:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin) 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Cannot run git-annex-remote-openneuro -- It is not installed in PATH (/usr/lib/git-core:/opt/hostedtoolcache/Python/3.12.12/x64/bin:/opt/hostedtoolcache/Python/3.12.12/x64:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin)
+|   unable to use external special remote git-annex-remote-openneuro 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] Author identity unknown
+| 
+| *** Please tell me who you are.
+| 
+| Run
+| 
+|   git config --global user.email &quot;you@example.com&quot;
+|   git config --global user.name &quot;Your Name&quot;
+| 
+| to set your account&#39;s default identity.
+| Omit --global to set the identity only in this repository.
+| 
+| fatal: empty ident name (for &lt;runner@runnervmg1sw1.xrlgij55qooupeu11tqqf0xb0c.cx.internal.cloudapp.net&gt;) not allowed 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO] git-annex: failed to read sha from git commit-tree 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">install</span>(<span class=" -Color -Color-Bold -Color-Bold-Red">error</span>): /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185 (<span class=" -Color -Color-Bold -Color-Bold-Magenta">dataset</span>) [CommandError: &#39;git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true&#39; failed with exitcode 1 under /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185]<span class=" -Color -Color-Bold -Color-Bold-Red"> [CommandError: &#39;git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true&#39; failed with exitcode 1 under /home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185]</span>
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">IncompleteResultsError</span><span class="g g-Whitespace">                    </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">11</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">dset_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;ds006185&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">dapi</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="n">path</span><span class="o">=</span><span class="n">dset_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="n">source</span><span class="o">=</span><span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">subj_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dset_dir</span><span class="p">,</span> <span class="s1">&#39;sub-24053&#39;</span><span class="p">,</span> <span class="s1">&#39;ses-1&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">func_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subj_dir</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">))</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/datalad/interface/base.py:772,</span> in <span class="ni">eval_results.&lt;locals&gt;.eval_func</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">767</span>         <span class="k">return</span> <span class="n">results</span>
+<span class="g g-Whitespace">    </span><span class="mi">769</span> <span class="n">lgr</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">770</span>         <span class="s2">&quot;Returning return_func from eval_func for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">771</span>         <span class="n">wrapped_class</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">772</span> <span class="k">return</span> <span class="n">return_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/datalad/interface/base.py:762,</span> in <span class="ni">eval_results.&lt;locals&gt;.eval_func.&lt;locals&gt;.return_func</span><span class="nt">(*args_, **kwargs_)</span>
+<span class="g g-Whitespace">    </span><span class="mi">752</span> <span class="n">results</span> <span class="o">=</span> <span class="n">_execute_command_</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">753</span>     <span class="n">interface</span><span class="o">=</span><span class="n">wrapped_class</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">754</span>     <span class="n">cmd</span><span class="o">=</span><span class="n">wrapped</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">757</span>     <span class="n">exec_kwargs</span><span class="o">=</span><span class="n">common_params</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">758</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">759</span> <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgenerator</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">760</span>     <span class="c1"># unwind generator if there is one, this actually runs</span>
+<span class="g g-Whitespace">    </span><span class="mi">761</span>     <span class="c1"># any processing</span>
+<span class="ne">--&gt; </span><span class="mi">762</span>     <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">763</span> <span class="k">if</span> <span class="n">return_type</span> <span class="o">==</span> <span class="s1">&#39;item-or-list&#39;</span> <span class="ow">and</span> \
+<span class="g g-Whitespace">    </span><span class="mi">764</span>         <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">765</span>     <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">results</span> <span class="k">else</span> <span class="kc">None</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/datalad/interface/base.py:939,</span> in <span class="ni">_execute_command_</span><span class="nt">(interface, cmd, cmd_args, cmd_kwargs, exec_kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">936</span>     <span class="n">render_action_summary</span><span class="p">(</span><span class="n">action_summary</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">938</span> <span class="k">if</span> <span class="n">incomplete_results</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">939</span>     <span class="k">raise</span> <span class="n">IncompleteResultsError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">940</span>         <span class="n">failed</span><span class="o">=</span><span class="n">incomplete_results</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">941</span>         <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Command did not complete successfully&quot;</span><span class="p">)</span>
+
+<span class="ne">IncompleteResultsError</span>: Command did not complete successfully. 1 failed:
+<span class="p">[{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;error_message&#39;</span><span class="p">:</span> <span class="s2">&quot;CommandError: &#39;git -c diff.ignoreSubmodules=none -c &quot;</span>
+                   <span class="s2">&quot;core.quotepath=false annex init -c annex.dotfiles=true&#39; &quot;</span>
+                   <span class="s1">&#39;failed with exitcode 1 under &#39;</span>
+                   <span class="s1">&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;exception&#39;</span><span class="p">:</span> <span class="n">CommandError</span><span class="p">:</span> <span class="s1">&#39;git -c diff.ignoreSubmodules=none -c core.quotepath=false annex init -c annex.dotfiles=true&#39;</span> <span class="n">failed</span> <span class="k">with</span> <span class="n">exitcode</span> <span class="mi">1</span> <span class="n">under</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">runner</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="n">multi</span><span class="o">-</span><span class="n">echo</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">multi</span><span class="o">-</span><span class="n">echo</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">ds006185</span> <span class="p">[</span><span class="n">clone</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">clone_dataset</span><span class="p">:</span><span class="mi">521</span><span class="p">,</span><span class="n">clone</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">_post_gitclone_processing_</span><span class="p">:</span><span class="mi">589</span><span class="p">,</span><span class="n">clone</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">_annex_init</span><span class="p">:</span><span class="mi">700</span><span class="p">,</span><span class="n">annexrepo</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">_init</span><span class="p">:</span><span class="mi">1535</span><span class="p">,</span><span class="n">annexrepo</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">_call_annex</span><span class="p">:</span><span class="mi">992</span><span class="p">,</span><span class="n">runner</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="n">run</span><span class="p">:</span><span class="mi">243</span><span class="p">],</span>
+  <span class="s1">&#39;exception_traceback&#39;</span><span class="p">:</span> <span class="s1">&#39;[clone.py:clone_dataset:521,clone.py:_post_gitclone_processing_:589,clone.py:_annex_init:700,annexrepo.py:_init:1535,annexrepo.py:_call_annex:992,runner.py:run:243]&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s2">&quot;CommandError: &#39;git -c diff.ignoreSubmodules=none -c &quot;</span>
+             <span class="s2">&quot;core.quotepath=false annex init -c annex.dotfiles=true&#39; failed &quot;</span>
+             <span class="s1">&#39;with exitcode 1 under &#39;</span>
+             <span class="s1">&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/data/ds006185&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;refds&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+  <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;default_destpath&#39;</span><span class="p">:</span> <span class="s1">&#39;ds006185&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;giturl&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;giturl&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+  <span class="s1">&#39;source_url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/OpenNeuroDatasets/ds006185.git&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;dataset&#39;</span><span class="p">}]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./content"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Contributors.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Contributors</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Install_Software.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Install Software</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The tedana community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

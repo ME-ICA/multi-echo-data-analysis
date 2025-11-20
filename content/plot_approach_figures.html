@@ -1,0 +1,1564 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generate tedana walkthrough figures &#8212; Multi-Echo fMRI Data Analysis</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'content/plot_approach_figures';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Open Multi-Echo Datasets" href="Multi_Echo_Datasets.html" />
+    <link rel="prev" title="BOLD, non-BOLD, and TE-dependence with tedana" href="TE_Dependence.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Multi-Echo fMRI Data Analysis - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Multi-Echo fMRI Data Analysis - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Multi-Echo (fMRI) Data Analysis
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Course_Overview.html">Course Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributors.html">Contributors</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Download_Data.html">Download Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install_Software.html">Install Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Recommended_Reading.html">Recommended Reading</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Theoretical Background</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="MR_Physics.html">MR Physics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fMRI_Sequences.html">Multi-Echo fMRI Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Signal_Decay.html">Signal Decay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TE_Dependence.html">BOLD, non-BOLD, and TE-dependence with tedana</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Generate tedana walkthrough figures</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practical Resources</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Multi_Echo_Datasets.html">Open Multi-Echo Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Acquiring_Multi_Echo_Data.html">Acquiring Multi-Echo Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Processing_Multi_Echo_Data.html">Processing Multi-Echo Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Analysis Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_Optimal_Combination_with_t2smap.html">Optimal combination with <code class="docutils literal notranslate"><span class="pre">t2smap</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Volume-wise_T2star_estimation_with_t2smap.html">Volume-wise T2*/S0 estimation with <code class="docutils literal notranslate"><span class="pre">t2smap</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Denoising_with_tedana.html">Multi-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">tedana</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Dual_Echo_Denoising.html">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_3dMEPFM.html">Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_Manual_Classification_with_rica.html">Manual Classification with <code class="docutils literal notranslate"><span class="pre">rica</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ICA_Based_Denoising.html">Denoising Data with ICA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Final Thoughts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_information.html">Build Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/ME-ICA/multi-echo-data-analysis/main?urlpath=tree/content/content/plot_approach_figures.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ME-ICA/multi-echo-data-analysis" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ME-ICA/multi-echo-data-analysis/issues/new?title=Issue%20on%20page%20%2Fcontent/plot_approach_figures.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/content/plot_approach_figures.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/content/plot_approach_figures.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Generate tedana walkthrough figures</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#echo-specific-timeseries">Echo-specific timeseries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#echo-specific-data-and-echo-time">Echo-specific data and echo time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-mask">Adaptive mask</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-linear-transformation">Log-linear transformation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-linear-model">Log-linear model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monoexponential-decay-model">Monoexponential decay model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#t2">T2*</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-combination-weights">Optimal combination weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimally-combined-timeseries">Optimally combined timeseries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Optimally combined timeseries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-echo-principal-components-analysis">Multi-Echo Principal Components Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-whitening">Data Whitening</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-echo-independent-components-analysis">Multi-Echo Independent Components Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-2-and-s-0-model-fit"><span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> Model Fit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ica-component-selection-and-multi-echo-denoising">ICA Component Selection and Multi-Echo Denoising</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing-to-remove-spatially-diffuse-noise">Post-processing to remove spatially diffuse noise</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="generate-tedana-walkthrough-figures">
+<h1>Generate tedana walkthrough figures<a class="headerlink" href="#generate-tedana-walkthrough-figures" title="Link to this heading">#</a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The contents of this chapter will be moved into TE_Dependence and, to a lesser extent, Signal_Decay,
+and this chapter will be removed.</p>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="kn">import</span> <span class="n">glob</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">nibabel</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">nitransforms</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">myst_nb</span><span class="w"> </span><span class="kn">import</span> <span class="n">glue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">image</span><span class="p">,</span> <span class="n">masking</span><span class="p">,</span> <span class="n">plotting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tedana.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">new_nii_like</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tedana.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_adaptive_mask</span>
+
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../DATA&#39;</span><span class="p">)</span>
+
+<span class="n">ted_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;tedana&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="load-data">
+<h2>Load data<a class="headerlink" href="#load-data" title="Link to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;ds006185/sub-24053/ses-1/func/&quot;</span><span class="p">)</span>
+<span class="n">data_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">glob</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">func_dir</span><span class="p">,</span>
+            <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">echo_times</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data_files</span><span class="p">:</span>
+    <span class="n">json_file</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.nii.gz&#39;</span><span class="p">,</span> <span class="s1">&#39;.json&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
+    <span class="n">echo_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;EchoTime&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">echo_times</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">func_dir</span><span class="p">,</span>
+    <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz&quot;</span>
+<span class="p">)</span>
+<span class="n">confounds_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">func_dir</span><span class="p">,</span>
+    <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Background anatomical image</span>
+<span class="n">anat_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;ds006185/sub-24053/ses-1/anat/&quot;</span><span class="p">)</span>
+<span class="n">xfm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">func_dir</span><span class="p">,</span>
+    <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">xfm</span> <span class="o">=</span> <span class="n">nit</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xfm</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;itk&quot;</span><span class="p">)</span>
+<span class="n">t1_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">anat_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_rec-norm_desc-preproc_T1w.nii.gz&quot;</span><span class="p">)</span>
+<span class="n">bg_img</span> <span class="o">=</span> <span class="n">xfm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">spatialimage</span><span class="o">=</span><span class="n">t1_file</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">data_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Tedana outputs</span>
+<span class="n">adaptive_mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">ted_dir</span><span class="p">,</span>
+    <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-adaptiveGoodSignal_mask.nii.gz&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">math_img</span><span class="p">(</span><span class="s2">&quot;img &gt;= 3&quot;</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">adaptive_mask_file</span><span class="p">)</span>
+
+<span class="c1"># Optimally combined data</span>
+<span class="n">oc</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz&quot;</span><span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">oc_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">oc</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">oc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">oc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Results from MEPCA</span>
+<span class="n">mepca_mmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-PCA_mixing.tsv&quot;</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">oc_red</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_whitened_bold.nii.gz&quot;</span>
+    <span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Results from MEICA</span>
+<span class="n">meica_mmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_mixing.tsv&quot;</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">norm_weights</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">ted_dir</span><span class="p">,</span>
+        <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICAAveragingWeights_components.nii.gz&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">meica_beta_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">glob</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">ted_dir</span><span class="p">,</span>
+            <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICA_components.nii.gz&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">meica_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">meica_beta_files</span><span class="p">])</span>
+<span class="n">meica_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">meica_betas</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">r2_pred_beta_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">glob</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">ted_dir</span><span class="p">,</span>
+            <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAT2ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">r2_pred_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">r2_pred_beta_files</span><span class="p">])</span>
+<span class="n">r2_pred_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">r2_pred_betas</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">s0_pred_beta_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">glob</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">ted_dir</span><span class="p">,</span>
+            <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAS0ModelPredictions_components.nii.gz&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">s0_pred_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">s0_pred_beta_files</span><span class="p">])</span>
+<span class="n">s0_pred_betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">s0_pred_betas</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Component parameter estimates</span>
+<span class="n">betas_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_components.nii.gz&quot;</span>
+<span class="p">)</span>
+<span class="n">beta_maps</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">betas_file</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+<span class="c1"># Multi-echo denoised data</span>
+<span class="n">dn_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-denoised_bold.nii.gz&quot;</span>
+    <span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">hk_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAccepted_bold.nii.gz&quot;</span>
+    <span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Post-processed data</span>
+<span class="n">dn_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomMIRDenoised_bold.nii.gz&quot;</span>
+    <span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">hk_t1c_data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAcceptedMIRDenoised_bold.nii.gz&quot;</span>
+    <span class="p">),</span>
+    <span class="n">mask</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Component table</span>
+<span class="n">comp_tbl</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ted_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-tedana_metrics.tsv&quot;</span><span class="p">),</span>
+    <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;Component&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Get voxel index for voxel most related to component with highest kappa value</span>
+<span class="n">acc_comp_tbl</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_tbl</span><span class="p">[</span><span class="s2">&quot;classification&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;accepted&quot;</span><span class="p">]</span>
+<span class="n">high_kappa_comp</span> <span class="o">=</span> <span class="n">acc_comp_tbl</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;kappa&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">high_kappa_comp_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">high_kappa_comp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">voxel_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="n">beta_maps</span><span class="p">[</span><span class="n">high_kappa_comp_val</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="n">high_kappa_comp_val</span><span class="p">,</span> <span class="p">:])</span>
+<span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">rej_comp_tbl</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_tbl</span><span class="p">[</span><span class="s2">&quot;classification&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;rejected&quot;</span><span class="p">]</span>
+<span class="n">low_kappa_comp</span> <span class="o">=</span> <span class="n">rej_comp_tbl</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;rho&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># load data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data_files</span><span class="p">]</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+<span class="n">ts_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+<span class="n">n_echoes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">echo_times</span><span class="p">)</span>
+<span class="n">n_trs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">pal</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;cubehelix&quot;</span><span class="p">,</span> <span class="n">n_echoes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">32</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="n">anat_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;ds006185/sub-24053/ses-1/anat/&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="n">xfm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span>     <span class="n">func_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span>     <span class="s2">&quot;sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">32</span> <span class="n">xfm</span> <span class="o">=</span> <span class="n">nit</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xfm</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;itk&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span> <span class="n">t1_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">anat_dir</span><span class="p">,</span> <span class="s2">&quot;sub-24053_ses-1_rec-norm_desc-preproc_T1w.nii.gz&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="n">bg_img</span> <span class="o">=</span> <span class="n">xfm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">spatialimage</span><span class="o">=</span><span class="n">t1_file</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">data_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nitransforms/linear.py:447,</span> in <span class="ni">load</span><span class="nt">(filename, fmt, reference, moving)</span>
+<span class="g g-Whitespace">    </span><span class="mi">432</span> <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">433</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">434</span><span class="sd">     Load a linear transform file.</span>
+<span class="g g-Whitespace">    </span><span class="mi">435</span><span class="sd"> </span>
+<span class="sd">   (...)    445 </span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">447</span>     <span class="n">xfm</span> <span class="o">=</span> <span class="n">LinearTransformsMapping</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span>         <span class="n">filename</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="n">moving</span>
+<span class="g g-Whitespace">    </span><span class="mi">449</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">451</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xfm</span><span class="p">,</span> <span class="n">LinearTransformsMapping</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">xfm</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">452</span>         <span class="n">xfm</span> <span class="o">=</span> <span class="n">xfm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nitransforms/linear.py:204,</span> in <span class="ni">Affine.from_filename</span><span class="nt">(cls, filename, fmt, reference, moving, x5_position)</span>
+<span class="g g-Whitespace">    </span><span class="mi">202</span> <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">203</span>     <span class="k">if</span> <span class="n">fmt</span> <span class="o">!=</span> <span class="s2">&quot;fsl&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">204</span>         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">205</span>             <span class="sa">f</span><span class="s2">&quot;[Errno 2] No such file or directory: &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">206</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">207</span>     <span class="k">elif</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.000&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">208</span>         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">209</span>             <span class="sa">f</span><span class="s2">&quot;[Errno 2] No such file or directory: &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">[.000]&#39;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">210</span>         <span class="p">)</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/home/runner/work/multi-echo-data-analysis/multi-echo-data-analysis/DATA/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt&#39;
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare data for model</span>
+<span class="n">log_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ts_1d</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># log_data = np.log(ts_1d)  # in a perfect world...</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n_trs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># T * E</span>
+
+<span class="c1"># Model fit</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">log_data</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">s0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">r2s</span> <span class="o">=</span> <span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">t2s</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">r2s</span>
+
+<span class="c1"># Values for plots</span>
+<span class="c1"># Values from log-linear model</span>
+<span class="n">log_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">log_y</span> <span class="o">=</span> <span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">log_x</span> <span class="o">*</span> <span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Values from monoexponential decay model</span>
+<span class="n">mono_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">mono_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">mono_x</span><span class="p">)</span> <span class="o">*</span> <span class="n">s0</span>
+
+<span class="c1"># Get weights for optimal combination</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">echo_times</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">echo_times</span> <span class="o">/</span> <span class="n">t2s</span><span class="p">)</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>  <span class="c1"># unnecessary but good for bar plot below</span>
+
+<span class="c1"># Combine data across echoes</span>
+<span class="n">oc_manual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="echo-specific-timeseries">
+<h3>Echo-specific timeseries<a class="headerlink" href="#echo-specific-timeseries" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="si">}</span><span class="s2">ms&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span>
+    <span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_echo_timeseries2&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="echo-specific-data-and-echo-time">
+<h3>Echo-specific data and echo time<a class="headerlink" href="#echo-specific-data-and-echo-time" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
+    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">echo_times</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24000</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_echo_scatter2&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="adaptive-mask">
+<h3>Adaptive mask<a class="headerlink" href="#adaptive-mask" title="Link to this heading">#</a></h3>
+<p>Longer echo times are more susceptible to signal dropout, which means that certain brain regions
+(e.g., orbitofrontal cortex, temporal poles) will only have good signal for some echoes.
+In order to avoid using bad signal from affected echoes in calculating <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> for a given voxel,
+<code class="docutils literal notranslate"><span class="pre">tedana</span></code> generates an adaptive mask, where the value for each voxel is the number of echoes with “good” signal.
+When <span class="math notranslate nohighlight">\(T_{2}^*\)</span> and <span class="math notranslate nohighlight">\(S_{0}\)</span> are calculated below, each voxel’s values are only calculated from the first <span class="math notranslate nohighlight">\(n\)</span> echoes,
+where <span class="math notranslate nohighlight">\(n\)</span> is the value for that voxel in the adaptive mask.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adaptive_mask_img</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">adaptive_mask_file</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;BuGn_r&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
+    <span class="n">adaptive_mask_img</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="n">n_echoes</span><span class="p">,</span>
+    <span class="c1"># alpha=0.5,</span>
+    <span class="n">threshold</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">draw_cross</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span>
+    <span class="n">annotate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">bg_img</span><span class="o">=</span><span class="n">bg_img</span><span class="p">,</span>
+    <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
+    <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_adaptive_mask&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="log-linear-transformation">
+<h3>Log-linear transformation<a class="headerlink" href="#log-linear-transformation" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
+    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
+    <span class="n">log_echo_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">log_echo_data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;log(BOLD signal)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Negative Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_loglin_scatter&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="log-linear-model">
+<h3>Log-linear model<a class="headerlink" href="#log-linear-model" title="Link to this heading">#</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(S\)</span> be the BOLD signal for a given echo.</p>
+<p>Let <span class="math notranslate nohighlight">\(TE\)</span> be the echo time in milliseconds.</p>
+<div class="math notranslate nohighlight" id="equation-log-linear-model">
+<span class="eqno">(11)<a class="headerlink" href="#equation-log-linear-model" title="Link to this equation">#</a></span>\[\begin{split}\log_{e}(\left|\begin{pmatrix}
+S(TE_{1}) \\
+S(TE_{2}) \\
+\vdots \\
+S(TE_{n})\end{pmatrix}\right|
++
+\begin{pmatrix}
+1 \\
+1 \\
+\vdots \\
+1\end{pmatrix}
+) = B_{1}
+\begin{pmatrix}
+-TE_{1} \\
+-TE_{2} \\
+\vdots \\
+-TE_{n}\end{pmatrix} +
+\begin{pmatrix}
+B_{0} \\
+B_{0} \\
+\vdots \\
+B_{0}\end{pmatrix}\end{split}\]</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
+    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
+    <span class="n">log_echo_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">log_echo_data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">log_x</span><span class="p">,</span> <span class="n">log_y</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;log(BOLD signal)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Negative Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s2">&quot;$B_0$: </span><span class="si">{0:.02f}</span><span class="se">\n</span><span class="s2">$B_1$: </span><span class="si">{1:.02f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">),</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_loglin_scatter_with_line&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+</section>
+<section id="monoexponential-decay-model">
+<h2>Monoexponential decay model<a class="headerlink" href="#monoexponential-decay-model" title="Link to this heading">#</a></h2>
+<p>Calculation of <span class="math notranslate nohighlight">\(S_{0}\)</span> and <span class="math notranslate nohighlight">\(T_{2}^{*}\)</span></p>
+<div class="math notranslate nohighlight" id="equation-monoexponential-decay-s0">
+<span class="eqno">(12)<a class="headerlink" href="#equation-monoexponential-decay-s0" title="Link to this equation">#</a></span>\[S_{0} = e^{B_{0}}\]</div>
+<div class="math notranslate nohighlight" id="equation-monoexponential-decay-t2s">
+<span class="eqno">(13)<a class="headerlink" href="#equation-monoexponential-decay-t2s" title="Link to this equation">#</a></span>\[T_{2}^{*} = \frac{1}{B_{1}}\]</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
+    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mono_x</span><span class="p">,</span> <span class="n">mono_y</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">echo_times</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24000</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s2">&quot;$S_0$: </span><span class="si">{0:.02f}</span><span class="se">\n</span><span class="s2">$T_2^*$: </span><span class="si">{1:.02f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span> <span class="n">t2s</span><span class="p">),</span>
+    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">86.5</span><span class="p">,</span> <span class="mi">13500</span><span class="p">),</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_loglin_scatter_with_t2s&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="t2">
+<h3>T2*<a class="headerlink" href="#t2" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
+    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mono_x</span><span class="p">,</span> <span class="n">mono_y</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t2s</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$T_2^*$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">echo_times</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">t2s</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24000</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_pad</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_scatter_with_t2s&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="optimal-combination-weights">
+<h3>Optimal combination weights<a class="headerlink" href="#optimal-combination-weights" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">pal</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Weight&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_optcom_weights&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="optimally-combined-timeseries">
+<h3>Optimally combined timeseries<a class="headerlink" href="#optimally-combined-timeseries" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
+    <span class="n">rep_echo_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rep_echo_times</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mono_x</span><span class="p">,</span> <span class="n">mono_y</span><span class="p">)</span>
+
+<span class="c1"># Optimal combination</span>
+<span class="n">rep_t2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_trs</span><span class="p">)</span> <span class="o">*</span> <span class="n">t2s</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">rep_t2s</span><span class="p">,</span> <span class="n">oc_manual</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Optimally</span><span class="se">\n</span><span class="s2">combined</span><span class="se">\n</span><span class="s2">data&quot;</span>
+<span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t2s</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$T_2^*$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BOLD signal&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">echo_times</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">t2s</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24000</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_pad</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_scatter_with_optcom&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="id1">
+<h3>Optimally combined timeseries<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_echoes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i_echo</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">pal</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">echo_times</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="si">}</span><span class="s2">ms&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span>
+    <span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_echo</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">oc_manual</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
+    <span class="s2">&quot;Optimally</span><span class="se">\n</span><span class="s2">combined</span><span class="se">\n</span><span class="s2">data&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="n">i_echo</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_echo_timeseries_with_optcom&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="multi-echo-principal-components-analysis">
+<h3>Multi-Echo Principal Components Analysis<a class="headerlink" href="#multi-echo-principal-components-analysis" title="Link to this heading">#</a></h3>
+<p>Optimally combined data are decomposed with PCA.
+The PCA components are selected according to one of multiple possible approaches.
+Two possible approaches are a decision tree and a threshold using the percentage of variance explained by each component.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mepca_mmix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">comp_to_plot</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mepca_mmix</span><span class="p">[:,</span> <span class="n">comp_to_plot</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PCA Component </span><span class="si">{</span><span class="n">comp_to_plot</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_pca_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+</section>
+<section id="data-whitening">
+<h2>Data Whitening<a class="headerlink" href="#data-whitening" title="Link to this heading">#</a></h2>
+<p>The selected components from the PCA are recombined to produce a whitened version of the optimally combined data.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">oc_red</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Dimensionally reduced timeseries&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">oc_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original timeseries&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">,</span> <span class="n">framealpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">oc_z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_optcom_reduced_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="multi-echo-independent-components-analysis">
+<h3>Multi-Echo Independent Components Analysis<a class="headerlink" href="#multi-echo-independent-components-analysis" title="Link to this heading">#</a></h3>
+<p>The whitened optimally combined data are then decomposed with ICA.
+The number of ICA components is limited to the number of retained components from the PCA,
+in order to reflect the true dimensionality of the data.
+ICA produces a mixing matrix (i.e., timeseries for each component).</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">comps_to_plot</span> <span class="o">=</span> <span class="p">[</span><span class="n">high_kappa_comp</span><span class="p">,</span> <span class="n">low_kappa_comp</span><span class="p">,</span> <span class="s2">&quot;ICA_00&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i_comp</span><span class="p">,</span> <span class="n">comp_to_plot</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">comps_to_plot</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">comp_to_plot</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">,</span> <span class="s2">&quot;kappa&quot;</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">,</span> <span class="s2">&quot;rho&quot;</span><span class="p">]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">comp_tbl</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_to_plot</span><span class="p">,</span> <span class="s2">&quot;classification&quot;</span><span class="p">]</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">meica_mmix</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="s2">&quot;ICA Component </span><span class="si">{0}</span><span class="s2">; $</span><span class="se">\\</span><span class="s2">kappa$ = </span><span class="si">{1:.02f}</span><span class="s2">; $</span><span class="se">\\</span><span class="s2">rho$ = </span><span class="si">{2:.02f}</span><span class="s2">; </span><span class="si">{3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">comp_to_plot</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span>
+        <span class="p">),</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">meica_mmix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_ica_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+</section>
+<section id="r-2-and-s-0-model-fit">
+<h2><span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> Model Fit<a class="headerlink" href="#r-2-and-s-0-model-fit" title="Link to this heading">#</a></h2>
+<p>Linear regression is used to fit the component timeseries to each voxel in each echo from the original, echo-specific data.
+This results in echo- and voxel-specific betas for each of the components.
+TE-dependence (<span class="math notranslate nohighlight">\(R_2\)</span>) and TE-independence (<span class="math notranslate nohighlight">\(S_0\)</span>) models can then be fit to these betas.</p>
+<p>These models allow calculation of F-statistics for the <span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> models (referred to as <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span>, respectively).</p>
+<p>Note that the values here are for a single voxel (the highest-weighted one for the component),
+but <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span> are averaged across voxels.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">echo_times</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i_comp</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+    <span class="n">comps_to_plot</span>
+<span class="p">):</span>  <span class="c1"># only generate plots for a few components</span>
+    <span class="n">comp_voxel_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="n">i_comp</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">beta_maps</span><span class="p">[</span><span class="n">i_comp</span><span class="p">,</span> <span class="p">:]))[</span><span class="mi">0</span><span class="p">][</span>
+        <span class="mi">0</span>
+    <span class="p">]</span>
+    <span class="c1"># Use weight map to average as fitmodels_direct does</span>
+    <span class="n">comp_weights</span> <span class="o">=</span> <span class="n">meica_betas</span><span class="p">[</span><span class="n">comp_voxel_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">i_comp</span><span class="p">]</span>
+    <span class="n">r2_pred_weights</span> <span class="o">=</span> <span class="n">r2_pred_betas</span><span class="p">[</span><span class="n">comp_voxel_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">i_comp</span><span class="p">]</span>
+    <span class="n">s0_pred_weights</span> <span class="o">=</span> <span class="n">s0_pred_betas</span><span class="p">[</span><span class="n">comp_voxel_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">i_comp</span><span class="p">]</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">echo_times</span><span class="p">,</span>
+        <span class="n">comp_weights</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Component PEs&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">echo_times</span><span class="p">,</span> <span class="n">r2_pred_weights</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Predicted T2* model values&quot;</span>
+    <span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">echo_times</span><span class="p">,</span> <span class="n">s0_pred_weights</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Predicted S0 model values&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Set yticklabels</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">comp_weights</span><span class="p">,</span> <span class="n">s0_pred_weights</span><span class="p">,</span> <span class="n">r2_pred_weights</span><span class="p">))</span>
+    <span class="n">lim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.05</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span> <span class="o">-</span> <span class="n">lim</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span> <span class="o">+</span> <span class="n">lim</span><span class="p">)</span>
+    <span class="n">legend</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i_comp</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ICA Component </span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_ica_weights&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="ica-component-selection-and-multi-echo-denoising">
+<h2>ICA Component Selection and Multi-Echo Denoising<a class="headerlink" href="#ica-component-selection-and-multi-echo-denoising" title="Link to this heading">#</a></h2>
+<p>A decision tree is applied to <span class="math notranslate nohighlight">\(\kappa\)</span>, <span class="math notranslate nohighlight">\(\rho\)</span>, and other metrics in order to classify ICA components as TE-dependent (BOLD signal),
+TE-independent (non-BOLD noise), or neither (to be ignored).</p>
+<p>The ICA components are fitted to the original (not whitened) optimally combined data with linear regression,
+which is used to weight the components for construction of the denoised data.
+The residuals from this regression will thus include the variance that was not included in the PCA-whitened optimally combined data.</p>
+<p>The <a class="reference internal" href="glossary.html#term-MEDN"><span class="xref std std-term">MEDN</span></a> dataset is constructed from the accepted (BOLD) and ignored components,
+as well as the residual variance not explained by the ICA.
+The <a class="reference internal" href="glossary.html#term-MEHK"><span class="xref std std-term">MEHK</span></a> dataset is constructed just from the accepted (BOLD) components.
+This means that ignored components and residual variance not explained by the ICA are not included in the resulting dataset.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dn_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">dn_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dn_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dn_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">hk_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">hk_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hk_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">hk_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">oc_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Optimally combined&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Optimally combined&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dn_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-DN&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ME-DN&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hk_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ME-HK&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">oc_z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_medn_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="post-processing-to-remove-spatially-diffuse-noise">
+<h2>Post-processing to remove spatially diffuse noise<a class="headerlink" href="#post-processing-to-remove-spatially-diffuse-noise" title="Link to this heading">#</a></h2>
+<p>Due to the constraints of ICA, MEICA is able to identify and remove spatially localized noise components,
+but it cannot identify components that are spread out throughout the whole brain.</p>
+<p>One of several post-processing strategies may be applied to the ME-DN or ME-HK datasets in order to remove spatially diffuse
+(ostensibly respiration-related) noise.
+Methods which have been employed in the past include global signal regression (GSR),
+<a class="reference internal" href="TE_Dependence.html#minimum-image-regression">Minimum Image Regression</a>, anatomical CompCor, Go Decomposition (GODEC), and robust PCA.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dn_t1c_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">dn_t1c_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dn_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span>
+    <span class="n">dn_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+<span class="n">hk_t1c_data_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">hk_t1c_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hk_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span>
+    <span class="n">hk_t1c_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dn_t1c_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-DN T1c&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dn_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-DN&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ME-DN&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">legend</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hk_t1c_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-HK T1c&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hk_data_z</span><span class="p">[:,</span> <span class="n">voxel_idx</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ME-HK&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ME-HK&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">legend</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">oc_z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_mir_timeseries&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./content"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="TE_Dependence.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">BOLD, non-BOLD, and TE-dependence with tedana</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Multi_Echo_Datasets.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Open Multi-Echo Datasets</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#echo-specific-timeseries">Echo-specific timeseries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#echo-specific-data-and-echo-time">Echo-specific data and echo time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-mask">Adaptive mask</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-linear-transformation">Log-linear transformation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-linear-model">Log-linear model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monoexponential-decay-model">Monoexponential decay model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#t2">T2*</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-combination-weights">Optimal combination weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimally-combined-timeseries">Optimally combined timeseries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Optimally combined timeseries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-echo-principal-components-analysis">Multi-Echo Principal Components Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-whitening">Data Whitening</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-echo-independent-components-analysis">Multi-Echo Independent Components Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-2-and-s-0-model-fit"><span class="math notranslate nohighlight">\(R_2\)</span> and <span class="math notranslate nohighlight">\(S_0\)</span> Model Fit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ica-component-selection-and-multi-echo-denoising">ICA Component Selection and Multi-Echo Denoising</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing-to-remove-spatially-diffuse-noise">Post-processing to remove spatially diffuse noise</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The tedana community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
