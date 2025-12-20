@@ -76,6 +76,7 @@ model = SparseDeconvolution(
     tr=2.47,
     te=echo_times,
     criterion="bic",
+    n_jobs=-1,  # Use all available CPU cores
 )
 model.fit(X)
 
