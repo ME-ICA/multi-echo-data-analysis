@@ -17,7 +17,9 @@ import json
 import os
 from glob import glob
 
-import nibabel as nb
+import nibabel as nib
+import numpy as np
+from nilearn.maskers import NiftiMasker
 
 data_path = os.path.abspath('../DATA')
 ```
@@ -53,16 +55,65 @@ out_dir = os.path.join(data_path, "pySPFM")
 ```{code-cell} ipython3
 :tags: [output_scroll]
 
-from pySPFM import pySPFM
+from pySPFM import SparseDeconvolution
 
-pySPFM.pySPFM(
-    data_fn=data_files,
-    mask_fn=mask_file,
-    output_filename=os.path.join(out_dir, "out"),
+# Create masker to convert 4D NIfTI data to 2D array
+masker = NiftiMasker(mask_img=mask_file)
+
+# Load and mask each echo, then concatenate along time axis
+# For multi-echo data, timepoints from different echoes are concatenated along the first axis
+masked_data = []
+for f in data_files:
+    echo_data = masker.fit_transform(f)  # Shape: (n_timepoints, n_voxels)
+    masked_data.append(echo_data)
+
+X = np.vstack(masked_data)  # Shape: (n_timepoints * n_echoes, n_voxels)
+
+# Fit the sparse deconvolution model
+model = SparseDeconvolution(
     tr=2.47,
-    out_dir=out_dir,
     te=echo_times,
+    criterion="bic",
 )
+model.fit(X)
+
+# Get the deconvolved activity-inducing signals
+activity = model.coef_  # Shape: (n_timepoints, n_voxels)
+
+# Transform back to NIfTI image and save
+os.makedirs(out_dir, exist_ok=True)
+activity_img = masker.inverse_transform(activity)
+activity_img.to_filename(os.path.join(out_dir, "out_activity.nii.gz"))
+
+# Also save the regularization parameter values
+np.save(os.path.join(out_dir, "out_lambda.npy"), model.lambda_)
+
+print(f"Activity shape: {activity.shape}")
+print(f"Saved activity to: {os.path.join(out_dir, 'out_activity.nii.gz')}")
+```
+
+The `SparseDeconvolution` model provides several useful attributes and methods after fitting:
+
+- `coef_`: The deconvolved activity-inducing signals
+- `lambda_`: The regularization parameter values
+- `hrf_matrix_`: The HRF convolution matrix used
+- `get_fitted_signal()`: Returns the fitted (reconstructed) signal
+- `get_residuals(X)`: Returns the residuals between the original data and fitted signal
+
+```{code-cell} ipython3
+# Get the fitted signal and residuals
+fitted_signal = model.get_fitted_signal()
+residuals = model.get_residuals(X)
+
+# Save additional outputs
+fitted_img = masker.inverse_transform(fitted_signal)
+fitted_img.to_filename(os.path.join(out_dir, "out_fitted.nii.gz"))
+
+residuals_img = masker.inverse_transform(residuals)
+residuals_img.to_filename(os.path.join(out_dir, "out_residuals.nii.gz"))
+
+print(f"Fitted signal shape: {fitted_signal.shape}")
+print(f"Residuals shape: {residuals.shape}")
 ```
 
 The pySPFM workflow writes out a number of files.
