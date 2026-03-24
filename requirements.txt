@@ -1,7 +1,8 @@
 datalad
 git-annex
 imageio
-jupyter-book<3.0.0
+# Sphinx-based Jupyter Book 1.x (this repo is not on Jupyter Book 2 / MyST engine yet)
+jupyter-book>=1.0,<2.0
 jupytext
 matplotlib
 myst_nb

@@ -1,4 +1,4 @@
-.PHONY: help book clean serve
+.PHONY: help book clean serve sync-docs site-publish
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of:"
@@ -9,6 +9,8 @@ help:
 	@echo "  serve       to serve the repository locally with Jekyll"
 	@echo "  build       to build the site HTML and store in _site/"
 	@echo "  site 		 to build the site HTML, store in _site/, and serve with Jekyll"
+	@echo "  sync-docs   to copy _build/html into docs/ for GitHub Pages"
+	@echo "  site-publish to build the book and sync docs/ (book + sync-docs)"
 
 
 install:
@@ -16,6 +18,11 @@ install:
 
 book:
 	jupyter-book build ./
+
+sync-docs:
+	python scripts/sync_docs.py
+
+site-publish: book sync-docs
 
 runall:
 	jupyter-book run ./content
