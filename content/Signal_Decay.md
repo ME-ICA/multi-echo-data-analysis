@@ -84,7 +84,7 @@ data_files = sorted(
     glob(
         os.path.join(
             func_dir,
-            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
         ),
     ),
 )
@@ -96,11 +96,11 @@ for f in data_files:
     echo_times.append(metadata['EchoTime'] * 1000)
 mask_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 confounds_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
 )
 ted_dir = os.path.join(data_path, "tedana")
 n_echoes = len(echo_times)
@@ -128,13 +128,13 @@ mask = nb.load(mask_file)
 
 # Component parameter estimates
 betas_file = os.path.join(
-    ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_components.nii.gz"
+    ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-ICA_components.nii.gz"
 )
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Component table
 comp_tbl = pd.read_table(
-    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-tedana_metrics.tsv"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_metrics.tsv"),
     index_col="Component",
 )
 
@@ -725,8 +725,8 @@ Single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting fr
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-Let us visualize $S_0$ and $T_2^{*}$ effects more closely. 
-The bottom figure shows how the $S_0$ and $T_2^{*}$ curves changes compared to the original average signal decay curve. 
+Let us visualize $S_0$ and $T_2^{*}$ effects more closely.
+The bottom figure shows how the $S_0$ and $T_2^{*}$ curves changes compared to the original average signal decay curve.
 In red, the decay curve is shown when only the $S_0$ values fluctuate (for a fixed $T_2^{*}$ for any t).
 In blue the decay curve is shown when the $T_2^{*}$ values fluctuate (for a fixed $S_0$ for any t).
 The top panel represents the fluctuations of the ratio $\frac{S_0}{T_2^{*}}$.
@@ -839,7 +839,7 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 
-Let us visualize again the case of a single echo acquisition. 
+Let us visualize again the case of a single echo acquisition.
 Because the signal is acquired for only one TE (see the red and blue dot points in the figure), it is impossible to model the $S_0$- and $T_2^{*}$- driven curves !
 This shows how single-echo data, on its own, cannot distinguish between $S_0$ and $T_2^{*}$ fluctuations.
 
@@ -971,8 +971,8 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 
-Let us now visualize again the case of a multi-echo acquisition. 
-Because the signal is acquired at four echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the $S_0$- and $T_2^{*}$- driven curves from the signal ! 
+Let us now visualize again the case of a multi-echo acquisition.
+Because the signal is acquired at four echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the $S_0$- and $T_2^{*}$- driven curves from the signal !
 
 ```{code-cell} ipython3
 :tags: [hide-cell]

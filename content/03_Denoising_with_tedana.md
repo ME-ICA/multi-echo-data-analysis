@@ -36,7 +36,7 @@ data_files = sorted(
     glob(
         os.path.join(
             func_dir,
-            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
         ),
     ),
 )
@@ -48,11 +48,11 @@ for f in data_files:
     echo_times.append(metadata['EchoTime'] * 1000)
 mask_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 confounds_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
 )
 
 out_dir = os.path.join(data_path, "tedana")
@@ -66,7 +66,7 @@ workflows.tedana_workflow(
     echo_times,
     out_dir=out_dir,
     mask=mask_file,
-    prefix="sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01",
+    prefix="sub-24053_ses-1_task-rat_dir-PA_run-01",
     fittype="loglin",
     tedpca="mdl",
     verbose=True,
@@ -84,7 +84,7 @@ print("\n".join(out_files))
 
 ```{code-cell} ipython3
 metrics = pd.read_table(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-tedana_metrics.tsv")
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_metrics.tsv")
 )
 ```
 
@@ -102,7 +102,7 @@ metrics.style.apply(color_rejected_red, axis=1)
 
 ```{code-cell} ipython3
 with open(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-tedana_metrics.json"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_metrics.json"),
     "r",
 ) as fo:
     data = json.load(fo)
@@ -121,7 +121,7 @@ display(HTML(df.to_html()))
 ```
 
 ```{code-cell} ipython3
-report = os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_tedana_report.html")
+report = os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_tedana_report.html")
 with open(report, "r") as fo:
     report_data = fo.read()
 

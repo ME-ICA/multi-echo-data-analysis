@@ -13,54 +13,14 @@ kernelspec:
 # Download Data
 
 For the tutorials in this book,
-we will use partially-preprocessed data from two open multi-echo datasets: Euskalibur and Cambridge.
+we will use partially-preprocessed data from the PAFIN fMRIPrep derivatives dataset.
 For more information about these datasets, see {ref}`content:open-datasets`.
 
-```python
-import os
-
-from datalad import api as dapi
-
-DATA_DIR = os.path.abspath('../data')
-
-# Download PAFIN fMRIPrep data
-dset_dir = os.path.join(DATA_DIR, 'ds006185')
-os.makedirs(dset_dir, exist_ok=True)
-dapi.install(
-    path=dset_dir,
-    source='https://github.com/OpenNeuroDatasets/ds006185.git',
-)
-dapi.get(os.path.join(dset_dir, 'sub-24053', 'ses-1', 'func', 'sub-24053_ses-1_task-rat_rec-nordic_*'), recursive=True)
-dapi.get(os.path.join(dset_dir, 'sub-24053', 'ses-1', 'anat', 'sub-24053_ses-1_*'), recursive=True)
-```
-
-For now, we will use the Datalab API to download some data we're storing on OpenNeuro.
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-import os
-from pathlib import Path
-
-from datalad import api as dapi
-
-DATA_DIR = os.path.abspath('../data')
-
-# Download PAFIN fMRIPrep data
-dset_dir = os.path.join(DATA_DIR, 'ds006185')
-os.makedirs(dset_dir, exist_ok=True)
-dapi.install(
-    path=dset_dir,
-    source='https://github.com/OpenNeuroDatasets/ds006185.git',
-)
-subj_dir = os.path.join(dset_dir, 'sub-24053', 'ses-1')
-func_dir = Path(os.path.join(subj_dir, 'func'))
-func_files = list(func_dir.glob('sub-24053_ses-1_task-rat_rec-nordic_*'))
-for f in func_files:
-    dapi.get(f)
-
-anat_dir = Path(os.path.join(subj_dir, 'anat'))
-anat_files = list(anat_dir.glob('*'))
-for f in anat_files:
-    dapi.get(f)
+```bash
+:tags: []
+datalad install https://github.com/OpenNeuroDatasets/ds006185.git ../data/
+cd ../data/ds006185
+datalad get -J5 sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*
+datalad get sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz
+datalad get sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv
 ```

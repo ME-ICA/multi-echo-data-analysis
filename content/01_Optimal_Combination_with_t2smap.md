@@ -35,7 +35,7 @@ data_files = sorted(
     glob(
         os.path.join(
             func_dir,
-            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
         ),
     ),
 )
@@ -47,11 +47,11 @@ for f in data_files:
     echo_times.append(metadata['EchoTime'] * 1000)
 mask_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 confounds_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
 )
 
 out_dir = os.path.join(data_path, "t2smap")
@@ -63,7 +63,7 @@ workflows.t2smap_workflow(
     echo_times,
     out_dir=out_dir,
     mask=mask_file,
-    prefix="sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01",
+    prefix="sub-24053_ses-1_task-rat_dir-PA_run-01",
     fittype="loglin",
     overwrite=True,
 )
@@ -78,7 +78,7 @@ print("\n".join(out_files))
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_T2starmap.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_T2starmap.nii.gz"),
     vmax=0.6,
     draw_cross=False,
     bg_img=None,
@@ -98,7 +98,7 @@ T2* map estimated from multi-echo data using tedana's {py:func}`~tedana.workflow
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_S0map.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_S0map.nii.gz"),
     vmax=8000,
     draw_cross=False,
     bg_img=None,
@@ -156,7 +156,7 @@ plotting.plot_epi(
 plotting.plot_epi(
     image.mean_img(
         os.path.join(
-            out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"
+            out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"
         )
     ),
     draw_cross=False,
@@ -185,7 +185,7 @@ te30_tsnr = image.math_img(
 oc_tsnr = image.math_img(
     "(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask",
     img=os.path.join(
-        out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"
+        out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"
     ),
     mask=mask_file,
 )
@@ -246,7 +246,7 @@ Carpet plot of the second echo's data.
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_carpet(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"),
     axes=ax,
 )
 glue("figure_optcom_carpet", fig, display=False)

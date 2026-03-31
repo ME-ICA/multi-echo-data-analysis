@@ -47,7 +47,7 @@ data_files = sorted(
     glob(
         os.path.join(
             func_dir,
-            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
         ),
     ),
 )
@@ -60,18 +60,18 @@ for f in data_files:
 echo_times = np.round(np.array(echo_times), 2)
 mask_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 confounds_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
 )
 
 # Background anatomical image
 anat_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/anat/")
 xfm = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt",
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt",
 )
 xfm = nit.linear.load(xfm, fmt="itk")
 t1_file = os.path.join(anat_dir, "sub-24053_ses-1_rec-norm_desc-preproc_T1w.nii.gz")
@@ -80,36 +80,36 @@ bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
 # Tedana outputs
 adaptive_mask_file = os.path.join(
     ted_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-adaptiveGoodSignal_mask.nii.gz",
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-adaptiveGoodSignal_mask.nii.gz",
 )
 mask = image.math_img("img >= 3", img=adaptive_mask_file)
 
 # Optimally combined data
 oc = masking.apply_mask(
-    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"),
     mask,
 )
 oc_z = (oc - np.mean(oc, axis=0)) / np.std(oc, axis=0)
 
 # Results from MEPCA
 mepca_mmix = pd.read_table(
-    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-PCA_mixing.tsv"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-PCA_mixing.tsv"),
 ).values
 oc_red = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_whitened_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_whitened_bold.nii.gz"
     ),
     mask,
 )
 
 # Results from MEICA
 meica_mmix = pd.read_table(
-    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_mixing.tsv"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-ICA_mixing.tsv"),
 ).values
 norm_weights = masking.apply_mask(
     os.path.join(
         ted_dir,
-        "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICAAveragingWeights_components.nii.gz",
+        "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-ICAAveragingWeights_components.nii.gz",
     ),
     mask,
 )
@@ -117,7 +117,7 @@ meica_beta_files = sorted(
     glob(
         os.path.join(
             ted_dir,
-            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICA_components.nii.gz",
+            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_desc-ICA_components.nii.gz",
         ),
     ),
 )
@@ -128,7 +128,7 @@ r2_pred_beta_files = sorted(
     glob(
         os.path.join(
             ted_dir,
-            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAT2ModelPredictions_components.nii.gz",
+            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_desc-ICAT2ModelPredictions_components.nii.gz",
         ),
     ),
 )
@@ -138,7 +138,7 @@ s0_pred_beta_files = sorted(
     glob(
         os.path.join(
             ted_dir,
-            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_desc-ICAS0ModelPredictions_components.nii.gz",
+            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_desc-ICAS0ModelPredictions_components.nii.gz",
         ),
     ),
 )
@@ -147,20 +147,20 @@ s0_pred_betas = np.swapaxes(s0_pred_betas, 1, 2)
 
 # Component parameter estimates
 betas_file = os.path.join(
-    ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-ICA_components.nii.gz"
+    ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-ICA_components.nii.gz"
 )
 beta_maps = masking.apply_mask(betas_file, mask)
 
 # Multi-echo denoised data
 dn_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-denoised_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-denoised_bold.nii.gz"
     ),
     mask,
 )
 hk_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAccepted_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcomAccepted_bold.nii.gz"
     ),
     mask,
 )
@@ -168,20 +168,20 @@ hk_data = masking.apply_mask(
 # Post-processed data
 dn_t1c_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomMIRDenoised_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcomMIRDenoised_bold.nii.gz"
     ),
     mask,
 )
 hk_t1c_data = masking.apply_mask(
     os.path.join(
-        ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcomAcceptedMIRDenoised_bold.nii.gz"
+        ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcomAcceptedMIRDenoised_bold.nii.gz"
     ),
     mask,
 )
 
 # Component table
 comp_tbl = pd.read_table(
-    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-tedana_metrics.tsv"),
+    os.path.join(ted_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_metrics.tsv"),
     index_col="Component",
 )
 

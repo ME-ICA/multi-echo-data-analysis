@@ -37,7 +37,7 @@ data_files = sorted(
     glob(
         os.path.join(
             func_dir,
-            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
         ),
     ),
 )
@@ -49,11 +49,11 @@ for f in data_files:
     echo_times.append(metadata['EchoTime'] * 1000)
 mask_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
 )
 confounds_file = os.path.join(
     func_dir,
-    "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
 )
 
 out_dir = os.path.join(data_path, "fit")
@@ -65,7 +65,7 @@ workflows.t2smap_workflow(
     echo_times,
     out_dir=out_dir,
     mask=mask_file,
-    prefix="sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_",
+    prefix="sub-24053_ses-1_task-rat_dir-PA_run-01_",
     fittype="loglin",
     fitmode="ts",
     overwrite=True,
@@ -83,19 +83,19 @@ print("\n".join(out_files))
 fig, axes = plt.subplots(figsize=(16, 16), nrows=3)
 
 plotting.plot_carpet(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"),
     axes=axes[0],
     figure=fig,
 )
 axes[0].set_title("Optimally Combined Data", fontsize=20)
 plotting.plot_carpet(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_T2starmap.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_T2starmap.nii.gz"),
     axes=axes[1],
     figure=fig,
 )
 axes[1].set_title("T2* Estimates", fontsize=20)
 plotting.plot_carpet(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_S0map.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_S0map.nii.gz"),
     axes=axes[2],
     figure=fig,
 )
@@ -120,7 +120,7 @@ Carpet plots of optimally combined data, along with volume-wise T2* and S0 estim
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
     image.mean_img(
-        os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_T2starmap.nii.gz")
+        os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_T2starmap.nii.gz")
     ),
     vmax=0.6,
     draw_cross=False,
@@ -142,7 +142,7 @@ Mean map from the volume-wise T2* estimation.
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_stat_map(
     image.mean_img(
-        os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_S0map.nii.gz")
+        os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_S0map.nii.gz")
     ),
     vmax=8000,
     draw_cross=False,
@@ -197,7 +197,7 @@ plotting.plot_epi(
 plotting.plot_epi(
     image.mean_img(
         os.path.join(
-            out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"
+            out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"
         )
     ),
     draw_cross=False,
@@ -225,7 +225,7 @@ te30_tsnr = image.math_img(
 oc_tsnr = image.math_img(
     "(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask",
     img=os.path.join(
-        out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"
+        out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"
     ),
     mask=mask_file,
 )
@@ -283,7 +283,7 @@ Carpet plot of the third echo.
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_carpet(
-    os.path.join(out_dir, "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_desc-optcom_bold.nii.gz"),
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"),
     axes=ax,
 )
 glue("figure_carpet_optcom", fig, display=True)
