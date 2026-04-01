@@ -1,6 +1,27 @@
 """Utility functions for the JupyterBook."""
 
+import io
+from typing import Any
+
 import numpy as np
+from IPython.display import Image
+from myst_nb import glue as myst_nb_glue
+
+
+def glue_figure(name: str, fig: Any, display: bool = False, dpi: int = 150, **savefig_kw: Any) -> None:
+    """Glue a matplotlib Figure for myst_nb.
+
+    Newer matplotlib releases do not register ``image/png`` on ``Figure`` for
+    IPython's display pipeline, so :func:`myst_nb.glue` would only capture the
+    ``<Figure ...>`` text repr. This saves the figure to PNG and glues an
+    :class:`~IPython.display.Image` instead.
+    """
+    buf = io.BytesIO()
+    kwargs: dict[str, Any] = {"format": "png", "bbox_inches": "tight", "dpi": dpi}
+    kwargs.update(savefig_kw)
+    fig.savefig(buf, **kwargs)
+    buf.seek(0)
+    myst_nb_glue(name, Image(data=buf.getvalue()), display=display)
 from nilearn import image, masking
 
 
