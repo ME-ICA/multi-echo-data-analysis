@@ -24,47 +24,25 @@ import matplotlib.pyplot as plt
 import nibabel as nb
 import numpy as np
 from IPython import display
-from book_utils import glue_figure
-from nilearn import image, plotting
+from book_utils import glue_figure, load_pafin
+from nilearn import image, masking, plotting
 from tedana import workflows
 
 data_path = os.path.abspath('../data')
 ```
 
 ```{code-cell} ipython3
-func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
-data_files = sorted(
-    glob(
-        os.path.join(
-            func_dir,
-            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
-        ),
-    ),
-)
-echo_times = []
-for f in data_files:
-    json_file = f.replace('.nii.gz', '.json')
-    with open(json_file, 'r') as fo:
-        metadata = json.load(fo)
-    echo_times.append(metadata['EchoTime'] * 1000)
-mask_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
-)
-confounds_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
-)
-
+data = load_pafin(data_path)
 out_dir = os.path.join(data_path, "fit")
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 workflows.t2smap_workflow(
-    data_files,
-    echo_times,
+    data['echo_files'],
+    data['echo_times'],
     out_dir=out_dir,
-    mask=mask_file,
+    mask=data['mask'],
     prefix="sub-24053_ses-1_task-rat_dir-PA_run-01_",
     fittype="loglin",
     fitmode="ts",
@@ -79,6 +57,7 @@ print("\n".join(out_files))
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fig, axes = plt.subplots(figsize=(16, 16), nrows=3)
 
 plotting.plot_carpet(
@@ -116,16 +95,22 @@ Carpet plots of optimally combined data, along with volume-wise T2* and S0 estim
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fig, ax = plt.subplots(figsize=(16, 8))
+in_file = image.mean_img(
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_T2starmap.nii.gz")
+)
+arr = masking.apply_mask(in_file, data['mask'])
+thresh = np.nanpercentile(arr, 98)
 plotting.plot_stat_map(
-    image.mean_img(
-        os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_T2starmap.nii.gz")
-    ),
-    vmax=0.6,
+    in_file,
     draw_cross=False,
     bg_img=None,
     figure=fig,
     axes=ax,
+    cmap="Reds",
+    vmin=0,
+    vmax=thresh,
 )
 glue_figure("figure_mean_volumewise_t2s", fig, display=False)
 ```
@@ -138,16 +123,22 @@ Mean map from the volume-wise T2* estimation.
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fig, ax = plt.subplots(figsize=(16, 8))
+in_file = image.mean_img(
+    os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_S0map.nii.gz")
+)
+arr = masking.apply_mask(in_file, data['mask'])
+thresh = np.nanpercentile(arr, 98)
 plotting.plot_stat_map(
-    image.mean_img(
-        os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_S0map.nii.gz")
-    ),
-    vmax=8000,
+    in_file,
     draw_cross=False,
     bg_img=None,
     figure=fig,
     axes=ax,
+    cmap="Reds",
+    vmin=0,
+    vmax=thresh,
 )
 glue_figure("figure_mean_volumewise_s0", fig, display=False)
 ```
@@ -160,9 +151,10 @@ Mean map from the volume-wise S0 estimation.
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fig, axes = plt.subplots(figsize=(16, 15), nrows=5)
 plotting.plot_epi(
-    image.mean_img(data_files[0]),
+    image.mean_img(data['echo_files'][0]),
     draw_cross=False,
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
@@ -170,7 +162,7 @@ plotting.plot_epi(
     axes=axes[0],
 )
 plotting.plot_epi(
-    image.mean_img(data_files[1]),
+    image.mean_img(data['echo_files'][1]),
     draw_cross=False,
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
@@ -178,7 +170,7 @@ plotting.plot_epi(
     axes=axes[1],
 )
 plotting.plot_epi(
-    image.mean_img(data_files[2]),
+    image.mean_img(data['echo_files'][2]),
     draw_cross=False,
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
@@ -186,7 +178,7 @@ plotting.plot_epi(
     axes=axes[2],
 )
 plotting.plot_epi(
-    image.mean_img(data_files[3]),
+    image.mean_img(data['echo_files'][3]),
     draw_cross=False,
     bg_img=None,
     cut_coords=[-10, 0, 10, 20, 30, 40, 50, 60, 70],
@@ -216,19 +208,23 @@ Mean images of the echo-wise data and the optimally combined data.
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 te30_tsnr = image.math_img(
     "(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask",
-    img=data_files[1],
-    mask=mask_file,
+    img=data['echo_files'][1],
+    mask=data['mask'],
 )
 oc_tsnr = image.math_img(
     "(np.nanmean(img, axis=3) / np.nanstd(img, axis=3)) * mask",
     img=os.path.join(
         out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"
     ),
-    mask=mask_file,
+    mask=data['mask'],
 )
-vmax = np.nanmax(np.abs(oc_tsnr.get_fdata()))
+arr = masking.apply_mask(te30_tsnr, data['mask'])
+thresh = np.nanpercentile(arr, 98)
+arr = masking.apply_mask(oc_tsnr, data['mask'])
+thresh = np.maximum(thresh, np.nanpercentile(arr, 98))
 
 fig, axes = plt.subplots(figsize=(10, 8), nrows=2)
 plotting.plot_stat_map(
@@ -237,9 +233,11 @@ plotting.plot_stat_map(
     bg_img=None,
     threshold=0.1,
     cut_coords=[0, 10, 10],
-    vmax=vmax,
     symmetric_cbar=False,
     axes=axes[0],
+    cmap="Reds",
+    vmin=0,
+    vmax=thresh,
 )
 axes[0].set_title("TE30 TSNR", fontsize=16)
 plotting.plot_stat_map(
@@ -248,9 +246,11 @@ plotting.plot_stat_map(
     bg_img=None,
     threshold=0.1,
     cut_coords=[0, 10, 10],
-    vmax=vmax,
     symmetric_cbar=False,
     axes=axes[1],
+    cmap="Reds",
+    vmin=0,
+    vmax=thresh,
 )
 axes[1].set_title("Optimal Combination TSNR", fontsize=16)
 glue_figure("figure_t2snr_te30_and_optcom", fig, display=False)
@@ -264,9 +264,10 @@ TSNR map of the second echo (TE30) and the optimally combined data.
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_carpet(
-    data_files[1],
+    data['echo_files'][1],
     axes=ax,
 )
 glue_figure("figure_echo3_carpet", fig, display=False)
@@ -280,6 +281,7 @@ Carpet plot of the third echo.
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fig, ax = plt.subplots(figsize=(16, 8))
 plotting.plot_carpet(
     os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-optcom_bold.nii.gz"),

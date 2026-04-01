@@ -18,6 +18,7 @@ import os
 from glob import glob
 
 import numpy as np
+from book_utils import load_pafin
 from nilearn.maskers import NiftiMasker
 
 data_path = os.path.abspath('../data')
@@ -25,31 +26,7 @@ data_path = os.path.abspath('../data')
 
 ```{code-cell} ipython3
 raise ValueError("SKIP")
-func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
-data_files = sorted(
-    glob(
-        os.path.join(
-            func_dir,
-            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
-        ),
-    ),
-)
-assert len(data_files) == 5
-echo_times = []
-for f in data_files:
-    json_file = f.replace('.nii.gz', '.json')
-    with open(json_file, 'r') as fo:
-        metadata = json.load(fo)
-    echo_times.append(metadata['EchoTime'] * 1000)
-mask_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
-)
-confounds_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
-)
-
+data = load_pafin(data_path)
 out_dir = os.path.join(data_path, "pySPFM")
 ```
 
@@ -59,15 +36,15 @@ out_dir = os.path.join(data_path, "pySPFM")
 from pySPFM import SparseDeconvolution
 
 # Create masker to convert 4D NIfTI data to 2D array
-masker = NiftiMasker(mask_img=mask_file)
+masker = NiftiMasker(mask_img=data['mask'])
 
 # Fit masker once on a representative image (first echo)
-masker.fit(data_files[0])
+masker.fit(data['echo_files'][0])
 
 # Load and mask each echo, then concatenate along the time axis
 # For multi-echo data, each echo's data (shape: n_timepoints × n_voxels) are stacked sequentially
 masked_data = []
-for f in data_files:
+for f in data['echo_files']:
     echo_data = masker.transform(f)  # Shape: (n_timepoints, n_voxels)
     masked_data.append(echo_data)
 
@@ -76,7 +53,7 @@ X = np.vstack(masked_data)  # Shape: (n_echoes * n_timepoints, n_voxels)
 # Fit the sparse deconvolution model
 model = SparseDeconvolution(
     tr=2.47,
-    te=echo_times,
+    te=data['echo_times'],
     criterion="bic",
     n_jobs=-1,  # Use all available CPU cores
 )

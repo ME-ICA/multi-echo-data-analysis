@@ -491,8 +491,8 @@ you only need a <em>shorter</em> echo time, which occurs in what is essentially 
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;ds006185/sub-24053/ses-1/func/&quot;</span><span class="p">)</span>
 <span class="n">te1_img</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
     <span class="n">func_dir</span><span class="p">,</span>
@@ -510,9 +510,25 @@ you only need a <em>shorter</em> echo time, which occurs in what is essentially 
 </pre></div>
 </div>
 </div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/mnt/c/Users/tsalo/Documents/ME-ICA/multi-echo-data-analysis/content/book_utils.py:59: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+  mean_data_img = image.mean_img(data_img)
+</pre></div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/mnt/c/Users/tsalo/Documents/ME-ICA/multi-echo-data-analysis/content/book_utils.py:60: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+  mean_nuis_img = image.mean_img(nuis_img)
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
 <span class="n">plotting</span><span class="o">.</span><span class="n">plot_carpet</span><span class="p">(</span><span class="n">te2_img</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span>
@@ -530,35 +546,30 @@ you only need a <em>shorter</em> echo time, which occurs in what is essentially 
 </pre></div>
 </div>
 </div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4468/2413803516.py:3: FutureWarning: boolean values for &#39;standardize&#39; will be deprecated in nilearn 0.15.0.
-Use &#39;zscore_sample&#39; instead of &#39;True&#39; or use &#39;None&#39; instead of &#39;False&#39;.
-  plotting.plot_carpet(te2_img, axes=axes[0], figure=fig)
-/tmp/ipykernel_4468/2413803516.py:3: FutureWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.14.0, the default strategy will be replaced by the new strategy, the &#39;zscore&#39; option will be removed. and using standardize=True will fall back to &#39;zscore_sample&#39;.To avoid this warning, please use &#39;zscore_sample&#39; instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6925/2413803516.py:3: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
   plotting.plot_carpet(te2_img, axes=axes[0], figure=fig)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4468/2413803516.py:5: FutureWarning: boolean values for &#39;standardize&#39; will be deprecated in nilearn 0.15.0.
-Use &#39;zscore_sample&#39; instead of &#39;True&#39; or use &#39;None&#39; instead of &#39;False&#39;.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6925/2413803516.py:5: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
   plotting.plot_carpet(te1_img, axes=axes[1], figure=fig)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4468/2413803516.py:5: FutureWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.14.0, the default strategy will be replaced by the new strategy, the &#39;zscore&#39; option will be removed. and using standardize=True will fall back to &#39;zscore_sample&#39;.To avoid this warning, please use &#39;zscore_sample&#39; instead.
-  plotting.plot_carpet(te1_img, axes=axes[1], figure=fig)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4468/2413803516.py:7: FutureWarning: boolean values for &#39;standardize&#39; will be deprecated in nilearn 0.15.0.
-Use &#39;zscore_sample&#39; instead of &#39;True&#39; or use &#39;None&#39; instead of &#39;False&#39;.
-  plotting.plot_carpet(denoised_img, axes=axes[2], figure=fig)
-/tmp/ipykernel_4468/2413803516.py:7: FutureWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.14.0, the default strategy will be replaced by the new strategy, the &#39;zscore&#39; option will be removed. and using standardize=True will fall back to &#39;zscore_sample&#39;.To avoid this warning, please use &#39;zscore_sample&#39; instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6925/2413803516.py:7: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
   plotting.plot_carpet(denoised_img, axes=axes[2], figure=fig)
 </pre></div>
 </div>
-<img alt="../_images/45636455d8560a357a68cdcc146eb92a7439a9211d4872c4a15cced2b5e15ebe.png" src="../_images/45636455d8560a357a68cdcc146eb92a7439a9211d4872c4a15cced2b5e15ebe.png" />
+<img alt="../_images/cb1eeec63987cf6938effdccf7557072320adf3fbf153ddd3e15cc4d22730d53.png" src="../_images/cb1eeec63987cf6938effdccf7557072320adf3fbf153ddd3e15cc4d22730d53.png" />
 </div>
+</details>
 </div>
 <figure class="align-center" id="figure-dual-echo-results">
-<img alt="../_images/0f9170add58a07e512da2a29a4d23aeff8042a92f1da61c0e100707daa0c4b7a.png" src="../_images/0f9170add58a07e512da2a29a4d23aeff8042a92f1da61c0e100707daa0c4b7a.png" />
+<img alt="../_images/ba123c7756d92114bc0eda4255c882f850042735d0903a868419fc38b5030636.png" src="../_images/ba123c7756d92114bc0eda4255c882f850042735d0903a868419fc38b5030636.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 35 </span><span class="caption-text">Results of dual-echo regression.</span><a class="headerlink" href="#figure-dual-echo-results" title="Link to this image">#</a></p>
 </figcaption>

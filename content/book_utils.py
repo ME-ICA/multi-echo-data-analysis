@@ -1,11 +1,40 @@
 """Utility functions for the JupyterBook."""
 
 import io
+import json
+import os
 from typing import Any
 
 import numpy as np
 from IPython.display import Image
 from myst_nb import glue as myst_nb_glue
+from nilearn import image, masking
+
+
+def load_pafin(data_path):
+    func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
+    prefix = "sub-24053_ses-1_task-rat_dir-PA_run-01"
+    data_files = [
+        os.path.join(func_dir, f"{prefix}_echo-1_part-mag_desc-preproc_bold.nii.gz"),
+        os.path.join(func_dir, f"{prefix}_echo-2_part-mag_desc-preproc_bold.nii.gz"),
+        os.path.join(func_dir, f"{prefix}_echo-3_part-mag_desc-preproc_bold.nii.gz"),
+        os.path.join(func_dir, f"{prefix}_echo-4_part-mag_desc-preproc_bold.nii.gz"),
+        os.path.join(func_dir, f"{prefix}_echo-5_part-mag_desc-preproc_bold.nii.gz"),
+    ]
+    echo_times = []
+    for f in data_files:
+        json_file = f.replace('.nii.gz', '.json')
+        with open(json_file, 'r') as fo:
+            metadata = json.load(fo)
+        echo_times.append(metadata['EchoTime'])
+    mask_file = os.path.join(func_dir, f"{prefix}_part-mag_desc-brain_mask.nii.gz")
+    confounds_file = os.path.join(func_dir, f"{prefix}_part-mag_desc-confounds_timeseries.tsv")
+    return {
+        'echo_files': data_files,
+        'mask': mask_file,
+        'confounds': confounds_file,
+        'echo_times': echo_times,
+    }
 
 
 def glue_figure(name: str, fig: Any, display: bool = False, dpi: int = 150, **savefig_kw: Any) -> None:
@@ -22,7 +51,6 @@ def glue_figure(name: str, fig: Any, display: bool = False, dpi: int = 150, **sa
     fig.savefig(buf, **kwargs)
     buf.seek(0)
     myst_nb_glue(name, Image(data=buf.getvalue()), display=display)
-from nilearn import image, masking
 
 
 def regress_one_image_out_of_another(data_img, nuis_img, mask_img):

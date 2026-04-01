@@ -28,7 +28,7 @@ from nilearn import masking
 # a brain mask, and an index of "bad" components
 data_file = "preprocessed_data.nii.gz"
 mixing_file = "mixing.tsv"
-mask_file = "mask.nii.gz"
+data['mask'] = "mask.nii.gz"
 den_idx = np.array([0, 1, 2, 3, 4, 5])
 
 # Load the mixing matrix
@@ -36,13 +36,13 @@ mixing_df = pd.read_table(mixing_file, index_col="component")
 mixing = mixing_df.data
 
 # Apply the mask to the data image to get a 2d array
-data = masking.apply_mask(data_file, mask_file)
+arr = masking.apply_mask(data_file, data['mask'])
 
 # Transpose to voxels-by-time
-data = data.T
+arr = arr.T
 
 # The first dimension should be time
-assert data.shape[1] == mixing.shape[0]
+assert arr.shape[1] == mixing.shape[0]
 ```
 ````
 ````{tab} FSL
@@ -70,14 +70,14 @@ then retain the residuals for further analysis, you are doing aggressive denoisi
 ````{tab} Python
 ```python
 # Fit GLM to bad components only
-betas = np.linalg.lstsq(motion_components, data, rcond=None)[0]
+betas = np.linalg.lstsq(motion_components, arr, rcond=None)[0]
 
 # Denoise the data with the bad components
-pred_data = np.dot(motion_components, betas)
-data_denoised = data - pred_data
+pred_arr = np.dot(motion_components, betas)
+arr_denoised = arr - pred_arr
 
 # Save to file
-img_denoised = masking.unmask(data_denoised.T, mask_file)
+img_denoised = masking.unmask(arr_denoised.T, data['mask'])
 img_denoised.to_filename("denoised.nii.gz")
 ```
 ````
@@ -100,14 +100,14 @@ you are doing nonaggressive denoising.
 ````{tab} Python
 ```python
 # Fit GLM to all components
-betas = np.linalg.lstsq(mixing, data, rcond=None)[0]
+betas = np.linalg.lstsq(mixing, arr, rcond=None)[0]
 
 # Denoise the data using the betas from just the bad components
-pred_data = np.dot(motion_components, betas[den_idx, :])
-data_denoised = data - pred_data
+pred_arr = np.dot(motion_components, betas[den_idx, :])
+arr_denoised = arr - pred_arr
 
 # Save to file
-img_denoised = masking.unmask(data_denoised.T, mask_file)
+img_denoised = masking.unmask(arr_denoised.T, data['mask'])
 img_denoised.to_filename("denoised.nii.gz")
 ```
 ````
@@ -163,14 +163,14 @@ Once you have these "pure evil" components, you can perform aggressive denoising
 ````{tab} Python
 ```python
 # Fit GLM to bad components only
-betas = np.linalg.lstsq(orth_motion_components, data, rcond=None)[0]
+betas = np.linalg.lstsq(orth_motion_components, arr, rcond=None)[0]
 
 # Denoise the data with the bad components
-pred_data = np.dot(orth_motion_components, betas)
-data_denoised = data - pred_data
+pred_arr = np.dot(orth_motion_components, betas)
+arr_denoised = arr - pred_arr
 
 # Save to file
-img_denoised = masking.unmask(data_denoised.T, mask_file)
+img_denoised = masking.unmask(arr_denoised.T, data['mask'])
 img_denoised.to_filename("denoised.nii.gz")
 ```
 ````

@@ -34,10 +34,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
@@ -485,7 +485,7 @@ To remove noise from your data, you can regress the “bad” components out of 
 <span class="c1"># a brain mask, and an index of &quot;bad&quot; components</span>
 <span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;preprocessed_data.nii.gz&quot;</span>
 <span class="n">mixing_file</span> <span class="o">=</span> <span class="s2">&quot;mixing.tsv&quot;</span>
-<span class="n">mask_file</span> <span class="o">=</span> <span class="s2">&quot;mask.nii.gz&quot;</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;mask.nii.gz&quot;</span>
 <span class="n">den_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
 
 <span class="c1"># Load the mixing matrix</span>
@@ -493,13 +493,13 @@ To remove noise from your data, you can regress the “bad” components out of 
 <span class="n">mixing</span> <span class="o">=</span> <span class="n">mixing_df</span><span class="o">.</span><span class="n">data</span>
 
 <span class="c1"># Apply the mask to the data image to get a 2d array</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">mask_file</span><span class="p">)</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">apply_mask</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">])</span>
 
 <span class="c1"># Transpose to voxels-by-time</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">T</span>
 
 <span class="c1"># The first dimension should be time</span>
-<span class="k">assert</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">mixing</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">mixing</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -527,14 +527,14 @@ then retain the residuals for further analysis, you are doing aggressive denoisi
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio" /><label class="tab-label" for="tab-set--1-input--1">Python</label><div class="tab-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit GLM to bad components only</span>
-<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">motion_components</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">motion_components</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># Denoise the data with the bad components</span>
-<span class="n">pred_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">motion_components</span><span class="p">,</span> <span class="n">betas</span><span class="p">)</span>
-<span class="n">data_denoised</span> <span class="o">=</span> <span class="n">data</span> <span class="o">-</span> <span class="n">pred_data</span>
+<span class="n">pred_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">motion_components</span><span class="p">,</span> <span class="n">betas</span><span class="p">)</span>
+<span class="n">arr_denoised</span> <span class="o">=</span> <span class="n">arr</span> <span class="o">-</span> <span class="n">pred_arr</span>
 
 <span class="c1"># Save to file</span>
-<span class="n">img_denoised</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">data_denoised</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mask_file</span><span class="p">)</span>
+<span class="n">img_denoised</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">arr_denoised</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">])</span>
 <span class="n">img_denoised</span><span class="o">.</span><span class="n">to_filename</span><span class="p">(</span><span class="s2">&quot;denoised.nii.gz&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -558,14 +558,14 @@ you are doing nonaggressive denoising.</p>
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio" /><label class="tab-label" for="tab-set--2-input--1">Python</label><div class="tab-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit GLM to all components</span>
-<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">mixing</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">mixing</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># Denoise the data using the betas from just the bad components</span>
-<span class="n">pred_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">motion_components</span><span class="p">,</span> <span class="n">betas</span><span class="p">[</span><span class="n">den_idx</span><span class="p">,</span> <span class="p">:])</span>
-<span class="n">data_denoised</span> <span class="o">=</span> <span class="n">data</span> <span class="o">-</span> <span class="n">pred_data</span>
+<span class="n">pred_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">motion_components</span><span class="p">,</span> <span class="n">betas</span><span class="p">[</span><span class="n">den_idx</span><span class="p">,</span> <span class="p">:])</span>
+<span class="n">arr_denoised</span> <span class="o">=</span> <span class="n">arr</span> <span class="o">-</span> <span class="n">pred_arr</span>
 
 <span class="c1"># Save to file</span>
-<span class="n">img_denoised</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">data_denoised</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mask_file</span><span class="p">)</span>
+<span class="n">img_denoised</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">arr_denoised</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">])</span>
 <span class="n">img_denoised</span><span class="o">.</span><span class="n">to_filename</span><span class="p">(</span><span class="s2">&quot;denoised.nii.gz&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -622,14 +622,14 @@ This way, you can regress the rejected components out of the data in the form of
 <div class="tab-set docutils">
 <input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio" /><label class="tab-label" for="tab-set--4-input--1">Python</label><div class="tab-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit GLM to bad components only</span>
-<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">orth_motion_components</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">orth_motion_components</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># Denoise the data with the bad components</span>
-<span class="n">pred_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">orth_motion_components</span><span class="p">,</span> <span class="n">betas</span><span class="p">)</span>
-<span class="n">data_denoised</span> <span class="o">=</span> <span class="n">data</span> <span class="o">-</span> <span class="n">pred_data</span>
+<span class="n">pred_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">orth_motion_components</span><span class="p">,</span> <span class="n">betas</span><span class="p">)</span>
+<span class="n">arr_denoised</span> <span class="o">=</span> <span class="n">arr</span> <span class="o">-</span> <span class="n">pred_arr</span>
 
 <span class="c1"># Save to file</span>
-<span class="n">img_denoised</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">data_denoised</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mask_file</span><span class="p">)</span>
+<span class="n">img_denoised</span> <span class="o">=</span> <span class="n">masking</span><span class="o">.</span><span class="n">unmask</span><span class="p">(</span><span class="n">arr_denoised</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">])</span>
 <span class="n">img_denoised</span><span class="o">.</span><span class="n">to_filename</span><span class="p">(</span><span class="s2">&quot;denoised.nii.gz&quot;</span><span class="p">)</span>
 </pre></div>
 </div>

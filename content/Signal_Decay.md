@@ -67,7 +67,7 @@ from nilearn import image, masking, plotting
 from nilearn.glm import first_level
 from scipy import signal
 
-from book_utils import glue_figure, predict_bold_signal
+from book_utils import glue_figure, load_pafin, predict_bold_signal
 
 sns.set_style("whitegrid")
 
@@ -79,52 +79,30 @@ os.makedirs(out_dir, exist_ok=True)
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
-data_files = sorted(
-    glob(
-        os.path.join(
-            func_dir,
-            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
-        ),
-    ),
-)
-echo_times = []
-for f in data_files:
-    json_file = f.replace('.nii.gz', '.json')
-    with open(json_file, 'r') as fo:
-        metadata = json.load(fo)
-    echo_times.append(metadata['EchoTime'] * 1000)
-mask_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
-)
-confounds_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
-)
+data = load_pafin(data_path)
 ted_dir = os.path.join(data_path, "tedana")
-n_echoes = len(echo_times)
-echo_times = [int(np.round(te)) for te in echo_times]
+n_echoes = len(data['echo_times'])
+data['echo_times'] = [int(np.round(te)) for te in data['echo_times']]
 
 pal = sns.color_palette("cubehelix", n_echoes)
 
-img = image.index_img(data_files[0], 0)
-data = img.get_fdata()
-vmax = np.max(data)
-idx = np.vstack(np.where(data > 1000))
+img = image.index_img(data['echo_files'][0], 0)
+arr = img.get_fdata()
+vmax = np.max(arr)
+idx = np.vstack(np.where(arr > 1000))
 
 min_x, min_y, min_z = np.min(idx, axis=1)
 max_x, max_y, max_z = np.max(idx, axis=1)
 
 imgs = []
-for f in data_files:
+for f in data['echo_files']:
     img = image.index_img(f, 0)
-    data = img.get_fdata()
-    data = data[min_x:max_x, min_y:max_y, min_z:max_z]
-    img = nb.Nifti1Image(data, img.affine, img.header)
+    arr = img.get_fdata()
+    arr = arr[min_x:max_x, min_y:max_y, min_z:max_z]
+    img = nb.Nifti1Image(arr, img.affine, img.header)
     imgs.append(img)
 
-mask = nb.load(mask_file)
+mask = nb.load(data['mask'])
 
 # Component parameter estimates
 betas_file = os.path.join(
@@ -147,8 +125,8 @@ voxel_idx = np.where(
 )[0][0]
 
 # Extract the time series for the high-kappa voxel
-data = [masking.apply_mask(f, mask) for f in data_files]
-ts = [d[:, voxel_idx] for d in data]
+arr = [masking.apply_mask(f, mask) for f in data['echo_files']]
+ts = [d[:, voxel_idx] for d in arr]
 ts_1d = np.hstack(ts)
 
 n_trs = ts[0].shape[0]
@@ -163,12 +141,12 @@ The data we use is a single resting-state run, with five echo times.
 :tags: [hide-cell, hide-output]
 plt.style.use("dark_background")
 
-fig, axes = plt.subplots(figsize=(26, 16), nrows=len(data_files))
+fig, axes = plt.subplots(figsize=(26, 16), nrows=len(data['echo_files']))
 for i_echo, img in enumerate(imgs):
-    te = echo_times[i_echo]
+    te = data['echo_times'][i_echo]
     if i_echo == 0:
-        data = img.get_fdata()
-        vmax = np.max(data)
+        arr = img.get_fdata()
+        vmax = np.max(arr)
 
     plotting.plot_epi(
         img,
@@ -207,12 +185,12 @@ Additionally, image contrast tends to increase with longer echo times.
 fig, ax = plt.subplots(figsize=(14, 6))
 values = [i[0] for i in ts]
 for i_echo in range(n_echoes):
-    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    rep_echo_times = np.ones(n_trs) * data['echo_times'][i_echo]
     ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
-ax.set_xticks(echo_times)
+ax.set_xticks(data['echo_times'])
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.set_xlim(0, 120)
 ax.set_ylim(0, 25000)
@@ -239,7 +217,7 @@ fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
     axes[i_echo].set_ylabel(
-        f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
+        f"{data['echo_times'][i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
     )
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
@@ -423,7 +401,7 @@ axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(echo_times)
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -504,7 +482,7 @@ axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(echo_times)
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -657,7 +635,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(echo_times)
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -793,7 +771,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(echo_times)
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -909,7 +887,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(echo_times)
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -982,8 +960,8 @@ s0based_fullcurve_signal = predict_bold_signal(
 t2sbased_fullcurve_signal = predict_bold_signal(
     FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts
 )
-s0based_multiecho_signal = s0based_fullcurve_signal[echo_times, :]
-t2sbased_multiecho_signal = t2sbased_fullcurve_signal[echo_times, :]
+s0based_multiecho_signal = s0based_fullcurve_signal[data['echo_times'], :]
+t2sbased_multiecho_signal = t2sbased_fullcurve_signal[data['echo_times'], :]
 
 fig, axes = plt.subplots(
     nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
@@ -1018,7 +996,7 @@ ax1_t2s_line_plot = axes[1].plot(
     zorder=1,
 )[0]
 ax1_s0_scatter_plot = axes[1].scatter(
-    echo_times,
+    data['echo_times'],
     s0based_multiecho_signal[:, 0],
     color="red",
     s=150,
@@ -1027,7 +1005,7 @@ ax1_s0_scatter_plot = axes[1].scatter(
     zorder=2,
 )
 ax1_t2s_scatter_plot = axes[1].scatter(
-    echo_times,
+    data['echo_times'],
     t2sbased_multiecho_signal[:, 0],
     color="blue",
     s=150,
@@ -1043,7 +1021,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks(echo_times)
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -1076,7 +1054,7 @@ def AnimationFunction(frame):
     ax1_s0_scatter_plot.set_offsets(
         np.column_stack(
             (
-                echo_times,
+                data['echo_times'],
                 s0based_multiecho_signal[:, frame],
             )
         )
@@ -1084,7 +1062,7 @@ def AnimationFunction(frame):
     ax1_t2s_scatter_plot.set_offsets(
         np.column_stack(
             (
-                echo_times,
+                data['echo_times'],
                 t2sbased_multiecho_signal[:, frame],
             )
         )

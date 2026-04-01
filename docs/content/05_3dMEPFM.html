@@ -466,6 +466,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="kn">import</span> <span class="n">glob</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">book_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_pafin</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.maskers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NiftiMasker</span>
 
 <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../data&#39;</span><span class="p">)</span>
@@ -482,31 +483,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SKIP&quot;</span><span class="p">)</span>
-<span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;ds006185/sub-24053/ses-1/func/&quot;</span><span class="p">)</span>
-<span class="n">data_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
-    <span class="n">glob</span><span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">func_dir</span><span class="p">,</span>
-            <span class="s2">&quot;sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz&quot;</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
-<span class="n">echo_times</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data_files</span><span class="p">:</span>
-    <span class="n">json_file</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.nii.gz&#39;</span><span class="p">,</span> <span class="s1">&#39;.json&#39;</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
-    <span class="n">echo_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;EchoTime&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">func_dir</span><span class="p">,</span>
-    <span class="s2">&quot;sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz&quot;</span>
-<span class="p">)</span>
-<span class="n">confounds_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">func_dir</span><span class="p">,</span>
-    <span class="s2">&quot;sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_pafin</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;pySPFM&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -516,12 +493,8 @@
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SKIP&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;ds006185/sub-24053/ses-1/func/&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">data_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">glob</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>         <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>      <span class="mi">9</span>     <span class="p">),</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">data</span> <span class="o">=</span> <span class="n">load_pafin</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;pySPFM&quot;</span><span class="p">)</span>
 
 <span class="ne">ValueError</span>: SKIP
 </pre></div>
@@ -533,15 +506,15 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pySPFM</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparseDeconvolution</span>
 
 <span class="c1"># Create masker to convert 4D NIfTI data to 2D array</span>
-<span class="n">masker</span> <span class="o">=</span> <span class="n">NiftiMasker</span><span class="p">(</span><span class="n">mask_img</span><span class="o">=</span><span class="n">mask_file</span><span class="p">)</span>
+<span class="n">masker</span> <span class="o">=</span> <span class="n">NiftiMasker</span><span class="p">(</span><span class="n">mask_img</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">])</span>
 
 <span class="c1"># Fit masker once on a representative image (first echo)</span>
-<span class="n">masker</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">masker</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;echo_files&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># Load and mask each echo, then concatenate along the time axis</span>
 <span class="c1"># For multi-echo data, each echo&#39;s data (shape: n_timepoints × n_voxels) are stacked sequentially</span>
 <span class="n">masked_data</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data_files</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;echo_files&#39;</span><span class="p">]:</span>
     <span class="n">echo_data</span> <span class="o">=</span> <span class="n">masker</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># Shape: (n_timepoints, n_voxels)</span>
     <span class="n">masked_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">echo_data</span><span class="p">)</span>
 
@@ -550,7 +523,7 @@
 <span class="c1"># Fit the sparse deconvolution model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">SparseDeconvolution</span><span class="p">(</span>
     <span class="n">tr</span><span class="o">=</span><span class="mf">2.47</span><span class="p">,</span>
-    <span class="n">te</span><span class="o">=</span><span class="n">echo_times</span><span class="p">,</span>
+    <span class="n">te</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;echo_times&#39;</span><span class="p">],</span>
     <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;bic&quot;</span><span class="p">,</span>
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Use all available CPU cores</span>
 <span class="p">)</span>

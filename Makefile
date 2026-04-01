@@ -17,7 +17,7 @@ install:
 	jupyter-book install ./
 
 book:
-	jupyter-book build -vv ./
+	jupyter-book build ./
 
 sync-docs:
 	python scripts/sync_docs.py

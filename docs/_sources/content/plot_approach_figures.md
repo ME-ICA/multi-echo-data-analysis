@@ -29,7 +29,7 @@ import nitransforms as nit
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from book_utils import glue_figure
+from book_utils import glue_figure, load_pafin
 from nilearn import image, masking, plotting
 from tedana.io import load_data, new_nii_like
 from tedana.utils import make_adaptive_mask
@@ -42,30 +42,7 @@ ted_dir = os.path.join(data_path, "tedana")
 ## Load data
 ```{code-cell} ipython3
 :tags: [hide-cell]
-func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
-data_files = sorted(
-    glob(
-        os.path.join(
-            func_dir,
-            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
-        ),
-    ),
-)
-echo_times = []
-for f in data_files:
-    json_file = f.replace('.nii.gz', '.json')
-    with open(json_file, 'r') as fo:
-        metadata = json.load(fo)
-    echo_times.append(metadata['EchoTime'] * 1000)
-echo_times = np.round(np.array(echo_times), 2)
-mask_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
-)
-confounds_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
-)
+data = load_pafin(data_path)
 
 # Background anatomical image
 anat_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/anat/")
@@ -75,7 +52,7 @@ xfm = os.path.join(
 )
 xfm = nit.linear.load(xfm, fmt="itk")
 t1_file = os.path.join(anat_dir, "sub-24053_ses-1_rec-norm_desc-preproc_T1w.nii.gz")
-bg_img = xfm.apply(spatialimage=t1_file, reference=data_files[0])
+bg_img = xfm.apply(spatialimage=t1_file, reference=data['echo_files'][0])
 
 # Tedana outputs
 adaptive_mask_file = os.path.join(
@@ -197,12 +174,12 @@ rej_comp_tbl = comp_tbl.loc[comp_tbl["classification"] == "rejected"]
 low_kappa_comp = rej_comp_tbl.sort_values(by="rho", ascending=False).index.values[0]
 
 # load data
-data = [masking.apply_mask(f, mask) for f in data_files]
-ts = [d[:, voxel_idx] for d in data]
+arr = [masking.apply_mask(f, mask) for f in data['echo_files']]
+ts = [d[:, voxel_idx] for d in arr]
 ts_1d = np.hstack(ts)
 
-n_echoes = len(echo_times)
-n_trs = data[0].shape[0]
+n_echoes = len(data['echo_times'])
+n_trs = arr[0].shape[0]
 
 pal = sns.color_palette("cubehelix", n_echoes)
 ```
@@ -212,7 +189,7 @@ pal = sns.color_palette("cubehelix", n_echoes)
 # Prepare data for model
 log_data = np.log(np.abs(ts_1d) + 1)
 # log_data = np.log(ts_1d)  # in a perfect world...
-x = np.column_stack([np.ones(n_echoes), -1 * echo_times])
+x = np.column_stack([np.ones(n_echoes), -1 * data['echo_times']])
 X = np.repeat(x, n_trs, axis=0)  # T * E
 
 # Model fit
@@ -231,7 +208,7 @@ mono_x = np.arange(0, 1000, 0.01)
 mono_y = np.exp(-1 * betas[1] * mono_x) * s0
 
 # Get weights for optimal combination
-alpha = echo_times * np.exp(-echo_times / t2s)
+alpha = data['echo_times'] * np.exp(-data['echo_times'] / t2s)
 alpha = alpha / np.sum(alpha)  # unnecessary but good for bar plot below
 
 # Combine data across echoes
@@ -246,7 +223,7 @@ fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
     axes[i_echo].set_ylabel(
-        f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
+        f"{data['echo_times'][i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
     )
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
@@ -271,12 +248,12 @@ Time series from a voxel for each echo.
 fig, ax = plt.subplots(figsize=(14, 6))
 values = [i[0] for i in ts]
 for i_echo in range(n_echoes):
-    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    rep_echo_times = np.ones(n_trs) * data['echo_times'][i_echo]
     ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
-ax.set_xticks(echo_times)
+ax.set_xticks(data['echo_times'])
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.set_xlim(0, 120)
 ax.set_ylim(0, 24000)
@@ -334,13 +311,13 @@ Adaptive mask.
 :tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
-    rep_echo_times = -1 * np.ones(n_trs) * echo_times[i_echo]
+    rep_echo_times = -1 * np.ones(n_trs) * data['echo_times'][i_echo]
     log_echo_data = np.log((np.abs(ts[i_echo]) + 1))
     ax.scatter(rep_echo_times, log_echo_data, alpha=0.05, color=pal[i_echo])
 
 ax.set_ylabel("log(BOLD signal)", fontsize=16)
 ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
-ax.set_xticks(-1 * echo_times)
+ax.set_xticks(-1 * data['echo_times'])
 ax.set_xlim(-120, 0)
 ax.set_ylim(4, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
@@ -391,7 +368,7 @@ B_{0}\end{pmatrix}
 :tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
-    rep_echo_times = -1 * np.ones(n_trs) * echo_times[i_echo]
+    rep_echo_times = -1 * np.ones(n_trs) * data['echo_times'][i_echo]
     log_echo_data = np.log((np.abs(ts[i_echo]) + 1))
     ax.scatter(rep_echo_times, log_echo_data, alpha=0.05, color=pal[i_echo])
 
@@ -399,7 +376,7 @@ ax.plot(log_x, log_y)
 
 ax.set_ylabel("log(BOLD signal)", fontsize=16)
 ax.set_xlabel("Negative Echo Time (ms)", fontsize=16)
-ax.set_xticks(-1 * echo_times)
+ax.set_xticks(-1 * data['echo_times'])
 ax.set_xlim(-120, 0)
 ax.set_ylim(5, 8)
 ax.tick_params(axis="both", which="major", labelsize=14)
@@ -439,14 +416,14 @@ T_{2}^{*} = \frac{1}{B_{1}}
 :tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
-    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    rep_echo_times = np.ones(n_trs) * data['echo_times'][i_echo]
     ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
 ax.plot(mono_x, mono_y)
 
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
-ax.set_xticks(echo_times)
+ax.set_xticks(data['echo_times'])
 ax.set_xlim(0, 120)
 ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
@@ -474,7 +451,7 @@ Scatter plot of voxel's signal for each echo, after log-linear transformation, w
 :tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
-    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    rep_echo_times = np.ones(n_trs) * data['echo_times'][i_echo]
     ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
 ax.plot(mono_x, mono_y)
@@ -482,7 +459,7 @@ ax.plot(mono_x, mono_y)
 ax.axvline(t2s, 0, 1, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
-ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
+ax.set_xticks(np.hstack((data['echo_times'], [np.round(t2s, 1)])))
 ax.set_xlim(0, 120)
 ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
@@ -505,7 +482,7 @@ Scatter plot of voxel's signal for each echo with T2* estimate.
 ```{code-cell} ipython3
 :tags: [hide-cell]
 fig, ax = plt.subplots()
-sns.barplot(x=echo_times, y=alpha, ax=ax, palette=pal)
+sns.barplot(x=data['echo_times'], y=alpha, ax=ax, palette=pal)
 ax.set_ylabel("Weight", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
 ax.tick_params(axis="both", which="major", labelsize=14)
@@ -526,7 +503,7 @@ Averaging weights for optimal combination.
 :tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(14, 6))
 for i_echo in range(n_echoes):
-    rep_echo_times = np.ones(n_trs) * echo_times[i_echo]
+    rep_echo_times = np.ones(n_trs) * data['echo_times'][i_echo]
     ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
 ax.plot(mono_x, mono_y)
@@ -540,7 +517,7 @@ ax.scatter(
 ax.axvline(t2s, 0, 20000, label="$T_2^*$", color="black", linestyle="--", alpha=0.5)
 ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
-ax.set_xticks(np.hstack((echo_times, [np.round(t2s, 1)])))
+ax.set_xticks(np.hstack((data['echo_times'], [np.round(t2s, 1)])))
 ax.set_xlim(0, 120)
 ax.set_ylim(0, 24000)
 ax.tick_params(axis="both", which="major", labelsize=14)
@@ -567,7 +544,7 @@ fig, axes = plt.subplots(n_echoes + 1, sharex=True, sharey=False, figsize=(14, 6
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
     axes[i_echo].set_ylabel(
-        f"{echo_times[i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
+        f"{data['echo_times'][i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
     )
     axes[i_echo].set_yticks([])
     axes[i_echo].set_xticks([])
@@ -700,7 +677,7 @@ but $\kappa$ and $\rho$ are averaged across voxels.
 ```{code-cell} ipython3
 :tags: [hide-cell]
 fig, axes = plt.subplots(3, sharex=True, figsize=(14, 9))
-axes[-1].set_xticks(echo_times)
+axes[-1].set_xticks(data['echo_times'])
 axes[-1].tick_params(axis="both", which="major", labelsize=12)
 axes[-1].set_xlabel("Echo Time (ms)", fontsize=16)
 
@@ -716,7 +693,7 @@ for i_comp, comp in enumerate(
     s0_pred_weights = s0_pred_betas[comp_voxel_idx, :, i_comp]
 
     axes[i_comp].plot(
-        echo_times,
+        data['echo_times'],
         comp_weights,
         c="black",
         alpha=0.5,
@@ -724,10 +701,10 @@ for i_comp, comp in enumerate(
         label="Component PEs",
     )
     axes[i_comp].plot(
-        echo_times, r2_pred_weights, c="blue", label="Predicted T2* model values"
+        data['echo_times'], r2_pred_weights, c="blue", label="Predicted T2* model values"
     )
     axes[i_comp].plot(
-        echo_times, s0_pred_weights, c="red", label="Predicted S0 model values"
+        data['echo_times'], s0_pred_weights, c="red", label="Predicted S0 model values"
     )
 
     # Set yticklabels

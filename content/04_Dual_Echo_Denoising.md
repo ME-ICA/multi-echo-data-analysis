@@ -40,6 +40,7 @@ data_path = os.path.abspath('../data')
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
 te1_img = os.path.join(
     func_dir,
@@ -57,6 +58,7 @@ denoised_img = regress_one_image_out_of_another(te2_img, te1_img, mask_img)
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 fig, axes = plt.subplots(figsize=(16, 16), nrows=3)
 
 plotting.plot_carpet(te2_img, axes=axes[0], figure=fig)

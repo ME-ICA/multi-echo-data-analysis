@@ -25,36 +25,14 @@ from pprint import pprint
 import nibabel as nb
 import pandas as pd
 from IPython.display import HTML, display
+from book_utils import load_pafin
 from tedana import workflows
 
 data_path = os.path.abspath('../data')
 ```
 
 ```{code-cell} ipython3
-func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
-data_files = sorted(
-    glob(
-        os.path.join(
-            func_dir,
-            "sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
-        ),
-    ),
-)
-echo_times = []
-for f in data_files:
-    json_file = f.replace('.nii.gz', '.json')
-    with open(json_file, 'r') as fo:
-        metadata = json.load(fo)
-    echo_times.append(metadata['EchoTime'] * 1000)
-mask_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz"
-)
-confounds_file = os.path.join(
-    func_dir,
-    "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv",
-)
-
+data = load_pafin(data_path)
 out_dir = os.path.join(data_path, "tedana")
 ```
 
@@ -62,10 +40,10 @@ out_dir = os.path.join(data_path, "tedana")
 :tags: [hide-output]
 
 workflows.tedana_workflow(
-    data_files,
-    echo_times,
+    data['echo_files'],
+    data['echo_times'],
     out_dir=out_dir,
-    mask=mask_file,
+    mask=data['mask'],
     prefix="sub-24053_ses-1_task-rat_dir-PA_run-01",
     fittype="loglin",
     tedpca="mdl",
@@ -106,17 +84,17 @@ with open(
     os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_metrics.json"),
     "r",
 ) as fo:
-    data = json.load(fo)
+    metrics = json.load(fo)
 
-first_five_keys = list(data.keys())[:5]
-reduced_data = {k: data[k] for k in first_five_keys}
-pprint(reduced_data)
+first_five_keys = list(metrics.keys())[:5]
+reduced_metrics = {k: metrics[k] for k in first_five_keys}
+pprint(reduced_metrics)
 ```
 
 ```{code-cell} ipython3
 :tags: [output_scroll]
 
-df = pd.DataFrame.from_dict(data, orient="index")
+df = pd.DataFrame.from_dict(metrics, orient="index")
 df = df.fillna("n/a")
 display(HTML(df.to_html()))
 ```
