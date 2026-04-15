@@ -19,7 +19,7 @@ dependencies = [
     "sphinx-jupyterbook-latex",
     "sphinx-proof",
     "sphinxcontrib-bibtex",
-    "tedana==26.0.0",
+    "tedana==26.0.3",
 ]
 
 # Note: git-annex is a system package (not installable via pip/uv).
