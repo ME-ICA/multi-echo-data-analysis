@@ -1,0 +1,31 @@
+[project]
+name = "meda"
+version = "0.1.0"
+description = "Multi-echo data analysis Jupyter Book"
+requires-python = ">=3.10"
+dependencies = [
+    "datalad",
+    "imageio",
+    # Sphinx-based Jupyter Book 1.x (this repo is not on Jupyter Book 2 / MyST engine yet)
+    "jupyter-book>=1.0,<2.0",
+    "jupytext",
+    "matplotlib",
+    "myst-nb",
+    "nilearn",
+    "nitransforms",
+    "pyspfm==2.0.2",
+    "seaborn",
+    "sphinx>=4",
+    "sphinx-inline-tabs",
+    "sphinx-jupyterbook-latex",
+    "sphinx-proof",
+    "sphinxcontrib-bibtex",
+    "tedana==26.0.0",
+]
+
+# Note: git-annex is a system package (not installable via pip/uv).
+# Install it separately, e.g. `brew install git-annex` or `apt install git-annex`.
+
+[tool.uv]
+# Use a named environment directory ("meda") instead of the default ".venv".
+# Override by exporting UV_PROJECT_ENVIRONMENT before invoking uv.
