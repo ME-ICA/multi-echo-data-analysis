@@ -2,6 +2,12 @@
 # `uv` honors UV_PROJECT_ENVIRONMENT to place the venv somewhere other than .venv.
 export UV_PROJECT_ENVIRONMENT := meda
 
+# Reproducible image outputs: matplotlib honors SOURCE_DATE_EPOCH and will stamp
+# PNGs with a fixed timestamp instead of "now", so identical plots produce
+# identical bytes (and identical content-hashed filenames in _images/).
+# 1577836800 == 2020-01-01T00:00:00Z
+export SOURCE_DATE_EPOCH := 1577836800
+
 .PHONY: help check-env book clean serve sync-docs site-publish install runall build site
 
 help:

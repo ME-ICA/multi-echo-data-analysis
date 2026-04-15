@@ -31,7 +31,6 @@ import pandas as pd
 import seaborn as sns
 from book_utils import glue_figure, load_pafin
 from nilearn import image, masking, plotting
-from tedana.io import load_data, new_nii_like
 from tedana.utils import make_adaptive_mask
 
 data_path = os.path.abspath('../data')

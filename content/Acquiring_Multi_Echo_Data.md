@@ -242,16 +242,21 @@ plt.xlabel("Echo Number")
 plt.ylabel("Echo Time (ms)")
 plt.show()
 
-plt.hist(metable.TR.to_numpy())
+# Columns can come back as object dtype when the source spreadsheet has blank
+# or non-numeric cells; coerce to float and drop NaNs before plotting.
+tr = pd.to_numeric(metable.TR, errors="coerce").dropna().to_numpy()
+plt.hist(tr)
 plt.title("Repetition Times", fontsize=18)
 plt.xlabel("Repetition Time (s)")
 plt.ylabel("Count")
 plt.show()
 
-x_vox = metable.x.to_numpy()
-y_vox = metable.y.to_numpy()
-z_vox = metable.z.to_numpy()
-plt.hist(np.nanmean([x_vox, y_vox, z_vox], 0))
+x_vox = pd.to_numeric(metable.x, errors="coerce").to_numpy(dtype=float)
+y_vox = pd.to_numeric(metable.y, errors="coerce").to_numpy(dtype=float)
+z_vox = pd.to_numeric(metable.z, errors="coerce").to_numpy(dtype=float)
+mean_vox = np.nanmean([x_vox, y_vox, z_vox], 0)
+mean_vox = mean_vox[~np.isnan(mean_vox)]
+plt.hist(mean_vox)
 plt.title("Voxel Dimensions", fontsize=18)
 plt.xlabel("Average Voxel dimension (mm)")
 plt.ylabel("Count")

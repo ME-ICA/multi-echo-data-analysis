@@ -238,4 +238,4 @@ rather than the entire scanner bore,
 are some ways MRI physicists are working to shorten readout times.
 
 
-More information on what to consider when setting multi-echo fMRI parameters is in the [Practical Resources: Acquiring Multi-Echo Data](./Acquiring_Multi_Echo_Data.html) section.
+More information on what to consider when setting multi-echo fMRI parameters is in the [Practical Resources: Acquiring Multi-Echo Data](./Acquiring_Multi_Echo_Data.md) section.
