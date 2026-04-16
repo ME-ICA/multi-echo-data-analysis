@@ -82,7 +82,7 @@ os.makedirs(out_dir, exist_ok=True)
 data = load_pafin(data_path)
 ted_dir = os.path.join(data_path, "tedana")
 n_echoes = len(data['echo_times'])
-data['echo_times'] = [int(np.round(te)) for te in data['echo_times']]
+data['echo_times'] = [int(np.round(te * 1000)) for te in data['echo_times']]
 
 pal = sns.color_palette("cubehelix", n_echoes)
 

@@ -52,7 +52,7 @@ serve:
 	bundle exec guard
 
 build: check-env
-	uv run --locked jupyter-book build ./ --overwrite
+	uv run --locked jupyter-book build ./
 
 site: build
 	bundle exec jekyll build

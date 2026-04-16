@@ -93,6 +93,7 @@ plotting.plot_stat_map(
     axes=ax,
     cmap="Reds",
     vmin=0,
+    vmax=thresh,
 )
 glue_figure("figure_s0map", fig, display=False)
 ```
