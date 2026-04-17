@@ -193,7 +193,7 @@ fig.tight_layout()
 glue_figure("fig_bold_nonbold_simulations", fig, display=False)
 ```
 
-```{glue:figure} fig_bold_nonbold_simulations
+```{figure} figures/fig_bold_nonbold_simulations.png
 :name: fig_bold_nonbold_simulations
 :align: center
 
@@ -389,7 +389,7 @@ fig.tight_layout()
 glue_figure("fig_fitted_r2_curves", fig, display=False)
 ```
 
-```{glue:figure} fig_fitted_r2_curves
+```{figure} figures/fig_fitted_r2_curves.png
 :name: fig_fitted_r2_curves
 :align: center
 
@@ -474,7 +474,7 @@ leg = ax.legend(fontsize=14, ncol=3)
 glue_figure("fig_component_curves", fig, display=False)
 ```
 
-```{glue:figure} fig_component_curves
+```{figure} figures/fig_component_curves.png
 :name: fig_component_curves
 :align: center
 
@@ -506,7 +506,7 @@ axes[-1].set_xlim(0, n_trs - 1)
 glue_figure("fig_component_curves_2", fig, display=False)
 ```
 
-```{glue:figure} fig_component_curves_2
+```{figure} figures/fig_component_curves_2.png
 :name: fig_component_curves_2
 :align: center
 
@@ -535,7 +535,7 @@ fig.tight_layout()
 glue_figure("fig_component_curves_3", fig, display=False)
 ```
 
-```{glue:figure} fig_component_curves_3
+```{figure} figures/fig_component_curves_3.png
 :name: fig_component_curves_3
 :align: center
 
@@ -565,7 +565,7 @@ leg = ax.legend(fontsize=14, ncol=2)
 glue_figure("fig_component_curves_4", fig, display=False)
 ```
 
-```{glue:figure} fig_component_curves_4
+```{figure} figures/fig_component_curves_4.png
 :name: fig_component_curves_4
 :align: center
 

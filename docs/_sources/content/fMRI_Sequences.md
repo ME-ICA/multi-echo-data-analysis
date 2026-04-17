@@ -119,7 +119,7 @@ create_simple_pulse_seq([28], read_time=17.347, n_acq=10, title="Acquiring an fM
 glue_figure("fig_sample_pulse_seq", fig, display=False)
 ```
 
-```{glue:figure} fig_sample_pulse_seq
+```{figure} figures/fig_sample_pulse_seq.png
 :name: fig_sample_pulse_seq
 :align: center
 
@@ -176,7 +176,7 @@ create_simple_pulse_seq([10.2, 22.27, 34.94], x_axis_duration=x_axis_duration, t
 glue_figure("fig_sample_multiecho_pulse_seq", fig, display=False)
 ```
 
-```{glue:figure} fig_sample_multiecho_pulse_seq
+```{figure} figures/fig_sample_multiecho_pulse_seq.png
 :name: fig_sample_multiecho_pulse_seq
 :align: center
 

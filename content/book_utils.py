@@ -1,13 +1,11 @@
 """Utility functions for the JupyterBook."""
 
-import io
 import json
 import os
 from typing import Any
 
+import matplotlib.pyplot as plt
 import numpy as np
-from IPython.display import Image
-from myst_nb import glue as myst_nb_glue
 from nilearn import image, masking
 
 
@@ -38,19 +36,24 @@ def load_pafin(data_path):
 
 
 def glue_figure(name: str, fig: Any, display: bool = False, dpi: int = 150, **savefig_kw: Any) -> None:
-    """Glue a matplotlib Figure for myst_nb.
+    """Save a matplotlib Figure as a named PNG for use in Jupyter Book.
 
-    Newer matplotlib releases do not register ``image/png`` on ``Figure`` for
-    IPython's display pipeline, so :func:`myst_nb.glue` would only capture the
-    ``<Figure ...>`` text repr. This saves the figure to PNG and glues an
-    :class:`~IPython.display.Image` instead.
+    Figures are written to ``content/figures/<name>.png``.  The Sphinx
+    ``{figure}`` directive references these files directly, so they are copied
+    to ``_build/html/_images/<name>.png`` without any content-hash renaming.
+    This keeps figure filenames stable across rebuilds, which produces a clean
+    git history for the built ``docs/`` tree.
+
+    When *display* is ``False`` (the default) the figure is closed after saving
+    so it does not also appear as inline cell output.
     """
-    buf = io.BytesIO()
+    figures_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figures")
+    os.makedirs(figures_dir, exist_ok=True)
     kwargs: dict[str, Any] = {"format": "png", "bbox_inches": "tight", "dpi": dpi}
     kwargs.update(savefig_kw)
-    fig.savefig(buf, **kwargs)
-    buf.seek(0)
-    myst_nb_glue(name, Image(data=buf.getvalue()), display=display)
+    fig.savefig(os.path.join(figures_dir, f"{name}.png"), **kwargs)
+    if not display:
+        plt.close(fig)
 
 
 def regress_one_image_out_of_another(data_img, nuis_img, mask_img):

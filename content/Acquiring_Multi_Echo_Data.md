@@ -220,26 +220,56 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# TODO: deal with the issue that the plot doesn't regenerate (ie isn't alive)
-# Unless the code is updated.
 metable = pd.read_csv(
     "https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/export?gid=0&format=csv",
     header=0,
 )
-TEs = [
-    metable.TE1.mean(),
-    metable.TE2.mean(),
-    metable.TE3.mean(),
-    metable.TE4.mean(),
-    metable.TE5.mean(),
-]
-TE_labels = ["TE1", "TE2", "TE3", "TE4", "TE5"]
-plt.bar([1, 2, 3, 4, 5], TEs)
-plt.title("Echo Times", fontsize=18)
-pub_count = metable.TE1.count()
-plt.text(0.5, 60, "Average from {} studies".format(pub_count))
-plt.xlabel("Echo Number")
-plt.ylabel("Echo Time (ms)")
+
+# Coerce TE columns to numeric; determine number of echoes per study.
+te_cols = ["TE1", "TE2", "TE3", "TE4", "TE5"]
+for col in te_cols:
+    metable[col] = pd.to_numeric(metable[col], errors="coerce")
+metable["n_echoes"] = metable[te_cols].notna().sum(axis=1)
+
+# Plot echo-time distributions for studies with 3, 4, or 5 echoes.
+n_echo_groups = [3, 4, 5]
+palette = ["#4C72B0", "#DD8452", "#55A868"]
+
+fig, axes = plt.subplots(1, 3, figsize=(12, 5), sharey=True)
+fig.suptitle("Echo Times by Number of Echoes", fontsize=16)
+
+rng = np.random.default_rng(42)
+for ax, n_echoes, color in zip(axes, n_echo_groups, palette):
+    subset = metable[metable["n_echoes"] == n_echoes]
+    echo_data = [subset[f"TE{i + 1}"].dropna().values for i in range(n_echoes)]
+    positions = np.arange(1, n_echoes + 1)
+
+    # Violin bodies
+    parts = ax.violinplot(
+        echo_data, positions=positions, showmedians=True, showextrema=False
+    )
+    for pc in parts["bodies"]:
+        pc.set_facecolor(color)
+        pc.set_alpha(0.6)
+    parts["cmedians"].set_color("black")
+    parts["cmedians"].set_linewidth(2)
+
+    # Individual data points (jittered)
+    for pos, data in zip(positions, echo_data):
+        jitter = rng.uniform(-0.08, 0.08, size=len(data))
+        ax.scatter(
+            pos + jitter, data, s=18, color=color, alpha=0.55,
+            linewidths=0.4, edgecolors="white", zorder=3,
+        )
+
+    ax.set_title(f"{n_echoes} Echoes  (n\u2009=\u2009{len(subset)})", fontsize=12)
+    ax.set_xticks(positions)
+    ax.set_xticklabels([f"TE{i + 1}" for i in range(n_echoes)])
+    ax.set_xlabel("Echo Number")
+    ax.tick_params(axis="both", labelsize=10)
+
+axes[0].set_ylabel("Echo Time (ms)")
+fig.tight_layout()
 plt.show()
 
 # Columns can come back as object dtype when the source spreadsheet has blank

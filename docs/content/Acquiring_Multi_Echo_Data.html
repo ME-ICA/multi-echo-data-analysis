@@ -695,26 +695,56 @@ You can see the spreadsheet of publications at
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="c1"># TODO: deal with the issue that the plot doesn&#39;t regenerate (ie isn&#39;t alive)</span>
-<span class="c1"># Unless the code is updated.</span>
 <span class="n">metable</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
     <span class="s2">&quot;https://docs.google.com/spreadsheets/d/1WERojJyxFoqcg_tndUm5Kj0H1UfUc9Ban0jFGGfPaBk/export?gid=0&amp;format=csv&quot;</span><span class="p">,</span>
     <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">TEs</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE1</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE2</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE3</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE4</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-    <span class="n">metable</span><span class="o">.</span><span class="n">TE5</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-<span class="p">]</span>
-<span class="n">TE_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TE1&quot;</span><span class="p">,</span> <span class="s2">&quot;TE2&quot;</span><span class="p">,</span> <span class="s2">&quot;TE3&quot;</span><span class="p">,</span> <span class="s2">&quot;TE4&quot;</span><span class="p">,</span> <span class="s2">&quot;TE5&quot;</span><span class="p">]</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">TEs</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Echo Times&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
-<span class="n">pub_count</span> <span class="o">=</span> <span class="n">metable</span><span class="o">.</span><span class="n">TE1</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">&quot;Average from </span><span class="si">{}</span><span class="s2"> studies&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pub_count</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Number&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Coerce TE columns to numeric; determine number of echoes per study.</span>
+<span class="n">te_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TE1&quot;</span><span class="p">,</span> <span class="s2">&quot;TE2&quot;</span><span class="p">,</span> <span class="s2">&quot;TE3&quot;</span><span class="p">,</span> <span class="s2">&quot;TE4&quot;</span><span class="p">,</span> <span class="s2">&quot;TE5&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">te_cols</span><span class="p">:</span>
+    <span class="n">metable</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">metable</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+<span class="n">metable</span><span class="p">[</span><span class="s2">&quot;n_echoes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metable</span><span class="p">[</span><span class="n">te_cols</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Plot echo-time distributions for studies with 3, 4, or 5 echoes.</span>
+<span class="n">n_echo_groups</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#4C72B0&quot;</span><span class="p">,</span> <span class="s2">&quot;#DD8452&quot;</span><span class="p">,</span> <span class="s2">&quot;#55A868&quot;</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Echo Times by Number of Echoes&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">n_echoes</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">n_echo_groups</span><span class="p">,</span> <span class="n">palette</span><span class="p">):</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="n">metable</span><span class="p">[</span><span class="n">metable</span><span class="p">[</span><span class="s2">&quot;n_echoes&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">n_echoes</span><span class="p">]</span>
+    <span class="n">echo_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">subset</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;TE</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">)]</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_echoes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Violin bodies</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span>
+        <span class="n">echo_data</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">showmedians</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">showextrema</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">[</span><span class="s2">&quot;bodies&quot;</span><span class="p">]:</span>
+        <span class="n">pc</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">pc</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">parts</span><span class="p">[</span><span class="s2">&quot;cmedians&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">parts</span><span class="p">[</span><span class="s2">&quot;cmedians&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Individual data points (jittered)</span>
+    <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">echo_data</span><span class="p">):</span>
+        <span class="n">jitter</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">pos</span> <span class="o">+</span> <span class="n">jitter</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
+            <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_echoes</span><span class="si">}</span><span class="s2"> Echoes  (n</span><span class="se">\u2009</span><span class="s2">=</span><span class="se">\u2009</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;TE</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_echoes</span><span class="p">)])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Echo Number&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Echo Time (ms)&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="c1"># Columns can come back as object dtype when the source spreadsheet has blank</span>
@@ -740,9 +770,9 @@ You can see the spreadsheet of publications at
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/fc5cee6686899215b7cccedd5072fae84d79bfedc097eb6df8e6a44f24e81bd1.png" src="../_images/fc5cee6686899215b7cccedd5072fae84d79bfedc097eb6df8e6a44f24e81bd1.png" />
+<img alt="../_images/780dd4fe1a2feb2fe2c7a4655567ee87765fb853040f0c7709189bedb2ac978a.png" src="../_images/780dd4fe1a2feb2fe2c7a4655567ee87765fb853040f0c7709189bedb2ac978a.png" />
 <img alt="../_images/af8c151a290191d93a8cb10b400fd264fcb19c14338a8d00c64c7858b1a3699b.png" src="../_images/af8c151a290191d93a8cb10b400fd264fcb19c14338a8d00c64c7858b1a3699b.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_1527/968443122.py:39: RuntimeWarning: Mean of empty slice
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_1582/781127763.py:69: RuntimeWarning: Mean of empty slice
   mean_vox = np.nanmean([x_vox, y_vox, z_vox], 0)
 </pre></div>
 </div>

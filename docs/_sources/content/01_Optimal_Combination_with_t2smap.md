@@ -72,7 +72,7 @@ plotting.plot_stat_map(
 glue_figure("figure_t2starmap", fig, display=False)
 ```
 
-```{glue:figure} figure_t2starmap
+```{figure} figures/figure_t2starmap.png
 :name: "figure_t2starmap"
 :align: center
 
@@ -98,7 +98,7 @@ plotting.plot_stat_map(
 glue_figure("figure_s0map", fig, display=False)
 ```
 
-```{glue:figure} figure_s0map
+```{figure} figures/figure_s0map.png
 :name: "figure_s0map"
 :align: center
 
@@ -156,7 +156,7 @@ plotting.plot_epi(
 glue_figure("figure_t2smap_epi_plots", fig, display=False)
 ```
 
-```{glue:figure} figure_t2smap_epi_plots
+```{figure} figures/figure_t2smap_epi_plots.png
 :name: "figure_t2smap_epi_plots"
 :align: center
 
@@ -214,7 +214,7 @@ axes[1].set_title("Optimal Combination TSNR", fontsize=16)
 glue_figure("figure_t2smap_t2snr", fig, display=False)
 ```
 
-```{glue:figure} figure_t2smap_t2snr
+```{figure} figures/figure_t2smap_t2snr.png
 :name: "figure_t2smap_t2snr"
 :align: center
 
@@ -232,7 +232,7 @@ plotting.plot_carpet(
 glue_figure("figure_echo2_carpet", fig, display=False)
 ```
 
-```{glue:figure} figure_echo2_carpet
+```{figure} figures/figure_echo2_carpet.png
 :name: "figure_echo2_carpet"
 :align: center
 
@@ -249,7 +249,7 @@ plotting.plot_carpet(
 glue_figure("figure_optcom_carpet", fig, display=False)
 ```
 
-```{glue:figure} figure_optcom_carpet
+```{figure} figures/figure_optcom_carpet.png
 :name: "figure_optcom_carpet"
 :align: center
 

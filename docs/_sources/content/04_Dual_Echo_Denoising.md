@@ -75,7 +75,7 @@ fig.tight_layout()
 glue_figure("figure_dual_echo_results", fig, display=False)
 ```
 
-```{glue:figure} figure_dual_echo_results
+```{figure} figures/figure_dual_echo_results.png
 :name: "figure_dual_echo_results"
 :align: center
 

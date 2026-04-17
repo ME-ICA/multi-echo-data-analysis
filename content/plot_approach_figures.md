@@ -233,7 +233,7 @@ fig.tight_layout()
 glue_figure("fig_echo_timeseries2", fig, display=False)
 ```
 
-```{glue:figure} fig_echo_timeseries2
+```{figure} figures/fig_echo_timeseries2.png
 :name: fig_echo_timeseries2
 :align: center
 
@@ -260,7 +260,7 @@ fig.tight_layout()
 glue_figure("fig_echo_scatter2", fig, display=False)
 ```
 
-```{glue:figure} fig_echo_scatter2
+```{figure} figures/fig_echo_scatter2.png
 :name: fig_echo_scatter2
 :align: center
 
@@ -297,7 +297,7 @@ plotting.plot_stat_map(
 glue_figure("fig_adaptive_mask", fig, display=False)
 ```
 
-```{glue:figure} fig_adaptive_mask
+```{figure} figures/fig_adaptive_mask.png
 :name: fig_adaptive_mask
 :align: center
 
@@ -325,7 +325,7 @@ fig.tight_layout()
 glue_figure("fig_loglin_scatter", fig, display=False)
 ```
 
-```{glue:figure} fig_loglin_scatter
+```{figure} figures/fig_loglin_scatter.png
 :name: fig_loglin_scatter
 :align: center
 
@@ -391,7 +391,7 @@ fig.tight_layout()
 glue_figure("fig_loglin_scatter_with_line", fig, display=False)
 ```
 
-```{glue:figure} fig_loglin_scatter_with_line
+```{figure} figures/fig_loglin_scatter_with_line.png
 :name: fig_loglin_scatter_with_line
 :align: center
 
@@ -437,7 +437,7 @@ fig.tight_layout()
 glue_figure("fig_loglin_scatter_with_t2s", fig, display=False)
 ```
 
-```{glue:figure} fig_loglin_scatter_with_t2s
+```{figure} figures/fig_loglin_scatter_with_t2s.png
 :name: fig_loglin_scatter_with_t2s
 :align: center
 
@@ -470,7 +470,7 @@ fig.tight_layout()
 glue_figure("fig_scatter_with_t2s", fig, display=False)
 ```
 
-```{glue:figure} fig_scatter_with_t2s
+```{figure} figures/fig_scatter_with_t2s.png
 :name: fig_scatter_with_t2s
 :align: center
 
@@ -489,7 +489,7 @@ fig.tight_layout()
 glue_figure("fig_optcom_weights", fig, display=False)
 ```
 
-```{glue:figure} fig_optcom_weights
+```{figure} figures/fig_optcom_weights.png
 :name: fig_optcom_weights
 :align: center
 
@@ -528,7 +528,7 @@ fig.tight_layout()
 glue_figure("fig_scatter_with_optcom", fig, display=False)
 ```
 
-```{glue:figure} fig_scatter_with_optcom
+```{figure} figures/fig_scatter_with_optcom.png
 :name: fig_scatter_with_optcom
 :align: center
 
@@ -561,7 +561,7 @@ fig.tight_layout()
 glue_figure("fig_echo_timeseries_with_optcom", fig, display=False)
 ```
 
-```{glue:figure} fig_echo_timeseries_with_optcom
+```{figure} figures/fig_echo_timeseries_with_optcom.png
 :name: fig_echo_timeseries_with_optcom
 :align: center
 
@@ -589,7 +589,7 @@ fig.tight_layout()
 glue_figure("fig_pca_timeseries", fig, display=False)
 ```
 
-```{glue:figure} fig_pca_timeseries
+```{figure} figures/fig_pca_timeseries.png
 :name: fig_pca_timeseries
 :align: center
 
@@ -614,7 +614,7 @@ ax.tick_params(axis="both", which="major", labelsize=14)
 glue_figure("fig_optcom_reduced_timeseries", fig, display=False)
 ```
 
-```{glue:figure} fig_optcom_reduced_timeseries
+```{figure} figures/fig_optcom_reduced_timeseries.png
 :name: fig_optcom_reduced_timeseries
 :align: center
 
@@ -656,7 +656,7 @@ fig.tight_layout()
 glue_figure("fig_ica_timeseries", fig, display=False)
 ```
 
-```{glue:figure} fig_ica_timeseries
+```{figure} figures/fig_ica_timeseries.png
 :name: fig_ica_timeseries
 :align: center
 
@@ -717,7 +717,7 @@ fig.tight_layout()
 glue_figure("fig_ica_weights", fig, display=False)
 ```
 
-```{glue:figure} fig_ica_weights
+```{figure} figures/fig_ica_weights.png
 :name: fig_ica_weights
 :align: center
 
@@ -763,7 +763,7 @@ fig.tight_layout()
 glue_figure("fig_medn_timeseries", fig, display=False)
 ```
 
-```{glue:figure} fig_medn_timeseries
+```{figure} figures/fig_medn_timeseries.png
 :name: fig_medn_timeseries
 :align: center
 
@@ -807,7 +807,7 @@ fig.tight_layout()
 glue_figure("fig_mir_timeseries", fig, display=False)
 ```
 
-```{glue:figure} fig_mir_timeseries
+```{figure} figures/fig_mir_timeseries.png
 :name: fig_mir_timeseries
 :align: center
 

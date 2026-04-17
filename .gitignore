@@ -2,6 +2,9 @@
 data/
 _build/
 
+# Generated figures (copied to docs/_images/ by Sphinx during build)
+content/figures/
+
 .DS_Store
 
 # Byte-compiled / optimized / DLL files

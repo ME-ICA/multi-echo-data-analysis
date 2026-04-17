@@ -87,7 +87,7 @@ fig.tight_layout()
 glue_figure("figure_volumewise_t2ss0_carpets", fig, display=False)
 ```
 
-```{glue:figure} figure_volumewise_t2ss0_carpets
+```{figure} figures/figure_volumewise_t2ss0_carpets.png
 :name: figure_volumewise_t2ss0_carpets
 :align: center
 
@@ -115,7 +115,7 @@ plotting.plot_stat_map(
 glue_figure("figure_mean_volumewise_t2s", fig, display=False)
 ```
 
-```{glue:figure} figure_mean_volumewise_t2s
+```{figure} figures/figure_mean_volumewise_t2s.png
 :name: "figure_mean_volumewise_t2s"
 :align: center
 
@@ -143,7 +143,7 @@ plotting.plot_stat_map(
 glue_figure("figure_mean_volumewise_s0", fig, display=False)
 ```
 
-```{glue:figure} figure_mean_volumewise_s0
+```{figure} figures/figure_mean_volumewise_s0.png
 :name: "figure_mean_volumewise_s0"
 :align: center
 
@@ -200,7 +200,7 @@ plotting.plot_epi(
 glue_figure("figure_mean_echos_and_optcom", fig, display=False)
 ```
 
-```{glue:figure} figure_mean_echos_and_optcom
+```{figure} figures/figure_mean_echos_and_optcom.png
 :name: "figure_mean_echos_and_optcom"
 :align: center
 
@@ -256,7 +256,7 @@ axes[1].set_title("Optimal Combination TSNR", fontsize=16)
 glue_figure("figure_t2snr_te30_and_optcom", fig, display=False)
 ```
 
-```{glue:figure} figure_t2snr_te30_and_optcom
+```{figure} figures/figure_t2snr_te30_and_optcom.png
 :name: "figure_t2snr_te30_and_optcom"
 :align: center
 
@@ -273,7 +273,7 @@ plotting.plot_carpet(
 glue_figure("figure_echo3_carpet", fig, display=False)
 ```
 
-```{glue:figure} figure_echo3_carpet
+```{figure} figures/figure_echo3_carpet.png
 :name: "figure_echo3_carpet"
 :align: center
 
@@ -290,7 +290,7 @@ plotting.plot_carpet(
 glue_figure("figure_carpet_optcom", fig, display=False)
 ```
 
-```{glue:figure} figure_carpet_optcom
+```{figure} figures/figure_carpet_optcom.png
 :name: "figure_carpet_optcom"
 :align: center
 
