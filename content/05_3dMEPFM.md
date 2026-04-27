@@ -18,15 +18,29 @@ import os
 from glob import glob
 
 import numpy as np
-from book_utils import load_pafin
-from nilearn.maskers import NiftiMasker
+from nilearn.datasets import fetch_atlas_schaefer_2018
+from nilearn.maskers import NiftiLabelsMasker
 
 data_path = os.path.abspath('../data')
 ```
 
 ```{code-cell} ipython3
-raise ValueError("SKIP")
-data = load_pafin(data_path)
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
+data_files = sorted(
+    glob(
+        os.path.join(
+            func_dir,
+            "sub-24053_ses-1_task-rat_rec-nordic_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz",
+        ),
+    ),
+)
+echo_times = []
+for f in data_files:
+    json_file = f.replace('.nii.gz', '.json')
+    with open(json_file, 'r') as fo:
+        metadata = json.load(fo)
+    echo_times.append(metadata['EchoTime'] * 1000)
+
 out_dir = os.path.join(data_path, "pySPFM")
 ```
 
@@ -35,68 +49,73 @@ out_dir = os.path.join(data_path, "pySPFM")
 
 from pySPFM import SparseDeconvolution
 
-# Create masker to convert 4D NIfTI data to 2D array
-masker = NiftiMasker(mask_img=data['mask'])
+# Fetch the Schaefer 1000-parcel atlas (MNI152NLin2009cAsym, 2 mm).
+# Running pySPFM parcel-wise rather than voxel-wise reduces the problem
+# from ~218k voxels to 1000 ROIs, making it feasible on a laptop.
+atlas = fetch_atlas_schaefer_2018(n_rois=1000)
 
-# Fit masker once on a representative image (first echo)
-masker.fit(data['echo_files'][0])
+# NiftiLabelsMasker averages all voxels within each parcel.
+# resampling_target='data' resamples the atlas to the fMRI's native grid.
+masker = NiftiLabelsMasker(
+    labels_img=atlas.maps,
+    resampling_target='data',
+    standardize=False,
+)
+masker.fit(data_files[0])
 
-# Load and mask each echo, then concatenate along the time axis
-# For multi-echo data, each echo's data (shape: n_timepoints × n_voxels) are stacked sequentially
+# Load each echo and extract parcel-averaged timeseries, then concatenate
+# along the time axis to form the multi-echo input matrix.
 masked_data = []
-for f in data['echo_files']:
-    echo_data = masker.transform(f)  # Shape: (n_timepoints, n_voxels)
+for f in data_files:
+    echo_data = masker.transform(f)  # Shape: (n_timepoints, n_parcels)
     masked_data.append(echo_data)
 
-X = np.vstack(masked_data)  # Shape: (n_echoes * n_timepoints, n_voxels)
+X = np.vstack(masked_data)  # Shape: (n_echoes * n_timepoints, n_parcels)
 
 # Fit the sparse deconvolution model
 model = SparseDeconvolution(
     tr=2.47,
-    te=data['echo_times'],
+    te=echo_times,
     criterion="bic",
-    n_jobs=-1,  # Use all available CPU cores
 )
 model.fit(X)
 
 # Get the deconvolved activity-inducing signals
-# Note: coef_ has shape (n_timepoints, n_voxels) - the model recovers
-# the underlying neural activity at the original temporal resolution
+# coef_ shape: (n_timepoints, n_parcels)
 activity = model.coef_
 
-# Transform back to NIfTI image and save
+# Save parcel-wise activity to avoid reconstructing a large 4D voxel-wise NIfTI
 os.makedirs(out_dir, exist_ok=True)
-activity_img = masker.inverse_transform(activity)
-activity_img.to_filename(os.path.join(out_dir, "out_activity.nii.gz"))
+np.save(os.path.join(out_dir, "out_activity.npy"), activity)
 
-# Also save the regularization parameter values
+# Compact summary: mean absolute activity per parcel → inverse_transform to a single-volume NIfTI
+activity_mean = np.abs(activity).mean(axis=0, keepdims=True)
+activity_mean_img = masker.inverse_transform(activity_mean)
+activity_mean_img.to_filename(os.path.join(out_dir, "out_activity_mean.nii.gz"))
+
 np.save(os.path.join(out_dir, "out_lambda.npy"), model.lambda_)
 
 print(f"Activity shape: {activity.shape}")
-print(f"Saved activity to: {os.path.join(out_dir, 'out_activity.nii.gz')}")
+print(f"Saved parcel-wise activity to: {os.path.join(out_dir, 'out_activity.npy')}")
+print(f"Saved mean activity image to: {os.path.join(out_dir, 'out_activity_mean.nii.gz')}")
 ```
 
 The `SparseDeconvolution` model provides several useful attributes and methods after fitting:
 
-- `coef_`: The deconvolved activity-inducing signals (shape: n_timepoints × n_voxels)
-- `lambda_`: The regularization parameter values
+- `coef_`: The deconvolved activity-inducing signals (shape: n_timepoints × n_parcels)
+- `lambda_`: The regularization parameter values (one per parcel)
 - `hrf_matrix_`: The HRF convolution matrix used
 - `get_fitted_signal()`: Returns the fitted (reconstructed) signal; takes no arguments
 - `get_residuals(X)`: Returns the residuals between the original data and fitted signal; requires the input data `X` as an argument
 
 ```{code-cell} ipython3
-# Get the fitted signal and residuals
-# Note: These have shape (n_echoes * n_timepoints, n_voxels) matching the input X
 fitted_signal = model.get_fitted_signal()
-residuals = model.get_residuals(X)
-
-# Save the fitted signal and residuals as numpy arrays
-# (shape doesn't match single-echo masker expectations for NIfTI output)
-np.save(os.path.join(out_dir, "out_fitted.npy"), fitted_signal)
-np.save(os.path.join(out_dir, "out_residuals.npy"), residuals)
-
 print(f"Fitted signal shape: {fitted_signal.shape}")
+np.save(os.path.join(out_dir, "out_fitted.npy"), fitted_signal)
+
+residuals = model.get_residuals(X)
 print(f"Residuals shape: {residuals.shape}")
+np.save(os.path.join(out_dir, "out_residuals.npy"), residuals)
 ```
 
 The pySPFM workflow writes out a number of files.
