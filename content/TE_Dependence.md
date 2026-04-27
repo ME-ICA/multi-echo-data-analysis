@@ -412,6 +412,8 @@ print(coeffs_R2)
 # We'll convolve with HRF just for smoothness
 hrf = first_level.spm_hrf(1, oversampling=1)
 
+rng = np.random.default_rng(42)
+
 n_trs = 300
 
 frac = 0.05  # 5% PSC
@@ -422,7 +424,7 @@ s0_std = mean_s0 * frac
 
 # simulate the T2*/S0 time series
 n_chunks = 10
-scales = np.random.random(n_chunks) * 3
+scales = rng.random(n_chunks) * 3
 t2s_ts = []
 for section in range(n_chunks):
     ts = np.hstack((np.zeros(10), np.ones(20), np.zeros(10)))
@@ -434,15 +436,15 @@ t2s_ts = signal.convolve(t2s_ts, hrf)[:n_trs]
 t2s_ts *= t2s_std / np.std(t2s_ts)
 t2s_ts += mean_t2s - np.mean(t2s_ts)
 
-s0_ts = np.random.randint(0, 2, n_trs).astype(float)
+s0_ts = rng.integers(0, 2, n_trs).astype(float)
 s0_ts -= 0.5
-s0_ts *= np.random.normal(loc=1, scale=0.25, size=n_trs)
+s0_ts *= rng.normal(loc=1, scale=0.25, size=n_trs)
 s0_ts = np.sort(s0_ts)
 first_half = s0_ts[:n_trs // 2]
 second_half = s0_ts[n_trs // 2:]
 s0_ts = np.zeros(n_trs)
-np.random.shuffle(first_half)
-np.random.shuffle(second_half)
+rng.shuffle(first_half)
+rng.shuffle(second_half)
 s0_ts[::2] = first_half
 s0_ts[1::2] = second_half
 # s0_ts = signal.convolve(s0_ts, hrf)[20 : n_trs + 20]
@@ -669,11 +671,11 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
     $$
         \mathbf{H} = \mathbf{E} \circ
         \underbrace{
-            \pmatrix{
+            \begin{pmatrix}
                 \mathbf{{\sigma_{O}}_1} & \cdots & \mathbf{{\sigma_{O}}_1}\\
                 \vdots & \vdots & \vdots \\
                 \mathbf{{\sigma_{O}}_v} & \cdots & \mathbf{{\sigma_{O}}_v}\\
-            }
+            \end{pmatrix}
         }_{t}
     $$
 
@@ -688,11 +690,11 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
     $$
         \mathbf{D} = \mathbf{\overline{O}} + (\mathbf{E} + \mathbf{R}) \circ
         \underbrace{
-            \pmatrix{
+            \begin{pmatrix}
                 \mathbf{{\sigma_{O}}_1} & \cdots & \mathbf{{\sigma_{O}}_1}\\
                 \vdots & \vdots & \vdots \\
                 \mathbf{{\sigma_{O}}_v} & \cdots & \mathbf{{\sigma_{O}}_v}\\
-            }
+            \end{pmatrix}
         }_{t}
     $$
 

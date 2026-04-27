@@ -272,23 +272,39 @@ axes[0].set_ylabel("Echo Time (ms)")
 fig.tight_layout()
 plt.show()
 
-# Columns can come back as object dtype when the source spreadsheet has blank
-# or non-numeric cells; coerce to float and drop NaNs before plotting.
-tr = pd.to_numeric(metable.TR, errors="coerce").dropna().to_numpy()
-plt.hist(tr)
-plt.title("Repetition Times", fontsize=18)
-plt.xlabel("Repetition Time (s)")
-plt.ylabel("Count")
+fig, axes = plt.subplots(1, 3, figsize=(12, 4), sharey=True)
+fig.suptitle("Repetition Times by Number of Echoes", fontsize=16)
+
+for ax, n_echoes, color in zip(axes, n_echo_groups, palette):
+    subset = metable[metable["n_echoes"] == n_echoes]
+    # Columns can come back as object dtype when the source spreadsheet has
+    # blank or non-numeric cells; coerce to float and drop NaNs before plotting.
+    tr_subset = pd.to_numeric(subset["TR (s)"], errors="coerce").dropna().to_numpy()
+    ax.hist(tr_subset, color=color, alpha=0.7)
+    ax.set_title(f"{n_echoes} Echoes  (n\u2009=\u2009{len(subset)})", fontsize=12)
+    ax.set_xlabel("Repetition Time (s)")
+    ax.tick_params(axis="both", labelsize=10)
+
+axes[0].set_ylabel("Count")
+fig.tight_layout()
 plt.show()
 
-x_vox = pd.to_numeric(metable.x, errors="coerce").to_numpy(dtype=float)
-y_vox = pd.to_numeric(metable.y, errors="coerce").to_numpy(dtype=float)
-z_vox = pd.to_numeric(metable.z, errors="coerce").to_numpy(dtype=float)
-mean_vox = np.nanmean([x_vox, y_vox, z_vox], 0)
-mean_vox = mean_vox[~np.isnan(mean_vox)]
-plt.hist(mean_vox)
-plt.title("Voxel Dimensions", fontsize=18)
-plt.xlabel("Average Voxel dimension (mm)")
-plt.ylabel("Count")
+fig, axes = plt.subplots(1, 3, figsize=(12, 4), sharey=True)
+fig.suptitle("Voxel Dimensions by Number of Echoes", fontsize=16)
+
+for ax, n_echoes, color in zip(axes, n_echo_groups, palette):
+    subset = metable[metable["n_echoes"] == n_echoes]
+    x_vox = pd.to_numeric(subset["x"], errors="coerce").to_numpy(dtype=float)
+    y_vox = pd.to_numeric(subset["y"], errors="coerce").to_numpy(dtype=float)
+    z_vox = pd.to_numeric(subset["z"], errors="coerce").to_numpy(dtype=float)
+    voxel_mm3 = np.prod([x_vox, y_vox, z_vox], axis=0)
+    voxel_mm3 = voxel_mm3[~np.isnan(voxel_mm3)]
+    ax.hist(voxel_mm3, color=color, alpha=0.7)
+    ax.set_title(f"{n_echoes} Echoes  (n\u2009=\u2009{len(subset)})", fontsize=12)
+    ax.set_xlabel("Voxel Size (mm3)")
+    ax.tick_params(axis="both", labelsize=10)
+
+axes[0].set_ylabel("Count")
+fig.tight_layout()
 plt.show()
 ```

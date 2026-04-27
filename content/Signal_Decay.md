@@ -60,9 +60,7 @@ import nibabel as nb
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from IPython import display
-from matplotlib.animation import FuncAnimation
-from myst_nb import glue
+from matplotlib.animation import FuncAnimation, PillowWriter
 from nilearn import image, masking, plotting
 from nilearn.glm import first_level
 from scipy import signal
@@ -75,6 +73,12 @@ data_path = os.path.abspath("../data")
 
 out_dir = os.path.join(data_path, "signal-decay")
 os.makedirs(out_dir, exist_ok=True)
+
+
+def save_animation(anim, fig, name, fps=10):
+    """Save a Matplotlib animation as a GIF asset for static book rendering."""
+    anim.save(os.path.join("figures", f"{name}.gif"), writer=PillowWriter(fps=fps))
+    plt.close(fig)
 ```
 
 ```{code-cell} ipython3
@@ -259,6 +263,8 @@ pal = sns.color_palette("cubehelix", 8)
 # We'll convolve with HRF just for smoothness
 hrf = first_level.spm_hrf(1, oversampling=1)
 
+rng = np.random.default_rng(42)
+
 N_VOLS = 21
 
 SCALING_FRACTION = 0.1  # used to scale standard deviation
@@ -268,7 +274,7 @@ MEAN_S0 = 16000
 # simulate the T2*/S0 time series
 # The original time series will be a random time series from a normal distribution,
 # convolved with the HRF
-ts = np.random.normal(loc=0, scale=1, size=(N_VOLS + 20,))
+ts = rng.normal(loc=0, scale=1, size=(N_VOLS + 20,))
 ts = signal.convolve(ts, hrf)[20 : N_VOLS + 20]
 ts *= SCALING_FRACTION / np.std(ts)
 ts -= ts[0]
@@ -385,7 +391,7 @@ The top panel shows the time series of an example voxel , while the lower panel 
 This shows how fMRI data fluctuates over time.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [remove-cell]
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
@@ -449,11 +455,10 @@ def AnimationFunction(frame):
 
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
-html = display.HTML(anim_created.to_jshtml())
-glue("fig_single-echo", html, display=False)
+save_animation(anim_created, fig, "fig_single_echo_animation")
 ```
 
-```{glue:figure} fig_single-echo
+```{figure} figures/fig_single_echo_animation.gif
 :name: fig_single-echo
 :align: center
 
@@ -466,7 +471,7 @@ Building on the previous figure, we visualize here how the signal of a voxel at 
 In other words, this shows how single-echo data is a sample from a signal decay curve.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [remove-cell]
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
@@ -543,11 +548,10 @@ def AnimationFunction(frame):
 
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
-html = display.HTML(anim_created.to_jshtml())
-glue("fig_signal_decay", html, display=False)
+save_animation(anim_created, fig, "fig_signal_decay_animation")
 ```
 
-```{glue:figure} fig_signal_decay
+```{figure} figures/fig_signal_decay_animation.gif
 :name: fig_signal_decay
 :align: center
 
@@ -568,7 +572,7 @@ Both factors of the product - $S_0$ and the exponential with $T_2^{*}$ - capture
 The figure represents how the signal of a voxel is associated to $S_0$ and $T_2^{*}$, showing how changes in fMRI data can be driven by both factors.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [remove-cell]
 fullcurve_signal = predict_bold_signal(FULLCURVE_TES, s0_ts, t2s_ts)
 singleecho_signal = fullcurve_signal[SINGLEECHO_TE, :]
 
@@ -690,11 +694,10 @@ def AnimationFunction(frame):
 
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
-html = display.HTML(anim_created.to_jshtml())
-glue("fig_signal_decay2", html, display=False)
+save_animation(anim_created, fig, "fig_signal_decay2_animation")
 ```
 
-```{glue:figure} fig_signal_decay2
+```{figure} figures/fig_signal_decay2_animation.gif
 :name: fig_signal_decay2
 :align: center
 
@@ -711,7 +714,7 @@ The top panel represents the fluctuations of the ratio $\frac{S_0}{T_2^{*}}$.
 This shows how fluctuations in $S_0$ and $T_2^{*}$ produce different patterns in the full signal decay curves.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [remove-cell]
 s0based_fullcurve_signal = predict_bold_signal(
     FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S)
 )
@@ -804,11 +807,10 @@ def AnimationFunction(frame):
 
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
-html = display.HTML(anim_created.to_jshtml())
-glue("fig_signal_decay3", html, display=False)
+save_animation(anim_created, fig, "fig_signal_decay3_animation")
 ```
 
-```{glue:figure} fig_signal_decay3
+```{figure} figures/fig_signal_decay3_animation.gif
 :name: fig_signal_decay3
 :align: center
 
@@ -822,7 +824,7 @@ Because the signal is acquired for only one TE (see the red and blue dot points 
 This shows how single-echo data, on its own, cannot distinguish between $S_0$ and $T_2^{*}$ fluctuations.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [remove-cell]
 s0based_fullcurve_signal = predict_bold_signal(
     FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S)
 )
@@ -936,11 +938,10 @@ def AnimationFunction(frame):
 
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
-html = display.HTML(anim_created.to_jshtml())
-glue("fig_signal_decay4", html, display=False)
+save_animation(anim_created, fig, "fig_signal_decay4_animation")
 ```
 
-```{glue:figure} fig_signal_decay4
+```{figure} figures/fig_signal_decay4_animation.gif
 :name: fig_signal_decay4
 :align: center
 
@@ -953,7 +954,7 @@ Let us now visualize again the case of a multi-echo acquisition.
 Because the signal is acquired at four echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the $S_0$- and $T_2^{*}$- driven curves from the signal !
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: [remove-cell]
 s0based_fullcurve_signal = predict_bold_signal(
     FULLCURVE_TES, s0_ts, np.full(N_VOLS, MEAN_T2S)
 )
@@ -1070,11 +1071,10 @@ def AnimationFunction(frame):
 
 
 anim_created = FuncAnimation(fig, AnimationFunction, frames=N_VOLS, interval=100)
-html = display.HTML(anim_created.to_jshtml())
-glue("fig_signal_decay5", html, display=False)
+save_animation(anim_created, fig, "fig_signal_decay5_animation")
 ```
 
-```{glue:figure} fig_signal_decay5
+```{figure} figures/fig_signal_decay5_animation.gif
 :name: fig_signal_decay5
 :align: center
 

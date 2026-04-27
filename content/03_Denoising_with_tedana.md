@@ -14,7 +14,7 @@ kernelspec:
 
 In this analysis tutorial, we will use `tedana` {cite:p}`DuPre2021` to perform multi-echo denoising.
 
-Specifically, we will use {py:func}`tedana.workflows.tedana_workflow`.
+Specifically, we will use {external+tedana:py:func}`tedana.workflows.tedana_workflow`.
 
 ```{code-cell} ipython3
 import json

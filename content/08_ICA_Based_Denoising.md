@@ -18,7 +18,8 @@ To remove noise from your data, you can regress the "bad" components out of it, 
 
 Let's start by loading the necessary data.
 
-````{tab} Python
+:::::{tab-set}
+::::{tab-item} Python
 ```python
 import numpy as np
 import pandas as pd
@@ -44,30 +45,32 @@ arr = arr.T
 # The first dimension should be time
 assert arr.shape[1] == mixing.shape[0]
 ```
-````
-````{tab} FSL
+::::
+::::{tab-item} FSL
 ```bash
 data_file=preprocessed_data.nii.gz
 mixing_file=mixing.tsv
 mask_file=mask.nii.gz
 den_idx=(0, 1, 2, 3, 4, 5)
 ```
-````
-````{tab} AFNI
+::::
+::::{tab-item} AFNI
 ```bash
 data_file=preprocessed_data.nii.gz
 mixing_file=mixing.tsv
 mask_file=mask.nii.gz
 den_idx=(0, 1, 2, 3, 4, 5)
 ```
-````
+::::
+:::::
 
 ## Aggressive Denoising
 
 If you regress just nuisance regressors (i.e., rejected components) out of your data,
 then retain the residuals for further analysis, you are doing aggressive denoising.
 
-````{tab} Python
+:::::{tab-set}
+::::{tab-item} Python
 ```python
 # Fit GLM to bad components only
 betas = np.linalg.lstsq(motion_components, arr, rcond=None)[0]
@@ -80,24 +83,26 @@ arr_denoised = arr - pred_arr
 img_denoised = masking.unmask(arr_denoised.T, data['mask'])
 img_denoised.to_filename("denoised.nii.gz")
 ```
-````
-````{tab} FSL
+::::
+::::{tab-item} FSL
 ```bash
 3dcalc --input stuff
 ```
-````
-````{tab} AFNI
+::::
+::::{tab-item} AFNI
 ```bash
 3dcalc --input stuff
 ```
-````
+::::
+:::::
 
 ## Non-Aggressive Denoising
 
 If you include both nuisance regressors and regressors of interest in your regression,
 you are doing nonaggressive denoising.
 
-````{tab} Python
+:::::{tab-set}
+::::{tab-item} Python
 ```python
 # Fit GLM to all components
 betas = np.linalg.lstsq(mixing, arr, rcond=None)[0]
@@ -110,17 +115,18 @@ arr_denoised = arr - pred_arr
 img_denoised = masking.unmask(arr_denoised.T, data['mask'])
 img_denoised.to_filename("denoised.nii.gz")
 ```
-````
-````{tab} FSL
+::::
+::::{tab-item} FSL
 ```bash
 3dcalc --input stuff
 ```
-````
-````{tab} AFNI
+::::
+::::{tab-item} AFNI
 ```bash
 3dcalc --input stuff
 ```
-````
+::::
+:::::
 
 ## Component orthogonalization
 
@@ -130,7 +136,8 @@ If you want to ensure that variance shared between the accepted and rejected com
 you may wish to orthogonalize the rejected components with respect to the accepted components.
 This way, you can regress the rejected components out of the data in the form of, what we call, "pure evil" components.
 
-````{tab} Python
+:::::{tab-set}
+::::{tab-item} Python
 ```python
 good_idx = np.setdiff1d(np.arange(mixing.shape[1]), den_idx)
 
@@ -146,21 +153,23 @@ orth_motion_components = bad_mixing - pred_bad_mixing
 # Replace the old component time series in the mixing matrix with the new ones
 mixing[:, den_idx] = orth_motion_components
 ```
-````
-````{tab} FSL
+::::
+::::{tab-item} FSL
 ```bash
 3dcalc --input stuff
 ```
-````
-````{tab} AFNI
+::::
+::::{tab-item} AFNI
 ```bash
 3dcalc --input stuff
 ```
-````
+::::
+:::::
 
 Once you have these "pure evil" components, you can perform aggressive denoising on the data.
 
-````{tab} Python
+:::::{tab-set}
+::::{tab-item} Python
 ```python
 # Fit GLM to bad components only
 betas = np.linalg.lstsq(orth_motion_components, arr, rcond=None)[0]
@@ -173,14 +182,15 @@ arr_denoised = arr - pred_arr
 img_denoised = masking.unmask(arr_denoised.T, data['mask'])
 img_denoised.to_filename("denoised.nii.gz")
 ```
-````
-````{tab} FSL
+::::
+::::{tab-item} FSL
 ```bash
 3dcalc --input stuff
 ```
-````
-````{tab} AFNI
+::::
+::::{tab-item} AFNI
 ```bash
 3dcalc --input stuff
 ```
-````
+::::
+:::::
