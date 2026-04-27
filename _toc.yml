@@ -20,6 +20,7 @@ parts:
     - file: content/fMRI_Sequences
     - file: content/Signal_Decay
     - file: content/TE_Dependence
+    - file: content/plot_approach_figures.md
   - caption: Practical Resources
     chapters:
     - file: content/Multi_Echo_Datasets
@@ -35,7 +36,6 @@ parts:
     - file: content/06_Cerebrovascular_Reactivity_Mapping.md
     - file: content/07_Manual_Classification_with_rica.md
     - file: content/08_ICA_Based_Denoising.md
-    - file: content/09_Advanced_Applications.md
   - caption: Final Thoughts
     chapters:
     - file: content/bibliography.md

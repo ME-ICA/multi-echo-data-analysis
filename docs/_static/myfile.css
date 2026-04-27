@@ -1,0 +1,11 @@
+p {
+    text-align: justify;
+}
+p.caption {
+    text-align: left;
+}
+span.pre {
+    font-family: fantasy;
+    font-style: oblique;
+    font-weight: bolder;
+}
