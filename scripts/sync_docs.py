@@ -1,6 +1,12 @@
-"""Copy Jupyter Book HTML output from _build/html into docs/ for GitHub Pages.
+"""Prepare the built Jupyter Book site in docs/ for GitHub Pages.
 
-Everything under ``_build/html`` is part of the static site except:
+Jupyter Book 2 / MyST writes the static site directly into ``docs/`` when the
+project is built with ``jupyter-book build --html``.  In that case this script
+only validates the expected output and ensures ``docs/.nojekyll`` exists.
+
+For older Jupyter Book 1 / Sphinx builds, the static output lives under
+``_build/html``.  In that case this script copies ``_build/html`` into
+``docs/``.  Everything under ``_build/html`` is part of the static site except:
 
 - ``reports/`` -- notebook execution stderr logs (not linked by the HTML; not needed to view
   the book).
@@ -54,12 +60,37 @@ def _prune_stale_images(dest: Path) -> list[str]:
     return removed
 
 
+def _ensure_nojekyll(dest: Path) -> None:
+    """Ensure GitHub Pages serves underscored paths and static assets."""
+    nojekyll = dest / ".nojekyll"
+    if not nojekyll.is_file():
+        nojekyll.touch()
+
+
+def _looks_like_myst_site(dest: Path) -> bool:
+    """Return True if *dest* looks like Jupyter Book 2 / MyST static output."""
+    return (
+        (dest / "index.html").is_file()
+        and (dest / "config.json").is_file()
+        and (dest / "myst.search.json").is_file()
+    )
+
+
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
+    dest = root / "docs"
+
+    if _looks_like_myst_site(dest):
+        _ensure_nojekyll(dest)
+        print(f"Jupyter Book 2 site already built in {dest}; ensured .nojekyll exists.")
+        return
+
     src = root / "_build" / "html"
-    if not src.is_dir():
+    if not (src / "index.html").is_file():
         print(
-            f"Missing {src}. Run `jupyter-book build .` or `make book` first.",
+            "Missing a built site. Run `make build` first. Expected either "
+            f"{dest / 'index.html'} for Jupyter Book 2 or {src / 'index.html'} "
+            "for Jupyter Book 1.",
             file=sys.stderr,
         )
         sys.exit(1)
@@ -73,14 +104,11 @@ def main() -> None:
         skip = {"reports", "_sphinx_design_static", ".buildinfo"}
         return {n for n in names if n in skip}
 
-    dest = root / "docs"
     if dest.exists():
         shutil.rmtree(dest)
     shutil.copytree(src, dest, ignore=ignore_unneeded)
 
-    nojekyll = dest / ".nojekyll"
-    if not nojekyll.is_file():
-        nojekyll.touch()
+    _ensure_nojekyll(dest)
 
     pruned = _prune_stale_images(dest)
     if pruned:

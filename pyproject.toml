@@ -5,20 +5,13 @@ description = "Multi-echo data analysis Jupyter Book"
 requires-python = ">=3.10"
 dependencies = [
     "imageio",
-    # Sphinx-based Jupyter Book 1.x (this repo is not on Jupyter Book 2 / MyST engine yet)
-    "jupyter-book>=1.0,<2.0",
+    "jupyter-book>=2.0,<3.0",
     "jupytext",
     "matplotlib",
-    "myst-nb",
     "nilearn",
     "nitransforms",
     "pyspfm==2.0.2",
     "seaborn",
-    "sphinx>=4",
-    "sphinx-inline-tabs",
-    "sphinx-jupyterbook-latex",
-    "sphinx-proof",
-    "sphinxcontrib-bibtex",
     "tedana==26.0.3",
 ]
 
