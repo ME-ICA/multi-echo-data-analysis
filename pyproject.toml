@@ -13,6 +13,7 @@ dependencies = [
     "nilearn",
     "nitransforms",
     "pyspfm==2.0.2",
+    "phys2cvr=0.28.4"
     "seaborn",
     "sphinx>=4",
     "sphinx-inline-tabs",
