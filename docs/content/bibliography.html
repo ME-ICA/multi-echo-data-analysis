@@ -16,40 +16,43 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script src="../_static/tabs.js?v=3ee01567"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
@@ -70,6 +73,7 @@
     <link rel="prev" title="Denoising Data with ICA" href="08_ICA_Based_Denoising.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -85,19 +89,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -105,7 +98,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -113,8 +105,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -130,7 +122,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -160,21 +153,17 @@
     
     
     <img src="../_static/logo.png" class="logo__image only-light" alt="Multi-Echo fMRI Data Analysis - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Multi-Echo fMRI Data Analysis - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Multi-Echo fMRI Data Analysis - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -194,7 +183,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="00_Download_Data.html">Download Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Install_Software.html">Install Software</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Recommended_Reading.html">Recommended Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Recommended_Reading.html">Recommended Reading &amp; History</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Theoretical Background</span></p>
 <ul class="nav bd-sidenav">
@@ -218,7 +207,7 @@
 <li class="toctree-l1"><a class="reference internal" href="04_Dual_Echo_Denoising.html">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_3dMEPFM.html">Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping</a></li>
-<li class="toctree-l1"><a class="reference internal" href="07_Manual_Classification_with_rica.html">Manual Classification with <code class="docutils literal notranslate"><span class="pre">rica</span></code></a></li>
+<li class="toctree-l1"><a class="reference external" href="https://me-ica.github.io/rica/">Manual Classification with rica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_ICA_Based_Denoising.html">Denoising Data with ICA</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Final Thoughts</span></p>
@@ -234,9 +223,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -366,7 +360,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -380,24 +374,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -427,100 +413,132 @@ document.write(`
 <h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
 <div class="docutils container" id="id1">
 <div role="list" class="citation-list">
-<div class="citation" id="id7" role="doc-biblioentry">
+<div class="citation" id="id25" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
 <p>Stefan Posse. Multi-echo acquisition. <em>NeuroImage</em>, 62(2):665–671, 2012. 20 YEARS OF fMRI. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811911012213">https://www.sciencedirect.com/science/article/pii/S1053811911012213</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2011.10.057">doi:https://doi.org/10.1016/j.neuroimage.2011.10.057</a>.</p>
 </div>
-<div class="citation" id="id8" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Prantik Kundu, Valerie Voon, Priti Balchandani, Michael V. Lombardo, Benedikt A. Poser, and Peter A. Bandettini. Multi-echo fmri: a review of applications in fmri denoising and analysis of bold signals. <em>NeuroImage</em>, 154:59–80, 2017. Cleaning up the fMRI time series: Mitigating noise with advanced acquisition and correction strategies. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811917302410">https://www.sciencedirect.com/science/article/pii/S1053811917302410</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2017.03.033">doi:https://doi.org/10.1016/j.neuroimage.2017.03.033</a>.</p>
-</div>
-<div class="citation" id="id9" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<p>Valur Olafsson, Prantik Kundu, Eric C. Wong, Peter A. Bandettini, and Thomas T. Liu. Enhanced identification of bold-like components with multi-echo simultaneous multi-slice (mesms) fmri and multi-echo ica. <em>NeuroImage</em>, 112:43–51, 2015. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811915001536">https://www.sciencedirect.com/science/article/pii/S1053811915001536</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2015.02.052">doi:https://doi.org/10.1016/j.neuroimage.2015.02.052</a>.</p>
-</div>
-<div class="citation" id="id19" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
-<p>Ottavia Dipasquale, Arjun Sethi, Maria Marcella Laganà, Francesca Baglio, Giuseppe Baselli, Prantik Kundu, Neil A Harrison, and Mara Cercignani. Comparing resting state fmri de-noising approaches using multi-and single-echo acquisitions. <em>PloS one</em>, 12(3):e0173289, 2017.</p>
-</div>
 <div class="citation" id="id20" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
-<p>Sierra Hovet, Hongliang Ren, Sheng Xu, Bradford Wood, Junichi Tokuda, and Zion Tsz Ho Tse. Mri-powered biomedical devices. <em>Minimally Invasive Therapy &amp; Allied Technologies</em>, 27(4):191–202, 2018.</p>
-</div>
-<div class="citation" id="id21" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
-<p>Abi Berger. How does it work?: magnetic resonance imaging. <em>BMJ: British Medical Journal</em>, 324(7328):35, 2002.</p>
-</div>
-<div class="citation" id="id18" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></span>
-<p>Molly G Bright and Kevin Murphy. Removing motion and physiological artifacts from intrinsic bold fluctuations using short echo data. <em>Neuroimage</em>, 64:526–537, 2013.</p>
-</div>
-<div class="citation" id="id14" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></span>
-<p>Elizabeth DuPre, Wen-Ming Luh, and R Nathan Spreng. Multi-echo fmri replication sample of autobiographical memory, prospection and theory of mind reasoning tasks. <em>Scientific data</em>, 3(1):1–9, 2016.</p>
-</div>
-<div class="citation" id="id10" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></span>
-<p>P Kundu, N D Brenowitz, V Voon, Y Worbe, P E Vertes, S J Inati, Z S Saad, P A Bandettini, and E T Bullmore. Integrated strategy for improving functional connectivity mapping using multiecho fMRI. <em>Proceedings of the National Academy of Sciences</em>, 110(40):16187–16192, 2013.</p>
-</div>
-<div class="citation" id="id6" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>10<span class="fn-bracket">]</span></span>
-<p>Alexander D Cohen and Yang Wang. Improving the assessment of breath-holding induced cerebral vascular reactivity using a multiband multi-echo asl/bold sequence. <em>Scientific reports</em>, 9(1):1–12, 2019.</p>
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Ravi S. Menon, Seiji Ogawa, David W. Tank, and Kǎmil Uǧurbil. 4 tesla gradient recalled echo characteristics of photic stimulation‐induced signal changes in the human primary visual cortex. <em>Magnetic Resonance in Medicine</em>, 30(3):380–386, 1993. <a class="reference external" href="https://doi.org/10.1002/mrm.1910300317">doi:10.1002/mrm.1910300317</a>.</p>
 </div>
 <div class="citation" id="id13" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>11<span class="fn-bracket">]</span></span>
-<p>Jelle R. Dalenberg, Liselore Weitkamp, Remco J. Renken, and Gert J. ter Horst. Valence processing differs across stimulus modalities. <em>NeuroImage</em>, 183:734–744, 2018. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811918307572">https://www.sciencedirect.com/science/article/pii/S1053811918307572</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2018.08.059">doi:https://doi.org/10.1016/j.neuroimage.2018.08.059</a>.</p>
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>J. Hennig, Th. Emst, O. Speck, G. Deuschl, and E. Feifel. Detection of brain activation using oxygenation sensitive functional spectroscopy. <em>Magnetic Resonance in Medicine</em>, 31(1):85–90, 1994. <a class="reference external" href="https://doi.org/10.1002/mrm.1910310115">doi:10.1002/mrm.1910310115</a>.</p>
 </div>
-<div class="citation" id="id11" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></span>
-<p>Meredith A Shafto, Cam-CAN, Lorraine K Tyler, Marie Dixon, Jason R Taylor, James B Rowe, Rhodri Cusack, Andrew J Calder, William D Marslen-Wilson, John Duncan, Tim Dalgleish, Richard N Henson, Carol Brayne, and Fiona E Matthews. The cambridge centre for ageing and neuroscience (Cam-CAN) study protocol: a cross-sectional, lifespan, multidisciplinary examination of healthy cognitive ageing. <em>BMC Neurology</em>, 2014.</p>
-</div>
-<div class="citation" id="id3" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>13<span class="fn-bracket">]</span></span>
-<p>Stephan Heunis, Marcel Breeuwer, César Caballero-Gaudes, Lydia Hellrung, Willem Huijbers, Jacobus FA Jansen, Rolf Lamerichs, Svitlana Zinger, and Albert P Aldenkamp. The effects of multi-echo fmri combination and rapid t2*-mapping on offline and real-time bold sensitivity. <em>NeuroImage</em>, 238:118244, 2021. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811921005218">https://www.sciencedirect.com/science/article/pii/S1053811921005218</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2021.118244">doi:https://doi.org/10.1016/j.neuroimage.2021.118244</a>.</p>
-</div>
-<div class="citation" id="id5" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>14<span class="fn-bracket">]</span></span>
-<p>Stefano Moia, Maite Termenon, Eneko Uruñuela, Gang Chen, Rachael C. Stickland, Molly G. Bright, and César Caballero-Gaudes. Ica-based denoising strategies in breath-hold induced cerebrovascular reactivity mapping with multi echo bold fmri. <em>NeuroImage</em>, 233:117914, 2021. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811921001919">https://www.sciencedirect.com/science/article/pii/S1053811921001919</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2021.117914">doi:https://doi.org/10.1016/j.neuroimage.2021.117914</a>.</p>
-</div>
-<div class="citation" id="id12" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>15<span class="fn-bracket">]</span></span>
-<p>Jixing Li, Shohini Bhattasali, Shulin Zhang, Berta Franzluebbers, Wen-Ming Luh, R. Nathan Spreng, Jonathan R. Brennan, Yiming Yang, Christophe Pallier, and John Hale. Le petit prince: a multilingual fmri corpus using ecological stimuli. <em>bioRxiv</em>, 2021. URL: <a class="reference external" href="https://www.biorxiv.org/content/early/2021/10/04/2021.10.02.462875">https://www.biorxiv.org/content/early/2021/10/04/2021.10.02.462875</a>, <a class="reference external" href="https://arxiv.org/abs/https://www.biorxiv.org/content/early/2021/10/04/2021.10.02.462875.full.pdf">arXiv:https://www.biorxiv.org/content/early/2021/10/04/2021.10.02.462875.full.pdf</a>, <a class="reference external" href="https://doi.org/10.1101/2021.10.02.462875">doi:10.1101/2021.10.02.462875</a>.</p>
-</div>
-<div class="citation" id="id15" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>16<span class="fn-bracket">]</span></span>
-<p>RN Spreng, R Setton, U Alter, BN Cassidy, B Darboh, E DuPre, K Kantarovich, AW Lockrow, L Mwilambwe-Tshilobo, WM Luh, and others. Neurocognitive aging data release with behavioral, structural and multi-echo functional mri measures. <em>Scientific Data</em>, 2022. URL: <a class="reference external" href="https://doi.org/10.1038/s41597-022-01231-7">https://doi.org/10.1038/s41597-022-01231-7</a>, <a class="reference external" href="https://doi.org/10.1038/s41597-022-01231-7">doi:10.1038/s41597-022-01231-7</a>.</p>
-</div>
-<div class="citation" id="id16" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>17<span class="fn-bracket">]</span></span>
-<p>Julien Cohen-Adad, Jonathan R Polimeni, Karl G Helmer, Thomas Benner, Jennifer A McNab, Lawrence L Wald, Bruce R Rosen, and Caterina Mainero. T2* mapping and b0 orientation-dependence at 7 t reveal cyto-and myeloarchitecture organization of the human cortex. <em>Neuroimage</em>, 60(2):1006–1014, 2012.</p>
-</div>
-<div class="citation" id="id17" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>18<span class="fn-bracket">]</span></span>
-<p>Riikka Ruuth, Linda Kuusela, Teemu Mäkelä, Susanna Melkas, and Antti Korvenoja. Comparison of reconstruction and acquisition choices for quantitative t2* maps and synthetic contrasts. <em>European journal of radiology open</em>, 6:42–48, 2019.</p>
-</div>
-<div class="citation" id="id22" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>19<span class="fn-bracket">]</span></span>
-<p>Luca Vizioli, Steen Moeller, Logan Dowdle, Mehmet Akçakaya, Federico De Martino, Essa Yacoub, and Kamil Uğurbil. Lowering the thermal noise barrier in functional brain mapping with magnetic resonance imaging. <em>Nature communications</em>, 12(1):5181, 2021.</p>
-</div>
-<div class="citation" id="id23" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>20<span class="fn-bracket">]</span></span>
-<p>Logan T Dowdle, Luca Vizioli, Steen Moeller, Mehmet Akçakaya, Cheryl Olman, Geoffrey Ghose, Essa Yacoub, and Kâmil Uğurbil. Nordic increases the sensitivity and preserves the spatiotemporal precision of fmri responses. <em>bioRxiv</em>, pages 2021–08, 2021.</p>
+<div class="citation" id="id30" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<p>Oliver Speck and Jürgen Hennig. Functional imaging by i0‐ and t2* ‐parameter mapping using multi‐image epi. <em>Magnetic Resonance in Medicine</em>, 40(2):243–248, 1998. <a class="reference external" href="https://doi.org/10.1002/mrm.1910400210">doi:10.1002/mrm.1910400210</a>.</p>
 </div>
 <div class="citation" id="id24" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>21<span class="fn-bracket">]</span></span>
-<p>Logan T Dowdle, Luca Vizioli, Steen Moeller, Mehmet Akçakaya, Cheryl Olman, Geoffrey Ghose, Essa Yacoub, and Kâmil Uğurbil. Evaluating increases in sensitivity from nordic for diverse fmri acquisition strategies. <em>NeuroImage</em>, 270:119949, 2023.</p>
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
+<p>S. Posse, S. Wiese, D. Gembris, K. Mathiak, C. Kessler, M. L. Grosse-Ruyken, B. Elghahwagi, T. Richards, S. R. Dager, and V. G. Kiselev. Enhancement of bold-contrast sensitivity by single-shot multi-echo functional mr imaging. <em>Magn Reson Med</em>, 42(1):87–97, 1999. URL: <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/10398954">https://www.ncbi.nlm.nih.gov/pubmed/10398954</a>, <a class="reference external" href="https://doi.org/10.1002/(sici)1522-2594(199907)42:1&lt;87::aid-mrm13&gt;3.0.co;2-o">doi:10.1002/(sici)1522-2594(199907)42:1&lt;87::aid-mrm13&gt;3.0.co;2-o</a>.</p>
 </div>
-<div class="citation" id="id25" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>22<span class="fn-bracket">]</span></span>
-<p>Andrew N Van, David F Montez, Timothy O Laumann, Vahdeta Suljic, Thomas Madison, Noah J Baden, Nadeshka Ramirez-Perez, Kristen M Scheidter, Julia S Monk, Forrest I Whiting, and others. Framewise multi-echo distortion correction for superior functional mri. <em>Biorxiv</em>, 2023.</p>
+<div class="citation" id="id23" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
+<p>B. A. Poser, M. J. Versluis, J. M. Hoogduin, and D. G. Norris. Bold contrast sensitivity enhancement and artifact reduction with multiecho epi: parallel-acquired inhomogeneity-desensitized fmri. <em>Magn Reson Med</em>, 55(6):1227–35, 2006. URL: <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/16680688">https://www.ncbi.nlm.nih.gov/pubmed/16680688</a>, <a class="reference external" href="https://doi.org/10.1002/mrm.20900">doi:10.1002/mrm.20900</a>.</p>
 </div>
-<div class="citation" id="id4" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>23<span class="fn-bracket">]</span></span>
-<p>Elizabeth DuPre, Taylor Salo, Zaki Ahmed, Peter A. Bandettini, Katherine L. Bottenhorn, César Caballero-Gaudes, Logan T. Dowdle, Javier Gonzalez-Castillo, Stephan Heunis, Prantik Kundu, Angela R. Laird, Ross Markello, Christopher J. Markiewicz, Stefano Moia, Isla Staden, Joshua B. Teves, Eneko Uruñuela, Maryam Vaziri-Pashkam, Kirstie Whitaker, and Daniel A. Handwerker. Te-dependent analysis of multi-echo fmri with *tedana*. <em>Journal of Open Source Software</em>, 6(66):3669, 2021. URL: <a class="reference external" href="https://doi.org/10.21105/joss.03669">https://doi.org/10.21105/joss.03669</a>, <a class="reference external" href="https://doi.org/10.21105/joss.03669">doi:10.21105/joss.03669</a>.</p>
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></span>
+<p>Stephan Heunis, Marcel Breeuwer, César Caballero-Gaudes, Lydia Hellrung, Willem Huijbers, Jacobus FA Jansen, Rolf Lamerichs, Svitlana Zinger, and Albert P Aldenkamp. The effects of multi-echo fmri combination and rapid t2*-mapping on offline and real-time bold sensitivity. <em>NeuroImage</em>, 238:118244, 2021. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811921005218">https://www.sciencedirect.com/science/article/pii/S1053811921005218</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2021.118244">doi:https://doi.org/10.1016/j.neuroimage.2021.118244</a>.</p>
+</div>
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></span>
+<p>Prantik Kundu, Valerie Voon, Priti Balchandani, Michael V. Lombardo, Benedikt A. Poser, and Peter A. Bandettini. Multi-echo fmri: a review of applications in fmri denoising and analysis of bold signals. <em>NeuroImage</em>, 154:59–80, 2017. Cleaning up the fMRI time series: Mitigating noise with advanced acquisition and correction strategies. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811917302410">https://www.sciencedirect.com/science/article/pii/S1053811917302410</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2017.03.033">doi:https://doi.org/10.1016/j.neuroimage.2017.03.033</a>.</p>
+</div>
+<div class="citation" id="id3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></span>
+<p>Pieter F. Buur, David G. Norris, and Christian W. Hesse. Extraction of task-related activation from multi-echo bold fmri. <em>IEEE Journal of Selected Topics in Signal Processing</em>, 2(6):954–964, 2008. <a class="reference external" href="https://doi.org/10.1109/jstsp.2008.2007817">doi:10.1109/jstsp.2008.2007817</a>.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>10<span class="fn-bracket">]</span></span>
+<p>P. Kundu, S. J. Inati, J. W. Evans, W. M. Luh, and P. A. Bandettini. Differentiating bold and non-bold signals in fmri time series using multi-echo epi. <em>Neuroimage</em>, 60(3):1759–70, 2012. URL: <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/22209809">https://www.ncbi.nlm.nih.gov/pubmed/22209809</a>, <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2011.12.028">doi:10.1016/j.neuroimage.2011.12.028</a>.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>11<span class="fn-bracket">]</span></span>
+<p>P Kundu, N D Brenowitz, V Voon, Y Worbe, P E Vertes, S J Inati, Z S Saad, P A Bandettini, and E T Bullmore. Integrated strategy for improving functional connectivity mapping using multiecho fMRI. <em>Proceedings of the National Academy of Sciences</em>, 110(40):16187–16192, 2013.</p>
+</div>
+<div class="citation" id="id22" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></span>
+<p>Valur Olafsson, Prantik Kundu, Eric C. Wong, Peter A. Bandettini, and Thomas T. Liu. Enhanced identification of bold-like components with multi-echo simultaneous multi-slice (mesms) fmri and multi-echo ica. <em>NeuroImage</em>, 112:43–51, 2015. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811915001536">https://www.sciencedirect.com/science/article/pii/S1053811915001536</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2015.02.052">doi:https://doi.org/10.1016/j.neuroimage.2015.02.052</a>.</p>
+</div>
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>13<span class="fn-bracket">]</span></span>
+<p>Ottavia Dipasquale, Arjun Sethi, Maria Marcella Laganà, Francesca Baglio, Giuseppe Baselli, Prantik Kundu, Neil A Harrison, and Mara Cercignani. Comparing resting state fmri de-noising approaches using multi-and single-echo acquisitions. <em>PloS one</em>, 12(3):e0173289, 2017.</p>
+</div>
+<div class="citation" id="id28" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>14<span class="fn-bracket">]</span></span>
+<p>K. Setsompop, B. A. Gagoski, J. R. Polimeni, T. Witzel, V. J. Wedeen, and L. L. Wald. Blipped-controlled aliasing in parallel imaging for simultaneous multislice echo planar imaging with reduced g-factor penalty. <em>Magn Reson Med</em>, 67(5):1210–24, 2012. URL: <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/21858868">https://www.ncbi.nlm.nih.gov/pubmed/21858868</a>, <a class="reference external" href="https://doi.org/10.1002/mrm.23097">doi:10.1002/mrm.23097</a>.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>15<span class="fn-bracket">]</span></span>
+<p>Sierra Hovet, Hongliang Ren, Sheng Xu, Bradford Wood, Junichi Tokuda, and Zion Tsz Ho Tse. Mri-powered biomedical devices. <em>Minimally Invasive Therapy &amp; Allied Technologies</em>, 27(4):191–202, 2018.</p>
 </div>
 <div class="citation" id="id2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>16<span class="fn-bracket">]</span></span>
+<p>Abi Berger. How does it work?: magnetic resonance imaging. <em>BMJ: British Medical Journal</em>, 324(7328):35, 2002.</p>
+</div>
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>17<span class="fn-bracket">]</span></span>
+<p>Molly G Bright and Kevin Murphy. Removing motion and physiological artifacts from intrinsic bold fluctuations using short echo data. <em>Neuroimage</em>, 64:526–537, 2013.</p>
+</div>
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>18<span class="fn-bracket">]</span></span>
+<p>Elizabeth DuPre, Wen-Ming Luh, and R Nathan Spreng. Multi-echo fmri replication sample of autobiographical memory, prospection and theory of mind reasoning tasks. <em>Scientific data</em>, 3(1):1–9, 2016.</p>
+</div>
+<div class="citation" id="id5" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>19<span class="fn-bracket">]</span></span>
+<p>Alexander D Cohen and Yang Wang. Improving the assessment of breath-holding induced cerebral vascular reactivity using a multiband multi-echo asl/bold sequence. <em>Scientific reports</em>, 9(1):1–12, 2019.</p>
+</div>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>20<span class="fn-bracket">]</span></span>
+<p>Jelle R. Dalenberg, Liselore Weitkamp, Remco J. Renken, and Gert J. ter Horst. Valence processing differs across stimulus modalities. <em>NeuroImage</em>, 183:734–744, 2018. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811918307572">https://www.sciencedirect.com/science/article/pii/S1053811918307572</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2018.08.059">doi:https://doi.org/10.1016/j.neuroimage.2018.08.059</a>.</p>
+</div>
+<div class="citation" id="id29" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>21<span class="fn-bracket">]</span></span>
+<p>Meredith A Shafto, Cam-CAN, Lorraine K Tyler, Marie Dixon, Jason R Taylor, James B Rowe, Rhodri Cusack, Andrew J Calder, William D Marslen-Wilson, John Duncan, Tim Dalgleish, Richard N Henson, Carol Brayne, and Fiona E Matthews. The cambridge centre for ageing and neuroscience (Cam-CAN) study protocol: a cross-sectional, lifespan, multidisciplinary examination of healthy cognitive ageing. <em>BMC Neurology</em>, 2014.</p>
+</div>
+<div class="citation" id="id21" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>22<span class="fn-bracket">]</span></span>
+<p>Stefano Moia, Maite Termenon, Eneko Uruñuela, Gang Chen, Rachael C. Stickland, Molly G. Bright, and César Caballero-Gaudes. Ica-based denoising strategies in breath-hold induced cerebrovascular reactivity mapping with multi echo bold fmri. <em>NeuroImage</em>, 233:117914, 2021. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811921001919">https://www.sciencedirect.com/science/article/pii/S1053811921001919</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.neuroimage.2021.117914">doi:https://doi.org/10.1016/j.neuroimage.2021.117914</a>.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>23<span class="fn-bracket">]</span></span>
+<p>Jixing Li, Shohini Bhattasali, Shulin Zhang, Berta Franzluebbers, Wen-Ming Luh, R. Nathan Spreng, Jonathan R. Brennan, Yiming Yang, Christophe Pallier, and John Hale. Le petit prince: a multilingual fmri corpus using ecological stimuli. <em>bioRxiv</em>, 2021. URL: <a class="reference external" href="https://www.biorxiv.org/content/early/2021/10/04/2021.10.02.462875">https://www.biorxiv.org/content/early/2021/10/04/2021.10.02.462875</a>, <a class="reference external" href="https://arxiv.org/abs/https://www.biorxiv.org/content/early/2021/10/04/2021.10.02.462875.full.pdf">arXiv:https://www.biorxiv.org/content/early/2021/10/04/2021.10.02.462875.full.pdf</a>, <a class="reference external" href="https://doi.org/10.1101/2021.10.02.462875">doi:10.1101/2021.10.02.462875</a>.</p>
+</div>
+<div class="citation" id="id31" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>24<span class="fn-bracket">]</span></span>
+<p>RN Spreng, R Setton, U Alter, BN Cassidy, B Darboh, E DuPre, K Kantarovich, AW Lockrow, L Mwilambwe-Tshilobo, WM Luh, and others. Neurocognitive aging data release with behavioral, structural and multi-echo functional mri measures. <em>Scientific Data</em>, 2022. URL: <a class="reference external" href="https://doi.org/10.1038/s41597-022-01231-7">https://doi.org/10.1038/s41597-022-01231-7</a>, <a class="reference external" href="https://doi.org/10.1038/s41597-022-01231-7">doi:10.1038/s41597-022-01231-7</a>.</p>
+</div>
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>25<span class="fn-bracket">]</span></span>
+<p>Julien Cohen-Adad, Jonathan R Polimeni, Karl G Helmer, Thomas Benner, Jennifer A McNab, Lawrence L Wald, Bruce R Rosen, and Caterina Mainero. T2* mapping and b0 orientation-dependence at 7 t reveal cyto-and myeloarchitecture organization of the human cortex. <em>Neuroimage</em>, 60(2):1006–1014, 2012.</p>
+</div>
+<div class="citation" id="id27" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>26<span class="fn-bracket">]</span></span>
+<p>Riikka Ruuth, Linda Kuusela, Teemu Mäkelä, Susanna Melkas, and Antti Korvenoja. Comparison of reconstruction and acquisition choices for quantitative t2* maps and synthetic contrasts. <em>European journal of radiology open</em>, 6:42–48, 2019.</p>
+</div>
+<div class="citation" id="id33" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>27<span class="fn-bracket">]</span></span>
+<p>Luca Vizioli, Steen Moeller, Logan Dowdle, Mehmet Akçakaya, Federico De Martino, Essa Yacoub, and Kamil Uğurbil. Lowering the thermal noise barrier in functional brain mapping with magnetic resonance imaging. <em>Nature communications</em>, 12(1):5181, 2021.</p>
+</div>
+<div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>28<span class="fn-bracket">]</span></span>
+<p>Logan T Dowdle, Luca Vizioli, Steen Moeller, Mehmet Akçakaya, Cheryl Olman, Geoffrey Ghose, Essa Yacoub, and Kâmil Uğurbil. Nordic increases the sensitivity and preserves the spatiotemporal precision of fmri responses. <em>bioRxiv</em>, pages 2021–08, 2021.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>29<span class="fn-bracket">]</span></span>
+<p>Logan T Dowdle, Luca Vizioli, Steen Moeller, Mehmet Akçakaya, Cheryl Olman, Geoffrey Ghose, Essa Yacoub, and Kâmil Uğurbil. Evaluating increases in sensitivity from nordic for diverse fmri acquisition strategies. <em>NeuroImage</em>, 270:119949, 2023.</p>
+</div>
+<div class="citation" id="id32" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>30<span class="fn-bracket">]</span></span>
+<p>Andrew N Van, David F Montez, Timothy O Laumann, Vahdeta Suljic, Thomas Madison, Noah J Baden, Nadeshka Ramirez-Perez, Kristen M Scheidter, Julia S Monk, Forrest I Whiting, and others. Framewise multi-echo distortion correction for superior functional mri. <em>Biorxiv</em>, 2023.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>31<span class="fn-bracket">]</span></span>
+<p>Elizabeth DuPre, Taylor Salo, Zaki Ahmed, Peter A. Bandettini, Katherine L. Bottenhorn, César Caballero-Gaudes, Logan T. Dowdle, Javier Gonzalez-Castillo, Stephan Heunis, Prantik Kundu, Angela R. Laird, Ross Markello, Christopher J. Markiewicz, Stefano Moia, Isla Staden, Joshua B. Teves, Eneko Uruñuela, Maryam Vaziri-Pashkam, Kirstie Whitaker, and Daniel A. Handwerker. Te-dependent analysis of multi-echo fmri with *tedana*. <em>Journal of Open Source Software</em>, 6(66):3669, 2021. URL: <a class="reference external" href="https://doi.org/10.21105/joss.03669">https://doi.org/10.21105/joss.03669</a>, <a class="reference external" href="https://doi.org/10.21105/joss.03669">doi:10.21105/joss.03669</a>.</p>
+</div>
+<div class="citation" id="id26" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>32<span class="fn-bracket">]</span></span>
 <p>Jonathan D Power, Mark Plitt, Stephen J Gotts, Prantik Kundu, Valerie Voon, Peter A Bandettini, and Alex Martin. Ridding fmri data of motion-related influences: removal of signals with distinct spatial and physical bases in multiecho data. <em>Proceedings of the National Academy of Sciences</em>, 115(9):E2105–E2114, 2018.</p>
 </div>
 </div>
@@ -625,8 +643,8 @@ By The tedana community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
