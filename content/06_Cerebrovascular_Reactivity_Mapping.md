@@ -32,11 +32,37 @@ kernelspec:
 
 Cerebrovascular Reactivity (CVR) Mapping can greatly benefit from multi-echo (ME) data acquisition and independent component analysis (ICA) denoising, especially when it is based on breath-holds, cued deep breaths, or resting-state.
 
-While ME-ICA will greatly reduce motion-related noise (see {cite:t}`MOIA2021117914`), because CVR is an increase in blood flow triggered by vessels dilation, there is a component of signal that is proton-density related. For this reason, the default decision tree in tedana may categorise certain components that should (or at least could) be kept as noise, so it is suggested to perform a manual revision of the automatic categorisation and/or adapt the decision tree to accept such components.
+While ME-ICA will greatly reduce motion-related noise (see {cite:t}`MOIA2021117914`), because CVR is an increase in blood flow triggered by vessels dilation, there is a component of signal that is proton-density related. For this reason, the default decision tree in tedana may categorise certain components that should (or at least could) be kept as noise, so it is _strongly_ suggested to perform a manual revision of the automatic categorisation and/or adapt the decision tree to accept a better suited set of components.
 
 On top of that, in the context of breath-holds and cued deep breaths, attention should be made in the denoising stage, as an aggressive approach will remove all sources of signal that inform CVR and the associated haemodynamic lag. Instead, a conservative denoising approach, where noise IC timeseries are orthogonalised to the (temporally shifted) $P_{ET}CO_2$ and the non-noise IC timeseries is to be preferred ({cite:t}`MOIA2021117914`).
 
-Once you obtained your [optimally combined signal](./01_Optimal_Combination_with_t2smap.html) and your [ICA decomposition](./03_Denoising_with_tedana.html) that has been [manually inspected (and corrected if needed)](./07_Manual_Classification_with_rica.html), you need [TO POTENTIALLY EXTRACT NOISE AND NON-NOISE IC TIMESERIES AND] a brain mask and, if you want, a ROI mask which average signal will be used as reference to align the regressor (e.g. the $CO_2$ trace) and which average haemodynamic lag will be set as 0-lag - grey matter or cerebellum are commonly used as ROI.
+Assuming that you are following the other tutorials in this notebook, once you obtained your [optimally combined signal](./01_Optimal_Combination_with_t2smap.html) and your [ICA decomposition](./03_Denoising_with_tedana.html) that has been [manually inspected (and corrected if needed)](./07_Manual_Classification_with_rica.html), you will need to make sure you have:
+  - a whole brain mask in functional space that will confine `phys2cvr` operations within it - the `desc-adaptiveGoodSignal_mask.nii.gz` output of `tedana` can work fine, but if you have a different mask that is also ok;
+  - if you want, a ROI mask in functional space which average signal will be used as reference to align the regressor (e.g. the $CO_2$ trace) and which average haemodynamic lag will be set as 0-lag - grey matter or cerebellum are commonly used as reference ROI;
+  - if you want to run ICA denoising, the timeseries of rejected and accepted components from tedana in two different files; the easiest way to obtain these are using the mixing matrix from `tedana` and the manual classification from `rica` with the help of `pandas`:
+  
+```{code-cell} ipython3
+import pandas as pd
+
+# Assuming RICA was used for manual classification, read the downloaded file (adjusting path as necessary)
+man_class = pd.read_csv('../manual_classification.tsv', sep='\t', header=0)
+
+# Read the ICA mixing matrix  (adjusting path as necessary)
+ica_mix = pd.read_csv('../desc-ICA_mixing.tsv', sep='\t', header=0)
+
+# Extract the list of rejected and accepted components
+rej_comp =  man_class[man_class['classification'] == 'rejected']['Component'].tolist()
+acc_comp =  man_class[man_class['classification'] == 'accepted']['Component'].tolist()
+
+# Extract rejected vs accepted timeseries and save them
+rej_ts = ica_mix[rej_comp]
+acc_ts = ica_mix[acc_comp]
+
+acc_ts.to_csv('../accecpted_ic_timeseries.csv', index=False, header=False)
+rej_ts.to_csv('../rejected_ic_timeseries.csv', index=False, header=False)
+```
+
+need [TO POTENTIALLY EXTRACT NOISE AND NON-NOISE IC TIMESERIES AND] a brain mask and, if you want, 
 
 After [installing `phys2cvr`](https://phys2cvr.readthedocs.io/en/latest/usage/installation.html#basic-installation), potentially with [extra dependencies](https://phys2cvr.readthedocs.io/en/latest/usage/installation.html#richer-installation), we can import the main workflow of `phys2cvr` and call its help to see all available parameters (many).
 
@@ -130,8 +156,8 @@ p2c(
   lag_step=0.3,                       # Lag step to consider
   l_degree=2,                         # Legendre polynomials degrees
   denoise_matrix_file=['../motion_params', '../other_noise'],  # All the noise you want to add
-  orthogonalised_matrix_file=['../noise_ic_timeseries.tsv'],
-  extra_matrix_file=['../nonnoise_ic_timeseries.tsv'],
+  orthogonalised_matrix_file=['../rejected_ic_timeseries.csv'],
+  extra_matrix_file=['../accepted_ic_timeseries.csv'],
   scale_factor=None,                  # If CO2 trace is not in mmHg, you can scale the final map accordingly
   )
 ```
@@ -157,8 +183,8 @@ p2c(
   lag_step=0.3,                       # Lag step to consider
   l_degree=2,                         # Legendre polynomials degrees
   denoise_matrix_file=['../motion_params', '../other_noise'],  # All the noise you want to add
-  orthogonalised_matrix_file=['../noise_ic_timeseries.tsv'],
-  extra_matrix_file=['../nonnoise_ic_timeseries.tsv'],
+  orthogonalised_matrix_file=['../rejected_ic_timeseries.csv'],
+  extra_matrix_file=['../accepted_ic_timeseries.csv'],
   scale_factor=None,                  # If CO2 trace is not in mmHg, you can scale the final map accordingly
   comp_endtidal=False,                # DO NOT compute PetCO2 internally
   response_function=None,             # DO NOT interpolate the PetCO2 trace.
@@ -182,8 +208,8 @@ p2c(
   lag_step=0.3,                       # Lag step to consider
   l_degree=2,                         # Legendre polynomials degrees
   denoise_matrix_file=['../motion_params', '../other_noise'],  # All the noise you want to add
-  orthogonalised_matrix_file=['../noise_ic_timeseries.tsv'],
-  extra_matrix_file=['../nonnoise_ic_timeseries.tsv'],
+  orthogonalised_matrix_file=['../rejected_ic_timeseries.csv'],
+  extra_matrix_file=['../accepted_ic_timeseries.csv'],
   scale_factor=None,                  # If CO2 trace is not in mmHg, you can scale the final map accordingly
   comp_endtidal=False,                # DO NOT compute end-tidal trace
   response_function='rrf',            # Interpolate with RRF
@@ -206,8 +232,8 @@ p2c(
   lag_step=0.3,                       # Lag step to consider
   l_degree=2,                         # Legendre polynomials degrees
   denoise_matrix_file=['../motion_params', '../other_noise'],  # All the noise you want to add
-  orthogonalised_matrix_file=['../noise_ic_timeseries.tsv'],
-  extra_matrix_file=['../nonnoise_ic_timeseries.tsv'],
+  orthogonalised_matrix_file=['../rejected_ic_timeseries.csv'],
+  extra_matrix_file=['../accepted_ic_timeseries.csv'],
   comp_endtidal=False,                # DO NOT compute end-tidal trace
   response_function=None,             # DO NOT interpolate the trace
   apply_filter=True,                  # Filter the average BOLD signal (optional)
