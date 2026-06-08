@@ -172,7 +172,7 @@ def predict_bold_signal(echo_times, s0, t2s):
     log_data = np.dot(r2s, neg_tes) + intercept
     # Removed -1 from outside exp because it messes up dt_sig2
     data = np.exp(log_data).T
-    return data
+    return np.round(data, decimals=5)
 
 
 def predict_loglinear(data, echo_times):
@@ -188,7 +188,7 @@ def predict_loglinear(data, echo_times):
     log_data
     """
     log_data = np.log(np.abs(data) + 1)
-    return log_data
+    return np.round(log_data, decimals=5)
 
 
 def compute_te_dependence_statistics(data, B, tes):
@@ -231,4 +231,4 @@ def compute_te_dependence_statistics(data, B, tes):
     SSE_R2 = SSE_R2.sum(axis=0)
     F_R2 = (alpha - SSE_R2) * (n_echos - 1) / (SSE_R2)
 
-    return F_S0, F_R2, pred_S0, pred_R2
+    return np.round(F_S0, decimals=5), np.round(F_R2, decimals=5), np.round(pred_S0, decimals=5), np.round(pred_R2, decimals=5)
