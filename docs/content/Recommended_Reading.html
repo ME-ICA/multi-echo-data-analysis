@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Recommended Reading &#8212; Multi-Echo fMRI Data Analysis</title>
+    <title>Recommended Reading &amp; History &#8212; Multi-Echo fMRI Data Analysis</title>
   
   
   
@@ -16,20 +16,22 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -39,17 +41,18 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script src="../_static/tabs.js?v=3ee01567"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
@@ -70,6 +73,7 @@
     <link rel="prev" title="Install Software" href="Install_Software.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -85,19 +89,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -105,7 +98,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -113,8 +105,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -130,7 +122,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -160,21 +153,17 @@
     
     
     <img src="../_static/logo.png" class="logo__image only-light" alt="Multi-Echo fMRI Data Analysis - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Multi-Echo fMRI Data Analysis - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Multi-Echo fMRI Data Analysis - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -194,7 +183,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="00_Download_Data.html">Download Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Install_Software.html">Install Software</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Recommended Reading</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Recommended Reading &amp; History</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Theoretical Background</span></p>
 <ul class="nav bd-sidenav">
@@ -218,7 +207,7 @@
 <li class="toctree-l1"><a class="reference internal" href="04_Dual_Echo_Denoising.html">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_3dMEPFM.html">Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping</a></li>
-<li class="toctree-l1"><a class="reference internal" href="07_Manual_Classification_with_rica.html">Manual Classification with <code class="docutils literal notranslate"><span class="pre">rica</span></code></a></li>
+<li class="toctree-l1"><a class="reference external" href="https://me-ica.github.io/rica/">Manual Classification with rica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_ICA_Based_Denoising.html">Denoising Data with ICA</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Final Thoughts</span></p>
@@ -234,9 +223,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -414,7 +408,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -428,25 +422,17 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -459,7 +445,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Recommended Reading</h1>
+    <h1>Recommended Reading & History</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -469,7 +455,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#journal-articles-describing-multi-echo-methods">Journal articles describing multi-echo methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-first-two-decades-of-multi-echo-fmri">The first two decades of multi-echo fMRI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ica-based-denoising">ICA-based denoising</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#broadening-of-multi-echo-users-and-community">Broadening of multi-echo users and community</a></li>
 </ul>
             </nav>
         </div>
@@ -481,14 +469,60 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="recommended-reading">
-<h1>Recommended Reading<a class="headerlink" href="#recommended-reading" title="Link to this heading">#</a></h1>
-<section id="journal-articles-describing-multi-echo-methods">
-<h2>Journal articles describing multi-echo methods<a class="headerlink" href="#journal-articles-describing-multi-echo-methods" title="Link to this heading">#</a></h2>
-<p><span id="id1">Posse [<a class="reference internal" href="bibliography.html#id7" title="Stefan Posse. Multi-echo acquisition. NeuroImage, 62(2):665-671, 2012. 20 YEARS OF fMRI. URL: https://www.sciencedirect.com/science/article/pii/S1053811911012213, doi:https://doi.org/10.1016/j.neuroimage.2011.10.057.">2012</a>]</span> includes an historical overview of multi-echo acquisition and research.
-<span id="id2">Kundu <em>et al.</em> [<a class="reference internal" href="bibliography.html#id8" title="Prantik Kundu, Valerie Voon, Priti Balchandani, Michael V. Lombardo, Benedikt A. Poser, and Peter A. Bandettini. Multi-echo fmri: a review of applications in fmri denoising and analysis of bold signals. NeuroImage, 154:59-80, 2017. Cleaning up the fMRI time series: Mitigating noise with advanced acquisition and correction strategies. URL: https://www.sciencedirect.com/science/article/pii/S1053811917302410, doi:https://doi.org/10.1016/j.neuroimage.2017.03.033.">2017</a>]</span> is a review of multi-echo denoising with a focus on the MEICA algorithm.
-The appendix of <span id="id3">Olafsson <em>et al.</em> [<a class="reference internal" href="bibliography.html#id9" title="Valur Olafsson, Prantik Kundu, Eric C. Wong, Peter A. Bandettini, and Thomas T. Liu. Enhanced identification of bold-like components with multi-echo simultaneous multi-slice (mesms) fmri and multi-echo ica. NeuroImage, 112:43-51, 2015. URL: https://www.sciencedirect.com/science/article/pii/S1053811915001536, doi:https://doi.org/10.1016/j.neuroimage.2015.02.052.">2015</a>]</span> includes a good explanation of the math underlying MEICA denoising.
-The appendix of <span id="id4">Dipasquale <em>et al.</em> [<a class="reference internal" href="bibliography.html#id19" title="Ottavia Dipasquale, Arjun Sethi, Maria Marcella Laganà, Francesca Baglio, Giuseppe Baselli, Prantik Kundu, Neil A Harrison, and Mara Cercignani. Comparing resting state fmri de-noising approaches using multi-and single-echo acquisitions. PloS one, 12(3):e0173289, 2017.">2017</a>]</span> includes some recommendations for multi-echo acquisition.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="recommended-reading-history">
+<h1>Recommended Reading &amp; History<a class="headerlink" href="#recommended-reading-history" title="Link to this heading">#</a></h1>
+<section id="the-first-two-decades-of-multi-echo-fmri">
+<h2>The first two decades of multi-echo fMRI<a class="headerlink" href="#the-first-two-decades-of-multi-echo-fmri" title="Link to this heading">#</a></h2>
+<p><span id="id1">[<a class="reference internal" href="bibliography.html#id25" title="Stefan Posse. Multi-echo acquisition. NeuroImage, 62(2):665-671, 2012. 20 YEARS OF fMRI. URL: https://www.sciencedirect.com/science/article/pii/S1053811911012213, doi:https://doi.org/10.1016/j.neuroimage.2011.10.057.">Posse, 2012</a>]</span> includes an historical overview of multi-echo acquisition and research.
+Multi-echo fMRI is sometimes discussed as a newer method, but it’s as old as fMRI.
+Much of this work set up the theory and empirical measurements that drive continued innovation in multi-echo methods.
+Early work trying to understand BOLD responses to neural activity used multi-echo sequences <span id="id2">[<a class="reference internal" href="bibliography.html#id20" title="Ravi S. Menon, Seiji Ogawa, David W. Tank, and Kǎmil Uǧurbil. 4 tesla gradient recalled echo characteristics of photic stimulation‐induced signal changes in the human primary visual cortex. Magnetic Resonance in Medicine, 30(3):380–386, 1993. doi:10.1002/mrm.1910300317.">Menon <em>et al.</em>, 1993</a>]</span>.
+Multi-echo fMRI is effectively sampling the same frequency induced decay curve
+as in NMR spectroscopy, and some of the early work in this area called itself functional spectroscopy <span id="id3">[<a class="reference internal" href="bibliography.html#id13" title="J. Hennig, Th. Emst, O. Speck, G. Deuschl, and E. Feifel. Detection of brain activation using oxygenation sensitive functional spectroscopy. Magnetic Resonance in Medicine, 31(1):85–90, 1994. doi:10.1002/mrm.1910310115.">Hennig <em>et al.</em>, 1994</a>, <a class="reference internal" href="bibliography.html#id30" title="Oliver Speck and Jürgen Hennig. Functional imaging by i0‐ and t2* ‐parameter mapping using multi‐image epi. Magnetic Resonance in Medicine, 40(2):243–248, 1998. doi:10.1002/mrm.1910400210.">Speck and Hennig, 1998</a>]</span>.</p>
+<p><span id="id4">[<a class="reference internal" href="bibliography.html#id24" title="S. Posse, S. Wiese, D. Gembris, K. Mathiak, C. Kessler, M. L. Grosse-Ruyken, B. Elghahwagi, T. Richards, S. R. Dager, and V. G. Kiselev. Enhancement of bold-contrast sensitivity by single-shot multi-echo functional mr imaging. Magn Reson Med, 42(1):87–97, 1999. URL: https://www.ncbi.nlm.nih.gov/pubmed/10398954, doi:10.1002/(sici)1522-2594(199907)42:1&lt;87::aid-mrm13&gt;3.0.co;2-o.">Posse <em>et al.</em>, 1999</a>]</span> built on much of this work to show how taking the weighted sum of multiple echoes can improve fMRI results over single-echo fMRI.
+<span id="id5">[<a class="reference internal" href="bibliography.html#id23" title="B. A. Poser, M. J. Versluis, J. M. Hoogduin, and D. G. Norris. Bold contrast sensitivity enhancement and artifact reduction with multiecho epi: parallel-acquired inhomogeneity-desensitized fmri. Magn Reson Med, 55(6):1227–35, 2006. URL: https://www.ncbi.nlm.nih.gov/pubmed/16680688, doi:10.1002/mrm.20900.">Poser <em>et al.</em>, 2006</a>]</span> added and validated more ways to calculate the weighted sum across echoes to increase sensitivity to BOLD contrast.
+Poser’s T2* weighting method is the default weighting used in <a class="reference external" href="https://tedana.readthedocs.io/en/0.0.11/generated/tedana.combine.make_optcom.html#tedana.combine.make_optcom" title="(in tedana v0.0.11+0.g4d5c645.dirty)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tedana.combine.make_optcom()</span></code></a> and other software and this weighted sum is sometimes called “Optimally Combined”.
+Despite this method being called “optimal,” research continues in comparing and validating echo combination options <span id="id6">[<a class="reference internal" href="bibliography.html#id14" title="Stephan Heunis, Marcel Breeuwer, César Caballero-Gaudes, Lydia Hellrung, Willem Huijbers, Jacobus FA Jansen, Rolf Lamerichs, Svitlana Zinger, and Albert P Aldenkamp. The effects of multi-echo fmri combination and rapid t2*-mapping on offline and real-time bold sensitivity. NeuroImage, 238:118244, 2021. URL: https://www.sciencedirect.com/science/article/pii/S1053811921005218, doi:https://doi.org/10.1016/j.neuroimage.2021.118244.">Heunis <em>et al.</em>, 2021</a>]</span>.</p>
+</section>
+<section id="ica-based-denoising">
+<h2>ICA-based denoising<a class="headerlink" href="#ica-based-denoising" title="Link to this heading">#</a></h2>
+<p><span id="id7">[<a class="reference internal" href="bibliography.html#id18" title="Prantik Kundu, Valerie Voon, Priti Balchandani, Michael V. Lombardo, Benedikt A. Poser, and Peter A. Bandettini. Multi-echo fmri: a review of applications in fmri denoising and analysis of bold signals. NeuroImage, 154:59-80, 2017. Cleaning up the fMRI time series: Mitigating noise with advanced acquisition and correction strategies. URL: https://www.sciencedirect.com/science/article/pii/S1053811917302410, doi:https://doi.org/10.1016/j.neuroimage.2017.03.033.">Kundu <em>et al.</em>, 2017</a>]</span> is a review of multi-echo denoising with a focus on the Multi-Echo ICA (MEICA) algorithm.
+One challenge of using multi-echo data is that we are trying to fit a line or decay curve to noisy data.
+While the overall data quality might increase, there is noise added by fit errors.
+One way to avoid fit errors is just to take the weighted sum across echoes, as highlighted in the previous section.
+Averaging signals with independent measurement noise and similar noise distributions
+should always be a net gain in data quality,
+but it doesn’t take full advantage of the relationship between echoes.</p>
+<p><span id="id8">[<a class="reference internal" href="bibliography.html#id3" title="Pieter F. Buur, David G. Norris, and Christian W. Hesse. Extraction of task-related activation from multi-echo bold fmri. IEEE Journal of Selected Topics in Signal Processing, 2(6):954–964, 2008. doi:10.1109/jstsp.2008.2007817.">Buur <em>et al.</em>, 2008</a>]</span> evaluated and tested ICA and other data decomposition tools with the goal of identifying and removing non-T2* weighted signals with spatio-temporal structure.
+If the decomposition method separates the data into sources with more and less T2* contribution,
+then one can fit decay models within each source to get better estimates.
+<span id="id9">[<a class="reference internal" href="bibliography.html#id16" title="P. Kundu, S. J. Inati, J. W. Evans, W. M. Luh, and P. A. Bandettini. Differentiating bold and non-bold signals in fmri time series using multi-echo epi. Neuroimage, 60(3):1759–70, 2012. URL: https://www.ncbi.nlm.nih.gov/pubmed/22209809, doi:10.1016/j.neuroimage.2011.12.028.">Kundu <em>et al.</em>, 2012</a>, <a class="reference internal" href="bibliography.html#id17" title="P Kundu, N D Brenowitz, V Voon, Y Worbe, P E Vertes, S J Inati, Z S Saad, P A Bandettini, and E T Bullmore. Integrated strategy for improving functional connectivity mapping using multiecho fMRI. Proceedings of the National Academy of Sciences, 110(40):16187–16192, 2013.">Kundu <em>et al.</em>, 2013</a>]</span> built on this idea of using ICA to develop and share an algorithm,
+MEICA, that showed substantial improvements in noise removal.
+The appendix of <span id="id10">[<a class="reference internal" href="bibliography.html#id22" title="Valur Olafsson, Prantik Kundu, Eric C. Wong, Peter A. Bandettini, and Thomas T. Liu. Enhanced identification of bold-like components with multi-echo simultaneous multi-slice (mesms) fmri and multi-echo ica. NeuroImage, 112:43-51, 2015. URL: https://www.sciencedirect.com/science/article/pii/S1053811915001536, doi:https://doi.org/10.1016/j.neuroimage.2015.02.052.">Olafsson <em>et al.</em>, 2015</a>]</span> includes a good explanation of the math underlying MEICA denoising.
+The appendix of <span id="id11">[<a class="reference internal" href="bibliography.html#id8" title="Ottavia Dipasquale, Arjun Sethi, Maria Marcella Laganà, Francesca Baglio, Giuseppe Baselli, Prantik Kundu, Neil A Harrison, and Mara Cercignani. Comparing resting state fmri de-noising approaches using multi-and single-echo acquisitions. PloS one, 12(3):e0173289, 2017.">Dipasquale <em>et al.</em>, 2017</a>]</span> includes some recommendations for multi-echo acquisition.</p>
+</section>
+<section id="broadening-of-multi-echo-users-and-community">
+<h2>Broadening of multi-echo users and community<a class="headerlink" href="#broadening-of-multi-echo-users-and-community" title="Link to this heading">#</a></h2>
+<p>While multi-echo fMRI is old, through the 2000s it was mostly used by MRI physicists and methodology researchers.
+There are several reasons for this.
+MRI hardware and pulse sequences were too slow to collect a whole-brain fMRI volume in 2 seconds.
+Much of the earlier work used slabs of the brain or even a just a few slices.
+One could get most of cortex in 2 seconds using in-slice acceleration, but even then there was an additional challenge.
+Even though collecting multi-echo data is a relatively minor tweak in standard fMRI pulse sequences,
+most pulse sequences that could be used to collect multi-echo fMRI data were research sequences that were
+passed researcher-to-researcher by request.
+None of the mainstream vendors distributed a multi-echo fMRI sequence that users who weren’t MRI experts could just run.
+In the mid-2010s several things came together to address the above challenges.
+Simultaneous multi-slice acceleration <span id="id12">[<a class="reference internal" href="bibliography.html#id28" title="K. Setsompop, B. A. Gagoski, J. R. Polimeni, T. Witzel, V. J. Wedeen, and L. L. Wald. Blipped-controlled aliasing in parallel imaging for simultaneous multislice echo planar imaging with reduced g-factor penalty. Magn Reson Med, 67(5):1210–24, 2012. URL: https://www.ncbi.nlm.nih.gov/pubmed/21858868, doi:10.1002/mrm.23097.">Setsompop <em>et al.</em>, 2012</a>]</span> and improvements in hardware meant that it was possible to collect whole-brain multi-echo fMRI data with minimal compromises.
+Research sequences that included multi-echo acqusition started to get shared more widely.
+Of particular note, the CMRR Multi-band sequence that was used for the Human Connectome Project on Siemens scanners added multi-echo acqusition in 2014.
+While this was a research sequence, since it was widely accessible and used,
+it greatly expanded the number of researchers who could easily acquire multi-echo data.</p>
+<p>The growth in users was paralleled with a growth in community.
+Researchers from multiple sites came together to build <a class="reference external" href="https://tedana.readthedocs.io">tedana</a>
+which is both a platform to run a range of methods that build on the MEICA approach,
+and community resources that make it easier for researchers to learn about and use
+multi-echo fMRI. The book is one product of this community work.</p>
 </section>
 </section>
 
@@ -547,16 +581,20 @@ The appendix of <span id="id4">Dipasquale <em>et al.</em> [<a class="reference i
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#journal-articles-describing-multi-echo-methods">Journal articles describing multi-echo methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-first-two-decades-of-multi-echo-fmri">The first two decades of multi-echo fMRI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ica-based-denoising">ICA-based denoising</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#broadening-of-multi-echo-users-and-community">Broadening of multi-echo users and community</a></li>
 </ul>
   </nav></div>
 
@@ -605,8 +643,8 @@ By The tedana community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

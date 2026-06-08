@@ -125,8 +125,10 @@ voxel_idx = np.where(
 )[0][0]
 
 # Extract the time series for the high-kappa voxel
+# ts is rounded to make it more likely the figures are consistent when generated on different computers
+#  This hopefully avoids unncessary new files in the git history.
 arr = [masking.apply_mask(f, mask) for f in data['echo_files']]
-ts = [d[:, voxel_idx] for d in arr]
+ts = np.round([d[:, voxel_idx] for d in arr], decimals=5)
 ts_1d = np.hstack(ts)
 
 n_trs = ts[0].shape[0]
@@ -185,7 +187,7 @@ Additionally, image contrast tends to increase with longer echo times.
 fig, ax = plt.subplots(figsize=(14, 6))
 values = [i[0] for i in ts]
 for i_echo in range(n_echoes):
-    rep_echo_times = np.ones(n_trs) * data['echo_times'][i_echo]
+    rep_echo_times = np.round(np.ones(n_trs) * data['echo_times'][i_echo], decimals=5)
     ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
 ax.set_ylabel("BOLD signal", fontsize=16)
@@ -246,7 +248,7 @@ Firstly, let us run some code to simulate the signal decay curve.
 SINGLEECHO_TE = np.array([30])
 
 # For a nice, smooth curve
-FULLCURVE_TES = np.arange(0, 121, 1)
+FULLCURVE_TES = np.round(np.arange(0, 121, 1), decimals=5)
 
 n_echoes = len(FULLCURVE_TES)
 pal = sns.color_palette("cubehelix", 8)
@@ -268,10 +270,11 @@ MEAN_S0 = 16000
 # simulate the T2*/S0 time series
 # The original time series will be a random time series from a normal distribution,
 # convolved with the HRF
-ts = np.random.normal(loc=0, scale=1, size=(N_VOLS + 20,))
+rng = np.random.default_rng(42)
+ts = rng.normal(loc=0, scale=1, size=(N_VOLS + 20,))
 ts = signal.convolve(ts, hrf)[20 : N_VOLS + 20]
 ts *= SCALING_FRACTION / np.std(ts)
-ts -= ts[0]
+ts -= np.round(ts[0], decimals=5)
 
 t2s_ts = (ts * MEAN_T2S) + MEAN_T2S
 s0_ts = (ts * MEAN_S0) + MEAN_S0
@@ -343,16 +346,16 @@ ax.plot(
 # vertical lines to explain how the contrast evolves
 max_plot = np.ceil(np.max(fullcurve_signal) / 1000) * 1000
 # 10ms
-ymin = fullcurve_signal_inactive[:, 0][10][0]/max_plot
-ymax = fullcurve_signal_active[:, 0][10][0]/max_plot
+ymin = np.round(fullcurve_signal_inactive[:, 0][10][0]/max_plot, decimals=5)
+ymax = np.round(fullcurve_signal_active[:, 0][10][0]/max_plot, decimals=5)
 ax.axvline(x=FULLCURVE_TES[10], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
 # 30ms
-ymin = fullcurve_signal_inactive[:, 0][30][0]/max_plot
-ymax = fullcurve_signal_active[:, 0][30][0]/max_plot
+ymin = np.round(fullcurve_signal_inactive[:, 0][30][0]/max_plot, decimals=5)
+ymax = np.round(fullcurve_signal_active[:, 0][30][0]/max_plot, decimals=5)
 ax.axvline(x=FULLCURVE_TES[30], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
 # 50ms
-ymin = fullcurve_signal_inactive[:, 0][50][0]/max_plot
-ymax = fullcurve_signal_active[:, 0][50][0]/max_plot
+ymin = np.round(fullcurve_signal_inactive[:, 0][50][0]/max_plot, decimals=5)
+ymax = np.round(fullcurve_signal_active[:, 0][50][0]/max_plot, decimals=5)
 ax.axvline(x=FULLCURVE_TES[50], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
 
 ax.set_ylabel("Recorded BOLD signal", fontsize=24)
@@ -718,10 +721,10 @@ s0based_fullcurve_signal = predict_bold_signal(
 t2sbased_fullcurve_signal = predict_bold_signal(
     FULLCURVE_TES, np.full(N_VOLS, MEAN_S0), t2s_ts
 )
-unperturbed_fullcurve_signal = np.mean(
+unperturbed_fullcurve_signal = np.round(np.mean(
     (s0based_fullcurve_signal[:, 0], t2sbased_fullcurve_signal[:, 0]),
     axis=0,
-)
+), decimals=5)
 
 fig, axes = plt.subplots(
     nrows=2, figsize=(14, 10), gridspec_kw={"height_ratios": [1, 3]}
@@ -1099,7 +1102,7 @@ ax.plot(
     label=f"BOLD signal (TE={SINGLEECHO_TE[0]}ms)",
 )
 ax.plot(
-    t2s_ts * scalar,
+    np.round(t2s_ts * scalar, decimals=5),
     label="$T_{2}^{*}$ (scaled to signal)",
     linestyle="--",
 )
@@ -1133,7 +1136,7 @@ ax.plot(
     label=f"BOLD signal (TE={SINGLEECHO_TE[0]}ms)",
 )
 ax.plot(
-    s0_ts * scalar,
+    np.round(s0_ts * scalar, decimals=5),
     label="S0 (scaled to signal)",
     linestyle="--",
 )
