@@ -151,7 +151,7 @@ for i_echo, img in enumerate(imgs):
         vmax = np.max(arr)
 
     plotting.plot_epi(
-        np.round(img, decimals=3),
+        img,
         cut_coords=[-15, 0, 15, 30, 45],
         display_mode="z",
         annotate=False,

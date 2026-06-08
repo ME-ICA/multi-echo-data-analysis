@@ -27,8 +27,8 @@ from book_utils import glue_figure
 def plt_sinc(x_start, x_dur):
     """Plot a sinc function that start at time x_start and lasts for x_dur ms."""
     n_vals = 100
-    sinc_vals = np.sinc(np.linspace(-4, 4, n_vals))
-    sinc_timing = np.linspace(x_start, x_start+x_dur, n_vals)
+    sinc_vals = np.round(np.sinc(np.linspace(-4, 4, n_vals)), decimals=5)
+    sinc_timing = np.round(np.linspace(x_start, x_start+x_dur, n_vals), decimals=5)
     plt.plot(sinc_timing, sinc_vals, 'k', linewidth=0.75)
 
 def plt_sin(x_center, x_dur, n_cycles, color):
@@ -43,8 +43,8 @@ def plt_sin(x_center, x_dur, n_cycles, color):
     color: The color of the line for the sin wave
     """
     n_vals = 1000
-    sin_vals = np.sin(n_cycles*2*np.pi*np.linspace(0,1,n_vals))/2
-    sin_timing = np.linspace(x_center-x_dur/2, x_center+x_dur/2, n_vals)
+    sin_vals = np.round(np.sin(n_cycles*2*np.pi*np.linspace(0,1,n_vals))/2, decimals=5)
+    sin_timing = np.round(np.linspace(x_center-x_dur/2, x_center+x_dur/2, n_vals), decimals=5)
     plt.plot(sin_timing, sin_vals, color, linewidth=0.75)
 
     
@@ -95,12 +95,12 @@ def create_simple_pulse_seq(tes, read_time=None, x_axis_duration=None, n_acq = 2
         plt_sinc(excite_start, sinc_dur)
         for echo_idx, echo_val in enumerate(tes):
             plt_sin(excite_start+echo_val, read_time, n_cycles, colorlist[echo_idx])
-            plt.plot(excite_start+np.linspace(sinc_dur/2, echo_val, 20), np.tile(0.52+echo_idx*0.1, 20), 'k', linestyle='--')
-            plt.text(excite_start+(echo_val - sinc_dur/2)/2, 0.53+0.1*echo_idx, f"TE {echo_idx+1}")
-        excite_start = excite_start + echo_val + read_time/2 + 0.5
+            plt.plot(np.round(excite_start+np.linspace(sinc_dur/2, echo_val, 20), decimals=5), np.round(np.tile(0.52+echo_idx*0.1, 20), decimals=5), 'k', linestyle='--')
+            plt.text(np.round(excite_start+(echo_val - sinc_dur/2)/2, decimals=5), np.round(0.53+0.1*echo_idx, decimals=5), f"TE {echo_idx+1}")
+        excite_start = np.round(excite_start + echo_val + read_time/2 + 0.5, decimals=5)
         if acq_iter == 0:
             plt.plot([0, excite_start], [1, 1], 'k', linestyle='-.')
-            plt.text(excite_start*0.45, 1.01, "1 acquisition cycle")
+            plt.text(np.round(excite_start*0.45, decimals=5), 1.01, "1 acquisition cycle")
 
     plt.xlim(0,x_axis_duration)
     plt.xlabel('Time (ms)')
