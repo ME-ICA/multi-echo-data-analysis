@@ -14,7 +14,7 @@ dependencies = [
     "nitransforms",
     "pyspfm==2.0.2",
     "peakdet==0.6.1",
-    "phys2cvr=0.28.4",
+    "phys2cvr==0.28.4",
     "seaborn",
     "sphinx>=4",
     "sphinx-inline-tabs",
@@ -28,5 +28,8 @@ dependencies = [
 # Install it separately, e.g. `brew install git-annex` or `apt install git-annex`.
 
 [tool.uv]
+# This repo is a Jupyter Book, not an installable Python package (flat layout with
+# content/, docs/, scripts/, ...), so don't try to build/install the root project.
+package = false
 # Use a named environment directory ("meda") instead of the default ".venv".
 # Override by exporting UV_PROJECT_ENVIRONMENT before invoking uv.
