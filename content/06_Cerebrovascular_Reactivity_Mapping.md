@@ -41,26 +41,26 @@ Assuming that you are following the other tutorials in this notebook, once you o
   - if you want, a ROI mask in functional space which average signal will be used as reference to align the regressor (e.g. the $CO_2$ trace) and which average haemodynamic lag will be set as 0-lag - grey matter or cerebellum are commonly used as reference ROI;
   - if you want to run ICA denoising, the timeseries of rejected and accepted components from tedana in two different files; the easiest way to obtain these are using the mixing matrix from `tedana` and the manual classification from `rica` with the help of `pandas`:
   
-```python
-import pandas as pd
+    ```python
+    import pandas as pd
 
-# Assuming RICA was used for manual classification, read the downloaded file (adjusting path as necessary)
-man_class = pd.read_csv('../manual_classification.tsv', sep='\t', header=0)
+    # Assuming RICA was used for manual classification, read the downloaded file (adjusting path as necessary)
+    man_class = pd.read_csv('../manual_classification.tsv', sep='\t', header=0)
 
-# Read the ICA mixing matrix  (adjusting path as necessary)
-ica_mix = pd.read_csv('../desc-ICA_mixing.tsv', sep='\t', header=0)
+    # Read the ICA mixing matrix  (adjusting path as necessary)
+    ica_mix = pd.read_csv('../desc-ICA_mixing.tsv', sep='\t', header=0)
 
-# Extract the list of rejected and accepted components
-rej_comp =  man_class[man_class['classification'] == 'rejected']['Component'].tolist()
-acc_comp =  man_class[man_class['classification'] == 'accepted']['Component'].tolist()
+    # Extract the list of rejected and accepted components
+    rej_comp =  man_class[man_class['classification'] == 'rejected']['Component'].tolist()
+    acc_comp =  man_class[man_class['classification'] == 'accepted']['Component'].tolist()
 
-# Extract rejected vs accepted timeseries and save them
-rej_ts = ica_mix[rej_comp]
-acc_ts = ica_mix[acc_comp]
+    # Extract rejected vs accepted timeseries and save them
+    rej_ts = ica_mix[rej_comp]
+    acc_ts = ica_mix[acc_comp]
 
-acc_ts.to_csv('../accecpted_ic_timeseries.csv', index=False, header=False)
-rej_ts.to_csv('../rejected_ic_timeseries.csv', index=False, header=False)
-```
+    acc_ts.to_csv('../accepted_ic_timeseries.csv', index=False, header=False)
+    rej_ts.to_csv('../rejected_ic_timeseries.csv', index=False, header=False)
+    ```
 
 need [TO POTENTIALLY EXTRACT NOISE AND NON-NOISE IC TIMESERIES AND] a brain mask and, if you want, 
 
