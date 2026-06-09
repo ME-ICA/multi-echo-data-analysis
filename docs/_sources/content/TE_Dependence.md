@@ -75,7 +75,7 @@ os.makedirs(out_dir, exist_ok=True)
 :tags: [hide-cell]
 # Simulate data
 # For a nice, smooth curve
-echo_times = np.arange(0, 201, 1)
+echo_times = np.round(np.arange(0, 201, 1), decimals=5)
 
 n_echoes = len(echo_times)
 pal = sns.color_palette("cubehelix", 8)
@@ -87,17 +87,17 @@ frac = 0.2
 s02 = mean_s0 + (mean_s0 * frac)
 t2s2 = mean_t2s + (mean_t2s * frac)
 
-mean_sig = np.squeeze(predict_bold_signal(echo_times, mean_s0, mean_t2s))
+mean_sig = np.round(np.squeeze(predict_bold_signal(echo_times, mean_s0, mean_t2s)), decimals=5)
 
 # Signal with fluctuating S0
-sig2 = np.squeeze(predict_bold_signal(echo_times, s02, mean_t2s))
+sig2 = np.round(np.squeeze(predict_bold_signal(echo_times, s02, mean_t2s)), decimals=5)
 d_sig2 = sig2 - mean_sig
-dt_sig2 = d_sig2 / ((sig2 + mean_sig) / 2.0)
+dt_sig2 = np.round(d_sig2 / ((sig2 + mean_sig) / 2.0), decimals=5)
 
 # Signal with fluctuating T2*
-sig3 = np.squeeze(predict_bold_signal(echo_times, mean_s0, t2s2))
+sig3 = np.round(np.squeeze(predict_bold_signal(echo_times, mean_s0, t2s2)), decimals=5)
 d_sig3 = sig3 - mean_sig
-dt_sig3 = d_sig3 / ((sig3 + mean_sig) / 2.0)
+dt_sig3 = np.round(d_sig3 / ((sig3 + mean_sig) / 2.0), decimals=5)
 ```
 
 ## Plot simulations of BOLD and non-BOLD signals as a function of echo time
@@ -351,14 +351,14 @@ axes[0].set_title("Change in S0", fontsize=20, y=1.02)
 axes[0].plot(echo_times, d_sig2, label="${\\Delta}S(TE_k)$", linewidth=5, alpha=0.5)
 axes[0].plot(
     echo_times,
-    np.squeeze(pred_R2_2),
+    np.round(np.squeeze(pred_R2_2), decimals=5),
     label="Predicted signal for R2* model",
     linestyle="--",
     color="red",
 )
 axes[0].plot(
     echo_times,
-    np.squeeze(pred_S0_2),
+    np.round(np.squeeze(pred_S0_2), decimals=5),
     label="Predicted signal for S0 model",
     linestyle="--",
     color="black",
@@ -422,7 +422,8 @@ s0_std = mean_s0 * frac
 
 # simulate the T2*/S0 time series
 n_chunks = 10
-scales = np.random.random(n_chunks) * 3
+rng = np.random.default_rng(42)
+scales = rng.uniform(size=n_chunks) * 3
 t2s_ts = []
 for section in range(n_chunks):
     ts = np.hstack((np.zeros(10), np.ones(20), np.zeros(10)))
@@ -434,15 +435,15 @@ t2s_ts = signal.convolve(t2s_ts, hrf)[:n_trs]
 t2s_ts *= t2s_std / np.std(t2s_ts)
 t2s_ts += mean_t2s - np.mean(t2s_ts)
 
-s0_ts = np.random.randint(0, 2, n_trs).astype(float)
+s0_ts =  rng.integers(low=0, high=2, size=n_trs).astype(float)
 s0_ts -= 0.5
-s0_ts *= np.random.normal(loc=1, scale=0.25, size=n_trs)
+s0_ts *= rng.normal(loc=1, scale=0.25, size=n_trs)
 s0_ts = np.sort(s0_ts)
 first_half = s0_ts[:n_trs // 2]
 second_half = s0_ts[n_trs // 2:]
 s0_ts = np.zeros(n_trs)
-np.random.shuffle(first_half)
-np.random.shuffle(second_half)
+rng.shuffle(first_half)
+rng.shuffle(second_half)
 s0_ts[::2] = first_half
 s0_ts[1::2] = second_half
 # s0_ts = signal.convolve(s0_ts, hrf)[20 : n_trs + 20]
@@ -459,8 +460,8 @@ s0_signal = predict_bold_signal(echo_times, s0_ts, mean_t2s_ts)
 multiecho_signal = predict_bold_signal(echo_times, s0_ts, t2s_ts)
 
 # Normalize to get component time series
-t2s_ts_z = stats.zscore(t2s_ts)
-s0_ts_z = stats.zscore(s0_ts)
+t2s_ts_z = np.round(stats.zscore(t2s_ts), decimals=5)
+s0_ts_z = np.round(stats.zscore(s0_ts), decimals=5)
 p = 0.5  # proportion for combination
 component = (p * t2s_ts_z) + ((1 - p) * s0_ts_z)
 
