@@ -73,16 +73,19 @@ os.makedirs(out_dir, exist_ok=True)
 print(f"{len(data_files)} echoes | TE = {[round(t, 1) for t in echo_times]} ms | TR = {tr} s")
 ```
 
-## Parcellate, normalise and detrend
+## Parcellate, detrend and normalise
 
-Each echo is averaged within Schaefer parcels (restricted to the brain mask),
-converted to **percent signal change**, and **detrended** (linear trend removal plus
-a high-pass filter). Two preprocessing steps are essential here:
+Each echo is averaged within Schaefer parcels (restricted to the brain mask), then
+**detrended and band-pass filtered (0.01–0.1 Hz)**, and only then converted to
+**percent signal change**. The order matters: we strip drift and out-of-band
+fluctuations first, then express what remains as a fraction of the parcel's baseline.
 
+- **Detrending and band-pass filtering** — scanner drift (below 0.01 Hz) and
+  high-frequency noise (above 0.1 Hz, e.g. residual cardiac/respiratory and thermal
+  noise) are not part of the haemodynamic response, so we keep only the 0.01–0.1 Hz
+  band where the BOLD response lives.
 - **Normalisation to percent signal change** — `pySPFM` expects normalised input;
   feeding raw signal intensities collapses the deconvolution to zero.
-- **Detrending** — scanner drift is not part of the haemodynamic model, so if it is
-  left in it leaks into spurious activity.
 
 ```{code-cell} ipython3
 :tags: [output_scroll]
@@ -103,10 +106,14 @@ masker.fit(data_files[0])
 masked_data = []
 for f in data_files:
     echo_data = masker.transform(f)  # (n_timepoints, n_parcels)
-    mean = echo_data.mean(axis=0, keepdims=True)
+    # Detrend and band-pass (0.01-0.1 Hz) first, then normalise: express the cleaned
+    # signal as a fraction of the parcel's raw baseline mean (percent signal change).
+    baseline = echo_data.mean(axis=0, keepdims=True)
+    detrended = clean(
+        echo_data, detrend=True, low_pass=0.1, high_pass=0.01, t_r=tr, standardize=False
+    )
     with np.errstate(invalid="ignore", divide="ignore"):
-        pc = (echo_data - mean) / mean  # percent signal change
-    pc = clean(pc, detrend=True, high_pass=0.01, t_r=tr, standardize=False)
+        pc = detrended / baseline  # percent signal change
     masked_data.append(pc)
 
 X = np.vstack(masked_data)  # (n_echoes * n_timepoints, n_parcels)
@@ -155,13 +162,13 @@ np.save(os.path.join(out_dir, "out_activity_aic.npy"), models["aic"].coef_)
 
 ## A single parcel: BIC vs. AIC
 
-For one representative parcel: the detrended BOLD (echo 2) with each model's fit, and
+For one representative parcel: the band-pass-filtered BOLD (echo 2) with each model's fit, and
 the activity-inducing signal recovered by each criterion. BIC keeps only a handful of
 strong events; AIC recovers many more — the same trade-off illustrated in the pySPFM
 documentation.
 
 ```{code-cell} ipython3
-echo2 = masked_data[1][:, valid]                                   # detrended echo-2 % change
+echo2 = masked_data[1][:, valid]                                   # filtered echo-2 % change
 coef_bic, coef_aic = models["bic"].coef_, models["aic"].coef_
 fit_bic = models["bic"].get_fitted_signal()[n_scans:2 * n_scans, :]
 fit_aic = models["aic"].get_fitted_signal()[n_scans:2 * n_scans, :]
@@ -176,7 +183,7 @@ parcel = int(candidates[int(np.argmax(corr))])
 
 t = np.arange(n_scans) * tr
 fig, axes = plt.subplots(3, 1, figsize=(14, 8), sharex=True)
-axes[0].plot(t, echo2[:, parcel] * 100, color="0.6", lw=1.0, label="Detrended BOLD (echo 2)")
+axes[0].plot(t, echo2[:, parcel] * 100, color="0.6", lw=1.0, label="Filtered BOLD (echo 2)")
 axes[0].plot(t, fit_bic[:, parcel] * 100, color="tab:red", lw=1.3, label="BIC fit")
 axes[0].plot(t, fit_aic[:, parcel] * 100, color="tab:orange", lw=1.3, label="AIC fit")
 axes[0].set_ylabel("Signal change (%)")
