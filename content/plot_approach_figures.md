@@ -35,6 +35,7 @@ from tedana.utils import make_adaptive_mask
 
 data_path = os.path.abspath('../data')
 
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
 ted_dir = os.path.join(data_path, "tedana")
 ```
 
@@ -42,16 +43,24 @@ ted_dir = os.path.join(data_path, "tedana")
 ```{code-cell} ipython3
 :tags: [hide-cell]
 data = load_pafin(data_path)
+# load_pafin returns echo_times as a list; this chapter does array arithmetic on
+# it (e.g. -1 * echo_times), so coerce to an array once here.
+data['echo_times'] = np.asarray(data['echo_times'])
 
-# Background anatomical image
+# Background anatomical image. The boldref->T1w transform and the T1w image are
+# optional dataset files that the download step does not fetch; when either is
+# absent, fall back to nilearn's default background by leaving bg_img as None.
 anat_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/anat/")
-xfm = os.path.join(
+xfm_file = os.path.join(
     func_dir,
     "sub-24053_ses-1_task-rat_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt",
 )
-xfm = nit.linear.load(xfm, fmt="itk")
 t1_file = os.path.join(anat_dir, "sub-24053_ses-1_rec-norm_desc-preproc_T1w.nii.gz")
-bg_img = xfm.apply(spatialimage=t1_file, reference=data['echo_files'][0])
+if os.path.exists(xfm_file) and os.path.exists(t1_file):
+    xfm = nit.linear.load(xfm_file, fmt="itk")
+    bg_img = xfm.apply(spatialimage=t1_file, reference=data['echo_files'][0])
+else:
+    bg_img = None
 
 # Tedana outputs
 adaptive_mask_file = os.path.join(
