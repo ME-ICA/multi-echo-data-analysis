@@ -58,6 +58,12 @@ mask_file = os.path.join(
     "sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz",
 )
 
+if not data_files:
+    raise FileNotFoundError(
+        f"No echo files found under {func_dir}. Run the data download in "
+        "`00_Download_Data` (datalad get of the task-rat_dir-PA echoes) first."
+    )
+
 # Read the echo times (converted to ms) and the repetition time (s) from the BIDS
 # JSON sidecars, so the HRF is built with the correct acquisition timing.
 echo_times = []
@@ -93,7 +99,9 @@ fluctuations first, then express what remains as a fraction of the parcel's base
 # Schaefer cortical parcellation. Averaging within ~400 parcels reduces the problem
 # from ~218k voxels to a few hundred ROIs and improves SNR. Increase n_rois for a
 # finer map at the cost of a longer fit.
-atlas = fetch_atlas_schaefer_2018(n_rois=400)
+# Download the atlas into the git-ignored ../data tree instead of the default
+# ~/nilearn_data, so it does not clutter the user's home directory.
+atlas = fetch_atlas_schaefer_2018(n_rois=400, data_dir=os.path.join(data_path, "nilearn"))
 
 masker = NiftiLabelsMasker(
     labels_img=atlas.maps,
