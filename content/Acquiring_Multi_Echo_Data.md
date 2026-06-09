@@ -272,9 +272,12 @@ axes[0].set_ylabel("Echo Time (ms)")
 fig.tight_layout()
 plt.show()
 
-# Columns can come back as object dtype when the source spreadsheet has blank
-# or non-numeric cells; coerce to float and drop NaNs before plotting.
-tr = pd.to_numeric(metable.TR, errors="coerce").dropna().to_numpy()
+# The TR column header carries its unit and has been renamed before
+# ("TR" -> "TR (s)"), so match it by prefix instead of hard-coding the name.
+# Columns can also come back as object dtype when the source spreadsheet has
+# blank or non-numeric cells; coerce to float and drop NaNs before plotting.
+tr_col = next(c for c in metable.columns if c.strip().startswith("TR"))
+tr = pd.to_numeric(metable[tr_col], errors="coerce").dropna().to_numpy()
 plt.hist(tr)
 plt.title("Repetition Times", fontsize=18)
 plt.xlabel("Repetition Time (s)")
