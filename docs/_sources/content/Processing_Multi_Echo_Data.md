@@ -61,6 +61,70 @@ then resulting intensity gradients and the subsequent calculation of voxelwise T
 An aggressive temporal filter (e.g., a 0.1Hz low pass filter)
 or spatial smoothing could similarly distort the relationship between the echoes at each time point.
 
+## Pipeline-specific recommendations
+
+When using automated pipelines like `fMRIprep`, it is important to carefully verify the status of the output, minimally 
+preprocessed data to ensure that it is in the correct format for multi-echo denoising in `tedana`.
+
+### fMRIprep
+
+When using `fMRIprep` to preprocess ME-EPI data, we recommend the following:
+- Use the `--me-output-echoes` flag to ensure that each echo is preprocessed separately, then run optimal combination 
+using `tedana` itself. Running `tedana` on the data that has already been optimally combined in fMRIprep results in
+distortion correction, spatial normalization, and smoothing potentially being applied before `tedana`, reducing denoising
+quality.
+- Ensure that `tedana` is run on unsmoothed `fmriprep` outputs. This is especially important if you are using an older
+version of `fmriprep` that includes ICA-AROMA, a pipeline that requires and outputs smoothed data.
+
+This [page from the tedana documentation](https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0) 
+contains a script that automatically retrieves the necessary files from `fMRIprep` outputs and runs `tedana` on them.
+
+### Parallel processing on high-performance computers
+
+When running `tedana` on multiple subjects in parallel on a high-performance computing cluster (e.g. SLURM jobs), 
+ensure that jobs are run in independent nodes to avoid race conditions (and errors) when writing to the same output 
+directory. The following is an exemplar bash script that demonstrates running `tedana` in parallel on multiple subjects 
+in a SLURM job array, assuming `fmriprep` has already been run:
+
+``` bash
+#!/bin/bash
+#SBATCH --time=20:00:00
+#SBATCH --account=[PUT ALLOCATION HERE]
+#SBATCH --job-name=tedana-job
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=20
+#SBATCH --mem=32G
+#SBATCH --output=/arc/burst/[PUT ALLOCATION HERE]/fmri_env_scripts/outputs/tedana-job-%j-output.txt
+#SBATCH --error=/arc/burst/[PUT ALLOCATION HERE]/fmri_env_scripts/errors/tedana-job-%j-errors.txt
+#SBATCH --mail-user=[YOUR-EMAIL@INSTITUTION.EDU]
+#SBATCH --mail-type=END
+
+echo "Job execution start: $(date)"
+
+# Load required software packages to start up the conda environment
+module load miniconda3
+source activate /arc/project/[PUT ALLOCATION HERE]/software_envs/fmri_env
+
+# Choose directories
+# BIDS directory
+BIDS_DIR=/arc/burst/[PUT ALLOCATION HERE]/fmriprep/1_preprocessing/BIDS_datasets_temp/BIDS_dataset_jul30_24
+
+# FMRIPREP directory
+FMRIPREP_DIR=${BIDS_DIR}/derivatives/fmriprep
+CORES=20
+
+# Run the tedana script in parallel on the desired directory
+python /arc/burst/[PUT ALLOCATION HERE]/fmri_env_scripts/tedana/fMRIprep_to_tedana.py \
+ --fmriprepDir $FMRIPREP_DIR --bidsDir $BIDS_DIR --cores $CORES
+
+# Exit conda environment
+conda deactivate
+
+echo "Job termination: $(date)"
+```
+
+Here, `fMRIprep_to_tedana.py` is the [previously mentioned fMRIprep to tedana python script](https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0).
+
 ```{note}
 We are assuming that spatial normalization and distortion correction,
 particularly non-linear normalization methods with higher order interpolation functions,
