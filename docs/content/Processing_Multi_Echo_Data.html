@@ -34,10 +34,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
@@ -460,7 +460,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-slice-timing-correction-and-motion-correction-before-multi-echo-denoising">2. Perform slice timing correction and motion correction <strong>before</strong> multi-echo denoising</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-distortion-correction-spatial-normalization-smoothing-and-any-rescaling-or-filtering-after-denoising">3. Perform distortion correction, spatial normalization, smoothing, and any rescaling or filtering <strong>after</strong> denoising</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-specific-recommendations">Pipeline-specific recommendations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fmriprep">fMRIprep</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fmriprep">fMRIPrep</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-processing-on-high-performance-computers">Parallel processing on high-performance computers</a></li>
 </ul>
 </li>
@@ -520,21 +520,21 @@ or spatial smoothing could similarly distort the relationship between the echoes
 </section>
 <section id="pipeline-specific-recommendations">
 <h2>Pipeline-specific recommendations<a class="headerlink" href="#pipeline-specific-recommendations" title="Link to this heading">#</a></h2>
-<p>When using automated pipelines like <code class="docutils literal notranslate"><span class="pre">fMRIprep</span></code>, it is important to carefully verify the status of the output, minimally
+<p>When using automated pipelines like <code class="docutils literal notranslate"><span class="pre">fMRIPrep</span></code>, it is important to carefully verify the status of the output, minimally
 preprocessed data to ensure that it is in the correct format for multi-echo denoising in <code class="docutils literal notranslate"><span class="pre">tedana</span></code>.</p>
 <section id="fmriprep">
-<h3>fMRIprep<a class="headerlink" href="#fmriprep" title="Link to this heading">#</a></h3>
-<p>When using <code class="docutils literal notranslate"><span class="pre">fMRIprep</span></code> to preprocess ME-EPI data, we recommend the following:</p>
+<h3>fMRIPrep<a class="headerlink" href="#fmriprep" title="Link to this heading">#</a></h3>
+<p>When using <code class="docutils literal notranslate"><span class="pre">fMRIPrep</span></code> to preprocess ME-EPI data, we recommend the following:</p>
 <ul class="simple">
 <li><p>Use the <code class="docutils literal notranslate"><span class="pre">--me-output-echoes</span></code> flag to ensure that each echo is preprocessed separately, then run optimal combination
-using <code class="docutils literal notranslate"><span class="pre">tedana</span></code> itself. Running <code class="docutils literal notranslate"><span class="pre">tedana</span></code> on the data that has already been optimally combined in fMRIprep results in
+using <code class="docutils literal notranslate"><span class="pre">tedana</span></code> itself. Running <code class="docutils literal notranslate"><span class="pre">tedana</span></code> on the data that has already been optimally combined in fMRIPrep results in
 distortion correction, spatial normalization, and smoothing potentially being applied before <code class="docutils literal notranslate"><span class="pre">tedana</span></code>, reducing denoising
 quality.</p></li>
 <li><p>Ensure that <code class="docutils literal notranslate"><span class="pre">tedana</span></code> is run on unsmoothed <code class="docutils literal notranslate"><span class="pre">fmriprep</span></code> outputs. This is especially important if you are using an older
 version of <code class="docutils literal notranslate"><span class="pre">fmriprep</span></code> that includes ICA-AROMA, a pipeline that requires and outputs smoothed data.</p></li>
 </ul>
 <p>This <a class="reference external" href="https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0">page from the tedana documentation</a>
-contains a script that automatically retrieves the necessary files from <code class="docutils literal notranslate"><span class="pre">fMRIprep</span></code> outputs and runs <code class="docutils literal notranslate"><span class="pre">tedana</span></code> on them.</p>
+contains a script that automatically retrieves the necessary files from <code class="docutils literal notranslate"><span class="pre">fMRIPrep</span></code> outputs and runs <code class="docutils literal notranslate"><span class="pre">tedana</span></code> on them.</p>
 </section>
 <section id="parallel-processing-on-high-performance-computers">
 <h3>Parallel processing on high-performance computers<a class="headerlink" href="#parallel-processing-on-high-performance-computers" title="Link to this heading">#</a></h3>
@@ -578,7 +578,7 @@ conda<span class="w"> </span>deactivate
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Job termination: </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>Here, <code class="docutils literal notranslate"><span class="pre">fMRIprep_to_tedana.py</span></code> is the <a class="reference external" href="https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0">previously mentioned fMRIprep to tedana python script</a>.</p>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">fMRIprep_to_tedana.py</span></code> is the <a class="reference external" href="https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0">previously mentioned fMRIPrep to tedana python script</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We are assuming that spatial normalization and distortion correction,
@@ -664,7 +664,7 @@ research to better understand how these steps can be applied before denoising.</
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-slice-timing-correction-and-motion-correction-before-multi-echo-denoising">2. Perform slice timing correction and motion correction <strong>before</strong> multi-echo denoising</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-distortion-correction-spatial-normalization-smoothing-and-any-rescaling-or-filtering-after-denoising">3. Perform distortion correction, spatial normalization, smoothing, and any rescaling or filtering <strong>after</strong> denoising</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-specific-recommendations">Pipeline-specific recommendations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fmriprep">fMRIprep</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fmriprep">fMRIPrep</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-processing-on-high-performance-computers">Parallel processing on high-performance computers</a></li>
 </ul>
 </li>

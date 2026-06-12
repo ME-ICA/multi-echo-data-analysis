@@ -63,21 +63,21 @@ or spatial smoothing could similarly distort the relationship between the echoes
 
 ## Pipeline-specific recommendations
 
-When using automated pipelines like `fMRIprep`, it is important to carefully verify the status of the output, minimally 
+When using automated pipelines like `fMRIPrep`, it is important to carefully verify the status of the output, minimally 
 preprocessed data to ensure that it is in the correct format for multi-echo denoising in `tedana`.
 
-### fMRIprep
+### fMRIPrep
 
-When using `fMRIprep` to preprocess ME-EPI data, we recommend the following:
+When using `fMRIPrep` to preprocess ME-EPI data, we recommend the following:
 - Use the `--me-output-echoes` flag to ensure that each echo is preprocessed separately, then run optimal combination 
-using `tedana` itself. Running `tedana` on the data that has already been optimally combined in fMRIprep results in
+using `tedana` itself. Running `tedana` on the data that has already been optimally combined in fMRIPrep results in
 distortion correction, spatial normalization, and smoothing potentially being applied before `tedana`, reducing denoising
 quality.
 - Ensure that `tedana` is run on unsmoothed `fmriprep` outputs. This is especially important if you are using an older
 version of `fmriprep` that includes ICA-AROMA, a pipeline that requires and outputs smoothed data.
 
 This [page from the tedana documentation](https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0) 
-contains a script that automatically retrieves the necessary files from `fMRIprep` outputs and runs `tedana` on them.
+contains a script that automatically retrieves the necessary files from `fMRIPrep` outputs and runs `tedana` on them.
 
 ### Parallel processing on high-performance computers
 
@@ -123,7 +123,7 @@ conda deactivate
 echo "Job termination: $(date)"
 ```
 
-Here, `fMRIprep_to_tedana.py` is the [previously mentioned fMRIprep to tedana python script](https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0).
+Here, `fMRIprep_to_tedana.py` is the [previously mentioned fMRIPrep to tedana python script](https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0).
 
 ```{note}
 We are assuming that spatial normalization and distortion correction,
