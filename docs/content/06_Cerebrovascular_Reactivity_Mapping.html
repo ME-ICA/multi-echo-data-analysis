@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Cerebrovascular Reactivity Mapping &#8212; Multi-Echo fMRI Data Analysis</title>
+    <title>Cerebrovascular Reactivity Mapping with phys2cvr &#8212; Multi-Echo fMRI Data Analysis</title>
   
   
   
@@ -65,6 +65,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'content/06_Cerebrovascular_Reactivity_Mapping';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -206,7 +208,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03_Denoising_with_tedana.html">Multi-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">tedana</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_Dual_Echo_Denoising.html">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_3dMEPFM.html">Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Cerebrovascular Reactivity Mapping</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Cerebrovascular Reactivity Mapping with <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code></a></li>
+
 <li class="toctree-l1"><a class="reference external" href="https://me-ica.github.io/rica/">Manual Classification with rica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_ICA_Based_Denoising.html">Denoising Data with ICA</a></li>
 </ul>
@@ -432,7 +435,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -443,11 +448,27 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Cerebrovascular Reactivity Mapping</h1>
+    <h1>Cerebrovascular Reactivity Mapping with phys2cvr</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Cerebrovascular Reactivity Mapping with <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#co-2-traces-and-their-peak-indices"><span class="math notranslate nohighlight">\(CO_2\)</span> traces (and their peak indices)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-made-p-et-co-2-traces">Pre-made <span class="math notranslate nohighlight">\(P_{ET}CO_2\)</span> traces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-designs-timeseries">Task designs (timeseries)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bold-signals-averages-from-a-roi-mask">BOLD signals averages from a ROI mask.</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-remarks">Final remarks</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -457,9 +478,328 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="cerebrovascular-reactivity-mapping">
-<h1>Cerebrovascular Reactivity Mapping<a class="headerlink" href="#cerebrovascular-reactivity-mapping" title="Link to this heading">#</a></h1>
-<p>Check out <span id="id1">Moia <em>et al.</em> [<a class="reference internal" href="bibliography.html#id21" title="Stefano Moia, Maite Termenon, Eneko Uruñuela, Gang Chen, Rachael C. Stickland, Molly G. Bright, and César Caballero-Gaudes. Ica-based denoising strategies in breath-hold induced cerebrovascular reactivity mapping with multi echo bold fmri. NeuroImage, 233:117914, 2021. URL: https://www.sciencedirect.com/science/article/pii/S1053811921001919, doi:https://doi.org/10.1016/j.neuroimage.2021.117914.">2021</a>]</span> and <span id="id2">Cohen and Wang [<a class="reference internal" href="bibliography.html#id5" title="Alexander D Cohen and Yang Wang. Improving the assessment of breath-holding induced cerebral vascular reactivity using a multiband multi-echo asl/bold sequence. Scientific reports, 9(1):1–12, 2019.">2019</a>]</span>.</p>
+  <p>!!! Abbreviations</p>
+<p>CVR = Cerebrovascular Reactivity
+ME  = Multi-Echo
+IC  = Independent Component
+ICA = Independent Component Analysis
+<span class="math notranslate nohighlight">\(P_{ET}CO_2\)</span> = Pressure of End-Tidal Carbon Dioxide</p>
+<p>!!! warning</p>
+<p>This tutorial assumes you run:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#./01_Optimal_Combination_with_t2smap.html"><span class="xref myst">Optimal combination with <code class="docutils literal notranslate"><span class="pre">t2smap</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#./03_Denoising_with_tedana.html"><span class="xref myst">Multi-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">tedana</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#./07_Manual_Classification_with_rica.html"><span class="xref myst">Manual Classification with <code class="docutils literal notranslate"><span class="pre">rica</span></code></span></a></p></li>
+</ul>
+<section class="tex2jax_ignore mathjax_ignore" id="cerebrovascular-reactivity-mapping-with-phys2cvr">
+<h1>Cerebrovascular Reactivity Mapping with <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code><a class="headerlink" href="#cerebrovascular-reactivity-mapping-with-phys2cvr" title="Link to this heading">#</a></h1>
+<p>Cerebrovascular Reactivity (CVR) Mapping can greatly benefit from multi-echo (ME) data acquisition and independent component analysis (ICA) denoising, especially when it is based on breath-holds, cued deep breaths, or resting-state.</p>
+<p>While ME-ICA will greatly reduce motion-related noise (see <span id="id1">Moia <em>et al.</em> [<a class="reference internal" href="bibliography.html#id21" title="Stefano Moia, Maite Termenon, Eneko Uruñuela, Gang Chen, Rachael C. Stickland, Molly G. Bright, and César Caballero-Gaudes. Ica-based denoising strategies in breath-hold induced cerebrovascular reactivity mapping with multi echo bold fmri. NeuroImage, 233:117914, 2021. URL: https://www.sciencedirect.com/science/article/pii/S1053811921001919, doi:https://doi.org/10.1016/j.neuroimage.2021.117914.">2021</a>]</span>), because CVR is an increase in blood flow triggered by vessels dilation, there is a component of signal that is proton-density related. For this reason, the default decision tree in tedana may categorise certain components that should (or at least could) be kept as noise, so it is <em>strongly</em> suggested to perform a manual revision of the automatic categorisation and/or adapt the decision tree to accept a better suited set of components.</p>
+<p>On top of that, in the context of breath-holds and cued deep breaths, attention should be made in the denoising stage, as an aggressive approach will remove all sources of signal that inform CVR and the associated haemodynamic lag. Instead, a conservative denoising approach, where noise IC timeseries are orthogonalised to the (temporally shifted) <span class="math notranslate nohighlight">\(P_{ET}CO_2\)</span> and the non-noise IC timeseries is to be preferred (<span id="id2">Moia <em>et al.</em> [<a class="reference internal" href="bibliography.html#id21" title="Stefano Moia, Maite Termenon, Eneko Uruñuela, Gang Chen, Rachael C. Stickland, Molly G. Bright, and César Caballero-Gaudes. Ica-based denoising strategies in breath-hold induced cerebrovascular reactivity mapping with multi echo bold fmri. NeuroImage, 233:117914, 2021. URL: https://www.sciencedirect.com/science/article/pii/S1053811921001919, doi:https://doi.org/10.1016/j.neuroimage.2021.117914.">2021</a>]</span>).</p>
+<p>Assuming that you are following the other tutorials in this notebook, once you obtained your <a class="reference internal" href="#./01_Optimal_Combination_with_t2smap.html"><span class="xref myst">optimally combined signal</span></a> and your <a class="reference internal" href="#./03_Denoising_with_tedana.html"><span class="xref myst">ICA decomposition</span></a> that has been <a class="reference internal" href="#./07_Manual_Classification_with_rica.html"><span class="xref myst">manually inspected (and corrected if needed)</span></a>, you will need to make sure you have:</p>
+<ul class="simple">
+<li><p>a whole brain mask in functional space that will confine <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code> operations within it - the <code class="docutils literal notranslate"><span class="pre">desc-adaptiveGoodSignal_mask.nii.gz</span></code> output of <code class="docutils literal notranslate"><span class="pre">tedana</span></code> can work fine, but if you have a different mask that is also ok;</p></li>
+<li><p>if you want, a ROI mask in functional space which average signal will be used as reference to align the regressor (e.g. the <span class="math notranslate nohighlight">\(CO_2\)</span> trace) and which average haemodynamic lag will be set as 0-lag - grey matter or cerebellum are commonly used as reference ROI;</p></li>
+<li><p>if you want to run ICA denoising, the timeseries of rejected and accepted components from tedana in two different files; the easiest way to obtain these are using the mixing matrix from <code class="docutils literal notranslate"><span class="pre">tedana</span></code> and the manual classification from <code class="docutils literal notranslate"><span class="pre">rica</span></code> with the help of <code class="docutils literal notranslate"><span class="pre">pandas</span></code>:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Assuming RICA was used for manual classification, read the downloaded file (adjusting path as necessary)</span>
+<span class="n">man_class</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../manual_classification.tsv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Read the ICA mixing matrix  (adjusting path as necessary)</span>
+<span class="n">ica_mix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../desc-ICA_mixing.tsv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Extract the list of rejected and accepted components</span>
+<span class="n">rej_comp</span> <span class="o">=</span>  <span class="n">man_class</span><span class="p">[</span><span class="n">man_class</span><span class="p">[</span><span class="s1">&#39;classification&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;rejected&#39;</span><span class="p">][</span><span class="s1">&#39;Component&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">acc_comp</span> <span class="o">=</span>  <span class="n">man_class</span><span class="p">[</span><span class="n">man_class</span><span class="p">[</span><span class="s1">&#39;classification&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;accepted&#39;</span><span class="p">][</span><span class="s1">&#39;Component&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># Extract rejected vs accepted timeseries and save them</span>
+<span class="n">rej_ts</span> <span class="o">=</span> <span class="n">ica_mix</span><span class="p">[</span><span class="n">rej_comp</span><span class="p">]</span>
+<span class="n">acc_ts</span> <span class="o">=</span> <span class="n">ica_mix</span><span class="p">[</span><span class="n">acc_comp</span><span class="p">]</span>
+
+<span class="n">acc_ts</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;../accecpted_ic_timeseries.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">rej_ts</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;../rejected_ic_timeseries.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Assuming RICA was used for manual classification, read the downloaded file (adjusting path as necessary)</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">man_class</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../manual_classification.tsv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Read the ICA mixing matrix  (adjusting path as necessary)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">ica_mix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../desc-ICA_mixing.tsv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nn">File ~/GitHub/multi-echo-data-analysis/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py:873,</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, skip_blank_lines, parse_dates, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, low_memory, memory_map, float_precision, storage_options, dtype_backend)</span>
+<span class="g g-Whitespace">    </span><span class="mi">861</span> <span class="n">kwds_defaults</span> <span class="o">=</span> <span class="n">_refine_defaults_read</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">862</span>     <span class="n">dialect</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">863</span>     <span class="n">delimiter</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">869</span>     <span class="n">dtype_backend</span><span class="o">=</span><span class="n">dtype_backend</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">870</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">871</span> <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">873</span> <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File ~/GitHub/multi-echo-data-analysis/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py:300,</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">297</span> <span class="n">_validate_names</span><span class="p">(</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;names&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">299</span> <span class="c1"># Create the parser.</span>
+<span class="ne">--&gt; </span><span class="mi">300</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">302</span> <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">303</span>     <span class="k">return</span> <span class="n">parser</span>
+
+<span class="nn">File ~/GitHub/multi-echo-data-analysis/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py:1645,</span> in <span class="ni">TextFileReader.__init__</span><span class="nt">(self, f, engine, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1642</span>     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1644</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">:</span> <span class="n">IOHandles</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">-&gt; </span><span class="mi">1645</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="nn">File ~/GitHub/multi-echo-data-analysis/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py:1904,</span> in <span class="ni">TextFileReader._make_engine</span><span class="nt">(self, f, engine)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1902</span>     <span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1903</span>         <span class="n">mode</span> <span class="o">+=</span> <span class="s2">&quot;b&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1904</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1905</span>     <span class="n">f</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1906</span>     <span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1907</span>     <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1908</span>     <span class="n">compression</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1909</span>     <span class="n">memory_map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1910</span>     <span class="n">is_text</span><span class="o">=</span><span class="n">is_text</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1911</span>     <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding_errors&quot;</span><span class="p">,</span> <span class="s2">&quot;strict&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1912</span>     <span class="n">storage_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1913</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1914</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1915</span> <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="o">.</span><span class="n">handle</span>
+
+<span class="nn">File ~/GitHub/multi-echo-data-analysis/.venv/lib/python3.12/site-packages/pandas/io/common.py:926,</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">921</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">922</span>     <span class="c1"># Check whether the filename is to be opened in binary mode.</span>
+<span class="g g-Whitespace">    </span><span class="mi">923</span>     <span class="c1"># Binary mode does not support &#39;encoding&#39; and &#39;newline&#39;.</span>
+<span class="g g-Whitespace">    </span><span class="mi">924</span>     <span class="k">if</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">and</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">925</span>         <span class="c1"># Encoding</span>
+<span class="ne">--&gt; </span><span class="mi">926</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">927</span>             <span class="n">handle</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">928</span>             <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">929</span>             <span class="n">encoding</span><span class="o">=</span><span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span>             <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span>             <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">932</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">933</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">934</span>         <span class="c1"># Binary mode</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;../manual_classification.tsv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>need [TO POTENTIALLY EXTRACT NOISE AND NON-NOISE IC TIMESERIES AND] a brain mask and, if you want,</p>
+<p>After <a class="reference external" href="https://phys2cvr.readthedocs.io/en/latest/usage/installation.html#basic-installation">installing <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code></a>, potentially with <a class="reference external" href="https://phys2cvr.readthedocs.io/en/latest/usage/installation.html#richer-installation">extra dependencies</a>, we can import the main workflow of <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code> and call its help to see all available parameters (many).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phys2cvr.workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">phys2cvr</span> <span class="k">as</span> <span class="n">p2c</span>
+
+
+<span class="n">help</span><span class="p">(</span><span class="n">p2c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You may notice many and one potential parameters. <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code> is meant to be very versatile, but fear not! Only few of them are needed in different situations. For more info, check the <a class="reference external" href="https://phys2cvr.readthedocs.io/en/latest/generated/phys2cvr.workflows.phys2cvr.html#phys2cvr.workflows.phys2cvr">workflow API page</a></p>
+<p>As default, <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code> takes anything given to it and creates lagged regressors of the interpolated end-tidal of a given trace (that is, the <span class="math notranslate nohighlight">\(P_{ET}CO_2hrf\)</span>) after aligning it with a reference signal and convolving it with a canonical HRF. However, you can run a lag regression internally.
+Generally speaking, you may need these parameters - although only <code class="docutils literal notranslate"><span class="pre">fname_func</span></code> is mandatory:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="n">fname_func</span><span class="o">=</span><span class="s1">&#39;../optcom.nii.gz&#39;</span><span class="p">,</span>      <span class="c1"># The optimally combined data</span>
+  <span class="n">fname_co2</span><span class="o">=</span><span class="s1">&#39;../co2.phys&#39;</span><span class="p">,</span>            <span class="c1"># The CO2 trace with peaks</span>
+  <span class="n">fname_mask</span><span class="o">=</span><span class="s1">&#39;../brain_mask.nii.gz&#39;</span><span class="p">,</span>  <span class="c1"># A mask to limit the analysis to</span>
+  <span class="n">fname_roi</span><span class="o">=</span><span class="s1">&#39;../roi_mask.nii.gz&#39;</span><span class="p">,</span>     <span class="c1"># A ROI to use as signal reference</span>
+  <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;../outdir&#39;</span><span class="p">,</span>                 <span class="c1"># Output folder</span>
+  <span class="n">run_regression</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                <span class="c1"># Run the analysis!</span>
+  <span class="n">lag_max</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>                          <span class="c1"># Maximum lag to consider</span>
+  <span class="n">lag_step</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>                       <span class="c1"># Lag step to consider</span>
+  <span class="n">l_degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                         <span class="c1"># Legendre polynomials degrees</span>
+</pre></div>
+</div>
+<p>You can also run a simple regression instead of a lagged one - in that case, remove <code class="docutils literal notranslate"><span class="pre">lag_max</span></code> and <code class="docutils literal notranslate"><span class="pre">lag_step</span></code>.</p>
+<p>In terms of regressor for your CVR analysis, many options are supported:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(CO_2\)</span> traces (and their peak indices)</p></li>
+<li><p>pre-made <span class="math notranslate nohighlight">\(P_{ET}CO_2\)</span> traces</p></li>
+<li><p>task designs (timeseries)</p></li>
+<li><p>BOLD signals averages from a ROI mask.</p></li>
+</ol>
+<section id="co-2-traces-and-their-peak-indices">
+<h2><span class="math notranslate nohighlight">\(CO_2\)</span> traces (and their peak indices)<a class="headerlink" href="#co-2-traces-and-their-peak-indices" title="Link to this heading">#</a></h2>
+<p>You can get <span class="math notranslate nohighlight">\(CO_2\)</span> traces (and their peak indices) with whatever program you want - simply run a very light lowpass filter (and maybe a downsampling), followed by peak detection.</p>
+<p>Here’s an example with <a class="reference external" href="https://peakdet.readthedocs.io/en/latest/">Physiopy’s <code class="docutils literal notranslate"><span class="pre">peakdet</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">peakdet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pk</span>
+
+
+<span class="n">co2_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../co2data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SKIP&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">co2_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the desired &quot;channel&quot;, i.e. column, of the file containing CO2 data</span>
+<span class="n">channel</span><span class="o">=</span><span class="mi">0</span>
+<span class="c1"># Set the sampling frequency of the data</span>
+<span class="n">samp_freq</span><span class="o">=</span><span class="mi">10000</span>
+
+<span class="n">co2</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">Physio</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="n">channel</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="n">samp_freq</span><span class="p">)</span>
+
+<span class="c1"># Interpolation (downsampling), then filtering.</span>
+<span class="n">co2</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">interpolate_physio</span><span class="p">(</span><span class="n">co2</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+<span class="n">co2</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">filter_physio</span><span class="p">(</span><span class="n">co2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;lowpass&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="c1"># Automatic peak detection, then manual editing</span>
+<span class="c1"># If you see that not enough/too many peaks get selected,</span>
+<span class="c1"># you might tune the threshold and distance.</span>
+<span class="n">co2</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">peakfind_physio</span><span class="p">(</span><span class="n">co2</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">co2</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">edit_physio</span><span class="p">(</span><span class="n">co2</span><span class="p">)</span>
+
+<span class="n">outfile</span> <span class="o">=</span> <span class="s1">&#39;../co2.phys&#39;</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">save_physio</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">co2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With this last output, we can run <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code>!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2c</span><span class="p">(</span>
+  <span class="n">fname_func</span><span class="o">=</span><span class="s1">&#39;../optcom.nii.gz&#39;</span><span class="p">,</span>      <span class="c1"># The optimally combined data</span>
+  <span class="n">fname_co2</span><span class="o">=</span><span class="s1">&#39;../co2.phys&#39;</span><span class="p">,</span>            <span class="c1"># The CO2 trace with peaks</span>
+  <span class="n">fname_mask</span><span class="o">=</span><span class="s1">&#39;../brain_mask.nii.gz&#39;</span><span class="p">,</span>  <span class="c1"># A mask to limit the analysis to</span>
+  <span class="n">fname_roi</span><span class="o">=</span><span class="s1">&#39;../roi_mask.nii.gz&#39;</span><span class="p">,</span>     <span class="c1"># A ROI to use as signal reference</span>
+  <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;../outdir&#39;</span><span class="p">,</span>                 <span class="c1"># Output folder</span>
+  <span class="n">run_regression</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                <span class="c1"># Run the analysis!</span>
+  <span class="n">lag_max</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>                          <span class="c1"># Maximum lag to consider</span>
+  <span class="n">lag_step</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>                       <span class="c1"># Lag step to consider</span>
+  <span class="n">l_degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                         <span class="c1"># Legendre polynomials degrees</span>
+  <span class="n">denoise_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../motion_params&#39;</span><span class="p">,</span> <span class="s1">&#39;../other_noise&#39;</span><span class="p">],</span>  <span class="c1"># All the noise you want to add</span>
+  <span class="n">orthogonalised_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../rejected_ic_timeseries.csv&#39;</span><span class="p">],</span>
+  <span class="n">extra_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../accepted_ic_timeseries.csv&#39;</span><span class="p">],</span>
+  <span class="n">scale_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>                  <span class="c1"># If CO2 trace is not in mmHg, you can scale the final map accordingly</span>
+  <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you didn’t use <code class="docutils literal notranslate"><span class="pre">peakdet</span></code> for your <span class="math notranslate nohighlight">\(CO_2\)</span> processing and peak detection, add the parameter <code class="docutils literal notranslate"><span class="pre">fname_pidx='../co2_peak_indices</span></code> to the list.</p>
+<p><code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code> will compute the <span class="math notranslate nohighlight">\(P_{ET}CO_2hrf\)</span> trace by linearly interpolating the end-tidal peaks of your <span class="math notranslate nohighlight">\(CO_2\)</span> trace and convolving the former with a canonical HRF. You can select another response function (as well as skipping the interpolation) using the parameter <code class="docutils literal notranslate"><span class="pre">response_function</span></code>.</p>
+</section>
+<section id="pre-made-p-et-co-2-traces">
+<h2>Pre-made <span class="math notranslate nohighlight">\(P_{ET}CO_2\)</span> traces<a class="headerlink" href="#pre-made-p-et-co-2-traces" title="Link to this heading">#</a></h2>
+<p>If you have a pre-made <span class="math notranslate nohighlight">\(P_{ET}CO_2\)</span> trace, simply skip the steps to make one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2c</span><span class="p">(</span>
+  <span class="n">fname_func</span><span class="o">=</span><span class="s1">&#39;../optcom.nii.gz&#39;</span><span class="p">,</span>      <span class="c1"># The optimally combined data</span>
+  <span class="n">fname_co2</span><span class="o">=</span><span class="s1">&#39;../petco2_trace&#39;</span><span class="p">,</span>        <span class="c1"># The pre-made PetCO2 trace</span>
+  <span class="n">fname_mask</span><span class="o">=</span><span class="s1">&#39;../brain_mask.nii.gz&#39;</span><span class="p">,</span>  <span class="c1"># A mask to limit the analysis to</span>
+  <span class="n">fname_roi</span><span class="o">=</span><span class="s1">&#39;../roi_mask.nii.gz&#39;</span><span class="p">,</span>     <span class="c1"># A ROI to use as signal reference</span>
+  <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;../outdir&#39;</span><span class="p">,</span>                 <span class="c1"># Output folder</span>
+  <span class="n">run_regression</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                <span class="c1"># Run the analysis!</span>
+  <span class="n">lag_max</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>                          <span class="c1"># Maximum lag to consider</span>
+  <span class="n">lag_step</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>                       <span class="c1"># Lag step to consider</span>
+  <span class="n">l_degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                         <span class="c1"># Legendre polynomials degrees</span>
+  <span class="n">denoise_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../motion_params&#39;</span><span class="p">,</span> <span class="s1">&#39;../other_noise&#39;</span><span class="p">],</span>  <span class="c1"># All the noise you want to add</span>
+  <span class="n">orthogonalised_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../rejected_ic_timeseries.csv&#39;</span><span class="p">],</span>
+  <span class="n">extra_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../accepted_ic_timeseries.csv&#39;</span><span class="p">],</span>
+  <span class="n">scale_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>                  <span class="c1"># If CO2 trace is not in mmHg, you can scale the final map accordingly</span>
+  <span class="n">comp_endtidal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>                <span class="c1"># DO NOT compute PetCO2 internally</span>
+  <span class="n">response_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>             <span class="c1"># DO NOT interpolate the PetCO2 trace.</span>
+  <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="task-designs-timeseries">
+<h2>Task designs (timeseries)<a class="headerlink" href="#task-designs-timeseries" title="Link to this heading">#</a></h2>
+<p>Simply use your task design as <span class="math notranslate nohighlight">\(CO_2\)</span> trace. You can interpolate it with an HRF or a respiratory response function internally, or do this beforehand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2c</span><span class="p">(</span>
+  <span class="n">fname_func</span><span class="o">=</span><span class="s1">&#39;../optcom.nii.gz&#39;</span><span class="p">,</span>      <span class="c1"># The optimally combined data</span>
+  <span class="n">fname_co2</span><span class="o">=</span><span class="s1">&#39;../task_design&#39;</span><span class="p">,</span>        <span class="c1"># The pre-made PetCO2 trace</span>
+  <span class="n">fname_mask</span><span class="o">=</span><span class="s1">&#39;../brain_mask.nii.gz&#39;</span><span class="p">,</span>  <span class="c1"># A mask to limit the analysis to</span>
+  <span class="n">fname_roi</span><span class="o">=</span><span class="s1">&#39;../roi_mask.nii.gz&#39;</span><span class="p">,</span>     <span class="c1"># A ROI to use as signal reference</span>
+  <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;../outdir&#39;</span><span class="p">,</span>                 <span class="c1"># Output folder</span>
+  <span class="n">run_regression</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                <span class="c1"># Run the analysis!</span>
+  <span class="n">lag_max</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>                          <span class="c1"># Maximum lag to consider</span>
+  <span class="n">lag_step</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>                       <span class="c1"># Lag step to consider</span>
+  <span class="n">l_degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                         <span class="c1"># Legendre polynomials degrees</span>
+  <span class="n">denoise_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../motion_params&#39;</span><span class="p">,</span> <span class="s1">&#39;../other_noise&#39;</span><span class="p">],</span>  <span class="c1"># All the noise you want to add</span>
+  <span class="n">orthogonalised_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../rejected_ic_timeseries.csv&#39;</span><span class="p">],</span>
+  <span class="n">extra_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../accepted_ic_timeseries.csv&#39;</span><span class="p">],</span>
+  <span class="n">scale_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>                  <span class="c1"># If CO2 trace is not in mmHg, you can scale the final map accordingly</span>
+  <span class="n">comp_endtidal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>                <span class="c1"># DO NOT compute end-tidal trace</span>
+  <span class="n">response_function</span><span class="o">=</span><span class="s1">&#39;rrf&#39;</span><span class="p">,</span>            <span class="c1"># Interpolate with RRF</span>
+  <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="bold-signals-averages-from-a-roi-mask">
+<h2>BOLD signals averages from a ROI mask.<a class="headerlink" href="#bold-signals-averages-from-a-roi-mask" title="Link to this heading">#</a></h2>
+<p>This is the simplest way to run <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code>, using the average BOLD signal from a desired ROI.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2c</span><span class="p">(</span>
+  <span class="n">fname_func</span><span class="o">=</span><span class="s1">&#39;../optcom.nii.gz&#39;</span><span class="p">,</span>      <span class="c1"># The optimally combined data</span>
+  <span class="n">fname_mask</span><span class="o">=</span><span class="s1">&#39;../brain_mask.nii.gz&#39;</span><span class="p">,</span>  <span class="c1"># A mask to limit the analysis to</span>
+  <span class="n">fname_roi</span><span class="o">=</span><span class="s1">&#39;../roi_mask.nii.gz&#39;</span><span class="p">,</span>     <span class="c1"># A ROI to use as signal reference</span>
+  <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;../outdir&#39;</span><span class="p">,</span>                 <span class="c1"># Output folder</span>
+  <span class="n">run_regression</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                <span class="c1"># Run the analysis!</span>
+  <span class="n">lag_max</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>                          <span class="c1"># Maximum lag to consider</span>
+  <span class="n">lag_step</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>                       <span class="c1"># Lag step to consider</span>
+  <span class="n">l_degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                         <span class="c1"># Legendre polynomials degrees</span>
+  <span class="n">denoise_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../motion_params&#39;</span><span class="p">,</span> <span class="s1">&#39;../other_noise&#39;</span><span class="p">],</span>  <span class="c1"># All the noise you want to add</span>
+  <span class="n">orthogonalised_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../rejected_ic_timeseries.csv&#39;</span><span class="p">],</span>
+  <span class="n">extra_matrix_file</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../accepted_ic_timeseries.csv&#39;</span><span class="p">],</span>
+  <span class="n">comp_endtidal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>                <span class="c1"># DO NOT compute end-tidal trace</span>
+  <span class="n">response_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>             <span class="c1"># DO NOT interpolate the trace</span>
+  <span class="n">apply_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                  <span class="c1"># Filter the average BOLD signal (optional)</span>
+  <span class="n">highcut</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span>                       <span class="c1"># Lowpass frequency</span>
+  <span class="n">lowcut</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>                        <span class="c1"># Highpass frequency</span>
+  <span class="n">butter_order</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>                     <span class="c1"># Butterworth filter order</span>
+  <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="final-remarks">
+<h1>Final remarks<a class="headerlink" href="#final-remarks" title="Link to this heading">#</a></h1>
+<p>Remember to cite the right papers and resources depending on the desired pipeline!</p>
+<p>For more info about <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code>, as well as knowing what to cite in which case, check out <a class="reference external" href="https://phys2cvr.readthedocs.io/en/latest/index.html">its documentation</a>.</p>
+<p>Not a python person? Prefer to run bash CLI commands? Not a problem.
+<code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code> is in fact primarily <a class="reference external" href="https://phys2cvr.readthedocs.io/en/latest/usage/cli.html">designed to be used via bash CLI</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>phys2cvr<span class="w"> </span>--help
+</pre></div>
+</div>
+<p>For more info about ME CVR, check out <span id="id3">Moia <em>et al.</em> [<a class="reference internal" href="bibliography.html#id21" title="Stefano Moia, Maite Termenon, Eneko Uruñuela, Gang Chen, Rachael C. Stickland, Molly G. Bright, and César Caballero-Gaudes. Ica-based denoising strategies in breath-hold induced cerebrovascular reactivity mapping with multi echo bold fmri. NeuroImage, 233:117914, 2021. URL: https://www.sciencedirect.com/science/article/pii/S1053811921001919, doi:https://doi.org/10.1016/j.neuroimage.2021.117914.">2021</a>]</span>, <span id="id4">Cohen and Wang [<a class="reference internal" href="bibliography.html#id5" title="Alexander D Cohen and Yang Wang. Improving the assessment of breath-holding induced cerebral vascular reactivity using a multiband multi-echo asl/bold sequence. Scientific reports, 9(1):1–12, 2019.">2019</a>]</span>, and <span id="id5"></span>.</p>
+<p>If you want to contribute to <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code>, have requests, comments, or questions, feel free to <a class="reference external" href="https://github.com/smoia/phys2cvr/issues">open an issue</a>!</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -516,6 +856,31 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Cerebrovascular Reactivity Mapping with <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#co-2-traces-and-their-peak-indices"><span class="math notranslate nohighlight">\(CO_2\)</span> traces (and their peak indices)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-made-p-et-co-2-traces">Pre-made <span class="math notranslate nohighlight">\(P_{ET}CO_2\)</span> traces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-designs-timeseries">Task designs (timeseries)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bold-signals-averages-from-a-roi-mask">BOLD signals averages from a ROI mask.</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-remarks">Final remarks</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
