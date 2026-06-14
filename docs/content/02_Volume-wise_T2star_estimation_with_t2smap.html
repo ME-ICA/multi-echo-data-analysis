@@ -34,10 +34,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
@@ -206,7 +206,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03_Denoising_with_tedana.html">Multi-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">tedana</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_Dual_Echo_Denoising.html">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_3dMEPFM.html">Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping with <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code></a></li>
+
 <li class="toctree-l1"><a class="reference external" href="https://me-ica.github.io/rica/">Manual Classification with rica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_ICA_Based_Denoising.html">Denoising Data with ICA</a></li>
 </ul>
@@ -480,7 +481,7 @@ as in <span id="id2">Power <em>et al.</em> [<a class="reference internal" href="
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/handwerkerd/Documents/code/meica/multi-echo-data-analysis/meda/lib/python3.12/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/eurunuela/GitHub/multi-echo-data-analysis/.venv/lib/python3.12/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
   from .autonotebook import tqdm as notebook_tqdm
 </pre></div>
 </div>
@@ -515,7 +516,7 @@ as in <span id="id2">Power <em>et al.</em> [<a class="reference internal" href="
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:365 Using output directory: /Users/handwerkerd/Documents/code/meica/multi-echo-data-analysis/data/fit
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:365 Using output directory: /Users/eurunuela/GitHub/multi-echo-data-analysis/data/fit
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:check_te_values:792 TE values appear to be in seconds. Converting to milliseconds for internal use.
@@ -524,13 +525,13 @@ as in <span id="id2">Power <em>et al.</em> [<a class="reference internal" href="
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:load_mask:916 Using user-defined mask
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:414 Loading input data: [&#39;/Users/handwerkerd/Documents/code/meica/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-1_part-mag_desc-preproc_bold.nii.gz&#39;, &#39;/Users/handwerkerd/Documents/code/meica/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz&#39;, &#39;/Users/handwerkerd/Documents/code/meica/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-3_part-mag_desc-preproc_bold.nii.gz&#39;, &#39;/Users/handwerkerd/Documents/code/meica/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-4_part-mag_desc-preproc_bold.nii.gz&#39;, &#39;/Users/handwerkerd/Documents/code/meica/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-5_part-mag_desc-preproc_bold.nii.gz&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:414 Loading input data: [&#39;/Users/eurunuela/GitHub/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-1_part-mag_desc-preproc_bold.nii.gz&#39;, &#39;/Users/eurunuela/GitHub/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-2_part-mag_desc-preproc_bold.nii.gz&#39;, &#39;/Users/eurunuela/GitHub/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-3_part-mag_desc-preproc_bold.nii.gz&#39;, &#39;/Users/eurunuela/GitHub/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-4_part-mag_desc-preproc_bold.nii.gz&#39;, &#39;/Users/eurunuela/GitHub/multi-echo-data-analysis/data/ds006185/sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo-5_part-mag_desc-preproc_bold.nii.gz&#39;]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:make_adaptive_mask:167 Echo-wise intensity thresholds for adaptive mask: [5390.2476 3376.5105 1811.7682 1076.2314  610.8774]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     utils:make_adaptive_mask:167 Echo-wise intensity thresholds for adaptive mask: [5427.905   3060.0125  1939.6979   923.65643  479.0348 ]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING  utils:make_adaptive_mask:195 9757 voxels in user-defined mask do not have good signal. Removing voxels from mask.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING  utils:make_adaptive_mask:195 11350 voxels in user-defined mask do not have good signal. Removing voxels from mask.
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO     t2smap:t2smap_workflow:458 Computing T2* map
@@ -619,15 +620,15 @@ sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_registry.json
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/2185078944.py:3: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/2185078944.py:3: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
   plotting.plot_carpet(
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/2185078944.py:9: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/2185078944.py:9: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
   plotting.plot_carpet(
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/2185078944.py:15: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/2185078944.py:15: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
   plotting.plot_carpet(
 </pre></div>
 </div>
@@ -668,7 +669,7 @@ sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_registry.json
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/3336080904.py:2: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/3336080904.py:2: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
   in_file = image.mean_img(
 </pre></div>
 </div>
@@ -709,7 +710,7 @@ sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_registry.json
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/1178446598.py:2: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/1178446598.py:2: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
   in_file = image.mean_img(
 </pre></div>
 </div>
@@ -779,23 +780,23 @@ sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_registry.json
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/1298998139.py:3: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/1298998139.py:3: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
   image.mean_img(data[&#39;echo_files&#39;][0]),
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/1298998139.py:11: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/1298998139.py:11: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
   image.mean_img(data[&#39;echo_files&#39;][1]),
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/1298998139.py:19: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/1298998139.py:19: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
   image.mean_img(data[&#39;echo_files&#39;][2]),
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/1298998139.py:27: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/1298998139.py:27: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
   image.mean_img(data[&#39;echo_files&#39;][3]),
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/1298998139.py:35: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/1298998139.py:35: FutureWarning: From release 0.13.0 onwards, this function will, by default, copy the header of the input image to the output. Currently, the header is reset to the default Nifti1Header. To suppress this warning and use the new behavior, set `copy_header=True`.
   image.mean_img(
 </pre></div>
 </div>
@@ -867,7 +868,14 @@ sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_registry.json
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;string&gt;:1: RuntimeWarning: invalid value encountered in divide
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/3685653445.py:32: UserWarning: Non-finite values detected. These values will be replaced with zeros.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;string&gt;:1: RuntimeWarning: invalid value encountered in divide
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/3685653445.py:19: UserWarning: Non-finite values detected. These values will be replaced with zeros.
+  plotting.plot_stat_map(
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/3685653445.py:32: UserWarning: Non-finite values detected. These values will be replaced with zeros.
   plotting.plot_stat_map(
 </pre></div>
 </div>
@@ -897,7 +905,7 @@ sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_registry.json
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/582452611.py:2: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/582452611.py:2: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
   plotting.plot_carpet(
 </pre></div>
 </div>
@@ -927,7 +935,7 @@ sub-24053_ses-1_task-rat_dir-PA_run-01_desc-tedana_registry.json
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/vs/mwrqp4hs7w7d0t2981fnw4fh0000gt/T/ipykernel_88242/3924763795.py:2: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/6z/7w14fjc11bs572r6b50rqqf40000gn/T/ipykernel_9936/3924763795.py:2: DeprecationWarning: The default strategy for standardize is currently &#39;zscore&#39; which incorrectly uses population std to calculate sample zscores. The new strategy &#39;zscore_sample&#39; corrects this behavior by using the sample std. In release 0.13, the default strategy will be replaced by the new strategy and the &#39;zscore&#39; option will be removed. Please use &#39;zscore_sample&#39; instead.
   plotting.plot_carpet(
 </pre></div>
 </div>

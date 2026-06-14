@@ -69,7 +69,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Cerebrovascular Reactivity Mapping" href="06_Cerebrovascular_Reactivity_Mapping.html" />
+    <link rel="next" title="Cerebrovascular Reactivity Mapping with phys2cvr" href="06_Cerebrovascular_Reactivity_Mapping.html" />
     <link rel="prev" title="Dual-Echo Denoising with nilearn" href="04_Dual_Echo_Denoising.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -206,7 +206,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03_Denoising_with_tedana.html">Multi-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">tedana</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_Dual_Echo_Denoising.html">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping with <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code></a></li>
+
 <li class="toctree-l1"><a class="reference external" href="https://me-ica.github.io/rica/">Manual Classification with rica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_ICA_Based_Denoising.html">Denoising Data with ICA</a></li>
 </ul>
@@ -432,7 +433,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -448,6 +451,18 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-multi-echo-data">Load the multi-echo data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parcellate-detrend-and-normalise">Parcellate, detrend and normalise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deconvolve-the-effect-of-the-model-selection-criterion">Deconvolve: the effect of the model-selection criterion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-single-parcel-bic-vs-aic">A single parcel: BIC vs. AIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-brain-activity-bic-vs-aic">Whole-brain activity: BIC vs. AIC</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -459,125 +474,298 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="model-free-deconvolution-with-pyspfm">
 <h1>Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code><a class="headerlink" href="#model-free-deconvolution-with-pyspfm" title="Link to this heading">#</a></h1>
+<p>Multi-echo fMRI lets us estimate neuronal-related activity directly from the BOLD
+signal <em>without</em> a task model, using Sparse Paradigm Free Mapping (SPFM).
+<a class="reference external" href="https://pyspfm.readthedocs.io"><code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a> deconvolves the haemodynamic response from
+the data and recovers a sparse <strong>activity-inducing signal</strong> — an estimate of <em>when</em>
+each region becomes active — like the examples in the
+<a class="reference external" href="https://pyspfm.readthedocs.io/en/stable/examples.html">pySPFM documentation</a>.</p>
+<p>To keep the analysis fast and laptop-friendly we run the deconvolution
+<em>parcel-wise</em>: averaging voxels within each region of the Schaefer atlas shrinks the
+problem and boosts SNR, which makes the multi-echo fit well behaved.</p>
+<section id="load-the-multi-echo-data">
+<h2>Load the multi-echo data<a class="headerlink" href="#load-the-multi-echo-data" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="kn">import</span> <span class="n">glob</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">nibabel</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nb</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">book_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_pafin</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.maskers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NiftiMasker</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">plotting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_atlas_schaefer_2018</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">resample_to_img</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.maskers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NiftiLabelsMasker</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean</span>
 
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../data&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SKIP&quot;</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">load_pafin</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../data&quot;</span><span class="p">)</span>
+<span class="n">func_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;ds006185/sub-24053/ses-1/func/&quot;</span><span class="p">)</span>
+
+<span class="n">data_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">glob</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">func_dir</span><span class="p">,</span>
+            <span class="s2">&quot;sub-24053_ses-1_task-rat_dir-PA_run-01_echo-*_part-mag_desc-preproc_bold.nii.gz&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">mask_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">func_dir</span><span class="p">,</span>
+    <span class="s2">&quot;sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">data_files</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;No echo files found under </span><span class="si">{</span><span class="n">func_dir</span><span class="si">}</span><span class="s2">. Run the data download in &quot;</span>
+        <span class="s2">&quot;`00_Download_Data` (datalad get of the task-rat_dir-PA echoes) first.&quot;</span>
+    <span class="p">)</span>
+
+<span class="c1"># Read the echo times (converted to ms) and the repetition time (s) from the BIDS</span>
+<span class="c1"># JSON sidecars, so the HRF is built with the correct acquisition timing.</span>
+<span class="n">echo_times</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data_files</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.nii.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;.json&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
+    <span class="n">echo_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;EchoTime&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;RepetitionTime&quot;</span><span class="p">]</span>
+
 <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;pySPFM&quot;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> echoes | TE = </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">echo_times</span><span class="p">]</span><span class="si">}</span><span class="s2"> ms | TR = </span><span class="si">{</span><span class="n">tr</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SKIP&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">data</span> <span class="o">=</span> <span class="n">load_pafin</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;pySPFM&quot;</span><span class="p">)</span>
-
-<span class="ne">ValueError</span>: SKIP
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5 echoes | TE = [14.2, 38.9, 63.7, 88.4, 113.1] ms | TR = 1.761 s
 </pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="parcellate-detrend-and-normalise">
+<h2>Parcellate, detrend and normalise<a class="headerlink" href="#parcellate-detrend-and-normalise" title="Link to this heading">#</a></h2>
+<p>Each echo is averaged within Schaefer parcels (restricted to the brain mask), then
+<strong>detrended and band-pass filtered (0.01–0.1 Hz)</strong>, and only then converted to
+<strong>percent signal change</strong>. The order matters: we strip drift and out-of-band
+fluctuations first, then express what remains as a fraction of the parcel’s baseline.</p>
+<ul class="simple">
+<li><p><strong>Detrending and band-pass filtering</strong> — scanner drift (below 0.01 Hz) and
+high-frequency noise (above 0.1 Hz, e.g. residual cardiac/respiratory and thermal
+noise) are not part of the haemodynamic response, so we keep only the 0.01–0.1 Hz
+band where the BOLD response lives.</p></li>
+<li><p><strong>Normalisation to percent signal change</strong> — <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code> expects normalised input;
+feeding raw signal intensities collapses the deconvolution to zero.</p></li>
+</ul>
+<div class="cell tag_output_scroll docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Schaefer cortical parcellation. Averaging within ~400 parcels reduces the problem</span>
+<span class="c1"># from ~218k voxels to a few hundred ROIs and improves SNR. Increase n_rois for a</span>
+<span class="c1"># finer map at the cost of a longer fit.</span>
+<span class="c1"># Download the atlas into the git-ignored ../data tree instead of the default</span>
+<span class="c1"># ~/nilearn_data, so it does not clutter the user&#39;s home directory.</span>
+<span class="n">atlas</span> <span class="o">=</span> <span class="n">fetch_atlas_schaefer_2018</span><span class="p">(</span><span class="n">n_rois</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;nilearn&quot;</span><span class="p">))</span>
+
+<span class="n">masker</span> <span class="o">=</span> <span class="n">NiftiLabelsMasker</span><span class="p">(</span>
+    <span class="n">labels_img</span><span class="o">=</span><span class="n">atlas</span><span class="o">.</span><span class="n">maps</span><span class="p">,</span>
+    <span class="n">mask_img</span><span class="o">=</span><span class="n">mask_file</span><span class="p">,</span>        <span class="c1"># only average voxels inside the brain</span>
+    <span class="n">resampling_target</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>  <span class="c1"># resample the atlas onto the fMRI&#39;s native grid</span>
+    <span class="n">standardize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">masker</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">masked_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data_files</span><span class="p">:</span>
+    <span class="n">echo_data</span> <span class="o">=</span> <span class="n">masker</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># (n_timepoints, n_parcels)</span>
+    <span class="c1"># Detrend and band-pass (0.01-0.1 Hz) first, then normalise: express the cleaned</span>
+    <span class="c1"># signal as a fraction of the parcel&#39;s raw baseline mean (percent signal change).</span>
+    <span class="n">baseline</span> <span class="o">=</span> <span class="n">echo_data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">detrended</span> <span class="o">=</span> <span class="n">clean</span><span class="p">(</span>
+        <span class="n">echo_data</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">low_pass</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">high_pass</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">t_r</span><span class="o">=</span><span class="n">tr</span><span class="p">,</span> <span class="n">standardize</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
+        <span class="n">pc</span> <span class="o">=</span> <span class="n">detrended</span> <span class="o">/</span> <span class="n">baseline</span>  <span class="c1"># percent signal change</span>
+    <span class="n">masked_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">masked_data</span><span class="p">)</span>  <span class="c1"># (n_echoes * n_timepoints, n_parcels)</span>
+<span class="n">n_scans</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_files</span><span class="p">)</span>
+
+<span class="c1"># Drop parcels that fall outside the field of view (empty/constant after masking).</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">valid</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input matrix: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> echoes x </span><span class="si">{</span><span class="n">n_scans</span><span class="si">}</span><span class="s2"> TRs, </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> parcels)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[fetch_atlas_schaefer_2018] Dataset found in /Users/eurunuela/GitHub/multi-echo-data-analysis/data/nilearn/schaefer_2018
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Input matrix: (1815, 358)  (5 echoes x 363 TRs, 358 parcels)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="deconvolve-the-effect-of-the-model-selection-criterion">
+<h2>Deconvolve: the effect of the model-selection criterion<a class="headerlink" href="#deconvolve-the-effect-of-the-model-selection-criterion" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pySPFM</span></code> selects the amount of regularisation (i.e. how sparse the estimate is)
+automatically from a <em>criterion</em>. We compare the two LARS-based criteria for the
+multi-echo model:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">bic</span></code></strong> — a strong complexity penalty, so it keeps only the few most confident
+events (a very sparse estimate).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">aic</span></code></strong> — a lighter penalty, so it recovers activity-inducing events across most
+of the brain.</p></li>
+</ul>
+<p>(The FISTA-based criteria such as <code class="docutils literal notranslate"><span class="pre">mad</span></code> are not numerically stable for the multi-echo
+model on these data, so we stick to the LARS criteria.)</p>
 <div class="cell tag_output_scroll docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pySPFM</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparseDeconvolution</span>
 
-<span class="c1"># Create masker to convert 4D NIfTI data to 2D array</span>
-<span class="n">masker</span> <span class="o">=</span> <span class="n">NiftiMasker</span><span class="p">(</span><span class="n">mask_img</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">])</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;bic&quot;</span><span class="p">,</span> <span class="s2">&quot;aic&quot;</span><span class="p">]:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">SparseDeconvolution</span><span class="p">(</span><span class="n">tr</span><span class="o">=</span><span class="n">tr</span><span class="p">,</span> <span class="n">te</span><span class="o">=</span><span class="n">echo_times</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="n">criterion</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">models</span><span class="p">[</span><span class="n">criterion</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">criterion</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">active</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">% of parcels show activity&quot;</span><span class="p">)</span>
 
-<span class="c1"># Fit masker once on a representative image (first echo)</span>
-<span class="n">masker</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;echo_files&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># Guard against a silently degenerate fit (e.g. wrong scaling or TR).</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="s2">&quot;aic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;Deconvolution returned all zeros — check normalisation/TR.&quot;</span>
 
-<span class="c1"># Load and mask each echo, then concatenate along the time axis</span>
-<span class="c1"># For multi-echo data, each echo&#39;s data (shape: n_timepoints × n_voxels) are stacked sequentially</span>
-<span class="n">masked_data</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;echo_files&#39;</span><span class="p">]:</span>
-    <span class="n">echo_data</span> <span class="o">=</span> <span class="n">masker</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># Shape: (n_timepoints, n_voxels)</span>
-    <span class="n">masked_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">echo_data</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;out_activity_bic.npy&quot;</span><span class="p">),</span> <span class="n">models</span><span class="p">[</span><span class="s2">&quot;bic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;out_activity_aic.npy&quot;</span><span class="p">),</span> <span class="n">models</span><span class="p">[</span><span class="s2">&quot;aic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dask configuration wasn&#39;t detected, if you are using a cluster please look at the jobqueue YAML example, modify it so it works in your cluster and add it to ~/.config/dask local configuration will be used.You can find a jobqueue YAML example in the pySPFM/jobqueue.yaml file.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>BIC: 65% of parcels show activity
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dask configuration wasn&#39;t detected, if you are using a cluster please look at the jobqueue YAML example, modify it so it works in your cluster and add it to ~/.config/dask local configuration will be used.You can find a jobqueue YAML example in the pySPFM/jobqueue.yaml file.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AIC: 96% of parcels show activity
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-single-parcel-bic-vs-aic">
+<h2>A single parcel: BIC vs. AIC<a class="headerlink" href="#a-single-parcel-bic-vs-aic" title="Link to this heading">#</a></h2>
+<p>For one representative parcel: the band-pass-filtered BOLD (echo 2) with each model’s fit, and
+the activity-inducing signal recovered by each criterion. BIC keeps only a handful of
+strong events; AIC recovers many more — the same trade-off illustrated in the pySPFM
+documentation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">echo2</span> <span class="o">=</span> <span class="n">masked_data</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="n">valid</span><span class="p">]</span>                                   <span class="c1"># filtered echo-2 % change</span>
+<span class="n">coef_bic</span><span class="p">,</span> <span class="n">coef_aic</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="s2">&quot;bic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">models</span><span class="p">[</span><span class="s2">&quot;aic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">fit_bic</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="s2">&quot;bic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get_fitted_signal</span><span class="p">()[</span><span class="n">n_scans</span><span class="p">:</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_scans</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">fit_aic</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="s2">&quot;aic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get_fitted_signal</span><span class="p">()[</span><span class="n">n_scans</span><span class="p">:</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_scans</span><span class="p">,</span> <span class="p">:]</span>
 
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">masked_data</span><span class="p">)</span>  <span class="c1"># Shape: (n_echoes * n_timepoints, n_voxels)</span>
+<span class="c1"># Representative parcel: active in BIC, realistic amplitude, best AIC fit to the data.</span>
+<span class="n">amplitude</span> <span class="o">=</span> <span class="n">echo2</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">coef_bic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">amplitude</span> <span class="o">&gt;</span> <span class="mf">0.003</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">amplitude</span> <span class="o">&lt;</span> <span class="mf">0.04</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">candidates</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># fall back to any active parcel</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">coef_aic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">fit_aic</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">echo2</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">])</span>
+<span class="n">parcel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">candidates</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">corr</span><span class="p">))])</span>
 
-<span class="c1"># Fit the sparse deconvolution model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">SparseDeconvolution</span><span class="p">(</span>
-    <span class="n">tr</span><span class="o">=</span><span class="mf">2.47</span><span class="p">,</span>
-    <span class="n">te</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;echo_times&#39;</span><span class="p">],</span>
-    <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;bic&quot;</span><span class="p">,</span>
-    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Use all available CPU cores</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_scans</span><span class="p">)</span> <span class="o">*</span> <span class="n">tr</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">echo2</span><span class="p">[:,</span> <span class="n">parcel</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;0.6&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Filtered BOLD (echo 2)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">fit_bic</span><span class="p">[:,</span> <span class="n">parcel</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:red&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;BIC fit&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">fit_aic</span><span class="p">[:,</span> <span class="n">parcel</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;AIC fit&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Signal change (%)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parcel </span><span class="si">{</span><span class="n">parcel</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">coef_bic</span><span class="p">[:,</span> <span class="n">parcel</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:red&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;0.7&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;BIC activity</span><span class="se">\n</span><span class="s2">(a.u.)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">coef_aic</span><span class="p">[:,</span> <span class="n">parcel</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;0.7&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;AIC activity</span><span class="se">\n</span><span class="s2">(a.u.)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (s)&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/83564fd4b74aedd7ff5566d1d19b6d2f1f8f1e6103034167e6390eb8af57ad57.png" src="../_images/83564fd4b74aedd7ff5566d1d19b6d2f1f8f1e6103034167e6390eb8af57ad57.png" />
+</div>
+</div>
+</section>
+<section id="whole-brain-activity-bic-vs-aic">
+<h2>Whole-brain activity: BIC vs. AIC<a class="headerlink" href="#whole-brain-activity-bic-vs-aic" title="Link to this heading">#</a></h2>
+<p>The peak activity-inducing magnitude of each parcel, shown in MNI space. The
+multi-echo data are in the subject’s native space and are only affinely aligned to
+MNI, so we map each parcel’s value onto the original (MNI) Schaefer atlas:
+<code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> would instead land on the native grid and would not line up with
+the MNI template. Because the parcels were sampled in native space, the anatomical
+labelling is approximate — good enough for a qualitative whole-brain map, not for
+precise localisation. BIC highlights only a few strong regions, while AIC reveals
+activity across most of the cortex.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The Schaefer atlas is defined in MNI space; the masker orders parcels by ascending</span>
+<span class="c1"># label id and keeps those with voxels inside the brain mask. Recover that label</span>
+<span class="c1"># order so each parcel&#39;s value can be painted back onto the MNI atlas.</span>
+<span class="n">atlas_img</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">atlas</span><span class="o">.</span><span class="n">maps</span><span class="p">)</span>
+<span class="n">atlas_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">atlas_img</span><span class="o">.</span><span class="n">dataobj</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">atlas_on_data</span> <span class="o">=</span> <span class="n">resample_to_img</span><span class="p">(</span>
+    <span class="n">atlas_img</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">mask_file</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">force_resample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">copy_header</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">brain</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">mask_file</span><span class="p">)</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">atlas_on_data</span><span class="p">[</span><span class="n">brain</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">atlas_on_data</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)])))</span>
+<span class="k">assert</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">models</span><span class="p">[</span><span class="s2">&quot;aic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;parcel/label count mismatch&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">peak_activity_map</span><span class="p">(</span><span class="n">coef</span><span class="p">):</span>
+    <span class="n">peak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coef</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># one value per parcel</span>
+    <span class="n">painted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">atlas_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">peak</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="n">painted</span><span class="p">[</span><span class="n">atlas_data</span> <span class="o">==</span> <span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">nb</span><span class="o">.</span><span class="n">Nifti1Image</span><span class="p">(</span><span class="n">painted</span><span class="p">,</span> <span class="n">atlas_img</span><span class="o">.</span><span class="n">affine</span><span class="p">),</span> <span class="n">peak</span>
+
+<span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;bic&quot;</span><span class="p">,</span> <span class="s2">&quot;aic&quot;</span><span class="p">]:</span>
+    <span class="n">activity_img</span><span class="p">,</span> <span class="n">peak</span> <span class="o">=</span> <span class="n">peak_activity_map</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="n">criterion</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+    <span class="n">nonzero</span> <span class="o">=</span> <span class="n">peak</span><span class="p">[</span><span class="n">peak</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
+        <span class="n">activity_img</span><span class="p">,</span>
+        <span class="n">display_mode</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">,</span>
+        <span class="n">cut_coords</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span>
+        <span class="n">threshold</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">nonzero</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">nonzero</span><span class="p">,</span> <span class="mi">99</span><span class="p">)),</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;YlOrRd&quot;</span><span class="p">,</span>
+        <span class="n">symmetric_cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Peak activity-inducing signal (</span><span class="si">{</span><span class="n">criterion</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+        <span class="n">draw_cross</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># Save the AIC whole-brain map (MNI space) for reference.</span>
+<span class="n">peak_activity_map</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="s2">&quot;aic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_filename</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;out_activity_max_aic.nii.gz&quot;</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="c1"># Get the deconvolved activity-inducing signals</span>
-<span class="c1"># Note: coef_ has shape (n_timepoints, n_voxels) - the model recovers</span>
-<span class="c1"># the underlying neural activity at the original temporal resolution</span>
-<span class="n">activity</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
-
-<span class="c1"># Transform back to NIfTI image and save</span>
-<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">activity_img</span> <span class="o">=</span> <span class="n">masker</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
-<span class="n">activity_img</span><span class="o">.</span><span class="n">to_filename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;out_activity.nii.gz&quot;</span><span class="p">))</span>
-
-<span class="c1"># Also save the regularization parameter values</span>
-<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;out_lambda.npy&quot;</span><span class="p">),</span> <span class="n">model</span><span class="o">.</span><span class="n">lambda_</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Activity shape: </span><span class="si">{</span><span class="n">activity</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved activity to: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;out_activity.nii.gz&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">SparseDeconvolution</span></code> model provides several useful attributes and methods after fitting:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">coef_</span></code>: The deconvolved activity-inducing signals (shape: n_timepoints × n_voxels)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lambda_</span></code>: The regularization parameter values</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hrf_matrix_</span></code>: The HRF convolution matrix used</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_fitted_signal()</span></code>: Returns the fitted (reconstructed) signal; takes no arguments</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_residuals(X)</span></code>: Returns the residuals between the original data and fitted signal; requires the input data <code class="docutils literal notranslate"><span class="pre">X</span></code> as an argument</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the fitted signal and residuals</span>
-<span class="c1"># Note: These have shape (n_echoes * n_timepoints, n_voxels) matching the input X</span>
-<span class="n">fitted_signal</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_fitted_signal</span><span class="p">()</span>
-<span class="n">residuals</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_residuals</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="c1"># Save the fitted signal and residuals as numpy arrays</span>
-<span class="c1"># (shape doesn&#39;t match single-echo masker expectations for NIfTI output)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;out_fitted.npy&quot;</span><span class="p">),</span> <span class="n">fitted_signal</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;out_residuals.npy&quot;</span><span class="p">),</span> <span class="n">residuals</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fitted signal shape: </span><span class="si">{</span><span class="n">fitted_signal</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Residuals shape: </span><span class="si">{</span><span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="cell_output docutils container">
+<img alt="../_images/3fe120a55b9a0fd66d314279df23a7de3145069fbd1a230ebe5da5b488a66552.png" src="../_images/3fe120a55b9a0fd66d314279df23a7de3145069fbd1a230ebe5da5b488a66552.png" />
+<img alt="../_images/13c1837a600472fb47e196ec97cd35ebdab0aed82b2d5cac312913ed00a2ac1c.png" src="../_images/13c1837a600472fb47e196ec97cd35ebdab0aed82b2d5cac312913ed00a2ac1c.png" />
 </div>
 </div>
-</div>
-<p>The pySPFM workflow writes out a number of files.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)))</span>
-<span class="n">out_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">out_files</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_files</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -624,7 +812,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Cerebrovascular Reactivity Mapping</p>
+        <p class="prev-next-title">Cerebrovascular Reactivity Mapping with <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -634,6 +822,27 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-multi-echo-data">Load the multi-echo data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parcellate-detrend-and-normalise">Parcellate, detrend and normalise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deconvolve-the-effect-of-the-model-selection-criterion">Deconvolve: the effect of the model-selection criterion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-single-parcel-bic-vs-aic">A single parcel: BIC vs. AIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-brain-activity-bic-vs-aic">Whole-brain activity: BIC vs. AIC</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
