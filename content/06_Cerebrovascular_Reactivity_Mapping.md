@@ -41,32 +41,32 @@ Assuming that you are following the other tutorials in this notebook, once you o
   - if you want, a ROI mask in functional space which average signal will be used as reference to align the regressor (e.g. the $CO_2$ trace) and which average haemodynamic lag will be set as 0-lag - grey matter or cerebellum are commonly used as reference ROI;
   - if you want to run ICA denoising, the timeseries of rejected and accepted components from tedana in two different files; the easiest way to obtain these are using the mixing matrix from `tedana` and the manual classification from `rica` with the help of `pandas`:
   
-```{code-cell} ipython3
-import pandas as pd
+    ```python
+    import pandas as pd
 
-# Assuming RICA was used for manual classification, read the downloaded file (adjusting path as necessary)
-man_class = pd.read_csv('../manual_classification.tsv', sep='\t', header=0)
+    # Assuming RICA was used for manual classification, read the downloaded file (adjusting path as necessary)
+    man_class = pd.read_csv('../manual_classification.tsv', sep='\t', header=0)
 
-# Read the ICA mixing matrix  (adjusting path as necessary)
-ica_mix = pd.read_csv('../desc-ICA_mixing.tsv', sep='\t', header=0)
+    # Read the ICA mixing matrix  (adjusting path as necessary)
+    ica_mix = pd.read_csv('../desc-ICA_mixing.tsv', sep='\t', header=0)
 
-# Extract the list of rejected and accepted components
-rej_comp =  man_class[man_class['classification'] == 'rejected']['Component'].tolist()
-acc_comp =  man_class[man_class['classification'] == 'accepted']['Component'].tolist()
+    # Extract the list of rejected and accepted components
+    rej_comp =  man_class[man_class['classification'] == 'rejected']['Component'].tolist()
+    acc_comp =  man_class[man_class['classification'] == 'accepted']['Component'].tolist()
 
-# Extract rejected vs accepted timeseries and save them
-rej_ts = ica_mix[rej_comp]
-acc_ts = ica_mix[acc_comp]
+    # Extract rejected vs accepted timeseries and save them
+    rej_ts = ica_mix[rej_comp]
+    acc_ts = ica_mix[acc_comp]
 
-acc_ts.to_csv('../accecpted_ic_timeseries.csv', index=False, header=False)
-rej_ts.to_csv('../rejected_ic_timeseries.csv', index=False, header=False)
-```
+    acc_ts.to_csv('../accepted_ic_timeseries.csv', index=False, header=False)
+    rej_ts.to_csv('../rejected_ic_timeseries.csv', index=False, header=False)
+    ```
 
 need [TO POTENTIALLY EXTRACT NOISE AND NON-NOISE IC TIMESERIES AND] a brain mask and, if you want, 
 
 After [installing `phys2cvr`](https://phys2cvr.readthedocs.io/en/latest/usage/installation.html#basic-installation), potentially with [extra dependencies](https://phys2cvr.readthedocs.io/en/latest/usage/installation.html#richer-installation), we can import the main workflow of `phys2cvr` and call its help to see all available parameters (many).
 
-```{code-cell} ipython3
+```python
 from phys2cvr.workflows import phys2cvr as p2c
 
 
@@ -105,7 +105,7 @@ You can get $CO_2$ traces (and their peak indices) with whatever program you wan
 
 Here's an example with [Physiopy's `peakdet`](https://peakdet.readthedocs.io/en/latest/).
 
-```{code-cell} ipython3
+```python
 import os
 
 import numpy as np
@@ -115,12 +115,11 @@ import peakdet as pk
 co2_path = os.path.abspath('../co2data')
 ```
 
-```{code-cell} ipython3
-raise ValueError("SKIP")
+```python
 data = np.genfromtxt(co2_path)
 ```
 
-```{code-cell} ipython3
+```python
 # Set the desired "channel", i.e. column, of the file containing CO2 data
 channel=0
 # Set the sampling frequency of the data
@@ -144,7 +143,7 @@ path = pk.save_physio(outfile, co2)
 
 With this last output, we can run `phys2cvr`!
 
-```{code-cell} ipython3
+```python
 p2c(
   fname_func='../optcom.nii.gz',      # The optimally combined data
   fname_co2='../co2.phys',            # The CO2 trace with peaks
@@ -171,7 +170,7 @@ If you didn't use `peakdet` for your $CO_2$ processing and peak detection, add t
 
 If you have a pre-made $P_{ET}CO_2$ trace, simply skip the steps to make one.
 
-```{code-cell} ipython3
+```python
 p2c(
   fname_func='../optcom.nii.gz',      # The optimally combined data
   fname_co2='../petco2_trace',        # The pre-made PetCO2 trace
@@ -196,7 +195,7 @@ p2c(
 
 Simply use your task design as $CO_2$ trace. You can interpolate it with an HRF or a respiratory response function internally, or do this beforehand. 
 
-```{code-cell} ipython3
+```python
 p2c(
   fname_func='../optcom.nii.gz',      # The optimally combined data
   fname_co2='../task_design',        # The pre-made PetCO2 trace
@@ -221,7 +220,7 @@ p2c(
 
 This is the simplest way to run `phys2cvr`, using the average BOLD signal from a desired ROI.
 
-```{code-cell} ipython3
+```python
 p2c(
   fname_func='../optcom.nii.gz',      # The optimally combined data
   fname_mask='../brain_mask.nii.gz',  # A mask to limit the analysis to
