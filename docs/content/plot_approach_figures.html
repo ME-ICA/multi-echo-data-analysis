@@ -34,10 +34,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=caf49f2c" />
   
@@ -208,7 +208,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03_Denoising_with_tedana.html">Multi-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">tedana</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_Dual_Echo_Denoising.html">Dual-Echo Denoising with <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_3dMEPFM.html">Model-free deconvolution with <code class="docutils literal notranslate"><span class="pre">pySPFM</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Cerebrovascular_Reactivity_Mapping.html">Cerebrovascular Reactivity Mapping with <code class="docutils literal notranslate"><span class="pre">phys2cvr</span></code></a></li>
+
 <li class="toctree-l1"><a class="reference external" href="https://me-ica.github.io/rica/">Manual Classification with rica</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08_ICA_Based_Denoising.html">Denoising Data with ICA</a></li>
 </ul>
@@ -765,7 +766,7 @@ and this chapter will be removed.</p>
 </details>
 </div>
 <figure class="align-center" id="fig-echo-timeseries2">
-<img alt="content/figures/fig_echo_timeseries2.png" src="content/figures/fig_echo_timeseries2.png" />
+<img alt="../_images/fig_echo_timeseries2.png" src="../_images/fig_echo_timeseries2.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 22 </span><span class="caption-text">Time series from a voxel for each echo.</span><a class="headerlink" href="#fig-echo-timeseries2" title="Link to this image">#</a></p>
 </figcaption>
@@ -800,7 +801,7 @@ and this chapter will be removed.</p>
 </details>
 </div>
 <figure class="align-center" id="fig-echo-scatter2">
-<img alt="content/figures/fig_echo_scatter2.png" src="content/figures/fig_echo_scatter2.png" />
+<img alt="../_images/fig_echo_scatter2.png" src="../_images/fig_echo_scatter2.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 23 </span><span class="caption-text">Scatter plot of voxel’s values by echo time.</span><a class="headerlink" href="#fig-echo-scatter2" title="Link to this image">#</a></p>
 </figcaption>
@@ -845,7 +846,7 @@ where <span class="math notranslate nohighlight">\(n\)</span> is the value for t
 </details>
 </div>
 <figure class="align-center" id="fig-adaptive-mask">
-<img alt="content/figures/fig_adaptive_mask.png" src="content/figures/fig_adaptive_mask.png" />
+<img alt="../_images/fig_adaptive_mask.png" src="../_images/fig_adaptive_mask.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 24 </span><span class="caption-text">Adaptive mask.</span><a class="headerlink" href="#fig-adaptive-mask" title="Link to this image">#</a></p>
 </figcaption>
@@ -881,7 +882,7 @@ where <span class="math notranslate nohighlight">\(n\)</span> is the value for t
 </details>
 </div>
 <figure class="align-center" id="fig-loglin-scatter">
-<img alt="content/figures/fig_loglin_scatter.png" src="content/figures/fig_loglin_scatter.png" />
+<img alt="../_images/fig_loglin_scatter.png" src="../_images/fig_loglin_scatter.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 25 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation.</span><a class="headerlink" href="#fig-loglin-scatter" title="Link to this image">#</a></p>
 </figcaption>
@@ -951,7 +952,7 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </details>
 </div>
 <figure class="align-center" id="fig-loglin-scatter-with-line">
-<img alt="content/figures/fig_loglin_scatter_with_line.png" src="content/figures/fig_loglin_scatter_with_line.png" />
+<img alt="../_images/fig_loglin_scatter_with_line.png" src="../_images/fig_loglin_scatter_with_line.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 26 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation, with fitted line.</span><a class="headerlink" href="#fig-loglin-scatter-with-line" title="Link to this image">#</a></p>
 </figcaption>
@@ -1000,7 +1001,7 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </details>
 </div>
 <figure class="align-center" id="fig-loglin-scatter-with-t2s">
-<img alt="content/figures/fig_loglin_scatter_with_t2s.png" src="content/figures/fig_loglin_scatter_with_t2s.png" />
+<img alt="../_images/fig_loglin_scatter_with_t2s.png" src="../_images/fig_loglin_scatter_with_t2s.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 27 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo, after log-linear transformation, with fitted line and T2* estimate.</span><a class="headerlink" href="#fig-loglin-scatter-with-t2s" title="Link to this image">#</a></p>
 </figcaption>
@@ -1040,7 +1041,7 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </details>
 </div>
 <figure class="align-center" id="fig-scatter-with-t2s">
-<img alt="content/figures/fig_scatter_with_t2s.png" src="content/figures/fig_scatter_with_t2s.png" />
+<img alt="../_images/fig_scatter_with_t2s.png" src="../_images/fig_scatter_with_t2s.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 28 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo with T2* estimate.</span><a class="headerlink" href="#fig-scatter-with-t2s" title="Link to this image">#</a></p>
 </figcaption>
@@ -1068,7 +1069,7 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </details>
 </div>
 <figure class="align-center" id="fig-optcom-weights">
-<img alt="content/figures/fig_optcom_weights.png" src="content/figures/fig_optcom_weights.png" />
+<img alt="../_images/fig_optcom_weights.png" src="../_images/fig_optcom_weights.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 29 </span><span class="caption-text">Averaging weights for optimal combination.</span><a class="headerlink" href="#fig-optcom-weights" title="Link to this image">#</a></p>
 </figcaption>
@@ -1115,7 +1116,7 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </details>
 </div>
 <figure class="align-center" id="fig-scatter-with-optcom">
-<img alt="content/figures/fig_scatter_with_optcom.png" src="content/figures/fig_scatter_with_optcom.png" />
+<img alt="../_images/fig_scatter_with_optcom.png" src="../_images/fig_scatter_with_optcom.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 30 </span><span class="caption-text">Scatter plot of voxel’s signal for each echo with optimally combined signal as well.</span><a class="headerlink" href="#fig-scatter-with-optcom" title="Link to this image">#</a></p>
 </figcaption>
@@ -1156,7 +1157,7 @@ B_{0}\end{pmatrix}\end{split}\]</div>
 </details>
 </div>
 <figure class="align-center" id="fig-echo-timeseries-with-optcom">
-<img alt="content/figures/fig_echo_timeseries_with_optcom.png" src="content/figures/fig_echo_timeseries_with_optcom.png" />
+<img alt="../_images/fig_echo_timeseries_with_optcom.png" src="../_images/fig_echo_timeseries_with_optcom.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 31 </span><span class="caption-text">Echo-wise time series for a voxel, including the optimally combined time series.</span><a class="headerlink" href="#fig-echo-timeseries-with-optcom" title="Link to this image">#</a></p>
 </figcaption>
@@ -1192,7 +1193,7 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </details>
 </div>
 <figure class="align-center" id="fig-pca-timeseries">
-<img alt="content/figures/fig_pca_timeseries.png" src="content/figures/fig_pca_timeseries.png" />
+<img alt="../_images/fig_pca_timeseries.png" src="../_images/fig_pca_timeseries.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 32 </span><span class="caption-text">Time series of three PCA components.</span><a class="headerlink" href="#fig-pca-timeseries" title="Link to this image">#</a></p>
 </figcaption>
@@ -1226,7 +1227,7 @@ Two possible approaches are a decision tree and a threshold using the percentage
 </details>
 </div>
 <figure class="align-center" id="fig-optcom-reduced-timeseries">
-<img alt="content/figures/fig_optcom_reduced_timeseries.png" src="content/figures/fig_optcom_reduced_timeseries.png" />
+<img alt="../_images/fig_optcom_reduced_timeseries.png" src="../_images/fig_optcom_reduced_timeseries.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 33 </span><span class="caption-text">Time series of optimally combined data from a voxel, before and after dimensionality reduction with PCA.</span><a class="headerlink" href="#fig-optcom-reduced-timeseries" title="Link to this image">#</a></p>
 </figcaption>
@@ -1275,7 +1276,7 @@ ICA produces a mixing matrix (i.e., timeseries for each component).</p>
 </details>
 </div>
 <figure class="align-center" id="fig-ica-timeseries">
-<img alt="content/figures/fig_ica_timeseries.png" src="content/figures/fig_ica_timeseries.png" />
+<img alt="../_images/fig_ica_timeseries.png" src="../_images/fig_ica_timeseries.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 34 </span><span class="caption-text">Time series of three ICA components.</span><a class="headerlink" href="#fig-ica-timeseries" title="Link to this image">#</a></p>
 </figcaption>
@@ -1343,7 +1344,7 @@ but <span class="math notranslate nohighlight">\(\kappa\)</span> and <span class
 </details>
 </div>
 <figure class="align-center" id="fig-ica-weights">
-<img alt="content/figures/fig_ica_weights.png" src="content/figures/fig_ica_weights.png" />
+<img alt="../_images/fig_ica_weights.png" src="../_images/fig_ica_weights.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 35 </span><span class="caption-text">Echo-wise model weights for three ICA components.</span><a class="headerlink" href="#fig-ica-weights" title="Link to this image">#</a></p>
 </figcaption>
@@ -1395,7 +1396,7 @@ This means that ignored components and residual variance not explained by the IC
 </details>
 </div>
 <figure class="align-center" id="fig-medn-timeseries">
-<img alt="content/figures/fig_medn_timeseries.png" src="content/figures/fig_medn_timeseries.png" />
+<img alt="../_images/fig_medn_timeseries.png" src="../_images/fig_medn_timeseries.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 36 </span><span class="caption-text">Time series for optimally combined, denoised, and high-kappa data for a single voxel.</span><a class="headerlink" href="#fig-medn-timeseries" title="Link to this image">#</a></p>
 </figcaption>
@@ -1446,7 +1447,7 @@ Methods which have been employed in the past include global signal regression (G
 </details>
 </div>
 <figure class="align-center" id="fig-mir-timeseries">
-<img alt="content/figures/fig_mir_timeseries.png" src="content/figures/fig_mir_timeseries.png" />
+<img alt="../_images/fig_mir_timeseries.png" src="../_images/fig_mir_timeseries.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 37 </span><span class="caption-text">Time series from a voxel before and after <a class="reference internal" href="TE_Dependence.html#minimum-image-regression">minimum image regression</a>.</span><a class="headerlink" href="#fig-mir-timeseries" title="Link to this image">#</a></p>
 </figcaption>
