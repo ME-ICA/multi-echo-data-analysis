@@ -69,7 +69,7 @@ preprocessed data to ensure that it is in the correct format for multi-echo deno
 ### fMRIPrep
 
 When using `fMRIPrep` to preprocess ME-EPI data, we recommend the following:
-- Use the `--me-output-echoes` flag to ensure that each echo is preprocessed separately, then run optimal combination 
+- Use the `--me-output-echos` flag to ensure that each echo is preprocessed separately, then run optimal combination 
 using `tedana` itself. Running `tedana` on the data that has already been optimally combined in fMRIPrep results in
 distortion correction, spatial normalization, and smoothing potentially being applied before `tedana`, reducing denoising
 quality.

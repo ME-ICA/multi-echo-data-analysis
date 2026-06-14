@@ -526,7 +526,7 @@ preprocessed data to ensure that it is in the correct format for multi-echo deno
 <h3>fMRIPrep<a class="headerlink" href="#fmriprep" title="Link to this heading">#</a></h3>
 <p>When using <code class="docutils literal notranslate"><span class="pre">fMRIPrep</span></code> to preprocess ME-EPI data, we recommend the following:</p>
 <ul class="simple">
-<li><p>Use the <code class="docutils literal notranslate"><span class="pre">--me-output-echoes</span></code> flag to ensure that each echo is preprocessed separately, then run optimal combination
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">--me-output-echos</span></code> flag to ensure that each echo is preprocessed separately, then run optimal combination
 using <code class="docutils literal notranslate"><span class="pre">tedana</span></code> itself. Running <code class="docutils literal notranslate"><span class="pre">tedana</span></code> on the data that has already been optimally combined in fMRIPrep results in
 distortion correction, spatial normalization, and smoothing potentially being applied before <code class="docutils literal notranslate"><span class="pre">tedana</span></code>, reducing denoising
 quality.</p></li>
