@@ -35,6 +35,7 @@ from tedana.utils import make_adaptive_mask
 
 data_path = os.path.abspath('../data')
 
+func_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/func/")
 ted_dir = os.path.join(data_path, "tedana")
 ```
 
@@ -42,6 +43,9 @@ ted_dir = os.path.join(data_path, "tedana")
 ```{code-cell} ipython3
 :tags: [hide-cell]
 data = load_pafin(data_path)
+# load_pafin returns echo_times as a list; this chapter does array arithmetic on
+# it (e.g. -1 * echo_times), so coerce to an array once here.
+data['echo_times'] = np.asarray(data['echo_times'])
 
 # Background anatomical image
 anat_dir = os.path.join(data_path, "ds006185/sub-24053/ses-1/anat/")
