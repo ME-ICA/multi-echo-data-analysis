@@ -459,6 +459,11 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-motion-correction-parameters-from-one-echo-and-apply-those-parameters-to-all-echoes">1. Estimate motion correction parameters from one echo and apply those parameters to all echoes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-slice-timing-correction-and-motion-correction-before-multi-echo-denoising">2. Perform slice timing correction and motion correction <strong>before</strong> multi-echo denoising</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-distortion-correction-spatial-normalization-smoothing-and-any-rescaling-or-filtering-after-denoising">3. Perform distortion correction, spatial normalization, smoothing, and any rescaling or filtering <strong>after</strong> denoising</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-specific-recommendations">Pipeline-specific recommendations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fmriprep">fMRIPrep</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-processing-on-high-performance-computers">Parallel processing on high-performance computers</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -512,6 +517,68 @@ For example, if echo is separately scaled by its mean signal over time,
 then resulting intensity gradients and the subsequent calculation of voxelwise T2* values will be distorted or incorrect.
 An aggressive temporal filter (e.g., a 0.1Hz low pass filter)
 or spatial smoothing could similarly distort the relationship between the echoes at each time point.</p>
+</section>
+<section id="pipeline-specific-recommendations">
+<h2>Pipeline-specific recommendations<a class="headerlink" href="#pipeline-specific-recommendations" title="Link to this heading">#</a></h2>
+<p>When using automated pipelines like <code class="docutils literal notranslate"><span class="pre">fMRIPrep</span></code>, it is important to carefully verify the status of the output, minimally
+preprocessed data to ensure that it is in the correct format for multi-echo denoising in <code class="docutils literal notranslate"><span class="pre">tedana</span></code>.</p>
+<section id="fmriprep">
+<h3>fMRIPrep<a class="headerlink" href="#fmriprep" title="Link to this heading">#</a></h3>
+<p>When using <code class="docutils literal notranslate"><span class="pre">fMRIPrep</span></code> to preprocess ME-EPI data, we recommend the following:</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">--me-output-echos</span></code> flag to ensure that each echo is preprocessed separately, then run optimal combination
+using <code class="docutils literal notranslate"><span class="pre">tedana</span></code> itself. Running <code class="docutils literal notranslate"><span class="pre">tedana</span></code> on the data that has already been optimally combined in fMRIPrep results in
+distortion correction, spatial normalization, and smoothing potentially being applied before <code class="docutils literal notranslate"><span class="pre">tedana</span></code>, reducing denoising
+quality.</p></li>
+<li><p>Ensure that <code class="docutils literal notranslate"><span class="pre">tedana</span></code> is run on unsmoothed <code class="docutils literal notranslate"><span class="pre">fmriprep</span></code> outputs. This is especially important if you are using an older
+version of <code class="docutils literal notranslate"><span class="pre">fmriprep</span></code> that includes ICA-AROMA, a pipeline that requires and outputs smoothed data.</p></li>
+</ul>
+<p>This <a class="reference external" href="https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0">page from the tedana documentation</a>
+contains a script that automatically retrieves the necessary files from <code class="docutils literal notranslate"><span class="pre">fMRIPrep</span></code> outputs and runs <code class="docutils literal notranslate"><span class="pre">tedana</span></code> on them.</p>
+</section>
+<section id="parallel-processing-on-high-performance-computers">
+<h3>Parallel processing on high-performance computers<a class="headerlink" href="#parallel-processing-on-high-performance-computers" title="Link to this heading">#</a></h3>
+<p>When running <code class="docutils literal notranslate"><span class="pre">tedana</span></code> on multiple subjects in parallel on a high-performance computing cluster (e.g. SLURM jobs),
+ensure that jobs are run in independent nodes to avoid race conditions (and errors) when writing to the same output
+directory. The following is an exemplar bash script that demonstrates running <code class="docutils literal notranslate"><span class="pre">tedana</span></code> in parallel on multiple subjects
+in a SLURM job array, assuming <code class="docutils literal notranslate"><span class="pre">fmriprep</span></code> has already been run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH --time=20:00:00</span>
+<span class="c1">#SBATCH --account=[PUT ALLOCATION HERE]</span>
+<span class="c1">#SBATCH --job-name=tedana-job</span>
+<span class="c1">#SBATCH --nodes=1</span>
+<span class="c1">#SBATCH --ntasks-per-node=20</span>
+<span class="c1">#SBATCH --mem=32G</span>
+<span class="c1">#SBATCH --output=/arc/burst/[PUT ALLOCATION HERE]/fmri_env_scripts/outputs/tedana-job-%j-output.txt</span>
+<span class="c1">#SBATCH --error=/arc/burst/[PUT ALLOCATION HERE]/fmri_env_scripts/errors/tedana-job-%j-errors.txt</span>
+<span class="c1">#SBATCH --mail-user=[YOUR-EMAIL@INSTITUTION.EDU]</span>
+<span class="c1">#SBATCH --mail-type=END</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Job execution start: </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&quot;</span>
+
+<span class="c1"># Load required software packages to start up the conda environment</span>
+module<span class="w"> </span>load<span class="w"> </span>miniconda3
+<span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>/arc/project/<span class="o">[</span>PUT<span class="w"> </span>ALLOCATION<span class="w"> </span>HERE<span class="o">]</span>/software_envs/fmri_env
+
+<span class="c1"># Choose directories</span>
+<span class="c1"># BIDS directory</span>
+<span class="nv">BIDS_DIR</span><span class="o">=</span>/arc/burst/<span class="o">[</span>PUT<span class="w"> </span>ALLOCATION<span class="w"> </span>HERE<span class="o">]</span>/fmriprep/1_preprocessing/BIDS_datasets_temp/BIDS_dataset_jul30_24
+
+<span class="c1"># FMRIPREP directory</span>
+<span class="nv">FMRIPREP_DIR</span><span class="o">=</span><span class="si">${</span><span class="nv">BIDS_DIR</span><span class="si">}</span>/derivatives/fmriprep
+<span class="nv">CORES</span><span class="o">=</span><span class="m">20</span>
+
+<span class="c1"># Run the tedana script in parallel on the desired directory</span>
+python<span class="w"> </span>/arc/burst/<span class="o">[</span>PUT<span class="w"> </span>ALLOCATION<span class="w"> </span>HERE<span class="o">]</span>/fmri_env_scripts/tedana/fMRIprep_to_tedana.py<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--fmriprepDir<span class="w"> </span><span class="nv">$FMRIPREP_DIR</span><span class="w"> </span>--bidsDir<span class="w"> </span><span class="nv">$BIDS_DIR</span><span class="w"> </span>--cores<span class="w"> </span><span class="nv">$CORES</span>
+
+<span class="c1"># Exit conda environment</span>
+conda<span class="w"> </span>deactivate
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Job termination: </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">fMRIprep_to_tedana.py</span></code> is the <a class="reference external" href="https://tedana.readthedocs.io/en/stable/faq.html#fmriprep-versions-21-0-0">previously mentioned fMRIPrep to tedana python script</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We are assuming that spatial normalization and distortion correction,
@@ -523,6 +590,7 @@ transform for motion correction and a later transform for normalization and dist
 Our advice against doing normalization and distortion correction is a conservative choice and we encourage additional
 research to better understand how these steps can be applied before denoising.</p>
 </div>
+</section>
 </section>
 </section>
 
@@ -595,6 +663,11 @@ research to better understand how these steps can be applied before denoising.</
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-motion-correction-parameters-from-one-echo-and-apply-those-parameters-to-all-echoes">1. Estimate motion correction parameters from one echo and apply those parameters to all echoes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-slice-timing-correction-and-motion-correction-before-multi-echo-denoising">2. Perform slice timing correction and motion correction <strong>before</strong> multi-echo denoising</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-distortion-correction-spatial-normalization-smoothing-and-any-rescaling-or-filtering-after-denoising">3. Perform distortion correction, spatial normalization, smoothing, and any rescaling or filtering <strong>after</strong> denoising</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-specific-recommendations">Pipeline-specific recommendations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fmriprep">fMRIPrep</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-processing-on-high-performance-computers">Parallel processing on high-performance computers</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
