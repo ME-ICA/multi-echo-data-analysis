@@ -12,7 +12,7 @@ dependencies = [
     "myst-nb",
     "nilearn",
     "nitransforms",
-    "pyspfm==2.0.2",
+    "pyspfm==2.0.3",
     "peakdet==0.6.1",
     "phys2cvr==0.28.4",
     "seaborn",
