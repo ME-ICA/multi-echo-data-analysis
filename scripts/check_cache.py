@@ -20,8 +20,9 @@ from __future__ import annotations
 import argparse
 import os
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
+import yaml
 from jupyter_cache import get_cache
 from myst_nb.core.config import NbParserConfig
 from myst_nb.core.read import create_nb_reader
@@ -32,10 +33,31 @@ CONTENT_DIR = ROOT / "content"
 CACHE_DIR = ROOT / "_build" / ".jupyter_cache"
 
 
+def execution_exclude_patterns() -> list[str]:
+    """Return the ``execute.exclude_patterns`` setting of the book."""
+    config = yaml.safe_load((ROOT / "_config.yml").read_text(encoding="utf-8"))
+    return list(config.get("execute", {}).get("exclude_patterns", []))
+
+
 def find_notebooks() -> list[Path]:
-    """Return the source files under content/ that MyST-NB treats as notebooks."""
+    """Return the source files under content/ that the build looks up in the cache.
+
+    These are the files MyST-NB treats as notebooks, minus the ones excluded from
+    execution (matched the same way MyST-NB matches them).
+    """
+    patterns = execution_exclude_patterns()
     candidates = sorted([*CONTENT_DIR.glob("*.md"), *CONTENT_DIR.glob("*.ipynb")])
-    return [path for path in candidates if read_notebook(path) is not None]
+    notebooks = []
+    for path in candidates:
+        posix_path = PurePosixPath(path.as_posix())
+        if any(posix_path.match(pattern) for pattern in patterns):
+            print(f"  excluded from execution: {path.relative_to(ROOT).as_posix()}")
+            continue
+
+        if read_notebook(path) is not None:
+            notebooks.append(path)
+
+    return notebooks
 
 
 def read_notebook(path: Path):
