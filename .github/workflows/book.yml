@@ -1,0 +1,86 @@
+name: book
+
+# Render the book and deploy it to GitHub Pages.
+#
+# Notebooks are NOT executed here. Their outputs are produced locally, where the
+# data and enough memory are available, and published as the
+# `execution-bundle.tar.gz` asset of the `execution-cache` release
+# (`make publish-cache`). This workflow restores that bundle, so Sphinx finds every
+# notebook in the jupyter-cache and only has to render HTML.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: book-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CACHE_RELEASE: execution-cache
+  UV_PYTHON: "3.14"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: make install
+
+      - name: Restore notebook execution results
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p _build
+          gh release download "$CACHE_RELEASE" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern execution-bundle.tar.gz \
+            --dir _build
+          make unpack-cache
+
+      # On main, a notebook whose code is newer than the cache blocks the deploy
+      # (the live site stays as it is). On pull requests it is only a warning: the
+      # build then tries to run the notebook, which works for the few that need no
+      # data and leaves the others without outputs in the preview.
+      - name: Check that every notebook is cached
+        run: make check-cache STRICT=${{ github.event_name != 'pull_request' && '1' || '' }}
+
+      - name: Build the book
+        run: make book
+
+      - name: Drop files that are not part of the site
+        run: rm -rf _build/html/reports _build/html/.buildinfo _build/html/_sphinx_design_static
+
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _build/html
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

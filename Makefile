@@ -8,21 +8,28 @@ export UV_PROJECT_ENVIRONMENT := meda
 # 1577836800 == 2020-01-01T00:00:00Z
 export SOURCE_DATE_EPOCH := 1577836800
 
-.PHONY: help check-env book clean serve sync-docs site-publish install runall build site
+# GitHub release whose `execution-bundle.tar.gz` asset holds the notebook
+# execution results that CI renders the book from.
+CACHE_RELEASE := execution-cache
+BUNDLE := _build/execution-bundle.tar.gz
+
+# `make check-cache STRICT=1` fails when a notebook is missing from the cache.
+STRICT ?=
+
+.PHONY: help install check-env book check-cache pack-cache unpack-cache fetch-cache publish-cache deploy clean clean-all
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of:"
-	@echo "  install     to sync the 'meda' environment from uv.lock"
-	@echo "  check-env   to verify the 'meda' environment matches uv.lock"
-	@echo "  book        to activate 'meda' and build the Jupyter Book into _build/"
-	@echo "  clean       to clean out site build files"
-	@echo "  runall      to run all notebooks in-place, capturing outputs with the notebook"
-	@echo "  serve       to serve the repository locally with Jekyll"
-	@echo "  build       to build the site HTML and store in _site/"
-	@echo "  site        to build the site HTML, store in _site/, and serve with Jekyll"
-	@echo "  sync-docs   to copy _build/html into docs/ for GitHub Pages"
-	@echo "  site-publish to build the book and sync docs/ (book + sync-docs)"
-
+	@echo "  install        to sync the 'meda' environment from uv.lock"
+	@echo "  check-env      to verify the 'meda' environment matches uv.lock"
+	@echo "  book           to build the book into _build/html, executing only notebooks"
+	@echo "                 whose code is not in the execution cache"
+	@echo "  check-cache    to list notebooks whose code is newer than the execution cache"
+	@echo "  fetch-cache    to download the published execution cache and unpack it"
+	@echo "  publish-cache  to pack the local execution cache and upload it for CI"
+	@echo "  deploy         to ask GitHub Actions to rebuild and deploy the site from main"
+	@echo "  clean          to remove build output, keeping the execution cache"
+	@echo "  clean-all      to also remove the execution cache and generated figures"
 
 install:
 	uv sync --locked
@@ -33,27 +40,43 @@ check-env:
 	@echo "Checking that '$(UV_PROJECT_ENVIRONMENT)' matches uv.lock..."
 	uv sync --locked --check
 
-# Activate the 'meda' environment (via `uv run`) and build the book.
+# Build the book in the 'meda' environment (via `uv run`).
+# Execution mode is "cache" (_config.yml): notebooks with a match in
+# _build/.jupyter_cache are rendered from it, the others are executed and cached.
 book: check-env
 	uv run --locked jupyter-book build ./
 
-sync-docs:
-	python scripts/sync_docs.py
+check-cache:
+	uv run --locked python scripts/check_cache.py $(if $(STRICT),--strict,)
 
-site-publish: book sync-docs
+pack-cache:
+	uv run --locked python scripts/execution_bundle.py pack
 
-runall:
-	jupyter-book run ./content
+unpack-cache:
+	uv run --locked python scripts/execution_bundle.py unpack
+
+# Start from the published execution results instead of re-running every notebook.
+fetch-cache:
+	mkdir -p _build
+	gh release download $(CACHE_RELEASE) --pattern execution-bundle.tar.gz --dir _build --clobber
+	$(MAKE) unpack-cache
+
+# Upload the local execution results so CI can render the book from them.
+# Refuses to upload a cache that does not cover the current notebooks.
+publish-cache:
+	$(MAKE) check-cache STRICT=1
+	$(MAKE) pack-cache
+	gh release view $(CACHE_RELEASE) > /dev/null 2>&1 || gh release create $(CACHE_RELEASE) \
+		--title "Notebook execution cache" \
+		--notes "Executed notebook outputs and figures used by the book workflow. Not a versioned release of the book; the asset is replaced by 'make publish-cache'." \
+		--latest=false
+	gh release upload $(CACHE_RELEASE) $(BUNDLE) --clobber
+
+deploy:
+	gh workflow run book.yml --ref main
 
 clean:
-	python scripts/clean.py
+	uv run --locked python scripts/clean.py
 
-serve:
-	bundle exec guard
-
-build: check-env
-	uv run --locked jupyter-book build ./
-
-site: build
-	bundle exec jekyll build
-	touch _site/.nojekyll
+clean-all:
+	uv run --locked python scripts/clean.py --all
