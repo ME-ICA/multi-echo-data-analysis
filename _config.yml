@@ -14,7 +14,11 @@ exclude_patterns            : ["README.md", "content/*.py", "docs/**", "meda/**"
 #######################################################################################
 # Execution settings
 execute:
-  execute_notebooks         : "auto"  # Whether to execute notebooks at build time. Must be one of ("auto", "force", "cache", "off")
+  # Notebook outputs are read from the jupyter-cache (_build/.jupyter_cache). A notebook is
+  # executed only when its code cells have no match in the cache; the result is then cached.
+  # Locally that is how outputs are produced. In CI the cache is restored from the
+  # `execution-cache` release, so nothing needs to run there (see "Publishing" in README.md).
+  execute_notebooks         : "cache"  # Whether to execute notebooks at build time. Must be one of ("auto", "force", "cache", "off")
   cache                     : ""  # A path to the jupyter cache that will be used to store execution artifacs. Defaults to `_build/.jupyter_cache/`
   exclude_patterns          : [".notebooks", "notebooks/**"]  # A list of patterns to *skip* in execution (e.g. a notebook that takes a really long time)
   timeout                   : -1  # remove restriction on execution time
