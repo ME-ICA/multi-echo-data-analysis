@@ -272,9 +272,20 @@ axes[0].set_ylabel("Echo Time (ms)")
 fig.tight_layout()
 plt.show()
 
+# The TR column header carries its unit and has been renamed before
+# ("TR" -> "TR (s)"), so match it by prefix instead of hard-coding the name.
+# Fail with a clear message if the header drifts to zero or several matches,
+# rather than raising an opaque StopIteration mid-build.
+tr_matches = [c for c in metable.columns if c.strip().startswith("TR")]
+if len(tr_matches) != 1:
+    raise ValueError(
+        f"Expected exactly one 'TR' column in the study-parameters sheet, "
+        f"found {tr_matches!r}; update the column selection in this cell."
+    )
+tr_col = tr_matches[0]
 # Columns can come back as object dtype when the source spreadsheet has blank
 # or non-numeric cells; coerce to float and drop NaNs before plotting.
-tr = pd.to_numeric(metable.TR, errors="coerce").dropna().to_numpy()
+tr = pd.to_numeric(metable[tr_col], errors="coerce").dropna().to_numpy()
 plt.hist(tr)
 plt.title("Repetition Times", fontsize=18)
 plt.xlabel("Repetition Time (s)")
