@@ -25,7 +25,7 @@ from pprint import pprint
 import nibabel as nb
 import pandas as pd
 from IPython.display import HTML, display
-from book_utils import load_pafin
+from book_utils import export_html_report, load_pafin
 from tedana import workflows
 
 data_path = os.path.abspath('../data')
@@ -99,13 +99,20 @@ df = df.fillna("n/a")
 display(HTML(df.to_html()))
 ```
 
+## The tedana report
+
+The workflow also writes an interactive HTML report, `*_tedana_report.html`,
+which loads its images from the `figures` folder next to it.
+On your own computer you would simply open that file in a browser.
+Here, we copy the report and its figures into the book so that it can be shown below.
+
 ```{code-cell} ipython3
 report = os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_tedana_report.html")
-with open(report, "r") as fo:
-    report_data = fo.read()
-
-figures_dir = os.path.relpath(os.path.join(out_dir, "figures"), os.getcwd())
-report_data = report_data.replace("./figures", figures_dir)
-
-display(HTML(report_data))
+export_html_report(report, "tedana_report")
 ```
+
+<p><a href="../tedana_report/index.html" target="_blank" rel="noopener">Open the report in its own tab</a> to see it at full size.</p>
+
+````{div} full-width
+<iframe src="../tedana_report/index.html" title="tedana report" style="width: 100%; height: 90vh; min-height: 600px; border: 1px solid #ccc; border-radius: 4px;"></iframe>
+````

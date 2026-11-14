@@ -24,3 +24,12 @@ datalad get -J5 sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_echo
 datalad get sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-brain_mask.nii.gz
 datalad get sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_part-mag_desc-confounds_timeseries.tsv
 ```
+
+A few figures are drawn on top of the participant's anatomical image.
+For those, we also need the preprocessed T1w image
+and the transform that aligns the functional data with it.
+
+```bash
+datalad get sub-24053/ses-1/anat/sub-24053_ses-1_desc-preproc_T1w.nii.gz
+datalad get sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt
+```

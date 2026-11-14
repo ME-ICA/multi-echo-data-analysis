@@ -44,6 +44,9 @@ check-env:
 # Execution mode is "cache" (_config.yml): notebooks with a match in
 # _build/.jupyter_cache are rendered from it, the others are executed and cached.
 book: check-env
+	@# Sphinx drops an html_extra_path entry that does not exist when the build starts,
+	@# and this folder is only filled while the notebooks execute.
+	mkdir -p content/figures/html_extra
 	uv run --locked jupyter-book build ./
 
 check-cache:
