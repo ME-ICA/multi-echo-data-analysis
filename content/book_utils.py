@@ -100,7 +100,27 @@ def export_html_report(report_file: str, name: str) -> str:
 
 
 def regress_one_image_out_of_another(data_img, nuis_img, mask_img):
-    """Do what it says on the tin."""
+    """Regress one image's time series out of another's, voxel by voxel.
+
+    For each voxel, the mean-centered nuisance time series is fit to the
+    mean-centered data time series by ordinary least squares, and the fitted
+    nuisance signal is subtracted from the data.
+    The data's voxelwise mean is then added back.
+
+    Parameters
+    ----------
+    data_img : str or niimg
+        4D image to denoise (e.g., the later echo).
+    nuis_img : str or niimg
+        4D nuisance image to regress out (e.g., the short echo).
+    mask_img : str or niimg
+        Brain mask.
+
+    Returns
+    -------
+    errorts_img : niimg
+        4D denoised image.
+    """
     # First, mean-center each image over time
     mean_data_img = image.mean_img(data_img)
     mean_nuis_img = image.mean_img(nuis_img)
@@ -119,14 +139,18 @@ def regress_one_image_out_of_another(data_img, nuis_img, mask_img):
     # Now get the masked data in 2D format
     data_mc = masking.apply_mask(data_img_mc, mask_img)
     nuis_mc = masking.apply_mask(nuis_img_mc, mask_img)
-    # nuis_mean = masking.apply_mask(mean_nuis_img, mask_img)
     data_mean = masking.apply_mask(mean_data_img, mask_img)
 
-    # Build beta map by performing regression on each voxel
-    betas = np.zeros(data_mc.shape[1])
-    for i_voxel in range(data_mc.shape[1]):
-        temp_data = np.stack((data_mc[:, i_voxel], np.ones(data_mc.shape[0])), -1)
-        betas = np.linalg.lstsq(temp_data, nuis_mc[:, i_voxel], rcond=None)[0][0]
+    # Voxelwise OLS fit of the nuisance time series to the data time series.
+    # Both are mean-centered, so no intercept is needed:
+    # beta = sum(nuis * data) / sum(nuis ** 2).
+    nuis_ss = np.sum(nuis_mc**2, axis=0)
+    betas = np.divide(
+        np.sum(nuis_mc * data_mc, axis=0),
+        nuis_ss,
+        out=np.zeros(data_mc.shape[1]),
+        where=nuis_ss > 0,
+    )
 
     # Construct denoised time series
     scaled_nuis = nuis_mc * betas
