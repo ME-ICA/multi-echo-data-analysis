@@ -2,6 +2,7 @@
 
 import json
 import os
+import shutil
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -54,6 +55,48 @@ def glue_figure(name: str, fig: Any, display: bool = False, dpi: int = 150, **sa
     fig.savefig(os.path.join(figures_dir, f"{name}.png"), **kwargs)
     if not display:
         plt.close(fig)
+
+
+def export_html_report(report_file: str, name: str) -> str:
+    """Copy a standalone HTML report into the book so a page can embed it in an iframe.
+
+    A report such as tedana's is a complete HTML document with its own stylesheets and
+    scripts, and it loads its images from a ``figures`` folder next to it.  Displaying
+    its source inside a notebook cell breaks both the report (the images are not part of
+    the built site) and the page around it (the report's CSS overrides the book theme).
+
+    This copies the report to ``content/figures/html_extra/<name>/index.html``, with its
+    ``figures`` folder beside it.  ``content/figures/html_extra`` is listed under
+    ``html_extra_path`` in ``_config.yml``, so the report is served at ``<name>/index.html``
+    in the built site, and it travels to CI with the rest of ``content/figures``.
+
+    Parameters
+    ----------
+    report_file : str
+        Path to the HTML report.  Its ``figures`` folder is expected in the same directory.
+    name : str
+        Name of the folder the report is served from.  Letters, digits, ``-`` and ``_`` only.
+
+    Returns
+    -------
+    str
+        URL of the report relative to the root of the built site.
+    """
+    if not name or not all(char.isalnum() or char in "-_" for char in name):
+        raise ValueError(f"Invalid report name: {name!r}")
+
+    extra_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figures", "html_extra")
+    report_dir = os.path.join(extra_dir, name)
+    if os.path.isdir(report_dir):
+        shutil.rmtree(report_dir)
+
+    os.makedirs(report_dir)
+    shutil.copyfile(report_file, os.path.join(report_dir, "index.html"))
+    figures_dir = os.path.join(os.path.dirname(os.path.abspath(report_file)), "figures")
+    if os.path.isdir(figures_dir):
+        shutil.copytree(figures_dir, os.path.join(report_dir, "figures"))
+
+    return f"{name}/index.html"
 
 
 def regress_one_image_out_of_another(data_img, nuis_img, mask_img):
