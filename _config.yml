@@ -14,9 +14,22 @@ exclude_patterns            : ["README.md", "content/*.py", "docs/**", "meda/**"
 #######################################################################################
 # Execution settings
 execute:
-  execute_notebooks         : "auto"  # Whether to execute notebooks at build time. Must be one of ("auto", "force", "cache", "off")
+  # Notebook outputs are read from the jupyter-cache (_build/.jupyter_cache). A notebook is
+  # executed only when its code cells have no match in the cache; the result is then cached.
+  # Locally that is how outputs are produced. In CI the cache is restored from the
+  # `execution-cache` release, so nothing needs to run there (see "Publishing" in README.md).
+  execute_notebooks         : "cache"  # Whether to execute notebooks at build time. Must be one of ("auto", "force", "cache", "off")
   cache                     : ""  # A path to the jupyter cache that will be used to store execution artifacs. Defaults to `_build/.jupyter_cache/`
-  exclude_patterns          : [".notebooks", "notebooks/**"]  # A list of patterns to *skip* in execution (e.g. a notebook that takes a really long time)
+  # A list of patterns to *skip* in execution. Skipped notebooks are rendered without outputs
+  # and are not expected in the execution cache (scripts/check_cache.py reads this list).
+  exclude_patterns:
+    - ".notebooks"
+    - "notebooks/**"
+    # Illustrative code only: it reads files that are not part of the tutorial data.
+    - "content/06_Cerebrovascular_Reactivity_Mapping.md"
+    # Fails to execute (undefined `func_dir`, T1w file name not in ds006185).
+    # Remove this line once the notebook runs again.
+    - "content/plot_approach_figures.md"
   timeout                   : -1  # remove restriction on execution time
 
 #######################################################################################
