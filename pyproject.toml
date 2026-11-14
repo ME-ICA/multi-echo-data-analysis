@@ -12,6 +12,11 @@ dependencies = [
     "myst-nb",
     "nilearn",
     "nitransforms",
+    # peakdet 0.6.1 (the latest release) fails in `peakfind_physio` with numpy 2.4
+    # ("setting an array element with a sequence" in `peakdet.utils.check_troughs`).
+    # Remove this pin once peakdet works with newer numpy.
+    "numpy<2.4",
+    "numpy>=2.3; python_version >= '3.11'",
     "pyspfm==2.0.2",
     "peakdet==0.6.1",
     "phys2cvr==0.28.4",
