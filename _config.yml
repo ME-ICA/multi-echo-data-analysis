@@ -25,8 +25,6 @@ execute:
   exclude_patterns:
     - ".notebooks"
     - "notebooks/**"
-    # Illustrative code only: it reads files that are not part of the tutorial data.
-    - "content/06_Cerebrovascular_Reactivity_Mapping.md"
     # Fails to execute (undefined `func_dir`, T1w file name not in ds006185).
     # Remove this line once the notebook runs again.
     - "content/plot_approach_figures.md"
