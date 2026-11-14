@@ -69,7 +69,7 @@ and if potential effects of interest are sufficiently statistically robust.
 
 ```{note}
     There are other methods and use multi-echo acqusitions.
-    For example a **dual echo** method which uses a very early (~5ms)
+    For example a **dual echo** method which uses a very early (a few milliseconds)
     first echo in order to clean data. For more information on this method, see [Bright and Murphy (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3518782/)
 ```
 
