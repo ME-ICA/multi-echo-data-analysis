@@ -114,5 +114,5 @@ export_html_report(report, "tedana_report")
 <p><a href="../tedana_report/index.html" target="_blank" rel="noopener">Open the report in its own tab</a> to see it at full size.</p>
 
 ````{div} full-width
-<iframe src="../tedana_report/index.html" title="tedana report" loading="lazy" style="width: 100%; height: 90vh; min-height: 600px; border: 1px solid #ccc; border-radius: 4px;"></iframe>
+<iframe src="../tedana_report/index.html" title="tedana report" style="width: 100%; height: 90vh; min-height: 600px; border: 1px solid #ccc; border-radius: 4px;"></iframe>
 ````
