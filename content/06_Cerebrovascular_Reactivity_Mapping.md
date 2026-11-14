@@ -201,7 +201,9 @@ You can get $CO_2$ traces (and their peak indices) with whatever program you wan
 Normally you would start from the file exported by your gas analyser.
 As explained at the top of this page, we have no such file for these data, so we simulate one:
 a breathing rhythm of about 15 breaths per minute, in which each exhalation rises to an end-tidal value that drifts slowly around 38 mmHg.
-The recording starts 30 seconds before the functional run and ends 30 seconds after it.
+The recording is 60 seconds longer than the functional run, as a real one usually starts before the run and stops after it.
+Because the trace is simulated, there is no true alignment between the two;
+`phys2cvr` simply picks the bulk shift with the highest cross-correlation.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -497,7 +499,8 @@ plot_cvr_maps(os.path.join(out_dir, "roi"), "figure_cvr_roi_maps")
 :name: figure_cvr_roi_maps
 :align: center
 
-Relative CVR map estimated from the average gray matter signal.
+Map estimated from the average gray matter signal.
+These data were not acquired during a respiratory challenge, so this map illustrates the output of the call rather than a measurement of CVR.
 ```
 
 
