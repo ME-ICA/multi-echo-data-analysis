@@ -7,6 +7,7 @@ import shutil
 from typing import Any
 
 import matplotlib.pyplot as plt
+import nibabel as nb
 import numpy as np
 from nilearn import image, masking
 
@@ -82,6 +83,42 @@ def load_diva(data_path):
         "mni_to_t1w": os.path.join(anat_dir, f"{anat_prefix}_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5"),
         "t1w": os.path.join(anat_dir, f"{anat_prefix}_desc-preproc_T1w.nii.gz"),
     }
+
+
+def atlas_mask(atlas, labels):
+    """Binary image of the atlas regions whose label is in ``labels``.
+
+    ``atlas`` is a nilearn atlas bunch with ``maps`` and ``labels``.
+    """
+    atlas_img = image.load_img(atlas.maps)
+    values = [atlas.labels.index(label) for label in labels]
+    return image.new_img_like(atlas_img, np.isin(atlas_img.get_fdata(), values).astype(np.uint8))
+
+
+def sphere_mask(reference_img, center, radius):
+    """Binary image of the voxels within ``radius`` mm of ``center`` (in world coordinates)."""
+    ijk = np.indices(reference_img.shape[:3]).reshape(3, -1).T
+    xyz = nb.affines.apply_affine(reference_img.affine, ijk)
+    inside = np.linalg.norm(xyz - np.array(center), axis=1) <= radius
+    return image.new_img_like(reference_img, inside.reshape(reference_img.shape[:3]).astype(np.uint8))
+
+
+def warp_mni_roi_to_run(roi_img, data):
+    """Warp a binary ROI from MNI152NLin2009cAsym space to the space of a run's BOLD reference.
+
+    ``data`` is the dictionary returned by :func:`load_diva`.
+    NiTransforms maps each voxel of the reference (the BOLD reference) to the moving image
+    (the ROI), so the chain goes from the BOLD reference to the T1w image
+    (the inverse of fMRIPrep's coregistration) and then from the T1w image to the template.
+    The warped ROI is limited to the brain mask.
+    """
+    import nitransforms as nit
+
+    run_to_t1w = nit.linear.load(data["run_to_t1w"], fmt="itk")
+    mni_to_t1w = nit.manip.load(data["mni_to_t1w"], fmt="itk")
+    run_to_mni = nit.manip.TransformChain([~run_to_t1w, *mni_to_t1w.transforms])
+    roi_run = nit.resampling.apply(run_to_mni, roi_img, reference=data["boldref"], order=0)
+    return image.math_img("(roi > 0.5) & (mask > 0)", roi=roi_run, mask=data["mask"])
 
 
 def glue_figure(name: str, fig: Any, display: bool = False, dpi: int = 150, **savefig_kw: Any) -> None:

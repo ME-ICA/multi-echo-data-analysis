@@ -19,6 +19,7 @@ Specifically, we will use {py:func}`tedana.workflows.tedana_workflow`.
 ```{code-cell} ipython3
 import json
 import os
+import shutil
 from glob import glob
 from pprint import pprint
 
@@ -31,9 +32,14 @@ from tedana import workflows
 data_path = os.path.abspath('../data')
 ```
 
+`tedana` keeps the logs and reports of earlier runs in its output folder,
+so we start from an empty folder to list only the files from this run.
+
 ```{code-cell} ipython3
 data = load_pafin(data_path)
 out_dir = os.path.join(data_path, "tedana")
+if os.path.isdir(out_dir):
+    shutil.rmtree(out_dir)
 ```
 
 ```{code-cell} ipython3

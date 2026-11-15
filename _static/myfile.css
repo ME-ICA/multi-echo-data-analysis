@@ -4,8 +4,36 @@ p {
 p.caption {
     text-align: left;
 }
+
+/* Inline code uses the same font as the code blocks */
+code.literal,
+code.literal span.pre,
 span.pre {
-    font-family: fantasy;
-    font-style: oblique;
-    font-weight: bolder;
+    font-family: var(--pst-font-family-monospace);
+    font-style: normal;
+    font-weight: normal;
+}
+
+/* Figures open at full size when clicked (see figure-zoom.js) */
+img.zoomable {
+    cursor: zoom-in;
+}
+
+.figure-zoom-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh 2vw;
+    background: rgba(0, 0, 0, 0.88);
+    cursor: zoom-out;
+}
+
+.figure-zoom-overlay img {
+    max-width: 96vw;
+    max-height: 96vh;
+    object-fit: contain;
+    background: white;
 }
