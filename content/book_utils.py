@@ -1,5 +1,6 @@
 """Utility functions for the JupyterBook."""
 
+import glob
 import json
 import os
 import shutil
@@ -33,6 +34,53 @@ def load_pafin(data_path):
         'mask': mask_file,
         'confounds': confounds_file,
         'echo_times': echo_times,
+    }
+
+
+def load_diva(data_path):
+    """Collect the files of the DIVA localizer run used in the task and external regressor pages.
+
+    The run is ``sub-Blossom/ses-02``'s ``localizerDetection`` run from the Dense Investigation
+    of Variability of Affect dataset (ds002278).
+    The raw dataset supplies the events, the physiological recording and the echo times.
+    The fMRIPrep derivatives supply the preprocessed echoes (in the space of the run's
+    BOLD reference), the brain mask, the confounds and the transforms.
+    """
+    prefix = "sub-Blossom_ses-02_task-localizerDetection_run-1"
+    raw_dir = os.path.join(data_path, "ds002278/sub-Blossom/ses-02/func")
+    func_dir = os.path.join(data_path, "ds002278-fmriprep/sub-Blossom/ses-02/func")
+    anat_dir = os.path.join(data_path, "ds002278-fmriprep/sub-Blossom/ses-02/anat")
+    anat_prefix = "sub-Blossom_ses-02_run-1"
+
+    echo_files = sorted(
+        glob.glob(os.path.join(func_dir, f"{prefix}_echo-*_part-mag_desc-preproc_bold.nii.gz"))
+    )
+    echo_times = []
+    for echo_file in echo_files:
+        # The echo times are in the raw sidecars
+        raw_json = os.path.join(
+            raw_dir,
+            os.path.basename(echo_file).replace("_desc-preproc_bold.nii.gz", "_bold.json"),
+        )
+        with open(raw_json, "r") as fo:
+            echo_times.append(json.load(fo)["EchoTime"])
+
+    return {
+        "prefix": prefix,
+        "echo_files": echo_files,
+        "echo_times": echo_times,
+        # fMRIPrep's optimal combination of the echoes
+        "optcom": os.path.join(func_dir, f"{prefix}_part-mag_desc-preproc_bold.nii.gz"),
+        "optcom_json": os.path.join(func_dir, f"{prefix}_part-mag_desc-preproc_bold.json"),
+        "boldref": os.path.join(func_dir, f"{prefix}_part-mag_space-run_boldref.nii.gz"),
+        "mask": os.path.join(func_dir, f"{prefix}_part-mag_space-run_desc-brain_mask.nii.gz"),
+        "confounds": os.path.join(func_dir, f"{prefix}_part-mag_desc-confounds_timeseries.tsv"),
+        "events": os.path.join(raw_dir, f"{prefix}_events.tsv"),
+        "physio": os.path.join(raw_dir, f"{prefix}_physio.tsv.gz"),
+        "physio_json": os.path.join(raw_dir, f"{prefix}_physio.json"),
+        "run_to_t1w": os.path.join(func_dir, f"{prefix}_from-run_to-T1w_mode-image_desc-coreg_xfm.txt"),
+        "mni_to_t1w": os.path.join(anat_dir, f"{anat_prefix}_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5"),
+        "t1w": os.path.join(anat_dir, f"{anat_prefix}_desc-preproc_T1w.nii.gz"),
     }
 
 
