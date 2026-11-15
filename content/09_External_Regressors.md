@@ -13,6 +13,8 @@ kernelspec:
 # External Regressors in `tedana` Decision Trees
 
 ```{admonition} Abbreviations
+- CSF = CerebroSpinal Fluid
+- FD = Framewise Displacement
 - IC = Independent Component
 - ROI = Region of Interest
 - RETROICOR = RETROspective Image CORrection
@@ -23,7 +25,7 @@ kernelspec:
 `tedana` classifies ICA components mostly from how their signal depends on echo time (TE).
 Sometimes we also know what a noise source or the signal of interest looks like over time:
 a recording of the participant's breathing, the head motion estimated during preprocessing,
-the average signal in the ventricles, or the timing of the task.
+the average signal in a region, or the timing of the task.
 Decision trees can compare each component's time series to such **external regressors**,
 and use the fit to reject components that look like noise or to keep components that look like the task.
 
@@ -52,61 +54,57 @@ See [Download Data](00_Download_Data.md) for the list of files.
 ```{code-cell} ipython3
 import json
 import os
+import shutil
 
 import matplotlib.pyplot as plt
 import nibabel as nb
-import nitransforms as nit
 import numpy as np
 import pandas as pd
-from book_utils import glue_figure, load_diva
-from nilearn import datasets, image, masking, plotting
+from book_utils import atlas_mask, glue_figure, load_diva, warp_mni_roi_to_run
+from nilearn import datasets, masking, plotting
 from nilearn.glm.first_level import make_first_level_design_matrix
 from scipy import signal
+from tedana import workflows
 
 data_path = os.path.abspath("../data")
 data = load_diva(data_path)
 prefix = data["prefix"]
 out_dir = os.path.join(data_path, "external-regressors")
 os.makedirs(out_dir, exist_ok=True)
-
-print("\n".join(os.path.basename(f) for f in data["echo_files"]))
-print(f"Echo times (s): {data['echo_times']}")
 ```
 
-Every regressor has to have one value per volume, so we start with the timing of the volumes.
-fMRIPrep corrected the data for slice timing, and its sidecar file records the time (relative to the start of each volume)
-that the corrected data now represent in `StartTime`.
-That is the time at which we sample every regressor.
+Every regressor needs one value per volume, so we start with the timing of the volumes.
+fMRIPrep corrected the data for slice timing, and its sidecar records, in `StartTime`,
+the time within each volume that the corrected data represent.
+That is when we sample every regressor.
+fMRIPrep also flags the first volumes, acquired before the signal reached a steady state, as non-steady-state outliers.
+We will drop them in `tedana` with `dummy_scans`, which drops the same rows from the external regressors.
 
 ```{code-cell} ipython3
 with open(data["optcom_json"], "r") as fo:
     bold_metadata = json.load(fo)
 
 t_r = bold_metadata["RepetitionTime"]
-slice_time_ref = bold_metadata["StartTime"]
 n_vols = nb.load(data["optcom"]).shape[3]
-frame_times = np.arange(n_vols) * t_r + slice_time_ref
-print(f"{n_vols} volumes, TR = {t_r} s, regressors are sampled {slice_time_ref} s into each volume")
-```
+frame_times = np.arange(n_vols) * t_r + bold_metadata["StartTime"]
 
-fMRIPrep also flags the first volumes, acquired before the signal reached a steady state, as "non-steady-state outliers".
-We will drop them in `tedana` with `dummy_scans`.
-`tedana` drops the same rows from the external regressors, so the regressors still cover the whole run.
-
-```{code-cell} ipython3
 confounds = pd.read_table(data["confounds"])
 dummy_scans = confounds.filter(like="non_steady_state_outlier").any(axis=1).to_numpy()
-# The outliers must be the first volumes for dummy_scans to remove them
 n_dummy = int(np.argmin(dummy_scans)) if dummy_scans.any() else 0
+# dummy_scans only removes volumes at the start of the run
 assert dummy_scans[:n_dummy].all() and not dummy_scans[n_dummy:].any()
-print(f"{n_dummy} non-steady-state volume(s)")
+# The times of the volumes that tedana keeps
+volume_times = frame_times[n_dummy:]
+print(f"{n_vols} volumes, TR = {t_r} s, {n_dummy} non-steady-state volume(s)")
 ```
 
 ## 1. Physiological regressors
 
-The physiological recording is a BIDS `_physio.tsv.gz` file, with its sampling frequency, columns and start time in the sidecar.
+The physiological recording is a BIDS `_physio.tsv.gz` file, with its sampling frequency, columns and start time in its sidecar.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 with open(data["physio_json"], "r") as fo:
     physio_metadata = json.load(fo)
 
@@ -121,72 +119,68 @@ According to BIDS, `StartTime` is the time of the first sample relative to the f
 so a positive value means that the recording started *after* the scan.
 That is not the case here: the recording starts before the scan, and the sign of `StartTime` is flipped.
 The `trigger` channel settles the question.
-It is high while the scanner acquires volumes, so the first high sample is the start of the first volume,
+It is high while the scanner acquires volumes, so its first high sample marks the start of the first volume,
 and the length of the high period should match the duration of the run.
 
 ```{code-cell} ipython3
 scan_on = physio["trigger"].to_numpy() > (physio["trigger"].max() / 2)
-first_sample = np.argmax(scan_on)
-start_time = -first_sample / samp_freq
+start_time = -np.argmax(scan_on) / samp_freq
 physio_times = np.arange(physio.shape[0]) / samp_freq + start_time
 
 print(f"StartTime in the sidecar: {physio_metadata['StartTime']} s")
 print(f"StartTime from the trigger: {start_time:.3f} s")
-print(f"Trigger is high for {scan_on.sum() / samp_freq:.2f} s; the run lasts {n_vols * t_r:.2f} s")
+print(f"The trigger is high for {scan_on.sum() / samp_freq:.2f} s; the run lasts {n_vols * t_r:.2f} s")
 ```
 
-The recording starts about 9 seconds before the first volume, as the time column of the file also says.
 From now on, `physio_times` holds the time of each sample relative to the start of the scan.
 
-### Cardiac peaks
+### Cardiac and respiratory peaks
 
 The ECG was recorded during the scan, so it carries a gradient artifact at the rate at which the scanner acquires slices.
-With 48 slices acquired with a multiband factor of three, there are 16 shots per 1.5-second volume, and the artifact sits at 10.7 Hz and its harmonics.
+With 48 slices acquired with a multiband factor of three, there are 16 shots per 1.5-second volume,
+so the artifact sits at 10.7 Hz and its harmonics.
 A band-pass filter below that frequency leaves the R peaks, which `scipy` can find.
+The respiratory belt is slow, so a low-pass filter is enough.
 
 ```{code-cell} ipython3
 sos = signal.butter(4, [0.5, 8], btype="bandpass", fs=samp_freq, output="sos")
 cardiac = signal.sosfiltfilt(sos, physio["cardiac"].to_numpy())
-
-# R peaks are at least 0.6 s apart (heart rate < 100 bpm) and stand out from the rest of the trace.
+# R peaks are at least 0.6 s apart (heart rate < 100 bpm) and stand out from the rest of the trace
 card_peaks, _ = signal.find_peaks(cardiac, distance=int(0.6 * samp_freq), prominence=np.std(cardiac))
-# Drop the occasional T wave that passes the first criteria.
+# Drop the occasional T wave that passes the first criteria
 card_peaks = card_peaks[cardiac[card_peaks] > 0.5 * np.median(cardiac[card_peaks])]
+beat_times = physio_times[card_peaks][1:]
 heart_rate = 60 / np.diff(physio_times[card_peaks])
-print(f"{card_peaks.size} beats, heart rate between {heart_rate.min():.1f} and {heart_rate.max():.1f} bpm")
-```
 
-### Respiratory peaks
-
-The respiratory belt is slow, so a low-pass filter is enough.
-
-```{code-cell} ipython3
 sos = signal.butter(4, 1, btype="lowpass", fs=samp_freq, output="sos")
 respiration = signal.sosfiltfilt(sos, physio["respiration"].to_numpy())
 resp_peaks, _ = signal.find_peaks(respiration, distance=int(2 * samp_freq), prominence=0.5 * np.std(respiration))
-breathing_rate = 60 / np.median(np.diff(physio_times[resp_peaks]))
-print(f"{resp_peaks.size} breaths, {breathing_rate:.1f} breaths per minute")
 ```
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
 fig, axes = plt.subplots(nrows=3, figsize=(14, 9))
-window = (physio_times > 100) & (physio_times < 115)
+t_start, t_end = 100, 115
+window = (physio_times >= t_start) & (physio_times <= t_end)
 axes[0].plot(physio_times[window], physio["cardiac"].to_numpy()[window], color="gray", linewidth=0.5, label="Raw ECG")
 axes[0].plot(physio_times[window], cardiac[window], color="black", linewidth=1, label="Filtered ECG")
 peaks_in_window = card_peaks[window[card_peaks]]
 axes[0].plot(physio_times[peaks_in_window], cardiac[peaks_in_window], "o", color="tab:red", label="R peaks")
+axes[0].set_xlim(t_start, t_end)
 axes[0].set_ylabel("ECG (a.u.)", fontsize=14)
 axes[0].legend(loc="upper right", ncols=3)
 
-axes[1].plot(physio_times[card_peaks][1:], heart_rate, color="tab:red")
+axes[1].plot(beat_times, heart_rate, color="tab:red")
+axes[1].set_xlim(frame_times[0], frame_times[-1])
 axes[1].set_ylabel("Heart rate (bpm)", fontsize=14)
 
-window = (physio_times > 100) & (physio_times < 160)
+t_start, t_end = 100, 160
+window = (physio_times >= t_start) & (physio_times <= t_end)
 axes[2].plot(physio_times[window], respiration[window], color="black")
 peaks_in_window = resp_peaks[window[resp_peaks]]
 axes[2].plot(physio_times[peaks_in_window], respiration[peaks_in_window], "o", color="tab:blue")
+axes[2].set_xlim(t_start, t_end)
 axes[2].set_ylabel("Respiration (a.u.)", fontsize=14)
 axes[2].set_xlabel("Time since the first volume (s)", fontsize=14)
 fig.tight_layout()
@@ -205,12 +199,17 @@ Bottom: one minute of the filtered respiratory trace, with the detected peaks.
 
 ### RETROICOR
 
-RETROICOR {cite:p}`glover2000image` models the effect of the cardiac and respiratory cycles on the signal as a Fourier series of their phase at the time each volume was acquired.
+RETROICOR {cite:p}`glover2000image` models the effect of the cardiac and respiratory cycles on the signal
+as a Fourier series of their phase at the time each volume was acquired.
 The cardiac phase goes from 0 to $2\pi$ between consecutive R peaks.
 The respiratory phase also accounts for the depth of the breath:
-it is given by the amplitude of the respiratory trace relative to its histogram, and its sign by whether the participant is breathing in or out.
+its magnitude comes from the amplitude of the respiratory trace relative to its histogram,
+and its sign from whether the participant is breathing in or out.
+The functions below compute both phases and their Fourier series.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def cardiac_phase(times, peak_times):
     """Phase of the cardiac cycle, between 0 and 2 pi, at the requested times."""
     phase = np.full(times.shape, np.nan)
@@ -241,11 +240,15 @@ def fourier_expansion(phase, order, name):
         columns[f"{name}_sin{m}"] = np.sin(m * phase)
 
     return pd.DataFrame(columns)
+```
 
+We sample each phase at the volume times and expand it to the second order, which gives eight regressors.
+The respiratory phase jumps from $\pi$ to $-\pi$ at the top of each breath,
+so we take the value of the nearest sample instead of interpolating across the jump.
 
+```{code-cell} ipython3
 card_phase = cardiac_phase(frame_times, physio_times[card_peaks])
 resp_phase_all = respiratory_phase(respiration)
-# The phase wraps from pi to -pi at the top of each breath, so we take the nearest sample instead of interpolating
 nearest_sample = np.clip(np.round((frame_times - physio_times[0]) * samp_freq).astype(int), 0, physio_times.size - 1)
 resp_phase = resp_phase_all[nearest_sample]
 
@@ -256,7 +259,53 @@ retroicor = pd.concat(
     ],
     axis=1,
 )
-retroicor.head()
+```
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+fig = plt.figure(figsize=(14, 12))
+grid_spec = fig.add_gridspec(nrows=4, height_ratios=[1, 1, 1.5, 1.5], hspace=0.5)
+t_start, t_end = 100, 130
+window = (physio_times >= t_start) & (physio_times <= t_end)
+volumes_in_window = (frame_times >= t_start) & (frame_times <= t_end)
+for i_row, (label, phase_trace, phase_at_volumes, color) in enumerate(
+    [
+        ("Cardiac", cardiac_phase(physio_times[window], physio_times[card_peaks]), card_phase, "tab:red"),
+        ("Respiratory", resp_phase_all[window], resp_phase, "tab:blue"),
+    ]
+):
+    ax = fig.add_subplot(grid_spec[i_row])
+    ax.plot(physio_times[window], phase_trace, color=color, linewidth=1, label="Phase")
+    ax.plot(frame_times[volumes_in_window], phase_at_volumes[volumes_in_window], "o", color="black", markersize=4, label="At each volume")
+    ax.set_xlim(t_start, t_end)
+    ax.set_ylabel(f"{label}\nphase (rad)", fontsize=12)
+    ax.legend(loc="lower right", bbox_to_anchor=(1, 1), ncols=2, frameon=False)
+
+ax.set_xlabel("Time since the first volume (s)", fontsize=12)
+
+for i_row, kind in enumerate(["card", "resp"]):
+    ax = fig.add_subplot(grid_spec[2 + i_row])
+    columns = [column for column in retroicor.columns if f"_{kind}_" in column]
+    for j_col, column in enumerate(columns):
+        ax.plot(frame_times, retroicor[column] - 2.5 * j_col, linewidth=0.8)
+
+    ax.set_yticks(-2.5 * np.arange(len(columns)))
+    ax.set_yticklabels(columns)
+    ax.set_xlim(frame_times[0], frame_times[-1])
+
+ax.set_xlabel("Time since the first volume (s)", fontsize=12)
+glue_figure("figure_extreg_retroicor", fig)
+```
+
+```{figure} figures/figure_extreg_retroicor.png
+:name: figure_extreg_retroicor
+:align: center
+
+Top: 30 seconds of the cardiac and respiratory phases, with their values at the volume times (black).
+Bottom: the eight RETROICOR regressors over the whole run.
+The heart beats faster than the volumes are acquired, so the cardiac regressors are aliased and look like noise;
+that is expected, since the cardiac noise in the data is aliased in the same way.
 ```
 
 ### Respiration variation and heart rate
@@ -271,6 +320,8 @@ We do this on a fine time grid that starts with the recording, so that the secon
 and then sample the result at the volume times.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def respiration_response_function(t):
     """Birn et al. (2008)."""
     return 0.6 * t**2.1 * np.exp(-t / 1.6) - 0.0023 * t**3.54 * np.exp(-t / 4.25)
@@ -279,20 +330,15 @@ def respiration_response_function(t):
 def cardiac_response_function(t):
     """Chang et al. (2009)."""
     return 0.6 * t**2.7 * np.exp(-t / 1.6) - 16 / np.sqrt(2 * np.pi * 9) * np.exp(-0.5 * (t - 12) ** 2 / 9)
+```
 
-
+```{code-cell} ipython3
 grid_step = 0.1
 grid = np.arange(physio_times[0], physio_times[-1], grid_step)
-half_window = int(3 / grid_step)
+window_length = round(6 / grid_step) + 1
 
-# Respiration variation: the standard deviation of the respiratory trace in 6-second windows
-resp_on_grid = np.interp(grid, physio_times, respiration)
-rv = pd.Series(resp_on_grid).rolling(2 * half_window + 1, center=True, min_periods=1).std().to_numpy()
-
-# Heart rate: the instantaneous heart rate, averaged in 6-second windows
-beat_times = physio_times[card_peaks][1:]
-hr = np.interp(grid, beat_times, heart_rate)
-hr = pd.Series(hr).rolling(2 * half_window + 1, center=True, min_periods=1).mean().to_numpy()
+rv = pd.Series(np.interp(grid, physio_times, respiration)).rolling(window_length, center=True, min_periods=1).std().to_numpy()
+hr = pd.Series(np.interp(grid, beat_times, heart_rate)).rolling(window_length, center=True, min_periods=1).mean().to_numpy()
 
 kernel_times = np.arange(0, 40, grid_step)
 rrf = respiration_response_function(kernel_times)
@@ -309,141 +355,172 @@ physio_slow = pd.DataFrame(
 physio_regressors = pd.concat([retroicor, physio_slow], axis=1)
 ```
 
+```{code-cell} ipython3
+:tags: [hide-input]
+
+fig = plt.figure(figsize=(14, 7))
+grid_spec = fig.add_gridspec(nrows=2, ncols=2, width_ratios=[1, 4], wspace=0.15, hspace=0.45)
+for i_row, (name, raw, kernel, kernel_name, regressor, color) in enumerate(
+    [
+        ("RV", rv, rrf, "Respiration response function", physio_slow["physio_rv"], "tab:blue"),
+        ("HR", hr, crf, "Cardiac response function", physio_slow["physio_hr"], "tab:red"),
+    ]
+):
+    ax = fig.add_subplot(grid_spec[i_row, 0])
+    ax.plot(kernel_times, kernel, color=color)
+    ax.axhline(0, color="gray", linewidth=0.5)
+    ax.set_xlim(kernel_times[0], kernel_times[-1])
+    ax.set_yticks([])
+    ax.set_title(kernel_name, fontsize=11)
+    ax.set_xlabel("Time (s)", fontsize=11)
+
+    ax = fig.add_subplot(grid_spec[i_row, 1])
+    ax.plot(grid, (raw - raw.mean()) / raw.std(), color="gray", linewidth=1, label=f"{name} in 6-second windows")
+    ax.plot(frame_times, (regressor - regressor.mean()) / regressor.std(), color=color, linewidth=2, label=f"Convolved {name}, at each volume")
+    ax.set_xlim(frame_times[0], frame_times[-1])
+    ax.set_ylabel(f"{name} (z)", fontsize=12)
+    ax.legend(loc="lower right", bbox_to_anchor=(1, 1), ncols=2, frameon=False)
+
+ax.set_xlabel("Time since the first volume (s)", fontsize=12)
+glue_figure("figure_extreg_rv_hr", fig)
+```
+
+```{figure} figures/figure_extreg_rv_hr.png
+:name: figure_extreg_rv_hr
+:align: center
+
+Left: the response functions.
+Right: RV and HR in 6-second windows (gray), and the regressors after convolution, sampled at the volume times (color), each scaled to unit variance.
+The recording starts about 9 seconds before the first volume, so the convolution already has a history at the first volume; the plot shows the run only.
+```
+
 ## 2. ROI time series
 
 `tedana` takes a table of time series, so the average signal in an ROI has to be computed before `tedana` runs
 ([ME-ICA/tedana#1175](https://github.com/ME-ICA/tedana/issues/1175)).
-The obvious data to average are the optimally combined echoes, which fMRIPrep writes when it processes multi-echo data
-(`_desc-preproc_bold.nii.gz` without an `echo` entity).
-`tedana`'s own optimal combination would be slightly different, but this is close enough to describe a noise source.
+As an example, we use the lateral ventricles from the Harvard-Oxford subcortical atlas, as a CSF ROI.
 
-The ROIs often come from an atlas in a standard space.
-Here we take the lateral ventricles from the Harvard-Oxford subcortical atlas, as a CSF ROI,
-and the primary motor, auditory and visual cortices from the Juelich histological atlas, to check the task responses.
-The participant tapped with their left hand, so the motor ROI is the part of the right primary motor cortex
-within 15 mm of the hand knob.
+```{important}
+This ROI is here to show *how* an ROI time series can be used in a decision tree, not to recommend this particular ROI.
+fMRIPrep already writes a similar regressor, the `csf` column of its confounds file,
+which is the average signal in an eroded CSF mask from the participant's own segmentation.
+An ROI that fMRIPrep does not provide, such as a draining vein or a region with a known artifact, is where this approach is most useful.
+```
+
+The ROI is in a standard space, so we warp it into the space of the BOLD data with the transforms that fMRIPrep wrote:
+`_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5` (a nonlinear transform between the template and the participant's T1w image)
+and `_from-run_to-T1w_mode-image_desc-coreg_xfm.txt` (a rigid transform between the run's BOLD reference and the T1w image).
+`warp_mni_roi_to_run` chains them with [NiTransforms](https://github.com/nipy/nitransforms) and resamples the ROI onto the BOLD reference.
 
 ```{code-cell} ipython3
 :tags: [hide-output]
 
 harvard_oxford = datasets.fetch_atlas_harvard_oxford("sub-maxprob-thr25-2mm")
-juelich = datasets.fetch_atlas_juelich("maxprob-thr25-2mm")
-
-
-def atlas_mask(atlas, labels):
-    """Binary image of the atlas regions whose label is in ``labels``."""
-    atlas_img = image.load_img(atlas.maps)
-    values = [atlas.labels.index(label) for label in labels]
-    return image.new_img_like(atlas_img, np.isin(atlas_img.get_fdata(), values).astype(np.uint8))
-
-
-def sphere_mask(reference_img, center, radius):
-    """Binary image of the voxels within ``radius`` mm of ``center`` (in world coordinates)."""
-    ijk = np.indices(reference_img.shape[:3]).reshape(3, -1).T
-    xyz = nb.affines.apply_affine(reference_img.affine, ijk)
-    inside = np.linalg.norm(xyz - np.array(center), axis=1) <= radius
-    return image.new_img_like(reference_img, inside.reshape(reference_img.shape[:3]).astype(np.uint8))
-
-
-m1 = atlas_mask(juelich, ["GM Primary motor cortex BA4a", "GM Primary motor cortex BA4p"])
-right_hand_knob = sphere_mask(m1, center=(38, -22, 54), radius=15)
-
-atlas_rois = {
-    "ventricles": atlas_mask(harvard_oxford, ["Left Lateral Ventricle", "Right Lateral Ventricle"]),
-    "M1": image.math_img("m1 * sphere", m1=m1, sphere=right_hand_knob),
-    "A1": atlas_mask(
-        juelich,
-        [
-            "GM Primary auditory cortex TE1.0",
-            "GM Primary auditory cortex TE1.1",
-            "GM Primary auditory cortex TE1.2",
-        ],
-    ),
-    "V1": atlas_mask(juelich, ["GM Visual cortex V1 BA17"]),
-}
-```
-
-### Warping the ROIs into the space of the BOLD data
-
-fMRIPrep writes the transforms we need:
-`_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5` (a nonlinear transform between the template and the participant's T1w image)
-and `_from-run_to-T1w_mode-image_desc-coreg_xfm.txt` (a rigid transform between the run's BOLD reference and the T1w image).
-[NiTransforms](https://github.com/nipy/nitransforms) can chain them.
-To resample an image, NiTransforms maps each voxel of the *reference* (here, the BOLD reference image)
-to a location in the *moving* image (here, the atlas).
-So the chain goes from the BOLD reference to the T1w image (the inverse of the coregistration), then from the T1w image to the template.
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-run_to_t1w = nit.linear.load(data["run_to_t1w"], fmt="itk")
-mni_to_t1w = nit.manip.load(data["mni_to_t1w"], fmt="itk")
-run_to_mni = nit.manip.TransformChain([~run_to_t1w, *mni_to_t1w.transforms])
-
-mask_img = nb.load(data["mask"])
-roi_files = {}
-for name, roi_img in atlas_rois.items():
-    roi_run = nit.resampling.apply(run_to_mni, roi_img, reference=data["boldref"], order=0)
-    roi_run = image.math_img("(roi > 0.5) & (mask > 0)", roi=roi_run, mask=mask_img)
-    roi_files[name] = os.path.join(out_dir, f"{prefix}_space-run_desc-{name}_mask.nii.gz")
-    roi_run.to_filename(roi_files[name])
+ventricles_mni = atlas_mask(harvard_oxford, ["Left Lateral Ventricle", "Right Lateral Ventricle"])
+ventricles = warp_mni_roi_to_run(ventricles_mni, data)
+ventricles_file = os.path.join(out_dir, f"{prefix}_space-run_desc-ventricles_mask.nii.gz")
+ventricles.to_filename(ventricles_file)
 ```
 
 ```{note}
-The Juelich and Harvard-Oxford atlases distributed with FSL (and fetched by nilearn) are in the `MNI152NLin6Asym` template,
-while fMRIPrep normalized the data to `MNI152NLin2009cAsym`.
-The two templates differ by a few millimeters, which matters little for these large ROIs.
+The atlases distributed with FSL (and fetched by nilearn) are in the `MNI152NLin6Asym` template,
+while fMRIPrep's transform starts from `MNI152NLin2009cAsym`.
+The two templates differ by a few millimeters, which matters little for large ROIs.
 For precise work, add the transform between the two templates from [TemplateFlow](https://www.templateflow.org) to the chain.
 ```
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(14, 7))
-for ax, (name, roi_file) in zip(axes.ravel(), roi_files.items()):
-    plotting.plot_roi(
-        roi_file,
-        bg_img=data["boldref"],
-        display_mode="ortho",
-        cut_coords=plotting.find_xyz_cut_coords(roi_file),
-        title=f"{name} ({int(nb.load(roi_file).get_fdata().sum())} voxels)",
-        draw_cross=False,
-        figure=fig,
-        axes=ax,
-    )
-
-glue_figure("figure_extreg_rois", fig)
+fig = plt.figure(figsize=(14, 4.5), facecolor="black")
+plotting.plot_roi(
+    ventricles,
+    bg_img=data["boldref"],
+    display_mode="ortho",
+    cut_coords=plotting.find_xyz_cut_coords(ventricles),
+    cmap="autumn",
+    colorbar=False,
+    draw_cross=False,
+    black_bg=True,
+    dim=0,
+    figure=fig,
+)
+glue_figure("figure_extreg_ventricles", fig)
 ```
 
-```{figure} figures/figure_extreg_rois.png
-:name: figure_extreg_rois
+```{figure} figures/figure_extreg_ventricles.png
+:name: figure_extreg_ventricles
 :align: center
 
-The atlas ROIs after warping them to the space of the BOLD data, on top of the BOLD reference image.
+The lateral ventricle ROI after warping it to the space of the BOLD data, on top of the BOLD reference image.
 ```
 
-Now we average the optimally combined data in each ROI.
+We average the optimally combined echoes that fMRIPrep writes (`_desc-preproc_bold.nii.gz` without an `echo` entity) in the ROI.
+`tedana`'s own optimal combination would be slightly different, but this is close enough to describe a noise source.
 
 ```{code-cell} ipython3
-roi_timeseries = pd.DataFrame(
-    {name: masking.apply_mask(data["optcom"], roi_file).mean(axis=1) for name, roi_file in roi_files.items()}
-)
+ventricle_timeseries = masking.apply_mask(data["optcom"], ventricles_file).mean(axis=1)
+```
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+fig, ax = plt.subplots(figsize=(14, 3.5))
+for values, label, color in [(ventricle_timeseries, "Ventricle ROI", "black"), (confounds["csf"].to_numpy(), "fMRIPrep's csf column", "tab:blue")]:
+    values = values[n_dummy:]
+    ax.plot(volume_times, (values - values.mean()) / values.std(), color=color, linewidth=1.2, label=label)
+
+ax.set_xlim(volume_times[0], volume_times[-1])
+ax.set_xlabel("Time since the first volume (s)", fontsize=12)
+ax.set_ylabel("Signal (z)", fontsize=12)
+ax.legend(loc="lower right", bbox_to_anchor=(1, 1), ncols=2, frameon=False)
+glue_figure("figure_extreg_ventricle_timeseries", fig)
+```
+
+```{figure} figures/figure_extreg_ventricle_timeseries.png
+:name: figure_extreg_ventricle_timeseries
+:align: center
+
+The average signal in the ventricle ROI and fMRIPrep's `csf` regressor, after the non-steady-state volume, each scaled to unit variance.
+They are similar but not identical, because the masks differ.
 ```
 
 ## 3. fMRIPrep confounds
 
 fMRIPrep writes many candidate confounds.
 Here we use the six head motion parameters and their temporal derivatives.
-fMRIPrep's `csf` column is also an average signal in the CSF, but in an eroded CSF mask from the participant's own segmentation;
-we use the ventricle ROI from above instead, to show how ROI time series are prepared.
-The two time series need not be identical, because the masks are different
-(the atlas ROI, for example, includes voxels at the edges of the ventricles that partly contain tissue).
 
 ```{code-cell} ipython3
 motion_columns = [f"{kind}_{axis}{suffix}" for kind in ("trans", "rot") for axis in ("x", "y", "z") for suffix in ("", "_derivative1")]
 # The first value of each derivative is undefined
 motion = confounds[motion_columns].fillna(0)
-print(f"Correlation between the ventricle ROI and fMRIPrep's csf column: {np.corrcoef(roi_timeseries['ventricles'], confounds['csf'])[0, 1]:.2f}")
+```
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+fig, axes = plt.subplots(nrows=3, figsize=(14, 8), sharex=True)
+for axis, color in zip("xyz", ["tab:blue", "tab:orange", "tab:green"]):
+    axes[0].plot(frame_times, confounds[f"trans_{axis}"], color=color, label=axis)
+    axes[1].plot(frame_times, np.rad2deg(confounds[f"rot_{axis}"]), color=color, label=axis)
+
+axes[0].set_ylabel("Translation (mm)", fontsize=12)
+axes[0].legend(loc="lower right", bbox_to_anchor=(1, 1), ncols=3, frameon=False)
+axes[1].set_ylabel("Rotation (degrees)", fontsize=12)
+axes[2].plot(frame_times, confounds["framewise_displacement"], color="black")
+axes[2].set_ylabel("FD (mm)", fontsize=12)
+axes[2].set_xlim(frame_times[0], frame_times[-1])
+axes[2].set_xlabel("Time since the first volume (s)", fontsize=12)
+fig.tight_layout()
+glue_figure("figure_extreg_motion", fig)
+```
+
+```{figure} figures/figure_extreg_motion.png
+:name: figure_extreg_motion
+:align: center
+
+The translation and rotation parameters estimated by fMRIPrep, and the framewise displacement that summarizes them.
+The regressors are the six parameters and their derivatives; framewise displacement is shown only for reference.
 ```
 
 ## 4. Task regressors
@@ -457,46 +534,35 @@ nilearn convolves the blocks with a hemodynamic response function and samples th
 events = pd.read_table(data["events"])
 events = events.assign(trial_type=events["trial_type"].str.split("/")).explode("trial_type")
 events = events[["onset", "duration", "trial_type"]].sort_values("onset").reset_index(drop=True)
-print(events["trial_type"].value_counts())
 
-task_design = make_first_level_design_matrix(
-    frame_times,
-    events,
-    hrf_model="spm",
-    drift_model=None,
-)
+task_design = make_first_level_design_matrix(frame_times, events, hrf_model="spm", drift_model=None)
 task_regressors = task_design[["motor", "visual", "auditory"]].reset_index(drop=True)
 ```
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-fig, axes = plt.subplots(nrows=3, figsize=(14, 8), sharex=True)
-for ax, (roi, condition, color) in zip(axes, [("M1", "motor", "tab:orange"), ("A1", "auditory", "tab:green"), ("V1", "visual", "tab:purple")]):
-    roi_ts = roi_timeseries[roi].to_numpy()
-    # Percent signal change, without the slow drift
-    roi_ts = signal.detrend(100 * (roi_ts / roi_ts.mean() - 1))
-    ax.plot(frame_times, roi_ts, color="black", linewidth=1, label=f"{roi} ROI")
-    ax2 = ax.twinx()
-    ax2.plot(frame_times, task_regressors[condition], color=color, linewidth=2, label=f"{condition} regressor")
-    ax2.set_yticks([])
+condition_colors = {"motor": "tab:orange", "auditory": "tab:green", "visual": "tab:purple"}
+fig, axes = plt.subplots(nrows=3, figsize=(14, 6), sharex=True)
+for ax, (condition, color) in zip(axes, condition_colors.items()):
     for _, event in events[events["trial_type"] == condition].iterrows():
-        ax.axvspan(event["onset"], event["onset"] + event["duration"], color=color, alpha=0.15)
+        ax.axvspan(event["onset"], event["onset"] + event["duration"], color=color, alpha=0.2)
 
-    ax.set_ylabel("Signal change (%)", fontsize=12)
-    ax.set_title(f"{roi} and the {condition} blocks", fontsize=14)
-    ax.set_xlim(0, frame_times[-1])
+    ax.plot(frame_times, task_regressors[condition], color=color, linewidth=2)
+    ax.set_ylabel(condition, fontsize=12)
+    ax.set_yticks([])
 
-axes[-1].set_xlabel("Time (s)", fontsize=14)
+axes[-1].set_xlim(frame_times[0], frame_times[-1])
+axes[-1].set_xlabel("Time since the first volume (s)", fontsize=12)
 fig.tight_layout()
-glue_figure("figure_extreg_roi_task", fig)
+glue_figure("figure_extreg_task", fig)
 ```
 
-```{figure} figures/figure_extreg_roi_task.png
-:name: figure_extreg_roi_task
+```{figure} figures/figure_extreg_task.png
+:name: figure_extreg_task
 :align: center
 
-Average signal in the motor, auditory and visual ROIs, after removing a linear trend (black), with the blocks of the matching condition (shaded) and the task regressor (colored).
+The blocks of each condition (shaded) and the task regressors.
 ```
 
 ## Putting the regressors together
@@ -508,7 +574,7 @@ The names of the columns are how the decision tree refers to the regressors, so 
 external = pd.concat(
     [
         physio_regressors,
-        roi_timeseries[["ventricles"]].add_prefix("csf_"),
+        pd.DataFrame({"csf_ventricles": ventricle_timeseries}),
         motion.add_prefix("mot_"),
         task_regressors.add_prefix("task_"),
     ],
@@ -518,7 +584,6 @@ assert external.shape[0] == n_vols
 assert not external.isna().any().any()
 external_file = os.path.join(out_dir, f"{prefix}_desc-external_regressors.tsv")
 external.to_csv(external_file, sep="\t", index=False)
-print("\n".join(external.columns))
 ```
 
 ```{code-cell} ipython3
@@ -526,10 +591,18 @@ print("\n".join(external.columns))
 
 fig, ax = plt.subplots(figsize=(14, 8))
 zscored = (external - external.mean()) / external.std()
-ax.imshow(zscored.T, aspect="auto", cmap="gray", vmin=-3, vmax=3, extent=[frame_times[0], frame_times[-1], external.shape[1] - 0.5, -0.5], interpolation="none")
+ax.imshow(
+    zscored.T,
+    aspect="auto",
+    cmap="gray",
+    vmin=-3,
+    vmax=3,
+    extent=[frame_times[0], frame_times[-1], external.shape[1] - 0.5, -0.5],
+    interpolation="none",
+)
 ax.set_yticks(range(external.shape[1]))
 ax.set_yticklabels(external.columns)
-ax.set_xlabel("Time (s)", fontsize=14)
+ax.set_xlabel("Time since the first volume (s)", fontsize=14)
 fig.tight_layout()
 glue_figure("figure_extreg_regressors", fig)
 ```
@@ -543,119 +616,93 @@ All external regressors, each scaled to unit variance.
 
 ## A decision tree that uses external regressors
 
-A decision tree declares how to fit the external regressors in its `external_regressor_config`,
+A decision tree is a JSON file.
+It declares how to fit the external regressors in its `external_regressor_config`,
 and then uses the resulting metrics in its nodes.
-`tedana` comes with demonstration trees that do this;
-we start from `demo_external_regressors_motion_task_models`, which builds on the `minimal` tree.
+`tedana` comes with demonstration trees that do this.
+Our tree, [`decision_trees/external_regressors_tree.json`](https://github.com/ME-ICA/multi-echo-data-analysis/blob/main/content/decision_trees/external_regressors_tree.json),
+is `tedana`'s `demo_external_regressors_motion_task_models` tree, edited in three places:
+the regular expressions that select the regressors match our column names,
+the nuisance model has a partial model for the physiological regressors,
+and a node tags the components that the physiological regressors fit.
 
-```{code-cell} ipython3
-import tedana
-from tedana import workflows
+Here is its `external_regressor_config`:
 
-demo_tree_file = os.path.join(
-    os.path.dirname(tedana.__file__),
-    "resources",
-    "decision_trees",
-    "demo_external_regressors_motion_task_models.json",
-)
-with open(demo_tree_file, "r") as fo:
-    tree = json.load(fo)
-
-print(json.dumps(tree["external_regressor_config"], indent=4))
+```{literalinclude} decision_trees/external_regressors_tree.json
+:language: json
+:start-at: '"external_regressor_config"'
+:end-before: '"nodes"'
+:dedent: 4
 ```
 
-The tree fits two models to each component's time series:
+It fits two models to each component's time series:
 
 - a **nuisance** model, an F-test of all the nuisance regressors together, with **partial** models that test subsets of them;
 - a **task** model, an F-test of the task regressors.
 
-Both include Legendre polynomials (`"detrend": true`) to absorb slow drifts.
+`"detrend": true` adds Legendre polynomials to both models, to absorb slow drifts.
 The F-tests compare each model with a model that has only the polynomials,
 and $R^2$ is the fraction of the variance left after detrending that the regressors explain.
 A partial model is tested by comparing the full model with the full model minus that subset of regressors.
-The regressors are selected by name with regular expressions.
-We adapt the configuration to our column names and add a partial model for the physiological regressors.
-
-```{code-cell} ipython3
-tree["tree_id"] = "external_regressors_physio_motion_csf_task"
-tree["info"] = (
-    "The demo_external_regressors_motion_task_models tree, "
-    "with a partial model for physiological regressors."
-)
-tree["external_regressor_config"][0]["regressors"] = ["^mot_.*$", "^csf_.*$", "^physio_.*$"]
-tree["external_regressor_config"][0]["partial_models"] = {
-    "Motion": ["^mot_.*$"],
-    "CSF": ["^csf_.*$"],
-    "Physio": ["^physio_.*$"],
-}
-tree["external_regressor_config"][1]["regressors"] = ["^task_.*$"]
-```
+`tedana` selects the regressors by matching the column names to the regular expressions.
 
 The nodes that use these models are near the end of the tree.
-A component is rejected if the nuisance model fits it significantly (p < 0.05) and explains more than half of its variance ($R^2$ > 0.5).
-Two nodes that change nothing then tag the rejected components whose fit is driven by motion or by CSF.
-Later, a component that was going to be rejected is accepted instead if the task model fits it in the same way and it has enough TE-dependence (kappa above the kappa elbow).
+First, a component is provisionally rejected if the nuisance model fits it significantly (p < 0.05) and explains more than half of its variance ($R^2$ > 0.5):
 
-```{code-cell} ipython3
-for node in tree["nodes"]:
-    if node["parameters"].get("left") in ("pval nuisance model", "pval task model"):
-        print(json.dumps(node, indent=4))
+```{literalinclude} decision_trees/external_regressors_tree.json
+:language: json
+:lines: 183-201
+:dedent: 8
 ```
 
-We add a matching tagging node for the physiological partial model, and its metric and tag to the lists the tree declares.
+Three nodes that change nothing then tag the rejected components whose fit is driven by motion, CSF or physiological regressors.
+This is the one we added for the physiological regressors:
 
-```{code-cell} ipython3
-csf_node_idx = next(
-    i
-    for i, node in enumerate(tree["nodes"])
-    if node.get("kwargs", {}).get("tag_if_true") == "Fits CSF external regressors"
-)
-physio_node = json.loads(json.dumps(tree["nodes"][csf_node_idx]))
-physio_node["kwargs"]["left3"] = "pval nuisance Physio partial model"
-physio_node["kwargs"]["tag_if_true"] = "Fits physiological external regressors"
-physio_node["_comment"] = "Not changing classifications, but tagging if fits to physiological regressors"
-tree["nodes"].insert(csf_node_idx + 1, physio_node)
-
-tree["necessary_metrics"].append("pval nuisance Physio partial model")
-tree["classification_tags"].append("Fits physiological external regressors")
-
-tree_file = os.path.join(out_dir, "external_regressors_tree.json")
-with open(tree_file, "w") as fo:
-    json.dump(tree, fo, indent=4)
+```{literalinclude} decision_trees/external_regressors_tree.json
+:language: json
+:lines: 244-264
+:dedent: 8
 ```
+
+Finally, a component that was going to be rejected is accepted instead if the task model fits it in the same way
+and it has enough TE-dependence (kappa above the kappa elbow):
+
+```{literalinclude} decision_trees/external_regressors_tree.json
+:language: json
+:lines: 265-285
+:dedent: 8
+```
+
+:::{dropdown} The whole tree
+```{literalinclude} decision_trees/external_regressors_tree.json
+:language: json
+```
+:::
 
 ## Running `tedana`
 
 To see what the external regressors change, we need a tree that does everything else the same way.
 The demonstration tree is not simply the `minimal` tree with extra nodes:
 its early nodes only provisionally reject components, and it can rescue components with high kappa.
-So we build the baseline from our tree itself, by removing the external regressor models and every node that uses them.
+So the baseline, [`decision_trees/baseline_tree.json`](https://github.com/ME-ICA/multi-echo-data-analysis/blob/main/content/decision_trees/baseline_tree.json),
+is our tree without the `external_regressor_config`, the five nodes that use it, and the metrics and tags that only those nodes need.
 
-```{code-cell} ipython3
-def uses_external_metrics(node):
-    """Whether a node refers to a metric computed from the external regressors."""
-    values = list(node.get("parameters", {}).values()) + list(node.get("kwargs", {}).values())
-    return any(isinstance(value, str) and value.endswith(" model") for value in values)
-
-
-baseline_tree = json.loads(json.dumps(tree))
-baseline_tree["tree_id"] = "external_regressors_physio_motion_csf_task_without_external"
-baseline_tree["info"] = "The external regressor tree, without the nodes that use external regressors."
-baseline_tree.pop("external_regressor_config")
-baseline_tree["nodes"] = [node for node in tree["nodes"] if not uses_external_metrics(node)]
-baseline_tree["necessary_metrics"] = [m for m in tree["necessary_metrics"] if not m.endswith(" model")]
-baseline_tree["classification_tags"] = [t for t in tree["classification_tags"] if not t.startswith(("External", "Fits"))]
-print(f"Removed {len(tree['nodes']) - len(baseline_tree['nodes'])} of {len(tree['nodes'])} nodes")
-
-baseline_tree_file = os.path.join(out_dir, "baseline_tree.json")
-with open(baseline_tree_file, "w") as fo:
-    json.dump(baseline_tree, fo, indent=4)
+:::{dropdown} The baseline tree
+```{literalinclude} decision_trees/baseline_tree.json
+:language: json
 ```
+:::
+
+We run `tedana` with the baseline tree first.
+`tedana` keeps the logs and reports of earlier runs in its output folder, so we start each run from an empty folder.
 
 ```{code-cell} ipython3
 :tags: [hide-output]
 
 baseline_dir = os.path.join(out_dir, "tedana-baseline")
+if os.path.isdir(baseline_dir):
+    shutil.rmtree(baseline_dir)
+
 workflows.tedana_workflow(
     data["echo_files"],
     data["echo_times"],
@@ -664,19 +711,22 @@ workflows.tedana_workflow(
     prefix=prefix,
     dummy_scans=n_dummy,
     tedpca="mdl",
-    tree=baseline_tree_file,
+    tree=os.path.abspath("decision_trees/baseline_tree.json"),
     fixed_seed=42,
     overwrite=True,
 )
 ```
 
-Then we run it again with the full tree and the external regressors.
+Then we run it again with our tree and the external regressors.
 To compare the two classifications, we reuse the ICA decomposition of the first run with `mixing_file`, so both trees classify the same components.
 
 ```{code-cell} ipython3
 :tags: [hide-output]
 
 external_dir = os.path.join(out_dir, "tedana-external")
+if os.path.isdir(external_dir):
+    shutil.rmtree(external_dir)
+
 workflows.tedana_workflow(
     data["echo_files"],
     data["echo_times"],
@@ -684,7 +734,7 @@ workflows.tedana_workflow(
     mask=data["mask"],
     prefix=prefix,
     dummy_scans=n_dummy,
-    tree=tree_file,
+    tree=os.path.abspath("decision_trees/external_regressors_tree.json"),
     external_regressors=external_file,
     mixing_file=os.path.join(baseline_dir, f"{prefix}_desc-ICA_mixing.tsv"),
     fixed_seed=42,
@@ -703,6 +753,8 @@ print("\n".join(c for c in metrics_external.columns if c not in metrics_baseline
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 summary = pd.DataFrame(
     {
         tree_name: [
@@ -720,6 +772,8 @@ summary.round(1)
 These components changed classification:
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 changed = metrics_baseline["classification"] != metrics_external["classification"]
 comparison = pd.DataFrame(
     {
@@ -739,8 +793,10 @@ comparison[changed].round(3)
 The tags show why the external regressors mattered for each rejected component:
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 tags = metrics_external["classification_tags"].str.split(",").explode()
-tags.groupby(tags).size().sort_values(ascending=False)
+tags.groupby(tags).size().sort_values(ascending=False).rename("components")
 ```
 
 ```{code-cell} ipython3
@@ -762,6 +818,8 @@ for comp in metrics_external.index[changed]:
 
 ax.axvline(0.5, color="gray", linestyle="--")
 ax.axhline(0.5, color="gray", linestyle="--")
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
 ax.set_xlabel("$R^2$ of the nuisance model", fontsize=14)
 ax.set_ylabel("$R^2$ of the task model", fontsize=14)
 ax.set_title("Green: accepted, red: rejected, outlined: changed by the external regressors", fontsize=11)
@@ -777,22 +835,21 @@ Each component's fit to the nuisance and task models.
 The size of each point is the variance the component explains, and the dashed lines are the $R^2$ thresholds used by the tree.
 ```
 
-Finally, we can look at the time series of the components that changed, next to the regressors that fit them.
+Finally, we look at the time series of some components next to the regressors that fit them:
+the components that the nuisance model changed, and, for comparison, the three accepted components that the task model fits best.
+To match what `tedana` tests, we remove the Legendre polynomials from both the component and the regressors before fitting.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-mixing = pd.read_table(os.path.join(external_dir, f"{prefix}_desc-ICA_mixing.tsv"))
-external_used = external.iloc[n_dummy:].reset_index(drop=True)
-volume_times = frame_times[n_dummy:]
-models = {
-    "nuisance": external_used.filter(regex="^(mot|csf|physio)_"),
-    "task": external_used.filter(regex="^task_"),
-}
-
-
 from tedana.utils import create_legendre_polynomial_basis_set
 
+mixing = pd.read_table(os.path.join(external_dir, f"{prefix}_desc-ICA_mixing.tsv"))
+external_used = external.iloc[n_dummy:].reset_index(drop=True)
+models = {
+    "nuisance": external_used.filter(regex="^(mot|csf|physio)_").to_numpy(),
+    "task": external_used.filter(regex="^task_").to_numpy(),
+}
 # The same detrending regressors tedana uses ("detrend": true)
 legendre = create_legendre_polynomial_basis_set(volume_times.size, dtrank=None)
 
@@ -810,37 +867,40 @@ def detrended_fit(y, regressors):
     return y_detrended, regressors_detrended @ betas
 
 
-changed_comps = metrics_external.index[changed].tolist()
-if changed_comps:
-    fig, axes = plt.subplots(nrows=len(changed_comps), figsize=(14, 2.5 * len(changed_comps)), squeeze=False)
-    for ax, comp in zip(axes[:, 0], changed_comps):
-        y = mixing[comp].to_numpy()
-        y = (y - y.mean()) / y.std()
-        model_name = "task" if metrics_external.loc[comp, "classification"] == "accepted" else "nuisance"
-        y_detrended, y_fit = detrended_fit(y, models[model_name].to_numpy())
-        ax.plot(volume_times, y_detrended, color="black", linewidth=1, label=f"{comp}, detrended")
-        ax.plot(volume_times, y_fit, color="tab:red", linewidth=1.5, label=f"Fit of the {model_name} model")
-        r2 = metrics_external.loc[comp, f"R2stat {model_name} model"]
-        ax.set_title(
-            f"{comp}: {metrics_baseline.loc[comp, 'classification']} without and "
-            f"{metrics_external.loc[comp, 'classification']} with external regressors "
-            f"($R^2$ = {r2:.2f})",
-            fontsize=12,
-        )
-        ax.legend(loc="upper right")
-        ax.set_xlim(volume_times[0], volume_times[-1])
+accepted = metrics_external[metrics_external["classification"] == "accepted"]
+task_comps = accepted["R2stat task model"].sort_values(ascending=False).index[:3].tolist()
+to_plot = [(comp, "nuisance") for comp in metrics_external.index[changed]] + [(comp, "task") for comp in task_comps]
 
-    axes[-1, 0].set_xlabel("Time (s)", fontsize=14)
-    fig.tight_layout()
-    glue_figure("figure_extreg_changed_components", fig)
+fig, axes = plt.subplots(nrows=len(to_plot), figsize=(14, 2.4 * len(to_plot)), sharex=True)
+for ax, (comp, model_name) in zip(np.atleast_1d(axes), to_plot):
+    y = mixing[comp].to_numpy()
+    y_detrended, y_fit = detrended_fit((y - y.mean()) / y.std(), models[model_name])
+    color = "tab:red" if model_name == "nuisance" else "tab:green"
+    ax.plot(volume_times, y_detrended, color="black", linewidth=1, label=f"{comp}, detrended")
+    ax.plot(volume_times, y_fit, color=color, linewidth=1.5, label=f"Fit of the {model_name} model")
+    r2 = metrics_external.loc[comp, f"R2stat {model_name} model"]
+    if changed[comp]:
+        status = f"{metrics_baseline.loc[comp, 'classification']} without and {metrics_external.loc[comp, 'classification']} with external regressors"
+    else:
+        status = f"{metrics_external.loc[comp, 'classification']} by both trees"
+
+    ax.set_title(f"{comp}: {status}, $R^2$ = {r2:.2f}", fontsize=12, loc="left")
+    ax.legend(loc="lower right", bbox_to_anchor=(1, 1), ncols=2, frameon=False)
+    ax.set_yticks([])
+
+ax.set_xlim(volume_times[0], volume_times[-1])
+ax.set_xlabel("Time since the first volume (s)", fontsize=14)
+fig.tight_layout()
+glue_figure("figure_extreg_component_fits", fig)
 ```
 
-```{figure} figures/figure_extreg_changed_components.png
-:name: figure_extreg_changed_components
+```{figure} figures/figure_extreg_component_fits.png
+:name: figure_extreg_component_fits
 :align: center
 
-Time series of the components whose classification changed, after removing the Legendre polynomials (black),
-with the fit of the model that changed it (red).
+Time series of the components whose classification changed (with the fit of the nuisance model, red)
+and of the three accepted components that the task model fits best (with the fit of the task model, green),
+after removing the Legendre polynomials.
 ```
 
 ## Final remarks
