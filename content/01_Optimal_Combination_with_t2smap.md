@@ -196,7 +196,7 @@ plotting.plot_stat_map(
     vmin=0,
     vmax=thresh,
 )
-axes[0].set_title("TE30 TSNR", fontsize=16)
+axes[0].set_title(f"Echo 2 (TE = {data['echo_times'][1] * 1000:.1f} ms) TSNR", fontsize=16)
 plotting.plot_stat_map(
     oc_tsnr,
     draw_cross=False,
@@ -218,7 +218,7 @@ glue_figure("figure_t2smap_t2snr", fig, display=False)
 :name: "figure_t2smap_t2snr"
 :align: center
 
-TSNR map of each of the echoes in the original data, along with the TSNR map of the optimally combined data.
+TSNR map of the second echo in the original data, along with the TSNR map of the optimally combined data.
 ```
 
 ```{code-cell} ipython3
@@ -255,3 +255,276 @@ glue_figure("figure_optcom_carpet", fig, display=False)
 
 Carpet plot of the optimally combined data.
 ```
+
+## Recovering signal in dropout regions
+
+One advantage of multi-echo fMRI is that it can recover signal in regions that suffer from
+signal dropout in single-echo fMRI {cite:p}`posse1999enhancement-176,poser2006bold-bda`.
+Near air-tissue boundaries, such as the sinuses and the ear canals,
+differences in magnetic susceptibility distort the local magnetic field.
+Spins within a voxel then dephase faster, so $T_{2}^*$ is much shorter there than in the rest of the brain.
+The most affected regions are orbitofrontal cortex, ventromedial prefrontal cortex,
+and the inferior and anterior temporal lobes.
+
+The signal at each echo time decays as $S(TE) = S_{0} e^{-TE / T_{2}^*}$.
+Single-echo fMRI uses one echo time, usually chosen to be close to the average $T_{2}^*$ of gray matter
+(roughly 30-40 ms at 3T), because that is where the BOLD contrast is largest for most of the brain.
+In voxels with a short $T_{2}^*$, most of the signal has already decayed by that echo time,
+which shows up as dark, "missing" patches in ventral frontal and temporal cortex.
+
+In this dataset, the second echo (TE = 38.9 ms) is the closest to a typical single-echo acquisition.
+The first echo still has signal in the ventral frontal and temporal lobes,
+but that signal fades with each later echo.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+sagittal_cuts = [-30, -5, 30]
+echo_idx = [0, 1, 4]
+fig, axes = plt.subplots(figsize=(12, 9), nrows=len(echo_idx))
+for ax, i_echo in zip(axes, echo_idx):
+    plotting.plot_epi(
+        image.mean_img(data['echo_files'][i_echo], copy_header=True),
+        draw_cross=False,
+        bg_img=None,
+        cut_coords=sagittal_cuts,
+        display_mode="x",
+        cmap="gray",
+        figure=fig,
+        axes=ax,
+        title=f"Echo {i_echo + 1} (TE = {data['echo_times'][i_echo] * 1000:.1f} ms)",
+    )
+
+glue_figure("figure_dropout_echoes", fig, display=False)
+```
+
+```{figure} figures/figure_dropout_echoes.png
+:name: "figure_dropout_echoes"
+:align: center
+
+Sagittal slices of the mean image of the first, second, and last echoes.
+Signal in orbitofrontal cortex and the inferior temporal lobes is visible in the first echo,
+is weaker in the second echo, and is gone by the last echo.
+Each row has its own intensity scale.
+```
+
+### How optimal combination adapts to $T_{2}^*$
+
+The optimal combination is a weighted average of the echoes,
+where the weight of echo $n$ in a voxel is
+
+$$
+w_{n} = \frac{TE_{n} e^{-TE_{n} / T_{2}^*}}{\sum_{i} TE_{i} e^{-TE_{i} / T_{2}^*}}
+$$
+
+The term $TE_{n} e^{-TE_{n} / T_{2}^*}$ is proportional to the BOLD sensitivity of echo $n$,
+and it is largest when $TE_{n} = T_{2}^*$.
+Because the weights depend on each voxel's own $T_{2}^*$,
+the optimal combination favors the early echoes in voxels with a short $T_{2}^*$
+and the later echoes in voxels with a long $T_{2}^*$.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+echo_times_ms = np.array(data['echo_times']) * 1000
+t2s_range = np.linspace(5, 100, 500)
+sensitivity = echo_times_ms[None, :] * np.exp(-echo_times_ms[None, :] / t2s_range[:, None])
+weights = sensitivity / sensitivity.sum(axis=1, keepdims=True)
+
+fig, ax = plt.subplots(figsize=(10, 5))
+for i_echo, echo_time in enumerate(echo_times_ms):
+    ax.plot(t2s_range, weights[:, i_echo], linewidth=2, label=f"Echo {i_echo + 1} ({echo_time:.1f} ms)")
+
+ax.set_xlabel("$T_{2}^*$ (ms)", fontsize=14)
+ax.set_ylabel("Weight", fontsize=14)
+ax.set_xlim(t2s_range[0], t2s_range[-1])
+ax.set_ylim(0, 1)
+ax.legend(fontsize=12)
+fig.tight_layout()
+glue_figure("figure_optcom_weights", fig, display=False)
+```
+
+```{figure} figures/figure_optcom_weights.png
+:name: "figure_optcom_weights"
+:align: center
+
+Weight of each echo in the optimal combination, as a function of a voxel's $T_{2}^*$,
+for this dataset's echo times.
+In voxels with a short $T_{2}^*$, most of the weight goes to the first echo.
+```
+
+One way to see this in the brain is the *effective echo time* of each voxel,
+which is the average of the echo times, weighted by the optimal combination weights.
+`t2smap` only combines the echoes with good signal in each voxel, according to the adaptive mask
+(and the first two echoes when only one echo has good signal), so we do the same here.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+t2s_file = os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_T2starmap.nii.gz")
+adaptive_mask_file = os.path.join(
+    out_dir,
+    "sub-24053_ses-1_task-rat_dir-PA_run-01_desc-adaptiveGoodSignal_mask.nii.gz",
+)
+
+# The T2* map is in seconds
+t2s = masking.apply_mask(t2s_file, data['mask']) * 1000
+adaptive_mask = masking.apply_mask(adaptive_mask_file, data['mask']).astype(int)
+
+# t2smap combines the first two echoes in voxels with one or two good echoes,
+# and the first n echoes in voxels with n > 2 good echoes.
+# Voxels without any good echoes are not combined.
+n_combined = np.where(adaptive_mask > 0, np.maximum(adaptive_mask, 2), 0)
+combined = np.arange(len(echo_times_ms))[None, :] < n_combined[:, None]
+good_voxels = (n_combined > 0) & (t2s > 0)
+
+voxel_sensitivity = (
+    echo_times_ms[None, :]
+    * np.exp(-echo_times_ms[None, :] / t2s[good_voxels, None])
+    * combined[good_voxels]
+)
+voxel_weights = voxel_sensitivity / voxel_sensitivity.sum(axis=1, keepdims=True)
+effective_te = np.zeros(t2s.shape)
+effective_te[good_voxels] = voxel_weights @ echo_times_ms
+effective_te_img = masking.unmask(effective_te, data['mask'])
+
+fig, ax = plt.subplots(figsize=(12, 4))
+plotting.plot_stat_map(
+    effective_te_img,
+    bg_img=image.mean_img(data['echo_files'][0], copy_header=True),
+    draw_cross=False,
+    cut_coords=sagittal_cuts,
+    display_mode="x",
+    threshold=0.1,
+    cmap="viridis",
+    symmetric_cbar=False,
+    vmin=echo_times_ms[0],
+    vmax=echo_times_ms[-1],
+    figure=fig,
+    axes=ax,
+)
+glue_figure("figure_effective_te", fig, display=False)
+```
+
+```{figure} figures/figure_effective_te.png
+:name: "figure_effective_te"
+:align: center
+
+Effective echo time (in ms) of the optimally combined data, on the mean image of the first echo.
+In most of the brain, the optimal combination is dominated by the middle echoes,
+but in orbitofrontal cortex and the inferior temporal lobes it is dominated by the first echo,
+which still has signal there.
+```
+
+### Temporal signal-to-noise ratio in dropout regions
+
+Since the optimal combination draws on the early echoes where $T_{2}^*$ is short,
+the improvement in TSNR over the single-echo data should be largest in those voxels.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+fig, axes = plt.subplots(figsize=(12, 7), nrows=2)
+for ax, tsnr_img, title in zip(
+    axes,
+    [te30_tsnr, oc_tsnr],
+    [f"Echo 2 (TE = {echo_times_ms[1]:.1f} ms) TSNR", "Optimal Combination TSNR"],
+):
+    plotting.plot_stat_map(
+        tsnr_img,
+        draw_cross=False,
+        bg_img=None,
+        threshold=0.1,
+        cut_coords=sagittal_cuts,
+        display_mode="x",
+        symmetric_cbar=False,
+        cmap="Reds",
+        vmin=0,
+        vmax=thresh,
+        figure=fig,
+        axes=ax,
+        title=title,
+    )
+
+glue_figure("figure_dropout_tsnr", fig, display=False)
+```
+
+```{figure} figures/figure_dropout_tsnr.png
+:name: "figure_dropout_tsnr"
+:align: center
+
+Sagittal slices of the TSNR of the second echo and of the optimally combined data,
+on the same color scale.
+The optimally combined data have higher TSNR in most of the brain,
+including the ventral frontal and temporal regions where the second echo has little signal.
+```
+
+To summarize this across the whole brain, we can group voxels by their $T_{2}^*$
+and compare the TSNR of the optimally combined data with that of the second echo.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+echo2_tsnr_arr = masking.apply_mask(te30_tsnr, data['mask'])[good_voxels]
+oc_tsnr_arr = masking.apply_mask(oc_tsnr, data['mask'])[good_voxels]
+valid = np.isfinite(echo2_tsnr_arr) & np.isfinite(oc_tsnr_arr) & (echo2_tsnr_arr > 0)
+tsnr_ratio = oc_tsnr_arr[valid] / echo2_tsnr_arr[valid]
+voxel_t2s = t2s[good_voxels][valid]
+
+bin_edges = np.arange(10, 85, 5)
+bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+bin_idx = np.digitize(voxel_t2s, bin_edges) - 1
+ratio_percentiles = np.full((len(bin_centers), 3), np.nan)
+n_voxels = np.zeros(len(bin_centers), dtype=int)
+for i_bin in range(len(bin_centers)):
+    in_bin = bin_idx == i_bin
+    n_voxels[i_bin] = in_bin.sum()
+    if n_voxels[i_bin] > 0:
+        ratio_percentiles[i_bin] = np.percentile(tsnr_ratio[in_bin], [25, 50, 75])
+
+fig, axes = plt.subplots(
+    figsize=(10, 7),
+    nrows=2,
+    sharex=True,
+    gridspec_kw={"height_ratios": [3, 1]},
+)
+axes[0].fill_between(
+    bin_centers,
+    ratio_percentiles[:, 0],
+    ratio_percentiles[:, 2],
+    alpha=0.3,
+    label="Interquartile range",
+)
+axes[0].plot(bin_centers, ratio_percentiles[:, 1], marker="o", linewidth=2, label="Median")
+axes[0].axhline(1, color="black", linestyle="--", linewidth=1)
+axes[0].set_ylabel("TSNR ratio\n(optimal combination / echo 2)", fontsize=14)
+axes[0].legend(fontsize=12)
+axes[1].bar(bin_centers, n_voxels, width=4, color="gray")
+axes[1].set_ylabel("Voxels", fontsize=14)
+axes[1].set_xlabel("$T_{2}^*$ (ms)", fontsize=14)
+fig.tight_layout()
+glue_figure("figure_tsnr_ratio_by_t2s", fig, display=False)
+```
+
+```{figure} figures/figure_tsnr_ratio_by_t2s.png
+:name: "figure_tsnr_ratio_by_t2s"
+:align: center
+
+Ratio of the TSNR of the optimally combined data to the TSNR of the second echo,
+for voxels grouped by $T_{2}^*$.
+The dashed line marks equal TSNR.
+The bottom panel shows the number of voxels in each group.
+```
+
+In voxels with a typical $T_{2}^*$ (40-60 ms), the optimally combined data have roughly 1.3-1.5 times the TSNR of the second echo.
+In voxels with a short $T_{2}^*$ (below 25 ms), which are the voxels affected by dropout,
+the gain is two to five times.
+Only in the voxels with the longest $T_{2}^*$ does the second echo match the optimal combination.
+
+There are a few caveats.
+First, TSNR is not the same as BOLD sensitivity.
+The first echo has the highest TSNR of all of the echoes,
+but it has little BOLD contrast, because BOLD contrast grows with the echo time.
+The optimal combination weights balance the two,
+and {cite:t}`poser2006bold-bda` found that the gains in BOLD sensitivity from combining echoes
+were largest in regions affected by susceptibility artifacts.
+Second, the optimal combination can only recover signal that was acquired.
+If the signal in a voxel has already decayed by the first echo,
+or has been displaced by distortion, no combination of the echoes will bring it back.
+This is one reason to keep the first echo time short
+(see [Acquiring Multi-Echo Data](Acquiring_Multi_Echo_Data.md)).
