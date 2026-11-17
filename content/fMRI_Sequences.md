@@ -151,12 +151,167 @@ It is because the Blood Oxygen Level Dependent (BOLD) signal
 that is central to most fMRI studies is largest with a specfic delay.
 There is more information about the link between BOLD contrast
 and TE in the following sections.
-For example, for a 3T MRI, the BOLD contrast is largest at approximately 28ms.
+For example, single-echo fMRI on a 3T MRI typically uses a TE of around 30 ms.
+The [next section](#why-single-echo-fmri-uses-te-30-ms-at-3t) explains where that convention comes from.
 
 Also note that the readout period is not instantaneous.
 It takes time to have the magnetic gradients to move around in ways that collect the desired information across k-space.
 The TE is the center of this readout period.
 In this figure, the TE is 28ms, but data is acquire during the readout period from around 19-36ms.
+
+(why-single-echo-fmri-uses-te-30-ms-at-3t)=
+## Why single-echo fMRI uses TE ≈ 30 ms at 3T
+
+Most single-echo fMRI at 3T uses a TE between 25 and 35 ms.
+For example, the Human Connectome Project used 33.1 ms {cite:p}`smith2013resting`
+and the ABCD study used 30 ms {cite:p}`casey2018adolescent`.
+This convention is often explained as "the TE that maximizes BOLD contrast",
+but measured gray matter $T_{2}^*$ values at 3T are closer to 50 ms.
+We are not aware of a source that documents how the field settled on 30 ms.
+However, the measured $T_{2}^*$ values and studies of echo time and signal dropout suggest that
+a TE of 30 ms is best understood as a compromise that gives up a little BOLD contrast in most of the brain
+in exchange for much less signal dropout near air-tissue boundaries.
+
+### The theoretical optimum: TE = $T_{2}^*$
+
+In a gradient-echo acquisition, the signal at a given TE is $S(TE) = S_{0} e^{-TE \cdot R_{2}^*}$,
+where $R_{2}^* = 1 / T_{2}^*$.
+Neural activity changes $R_{2}^*$ by a small amount, $\Delta R_{2}^*$,
+which changes the signal by approximately
+
+$$
+\Delta S \approx -TE \cdot \Delta R_{2}^* \cdot S_{0} e^{-TE / T_{2}^*}
+$$
+
+The $TE$ term means that the BOLD effect grows with echo time,
+while the exponential term means that there is less and less signal left to carry it.
+If the noise does not depend on TE (for example, thermal noise),
+the BOLD contrast-to-noise ratio is proportional to $TE \cdot e^{-TE / T_{2}^*}$,
+which peaks at $TE = T_{2}^*$.
+Early studies at 1.5T and 4T confirmed this experimentally:
+BOLD signal changes were largest at TE ≈ $T_{2}^*$ {cite:p}`bandettini1994spin`,
+or at TE ≥ $T_{2}^*$ {cite:p}`menon19934-e70`.
+A later comparison at 1.5, 3, and 7T in the same participants found that the number of active voxels,
+the t-statistics, and the percent signal change all peaked at TE ≈ $T_{2}^*$ at every field strength {cite:p}`vanderzwaag2009fmri`.
+
+### Gray matter $T_{2}^*$ is longer than 30 ms at 3T
+
+If the optimal TE equals the gray matter $T_{2}^*$, then the conventional TE should match measured $T_{2}^*$ values.
+It does not.
+At 3T, {cite:t}`wansapura1999nmr` measured an average $T_{2}^*$ of 41.6 ms in occipital gray matter
+and 51.8 ms in frontal gray matter,
+and {cite:t}`robinson2004optimized` measured a cortical $T_{2}^*$ of 49-52 ms.
+The relaxation rates reported by {cite:t}`vanderzwaag2009fmri` correspond to a motor cortex $T_{2}^*$ of roughly
+80 ms at 1.5T, 55 ms at 3T, and 33 ms at 7T.
+$R_{2}^*$ increases approximately linearly with field strength,
+so $T_{2}^*$ decreases as field strength increases.
+
+The table below compares typical gray matter $T_{2}^*$ values with the echo times that single-echo studies commonly use.
+
+| Field strength | Typical cortical $T_{2}^*$ | Common single-echo TE | Example |
+| --- | --- | --- | --- |
+| 1.5T | ~80 ms | 40-50 ms | |
+| 3T | ~40-55 ms | 25-35 ms | 33.1 ms in the HCP {cite:p}`smith2013resting`; 30 ms in ABCD {cite:p}`casey2018adolescent`; 39 ms in the UK Biobank {cite:p}`miller2016multimodal` |
+| 7T | ~25-33 ms | 20-25 ms | 22.2 ms in the 7T HCP {cite:p}`vu2017tradeoffs` |
+
+At every field strength, the conventional TE is noticeably shorter than the cortical $T_{2}^*$,
+roughly half to three-quarters of it.
+
+### Signal dropout favors shorter echo times
+
+The most likely reason for the shorter TE is signal dropout.
+Near the sinuses and ear canals, differences in magnetic susceptibility between air, bone, and tissue
+distort the local magnetic field.
+Spins within a voxel then dephase quickly, so $T_{2}^*$ is much shorter there than in the rest of the brain.
+The affected regions include orbitofrontal cortex, ventromedial prefrontal cortex,
+the anterior and inferior temporal lobes, and the amygdala,
+and the signal loss in these regions grows with TE {cite:p}`ojemann1997anatomic`.
+In the amygdala, for example, {cite:t}`robinson2004optimized` measured a $T_{2}^*$ of only 22 ms
+with a standard EPI protocol at 3T.
+Susceptibility gradients can also shift the *effective* echo time within a voxel,
+which reduces BOLD sensitivity even where the image intensity looks acceptable {cite:p}`deichmann2002compensation`.
+
+Shortening TE helps in these regions.
+{cite:t}`gornotempini2002echo` compared TE = 27 ms with TE = 40 ms and found that the shorter TE still detected
+robust activation in regions without susceptibility artifacts, while reducing signal loss in affected regions,
+although not enough to fully recover activation in the anterior temporal lobes.
+{cite:t}`stocker2006dependence` found that a shorter TE significantly improved the detection of amygdala activation.
+
+Shortening TE costs little in the rest of the brain,
+because the BOLD sensitivity curve is broad near its peak.
+The figure below plots the BOLD contrast-to-noise ratio, $TE \cdot e^{-TE / T_{2}^*}$,
+for a typical cortical voxel at 3T ($T_{2}^*$ = 50 ms) and for a voxel in a dropout region ($T_{2}^*$ = 20 ms).
+For the cortical voxel, TE = 30 ms retains about 90% of the sensitivity at TE = 50 ms.
+For the dropout voxel, TE = 30 ms has about 1.6 times the sensitivity, and about 2.7 times the signal, of TE = 50 ms.
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+tes = np.linspace(0, 100, 1001)
+t2s_values = {
+    "Typical cortex ($T_{2}^*$ = 50 ms)": 50,
+    "Dropout region ($T_{2}^*$ = 20 ms)": 20,
+}
+
+# Normalize to the peak sensitivity of the typical cortical voxel
+max_sensitivity = 50 * np.exp(-1)
+
+fig, ax = plt.subplots(figsize=(10, 6))
+for label, t2s in t2s_values.items():
+    sensitivity = tes * np.exp(-tes / t2s) / max_sensitivity
+    ax.plot(tes, sensitivity, linewidth=2, label=label)
+
+for te, color in [(30, "black"), (50, "gray")]:
+    ax.axvline(te, color=color, linestyle="--", linewidth=1)
+    ax.text(te + 1, 1.03, f"TE = {te} ms", color=color, fontsize=12)
+
+ax.set_xlim(0, 100)
+ax.set_ylim(0, 1.1)
+ax.set_xlabel("Echo time (ms)", fontsize=14)
+ax.set_ylabel("Relative BOLD sensitivity", fontsize=14)
+ax.legend(fontsize=12, loc="center right")
+ax.tick_params(axis="both", which="major", labelsize=12)
+fig.tight_layout()
+glue_figure("fig_te_bold_sensitivity", fig, display=False)
+```
+
+```{figure} figures/fig_te_bold_sensitivity.png
+:name: fig_te_bold_sensitivity
+:align: center
+
+Relative BOLD sensitivity ($TE \cdot e^{-TE / T_{2}^*}$) as a function of echo time,
+for a typical cortical voxel and a voxel in a dropout region at 3T,
+assuming the noise does not depend on TE.
+Both curves are scaled to the peak of the cortical curve.
+```
+
+A shorter TE also shortens the time needed to acquire each slice,
+which allows a shorter TR or more slices {cite:p}`gornotempini2002echo`.
+
+The simple model above assumes noise that does not depend on TE.
+In practice, physiological noise often exceeds thermal noise at 3T and above
+{cite:p}`kruger2001physiological,triantafyllou2005comparison`.
+Physiological noise scales with the signal, so it shifts the optimum toward longer echo times
+and makes the sensitivity curve even flatter.
+{cite:t}`fera2004epi` found broad optima for motor activation, between 60 and 160 ms at 1.5T
+and between 30 and 130 ms at 3T,
+so 30 ms sits at the short end of that range at 3T.
+
+In short, the conventional TE does not maximize BOLD contrast in typical gray matter.
+It sits on the flat part of the sensitivity curve for most of the brain,
+while keeping usable signal in regions with short $T_{2}^*$.
+
+### What this means for multi-echo fMRI
+
+A single TE has to be a compromise between regions with long and short $T_{2}^*$.
+Multi-echo fMRI avoids having to choose.
+The early echoes keep signal in regions with short $T_{2}^*$,
+the later echoes are close to the $T_{2}^*$ of typical gray matter,
+and [optimal combination](01_Optimal_Combination_with_t2smap.md) weights each echo
+by its expected BOLD sensitivity in each voxel {cite:p}`posse1999enhancement-176`.
+Because the later echoes are no longer needed for dropout regions,
+multi-echo protocols can include echoes at or beyond the gray matter $T_{2}^*$,
+although echoes that are too late will have very little signal in dropout regions
+(see [Acquiring Multi-Echo Data](Acquiring_Multi_Echo_Data.md)).
 
 ## A multi-echo fMRI pulse sequence
 
