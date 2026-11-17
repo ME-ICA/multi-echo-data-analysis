@@ -455,7 +455,7 @@ The optimally combined data have higher TSNR in most of the brain,
 including the ventral frontal and temporal regions where the second echo has little signal.
 ```
 
-To summarize this across the whole brain, we can group voxels by their $T_{2}^*$
+To summarize this across all voxels with good signal, we can group voxels by their $T_{2}^*$
 and compare the TSNR of the optimally combined data with that of the second echo.
 
 ```{code-cell} ipython3
@@ -466,37 +466,46 @@ valid = np.isfinite(echo2_tsnr_arr) & np.isfinite(oc_tsnr_arr) & (echo2_tsnr_arr
 tsnr_ratio = oc_tsnr_arr[valid] / echo2_tsnr_arr[valid]
 voxel_t2s = t2s[good_voxels][valid]
 
-bin_edges = np.arange(10, 85, 5)
-bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-bin_idx = np.digitize(voxel_t2s, bin_edges) - 1
-ratio_percentiles = np.full((len(bin_centers), 3), np.nan)
-n_voxels = np.zeros(len(bin_centers), dtype=int)
-for i_bin in range(len(bin_centers)):
+# 5-ms bins from 10 to 80 ms, plus open-ended bins below 10 ms and at or above 80 ms,
+# so that every voxel is counted
+inner_edges = np.arange(10, 85, 5)
+bin_labels = (
+    ["<10"]
+    + [f"{low}-{high}" for low, high in zip(inner_edges[:-1], inner_edges[1:])]
+    + [f"≥{inner_edges[-1]}"]
+)
+bin_idx = np.digitize(voxel_t2s, inner_edges)
+bin_positions = np.arange(len(bin_labels))
+ratio_percentiles = np.full((len(bin_labels), 3), np.nan)
+n_voxels = np.zeros(len(bin_labels), dtype=int)
+for i_bin in range(len(bin_labels)):
     in_bin = bin_idx == i_bin
     n_voxels[i_bin] = in_bin.sum()
     if n_voxels[i_bin] > 0:
         ratio_percentiles[i_bin] = np.percentile(tsnr_ratio[in_bin], [25, 50, 75])
 
 fig, axes = plt.subplots(
-    figsize=(10, 7),
+    figsize=(12, 7),
     nrows=2,
     sharex=True,
     gridspec_kw={"height_ratios": [3, 1]},
 )
 axes[0].fill_between(
-    bin_centers,
+    bin_positions,
     ratio_percentiles[:, 0],
     ratio_percentiles[:, 2],
     alpha=0.3,
     label="Interquartile range",
 )
-axes[0].plot(bin_centers, ratio_percentiles[:, 1], marker="o", linewidth=2, label="Median")
+axes[0].plot(bin_positions, ratio_percentiles[:, 1], marker="o", linewidth=2, label="Median")
 axes[0].axhline(1, color="black", linestyle="--", linewidth=1)
 axes[0].set_ylabel("TSNR ratio\n(optimal combination / echo 2)", fontsize=14)
 axes[0].legend(fontsize=12)
-axes[1].bar(bin_centers, n_voxels, width=4, color="gray")
+axes[1].bar(bin_positions, n_voxels, width=0.8, color="gray")
 axes[1].set_ylabel("Voxels", fontsize=14)
 axes[1].set_xlabel("$T_{2}^*$ (ms)", fontsize=14)
+axes[1].set_xticks(bin_positions)
+axes[1].set_xticklabels(bin_labels, rotation=45, ha="right")
 fig.tight_layout()
 glue_figure("figure_tsnr_ratio_by_t2s", fig, display=False)
 ```
@@ -507,14 +516,18 @@ glue_figure("figure_tsnr_ratio_by_t2s", fig, display=False)
 
 Ratio of the TSNR of the optimally combined data to the TSNR of the second echo,
 for voxels grouped by $T_{2}^*$.
+The first and last groups are open-ended, so every voxel in the analysis is counted.
 The dashed line marks equal TSNR.
 The bottom panel shows the number of voxels in each group.
 ```
 
 In voxels with a typical $T_{2}^*$ (40-60 ms), the optimally combined data have roughly 1.3-1.5 times the TSNR of the second echo.
 In voxels with a short $T_{2}^*$ (below 25 ms), which are the voxels affected by dropout,
-the gain is two to five times.
-Only in the voxels with the longest $T_{2}^*$ does the second echo match the optimal combination.
+the gain is two times or more, and it keeps growing as $T_{2}^*$ gets shorter.
+The pattern reverses in voxels with a very long $T_{2}^*$ (above about 75 ms),
+where the second echo has slightly higher TSNR than the optimal combination.
+Those voxels include cerebrospinal fluid and voxels where the $T_{2}^*$ fit is unreliable,
+with some estimates of several hundred milliseconds.
 
 There are a few caveats.
 First, TSNR is not the same as BOLD sensitivity.
