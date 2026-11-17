@@ -167,7 +167,9 @@ For example, the Human Connectome Project used 33.1 ms {cite:p}`smith2013resting
 and the ABCD study used 30 ms {cite:p}`casey2018adolescent`.
 This convention is often explained as "the TE that maximizes BOLD contrast",
 but measured gray matter $T_{2}^*$ values at 3T are closer to 50 ms.
-A TE of 30 ms is a deliberate compromise that gives up a little BOLD contrast in most of the brain
+We are not aware of a source that documents how the field settled on 30 ms.
+However, the measured $T_{2}^*$ values and studies of echo time and signal dropout suggest that
+a TE of 30 ms is best understood as a compromise that gives up a little BOLD contrast in most of the brain
 in exchange for much less signal dropout near air-tissue boundaries.
 
 ### The theoretical optimum: TE = $T_{2}^*$
@@ -213,11 +215,11 @@ The table below compares typical gray matter $T_{2}^*$ values with the echo time
 | 7T | ~25-33 ms | 20-25 ms | 22.2 ms in the 7T HCP {cite:p}`vu2017tradeoffs` |
 
 At every field strength, the conventional TE is noticeably shorter than the cortical $T_{2}^*$,
-usually around 55-75% of it.
+roughly half to three-quarters of it.
 
-### The convention comes from signal dropout
+### Signal dropout favors shorter echo times
 
-The main reason for the shorter TE is signal dropout.
+The most likely reason for the shorter TE is signal dropout.
 Near the sinuses and ear canals, differences in magnetic susceptibility between air, bone, and tissue
 distort the local magnetic field.
 Spins within a voxel then dephase quickly, so $T_{2}^*$ is much shorter there than in the rest of the brain.
