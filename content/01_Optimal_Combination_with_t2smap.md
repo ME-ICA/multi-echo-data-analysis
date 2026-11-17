@@ -267,9 +267,11 @@ The most affected regions are orbitofrontal cortex, ventromedial prefrontal cort
 and the inferior and anterior temporal lobes.
 
 The signal at each echo time decays as $S(TE) = S_{0} e^{-TE / T_{2}^*}$.
-Single-echo fMRI uses one echo time, usually chosen to be close to the average $T_{2}^*$ of gray matter
-(roughly 30-40 ms at 3T), because that is where the BOLD contrast is largest for most of the brain.
-In voxels with a short $T_{2}^*$, most of the signal has already decayed by that echo time,
+Single-echo fMRI uses one echo time, usually around 30 ms at 3T.
+That is somewhat shorter than the average $T_{2}^*$ of gray matter (roughly 40-55 ms at 3T),
+where BOLD contrast is largest, because a shorter echo time limits dropout while losing little BOLD contrast elsewhere
+(see [](#why-single-echo-fmri-uses-te-30-ms-at-3t)).
+Even so, in voxels with a short $T_{2}^*$, most of the signal has already decayed by that echo time,
 which shows up as dark, "missing" patches in ventral frontal and temporal cortex.
 
 In this dataset, the second echo (TE = 38.9 ms) is the closest to a typical single-echo acquisition.
