@@ -94,7 +94,7 @@ The field variations that cause $R_{2}'$ are usually split by their spatial scal
 - **Mesoscopic** variations happen on a scale much smaller than a voxel,
   but much larger than the distance a water molecule diffuses during the echo time.
   They are caused by small objects with a magnetic susceptibility that differs from that of the surrounding tissue,
-  such as blood vessels containing deoxyhemoglobin, iron-rich cells, and myelinated axons.
+  such as venules and veins containing deoxyhemoglobin, iron-rich cells, and myelinated axons.
   These are properties of the tissue.
 
 The line between reversible and irreversible dephasing is not perfectly sharp.
@@ -694,7 +694,7 @@ ax.plot([], [], color="black", linestyle="--", label="Flip angle = 60°")
 ax.set_xlim(0, 6)
 ax.set_ylim(0, 1)
 ax.set_xlabel("Repetition time (s)", fontsize=14)
-ax.set_ylabel("Relative steady-state signal", fontsize=14)
+ax.set_ylabel("Steady-state signal (fraction of $M_{0}$)", fontsize=14)
 ax.tick_params(axis="both", which="major", labelsize=12)
 ax.legend(fontsize=11, loc="lower right")
 fig.tight_layout()
@@ -705,7 +705,8 @@ glue_figure("fig_s0_t1_saturation", fig, display=False)
 :name: fig_s0_t1_saturation
 :align: center
 
-The steady-state signal of a spoiled gradient-echo sequence, relative to a fully relaxed signal,
+The steady-state signal of a spoiled gradient-echo sequence,
+as a fraction of the equilibrium magnetization ($M_{0}$, the signal of a 90° pulse after full recovery),
 for the $T_{1}$ values of gray matter and white matter at 3T and of CSF.
 The dotted line marks the TR of the data in this book.
 ```
@@ -736,8 +737,11 @@ At short repetition times, blood that flows into the imaging slab has not experi
 so it has more longitudinal magnetization than the stationary tissue around it.
 This raises the signal near large arteries and veins,
 particularly at the edges of the slab and with short TRs and large flip angles {cite:p}`gao2012inflow`.
-Like coil sensitivity, inflow affects the signal before any transverse decay happens,
-so it appears in $S_{0}$ rather than in $T_{2}^{*}$.
+Inflow mostly increases the longitudinal magnetization before any transverse decay happens,
+so it appears mainly in $S_{0}$.
+However, the inflowing blood also has its own $T_{2}^{*}$,
+so a change in how much fresh blood a voxel contains changes the mix of compartments in the voxel,
+and can bias the fitted $T_{2}^{*}$ as well.
 
 ### Model misspecification
 
