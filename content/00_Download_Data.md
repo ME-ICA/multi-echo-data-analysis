@@ -34,6 +34,13 @@ datalad get sub-24053/ses-1/anat/sub-24053_ses-1_desc-preproc_T1w.nii.gz
 datalad get sub-24053/ses-1/func/sub-24053_ses-1_task-rat_dir-PA_run-01_from-boldref_to-T1w_mode-image_desc-coreg_xfm.txt
 ```
 
+[Why $T_{2}^{*}$ and $S_{0}$ Vary Across the Brain](T2star_S0_Variability.md) also uses fMRIPrep's
+FreeSurfer parcellation to summarize $T_{2}^{*}$ and $S_{0}$ by region:
+
+```bash
+datalad get sub-24053/ses-1/anat/sub-24053_ses-1_desc-aparcaseg_dseg.nii.gz
+```
+
 ## Data for the external regressor and task analysis pages
 
 [External Regressors in `tedana` Decision Trees](09_External_Regressors.md) and
