@@ -14,7 +14,7 @@ kernelspec:
 
 Multi-echo fMRI lets us estimate neuronal-related activity directly from the BOLD
 signal *without* a task model, using Sparse Paradigm Free Mapping (SPFM).
-[`pySPFM`](https://pyspfm.readthedocs.io) deconvolves the haemodynamic response from
+[`pySPFM`](https://pyspfm.readthedocs.io) deconvolves the hemodynamic response from
 the data and recovers a sparse **activity-inducing signal** — an estimate of *when*
 each region becomes active — like the examples in the
 [pySPFM documentation](https://pyspfm.readthedocs.io/en/stable/examples.html).
@@ -79,7 +79,7 @@ os.makedirs(out_dir, exist_ok=True)
 print(f"{len(data_files)} echoes | TE = {[round(t, 1) for t in echo_times]} ms | TR = {tr} s")
 ```
 
-## Parcellate, detrend and normalise
+## Parcellate, detrend and normalize
 
 Each echo is averaged within Schaefer parcels (restricted to the brain mask), then
 **detrended and band-pass filtered (0.01–0.1 Hz)**, and only then converted to
@@ -88,9 +88,9 @@ fluctuations first, then express what remains as a fraction of the parcel's base
 
 - **Detrending and band-pass filtering** — scanner drift (below 0.01 Hz) and
   high-frequency noise (above 0.1 Hz, e.g. residual cardiac/respiratory and thermal
-  noise) are not part of the haemodynamic response, so we keep only the 0.01–0.1 Hz
+  noise) are not part of the hemodynamic response, so we keep only the 0.01–0.1 Hz
   band where the BOLD response lives.
-- **Normalisation to percent signal change** — `pySPFM` expects normalised input;
+- **Normalization to percent signal change** — `pySPFM` expects normalized input;
   feeding raw signal intensities collapses the deconvolution to zero.
 
 ```{code-cell} ipython3
@@ -114,7 +114,7 @@ masker.fit(data_files[0])
 masked_data = []
 for f in data_files:
     echo_data = masker.transform(f)  # (n_timepoints, n_parcels)
-    # Detrend and band-pass (0.01-0.1 Hz) first, then normalise: express the cleaned
+    # Detrend and band-pass (0.01-0.1 Hz) first, then normalize: express the cleaned
     # signal as a fraction of the parcel's raw baseline mean (percent signal change).
     baseline = echo_data.mean(axis=0, keepdims=True)
     detrended = clean(
@@ -136,7 +136,7 @@ print(f"Input matrix: {X.shape}  ({len(data_files)} echoes x {n_scans} TRs, {X.s
 
 ## Deconvolve: the effect of the model-selection criterion
 
-`pySPFM` selects the amount of regularisation (i.e. how sparse the estimate is)
+`pySPFM` selects the amount of regularization (i.e. how sparse the estimate is)
 automatically from a *criterion*. We compare the two LARS-based criteria for the
 multi-echo model:
 
@@ -162,7 +162,7 @@ for criterion in ["bic", "aic"]:
     print(f"{criterion.upper()}: {active:.0f}% of parcels show activity")
 
 # Guard against a silently degenerate fit (e.g. wrong scaling or TR).
-assert np.any(models["aic"].coef_ != 0), "Deconvolution returned all zeros — check normalisation/TR."
+assert np.any(models["aic"].coef_ != 0), "Deconvolution returned all zeros — check normalization/TR."
 
 np.save(os.path.join(out_dir, "out_activity_bic.npy"), models["bic"].coef_)
 np.save(os.path.join(out_dir, "out_activity_aic.npy"), models["aic"].coef_)
@@ -214,8 +214,8 @@ multi-echo data are in the subject's native space and are only affinely aligned 
 MNI, so we map each parcel's value onto the original (MNI) Schaefer atlas:
 `inverse_transform` would instead land on the native grid and would not line up with
 the MNI template. Because the parcels were sampled in native space, the anatomical
-labelling is approximate — good enough for a qualitative whole-brain map, not for
-precise localisation. BIC highlights only a few strong regions, while AIC reveals
+labeling is approximate — good enough for a qualitative whole-brain map, not for
+precise localization. BIC highlights only a few strong regions, while AIC reveals
 activity across most of the cortex.
 
 ```{code-cell} ipython3

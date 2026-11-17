@@ -12,7 +12,7 @@ kernelspec:
 
 # Course Overview
 
-This book is a work-in-progress.
+This book is a work in progress.
 
 The overall goal is to provide an understanding of how to think through
 collecting, analyzing, and interpreting multi-echo fMRI data.

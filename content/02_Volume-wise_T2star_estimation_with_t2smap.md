@@ -204,7 +204,7 @@ glue_figure("figure_mean_echos_and_optcom", fig, display=False)
 :name: "figure_mean_echos_and_optcom"
 :align: center
 
-Mean images of the echo-wise data and the optimally combined data.
+Mean images of the first four echoes and the optimally combined data.
 ```
 
 ```{code-cell} ipython3
@@ -239,7 +239,7 @@ plotting.plot_stat_map(
     vmin=0,
     vmax=thresh,
 )
-axes[0].set_title("TE30 TSNR", fontsize=16)
+axes[0].set_title("Echo 2 TSNR", fontsize=16)
 plotting.plot_stat_map(
     oc_tsnr,
     draw_cross=False,
@@ -260,7 +260,7 @@ glue_figure("figure_t2snr_te30_and_optcom", fig, display=False)
 :name: "figure_t2snr_te30_and_optcom"
 :align: center
 
-TSNR map of the second echo (TE30) and the optimally combined data.
+TSNR map of the second echo (TE = 38.9 ms) and the optimally combined data.
 ```
 
 ```{code-cell} ipython3
@@ -277,7 +277,7 @@ glue_figure("figure_echo3_carpet", fig, display=False)
 :name: "figure_echo3_carpet"
 :align: center
 
-Carpet plot of the third echo.
+Carpet plot of the second echo.
 ```
 
 ```{code-cell} ipython3

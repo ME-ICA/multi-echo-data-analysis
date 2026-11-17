@@ -41,7 +41,7 @@ arr = masking.apply_mask(data_file, data['mask'])
 # Transpose to voxels-by-time
 arr = arr.T
 
-# The first dimension should be time
+# The second dimension should be time
 assert arr.shape[1] == mixing.shape[0]
 ```
 ````
@@ -125,10 +125,10 @@ img_denoised.to_filename("denoised.nii.gz")
 ## Component orthogonalization
 
 Independent component analysis decomposes the data into _independent_ components, obviously.
-Unlike principal components analysis, the components from ICA are not orthogonal, so they may explain shared variance.
+Unlike principal component analysis, the components from ICA are not orthogonal, so they may explain shared variance.
 If you want to ensure that variance shared between the accepted and rejected components does not contaminate the denoised data,
 you may wish to orthogonalize the rejected components with respect to the accepted components.
-This way, you can regress the rejected components out of the data in the form of, what we call, "pure evil" components.
+This way, you can regress the rejected components out of the data in the form of what we call "pure evil" components.
 
 ````{tab} Python
 ```python

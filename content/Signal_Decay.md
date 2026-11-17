@@ -126,7 +126,7 @@ voxel_idx = np.where(
 
 # Extract the time series for the high-kappa voxel
 # ts is rounded to make it more likely the figures are consistent when generated on different computers
-#  This hopefully avoids unncessary new files in the git history.
+#  This hopefully avoids unnecessary new files in the git history.
 arr = [masking.apply_mask(f, mask) for f in data['echo_files']]
 ts = np.round([d[:, voxel_idx] for d in arr], decimals=5)
 ts_1d = np.hstack(ts)
@@ -207,7 +207,7 @@ glue_figure("fig_echo_scatter", fig, display=False)
 Scatter plot of voxel's values by echo time.
 ```
 
-Here, we visualize the temporal variation of a single voxel’s signal (y-axis) across four different echo times (TE) on the x-axis. As expected, the signal magnitude decreases with increasing TE.
+Here, we visualize the temporal variation of a single voxel’s signal (y-axis) across five different echo times (TE) on the x-axis. As expected, the signal magnitude decreases with increasing TE.
 
 ### The signal itself changes with echo time as well
 
@@ -376,15 +376,15 @@ BOLD signal decay and BOLD contrast
 ```
 
 This plot shows the signal decay for two different activity levels: one with high activity and one with low activity.
-Due to differences in activity and the associated T2 effects, the decay curve for low activity is steeper than that for high activity.
+Due to differences in activity and the associated $T_{2}^{*}$ effects, the decay curve for low activity is steeper than that for high activity.
 The contrast — represented by the distance between the two curves (see green dashed lines in the figure) — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., >50 ms).
 In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.
 
 
 ### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-Let us visualize the case of a single echo fMRI acquisition with TE = 30ms.
-The top panel shows the time series of an example voxel , while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms).
+Let us visualize the case of a single-echo fMRI acquisition with TE = 30ms.
+The top panel shows the time series of an example voxel, while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms).
 This shows how fMRI data fluctuates over time.
 
 ```{code-cell} ipython3
@@ -568,7 +568,7 @@ S(t, TE) = S_0(t) \times e^{\frac{-TE}{T_2^{*}(t)}} + noise
 ```
 
 Both factors of the product - $S_0$ and the exponential with $T_2^{*}$ - capture local fluctuations happening during MRI acquisition, but from different origins.
-The figure represents how the signal of a voxel is associated to $S_0$ and $T_2^{*}$, showing how changes in fMRI data can be driven by both factors.
+The figure represents how the signal of a voxel is associated with $S_0$ and $T_2^{*}$, showing how changes in fMRI data can be driven by both factors.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -707,10 +707,10 @@ Single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting fr
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 Let us visualize $S_0$ and $T_2^{*}$ effects more closely.
-The bottom figure shows how the $S_0$ and $T_2^{*}$ curves changes compared to the original average signal decay curve.
+The bottom figure shows how the $S_0$ and $T_2^{*}$ curves change compared to the original average signal decay curve.
 In red, the decay curve is shown when only the $S_0$ values fluctuate (for a fixed $T_2^{*}$ for any t).
-In blue the decay curve is shown when the $T_2^{*}$ values fluctuate (for a fixed $S_0$ for any t).
-The top panel represents the fluctuations of the ratio $\frac{S_0}{T_2^{*}}$.
+In blue, the decay curve is shown when the $T_2^{*}$ values fluctuate (for a fixed $S_0$ for any t).
+The top panel represents the relative fluctuations shared by $S_0$ and $T_2^{*}$.
 This shows how fluctuations in $S_0$ and $T_2^{*}$ produce different patterns in the full signal decay curves.
 
 ```{code-cell} ipython3
@@ -820,8 +820,8 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations
 
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 
-Let us visualize again the case of a single echo acquisition.
-Because the signal is acquired for only one TE (see the red and blue dot points in the figure), it is impossible to model the $S_0$- and $T_2^{*}$- driven curves !
+Let us visualize again the case of a single-echo acquisition.
+Because the signal is acquired for only one TE (see the red and blue dot points in the figure), it is impossible to model the $S_0$- and $T_2^{*}$- driven curves!
 This shows how single-echo data, on its own, cannot distinguish between $S_0$ and $T_2^{*}$ fluctuations.
 
 ```{code-cell} ipython3
@@ -953,7 +953,7 @@ $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 ### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 
 Let us now visualize again the case of a multi-echo acquisition.
-Because the signal is acquired at four echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the $S_0$- and $T_2^{*}$- driven curves from the signal !
+Because the signal is acquired at five echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the $S_0$- and $T_2^{*}$- driven curves from the signal!
 
 ```{code-cell} ipython3
 :tags: [hide-cell]

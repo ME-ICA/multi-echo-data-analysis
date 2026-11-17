@@ -160,7 +160,7 @@ glue_figure("figure_t2smap_epi_plots", fig, display=False)
 :name: "figure_t2smap_epi_plots"
 :align: center
 
-Mean map of each of the echoes in the original data, along with the mean map of the optimally combined data.
+Mean map of each of the first four echoes in the original data, along with the mean map of the optimally combined data.
 ```
 
 ```{code-cell} ipython3
