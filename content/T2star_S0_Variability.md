@@ -10,7 +10,7 @@ kernelspec:
   name: python3
 ---
 
-# Why $T_{2}^{*}$ and $S_{0}$ Vary Across the Brain
+# Why T₂* and S₀ Vary Across the Brain
 
 The [previous chapter](Signal_Decay.md) described multi-echo data with the monoexponential decay model,
 
