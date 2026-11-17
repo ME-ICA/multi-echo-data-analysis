@@ -37,13 +37,13 @@ The simulated trace will be replaced once a suitable public dataset is available
 
 Cerebrovascular Reactivity (CVR) Mapping can greatly benefit from multi-echo (ME) data acquisition and independent component analysis (ICA) denoising, especially when it is based on breath-holds, cued deep breaths, or resting-state.
 
-While ME-ICA will greatly reduce motion-related noise (see {cite:t}`MOIA2021117914`), because CVR is an increase in blood flow triggered by vessels dilation, there is a component of signal that is proton-density related. For this reason, the default decision tree in tedana may categorise certain components that should (or at least could) be kept as noise, so it is _strongly_ suggested to perform a manual revision of the automatic categorisation and/or adapt the decision tree to accept a better suited set of components.
+While ME-ICA will greatly reduce motion-related noise (see {cite:t}`MOIA2021117914`), because CVR is an increase in blood flow triggered by vessel dilation, there is a component of signal that is proton-density related. For this reason, the default decision tree in tedana may categorize certain components that should (or at least could) be kept as noise, so it is _strongly_ suggested to perform a manual revision of the automatic categorization and/or adapt the decision tree to accept a better suited set of components.
 
-On top of that, in the context of breath-holds and cued deep breaths, attention should be made in the denoising stage, as an aggressive approach will remove all sources of signal that inform CVR and the associated haemodynamic lag. Instead, a conservative denoising approach, where noise IC timeseries are orthogonalised to the (temporally shifted) $P_{ET}CO_2$ and the non-noise IC timeseries is to be preferred ({cite:t}`MOIA2021117914`).
+On top of that, in the context of breath-holds and cued deep breaths, attention should be paid in the denoising stage, as an aggressive approach will remove all sources of signal that inform CVR and the associated hemodynamic lag. Instead, a conservative denoising approach, where noise IC timeseries are orthogonalized to the (temporally shifted) $P_{ET}CO_2$ and the non-noise IC timeseries, is to be preferred ({cite:t}`MOIA2021117914`).
 
 Assuming that you are following the other tutorials in this book, once you obtained your [optimally combined signal](01_Optimal_Combination_with_t2smap.md) and your [ICA decomposition](03_Denoising_with_tedana.md) that has been [manually inspected (and corrected if needed)](https://me-ica.github.io/rica/), you will need to make sure you have:
   - a whole brain mask in functional space that will confine `phys2cvr` operations within it - the `desc-adaptiveGoodSignal_mask.nii.gz` output of `tedana` can work fine, but if you have a different mask that is also ok;
-  - if you want, a ROI mask in functional space which average signal will be used as reference to align the regressor (e.g. the $CO_2$ trace) and which average haemodynamic lag will be set as 0-lag - grey matter or cerebellum are commonly used as reference ROI;
+  - if you want, a ROI mask in functional space whose average signal will be used as reference to align the regressor (e.g. the $CO_2$ trace) and whose average hemodynamic lag will be set as 0-lag - gray matter or cerebellum are commonly used as reference ROI;
   - if you want to run ICA denoising, the timeseries of rejected and accepted components from tedana in two different files.
 
 ## Preparing the inputs
@@ -76,9 +76,9 @@ mask_file = os.path.join(ted_dir, f"{prefix}_desc-adaptiveGoodSignal_mask.nii.gz
 
 ### A reference ROI
 
-We use grey matter as the reference ROI.
-fMRIPrep provides a tissue segmentation in the space of the T1w image (`1` is grey matter),
-so we resample it onto the grid of the functional data and keep the grey matter voxels that are inside the brain mask.
+We use gray matter as the reference ROI.
+fMRIPrep provides a tissue segmentation in the space of the T1w image (`1` is gray matter),
+so we resample it onto the grid of the functional data and keep the gray matter voxels that are inside the brain mask.
 In addition to the files listed in [Download Data](00_Download_Data.md), this needs the segmentation:
 
 ```bash
@@ -104,7 +104,7 @@ roi = (dseg_img.get_fdata() == 1) & (mask_img.get_fdata() > 0)
 
 roi_file = os.path.join(out_dir, "gm_mask.nii.gz")
 nb.Nifti1Image(roi.astype(np.uint8), mask_img.affine).to_filename(roi_file)
-print(f"{roi.sum()} grey matter voxels out of {(mask_img.get_fdata() > 0).sum()} voxels in the mask")
+print(f"{roi.sum()} gray matter voxels out of {(mask_img.get_fdata() > 0).sum()} voxels in the mask")
 ```
 
 ### Accepted and rejected component timeseries
@@ -166,9 +166,9 @@ from phys2cvr.workflows import phys2cvr as p2c
 help(p2c)
 ```
 
-You may notice many and one potential parameters. `phys2cvr` is meant to be very versatile, but fear not! Only few of them are needed in different situations. For more info, check the [workflow API page](https://phys2cvr.readthedocs.io/en/latest/generated/phys2cvr.workflows.phys2cvr.html#phys2cvr.workflows.phys2cvr)
+You may notice many potential parameters. `phys2cvr` is meant to be very versatile, but fear not! Only a few of them are needed in different situations. For more info, check the [workflow API page](https://phys2cvr.readthedocs.io/en/latest/generated/phys2cvr.workflows.phys2cvr.html#phys2cvr.workflows.phys2cvr).
 
-As default, `phys2cvr` takes anything given to it and creates lagged regressors of the interpolated end-tidal of a given trace (that is, the $P_{ET}CO_2hrf$) after aligning it with a reference signal and convolving it with a canonical HRF. However, you can run a lag regression internally.
+By default, `phys2cvr` takes anything given to it and creates lagged regressors of the interpolated end-tidal of a given trace (that is, the $P_{ET}CO_2hrf$) after aligning it with a reference signal and convolving it with a canonical HRF. However, you can run a lag regression internally.
 Generally speaking, you may need these parameters - although only `fname_func` is mandatory:
 
 ```python
@@ -189,7 +189,7 @@ In terms of regressor for your CVR analysis, many options are supported:
   1. $CO_2$ traces (and their peak indices)
   2. pre-made $P_{ET}CO_2$ traces
   3. task designs (timeseries)
-  4. BOLD signals averages from a ROI mask.
+  4. BOLD signal averages from a ROI mask.
 
 
 ## $CO_2$ traces (and their peak indices)
@@ -198,7 +198,7 @@ You can get $CO_2$ traces (and their peak indices) with whatever program you wan
 
 ### A simulated $CO_2$ recording
 
-Normally you would start from the file exported by your gas analyser.
+Normally you would start from the file exported by your gas analyzer.
 As explained at the top of this page, we have no such file for these data, so we simulate one:
 a breathing rhythm of about 15 breaths per minute, in which each exhalation rises to an end-tidal value that drifts slowly around 38 mmHg.
 The recording is 60 seconds longer than the functional run, as a real one usually starts before the run and stops after it.
@@ -212,7 +212,7 @@ from scipy import signal
 
 
 def simulate_co2(duration, samp_freq, seed=0):
-    """Simulate a CO2 trace, in mmHg, as recorded by a gas analyser during free breathing."""
+    """Simulate a CO2 trace, in mmHg, as recorded by a gas analyzer during free breathing."""
     rng = np.random.default_rng(seed)
     n_samples = int(duration * samp_freq)
 
@@ -454,7 +454,7 @@ p2c(
 ```
 
 
-## BOLD signals averages from a ROI mask.
+## BOLD signal averages from a ROI mask
 
 This is the simplest way to run `phys2cvr`, using the average BOLD signal from a desired ROI.
 It needs no $CO_2$ recording at all, so here nothing is simulated.
@@ -510,8 +510,8 @@ Remember to cite the right papers and resources depending on the desired pipelin
 
 For more info about `phys2cvr`, as well as knowing what to cite in which case, check out [its documentation](https://phys2cvr.readthedocs.io/en/latest/index.html).
 
-Not a python person? Prefer to run bash CLI commands? Not a problem.
-`phys2cvr` is in fact primarily [designed to be used via bash CLI](https://phys2cvr.readthedocs.io/en/latest/usage/cli.html)
+Not a Python person? Prefer to run bash CLI commands? Not a problem.
+`phys2cvr` is in fact primarily [designed to be used via bash CLI](https://phys2cvr.readthedocs.io/en/latest/usage/cli.html).
 
 ```bash
 phys2cvr --help

@@ -14,14 +14,14 @@ kernelspec:
 
 ## How to approach setting multi-echo acquisition parameters
 
-There is no definitively optimal parameter set for multi-echo fMRI acquisition or any fMRI acqusition.
+There is no definitively optimal parameter set for multi-echo fMRI acquisition or any fMRI acquisition.
 The guidelines for optimizing parameters are similar to single-echo fMRI.
 An overall recommendation is to choose single-echo sequence parameters that meet the priorities of a study with regards to spatial resolution,
 spatial coverage, sample rate, signal-to-noise ratio, signal drop-out, distortion, and artifacts.
 Then make the least significant parameter changes needed to acquire multi-echo fMRI data.
 "Least significant" is study-specific.
 In one study, one might have a 1.5 sec TR with single echo
-and multi-echo echo is possible with a 1.75 sec TR without impacting study goals.
+and multi-echo is possible with a 1.75 sec TR without impacting study goals.
 In another study, slices might cover cortex and cerebellum with the largest plausible participant brains, but 10% less coverage would include full brain coverage for most participants and all key study-specific regions-of-interest.
 
 A minimum of 3 echoes is required for methods like [tedana](https://tedana.readthedocs.io/en/stable/index.html) that fit echoes to a decay curve.
@@ -29,7 +29,7 @@ There is typically at least one echo that is earlier and one that is later
 than the TE one would use for single-echo $T_2^*$ weighted fMRI.
 It is also important to make sure at least 3 echoes retain a useful amount of signal.
 On a 3T MRI, a few regions, particularly areas like orbitofrontal cortex, won't have sufficient signal for $TE\geq45ms$,
-and there will be more noticable signal loss with $TE\geq50ms$.
+and there will be more noticeable signal loss with $TE\geq50ms$.
 There are multi-echo fMRI studies that successfully use longer 3rd echo times,
 but being aware of this signal loss is important,
 and one might benefit from keeping echo times shorter if one is prioritizing
@@ -50,13 +50,13 @@ It is also useful to look at existing publications.
 - [Here is an often outdated list of multi-echo fMRI open datasets](https://me-ica.github.io/open-multi-echo-data/)
 that may be useful to visualize and measure data quality in datasets with similar scientific goals.
 
-[Here is a spreadsheet that shows possible acquisition parameters on a specfic 3T scanner](https://docs.google.com/spreadsheets/d/14iM6ENHrq9TGv6GhEe2dF9IzlM26y3aR9FmZGYXzmHA/edit?usp=sharing).
+[Here is a spreadsheet that shows possible acquisition parameters on a specific 3T scanner](https://docs.google.com/spreadsheets/d/14iM6ENHrq9TGv6GhEe2dF9IzlM26y3aR9FmZGYXzmHA/edit?usp=sharing).
 This is useful to get a sense of what is possible when evaluating parameter options.
 That is, one can see how much a TR will increase for 3, 4, and 5 echoes for a given
 set of parameters and how different parameter changes, such as more acceleration,
 will alter the echo times and the TR.
 Note that this spreadsheet maps a wide range of parameter options
-and that go beyond advisable options.
+that go beyond advisable options.
 Just because it is possible to collect data with in-slice acceleration of 3
 and multi-slice acceleration of 4
 (a $\sqrt{12}$ drop in signal-to-noise ratio & more artifacts)
@@ -68,8 +68,8 @@ Look at signal quality, artifacts, dropout,
 and if potential effects of interest are sufficiently statistically robust.
 
 ```{note}
-    There are other methods and use multi-echo acqusitions.
-    For example a **dual echo** method which uses a very early (a few milliseconds)
+    There are other methods that use multi-echo acquisitions.
+    For example, a **dual echo** method which uses a very early (a few milliseconds)
     first echo in order to clean data. For more information on this method, see [Bright and Murphy (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3518782/)
 ```
 
@@ -96,15 +96,15 @@ and make sure to run pilot scans to test your choices.
   By default the number of contrasts is 1, yielding a single-echo sequence.
   In order to collect multiple echoes,
   increase number of Contrasts on the **Sequence Tab, Part 1** on the MR console.
-- The Martinos Center at Harvard also has a MR sequence available, with the details
+- The Martinos Center at Harvard also has an MR sequence available, with the details
   [available here](https://www.nmr.mgh.harvard.edu/software/c2p/sms).
   The number of echoes can be specified on the **Sequence, Special** tab in this sequence.
 
 ### GE
 
 GE users can request access to the HyperMEPI ATSM sequence.
-Request can be made through [GE's WeConnect Portal](https://collaborate.mr.gehealthcare.com).
-This sequence has both hyperband,
+Requests can be made through [GE's WeConnect Portal](https://collaborate.mr.gehealthcare.com).
+This sequence has both hyperband
 (GE's term for simultaneous-multislice or multiband) and multi-echo.
 Depending on scanner and software version,
 GE scanners have a limit on the total number of slices that can be collected during a single acquisition.
@@ -156,7 +156,7 @@ fMRI sequences are also relevant.
 Choose sequence parameters that meet the priorities of a study with regards to spatial resolution,
 spatial coverage, sample rate, signal-to-noise ratio, signal drop-out, distortion, and artifacts.
 
-A minimum of 3 echoes is required for running the current implementation fo TE-dependent denoising in
+A minimum of 3 echoes is required for running the current implementation of TE-dependent denoising in
 ``tedana``.
 It may be useful to have at least one echo that is earlier and one echo that is later than the
 TE one would use for single-echo T2* weighted fMRI.
@@ -165,7 +165,7 @@ More than 3 echoes may be useful, because that would allow for more accurate
 estimates of BOLD and non-BOLD weighted fluctuations, but more echoes have an
 additional time cost, which would result in either less spatiotemporal coverage
 or more acceleration.
-Where the benefits of more echoes balance out the additional costs is an open research question.
+Whether the benefits of more echoes balance out the additional costs is an open research question.
 
 We are not recommending specific parameter options at this time.
 There are multiple ways to balance the slight time cost from the added echoes that have

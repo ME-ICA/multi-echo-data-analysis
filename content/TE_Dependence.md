@@ -26,7 +26,7 @@ The general flow of this chapter should be:
 1.  Explain the monoexponential decay equation, but primarily reference back to Signal_Decay.
 2.  Walk through optimal combination and adaptive masking somewhere around here.
 3.  Describe why multi-echo denoising can't be done directly to the raw signal and why ICA is necessary.
-    1.  This mean talking about noise, really, and why the FIT method (volume-wise T2*/S0 estimation)
+    1.  This means talking about noise, really, and why the FIT method (volume-wise T2*/S0 estimation)
         is generally considered too noisy for practical application.
     2.  Walk through TEDPCA as well.
 4.  The TE-(in)dependence models.
@@ -210,7 +210,7 @@ At some point, I would like to dig into why those parameter estimates are equiva
 
 ```{math}
 :label: te_independence_model1
-\frac{{\Delta}S(TE_k)}{\bar{S(TE_k)}} = \frac{{\Delta}S_0}{S_0}
+\frac{{\Delta}S(TE_k)}{\bar{S}(TE_k)} = \frac{{\Delta}S_0}{S_0}
 ```
 
 ```{math}
@@ -250,7 +250,7 @@ Lastly, we fit X to the data and evaluate model fit.
 ```
 
 $-{\Delta}{R_2^*}$ is a scalar, so we ignore it,
-which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise-signal) and $TE_k$ (echo time in milliseconds).
+which means we only use ${\bar{S}(TE_k)}$ (mean echo-wise signal) and $TE_k$ (echo time in milliseconds).
 
 Thus,
 
@@ -315,7 +315,7 @@ print("Delta S0 from results: {}".format(coeffs_S0[0] * mean_s0))
 For some reason, the predicted curve for the R2 model doesn't match the real signal curve.
 What's with this mismatch?
 
-It seems like the mismatch increases as the difference between the fluctuating volume's R2 and the mean R2 increase.
+It seems like the mismatch increases as the difference between the fluctuating volume's R2 and the mean R2 increases.
 The fitted curve seems to actually match the mean signal, not the perturbed signal!
 
 ```{code-cell} ipython3
@@ -398,7 +398,7 @@ Fitted curves for R2*-perturbed signal
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-# lstsq gives same result as model fit method by kundu, which is great to see
+# lstsq gives same result as model fit method by Kundu, which is great to see
 x, res, rank, sing = np.linalg.lstsq(X2, B, rcond=None)
 print(x[0])
 print(coeffs_R2)
@@ -612,7 +612,7 @@ where $v$ is the number of voxels in the brain mask and $t$ is the number of tim
 4.  $N$ is used to select rows from the mixing matrix $\mathbf{M}$ and columns from the parameter estimate matrix $\mathbf{B}$
     that correspond to non-ignored (i.e., accepted and rejected) components, forming reduced matrices $\mathbf{M}_N$ and $\mathbf{B}_N$.
     The normalized time series matrix for the combined ignored components and variance left unexplained by the ICA decomposition is then
-    computed by subtracting the scalar product of the non-ignored beta weight and mixing matrices from the normalized OC data time series
+    computed by subtracting the matrix product of the non-ignored beta weight and mixing matrices from the normalized OC data time series
     ($\mathbf{O_{z}}$).
     The result is referred to as the normalized residuals time series matrix ($\mathbf{R} \in \mathbb{R}^{v \times t}$).
 

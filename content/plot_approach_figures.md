@@ -269,7 +269,7 @@ glue_figure("fig_echo_scatter2", fig, display=False)
 :name: fig_echo_scatter2
 :align: center
 
-Scatter plot of voxel's values by echo time.
+Scatter plot of a voxel's values by echo time.
 ```
 
 ### Adaptive mask
@@ -334,7 +334,7 @@ glue_figure("fig_loglin_scatter", fig, display=False)
 :name: fig_loglin_scatter
 :align: center
 
-Scatter plot of voxel's signal for each echo, after log-linear transformation.
+Scatter plot of a voxel's signal for each echo, after log-linear transformation.
 ```
 
 ### Log-linear model
@@ -401,7 +401,7 @@ glue_figure("fig_loglin_scatter_with_line", fig, display=False)
 :name: fig_loglin_scatter_with_line
 :align: center
 
-Scatter plot of voxel's signal for each echo, after log-linear transformation, with fitted line.
+Scatter plot of a voxel's signal for each echo, after log-linear transformation, with fitted line.
 ```
 
 ## Monoexponential decay model
@@ -447,7 +447,7 @@ glue_figure("fig_loglin_scatter_with_t2s", fig, display=False)
 :name: fig_loglin_scatter_with_t2s
 :align: center
 
-Scatter plot of voxel's signal for each echo, after log-linear transformation, with fitted line and T2* estimate.
+Scatter plot of a voxel's signal for each echo, with the fitted monoexponential decay curve and the S0 and T2* estimates.
 ```
 
 ### T2*
@@ -480,7 +480,7 @@ glue_figure("fig_scatter_with_t2s", fig, display=False)
 :name: fig_scatter_with_t2s
 :align: center
 
-Scatter plot of voxel's signal for each echo with T2* estimate.
+Scatter plot of a voxel's signal for each echo with T2* estimate.
 ```
 ### Optimal combination weights
 
@@ -539,7 +539,7 @@ glue_figure("fig_scatter_with_optcom", fig, display=False)
 :name: fig_scatter_with_optcom
 :align: center
 
-Scatter plot of voxel's signal for each echo with optimally combined signal as well.
+Scatter plot of a voxel's signal for each echo with optimally combined signal as well.
 ```
 
 ### Optimally combined timeseries
@@ -670,12 +670,12 @@ glue_figure("fig_ica_timeseries", fig, display=False)
 Time series of three ICA components.
 ```
 
-## $R_2$ and $S_0$ Model Fit
+## $R_2^*$ and $S_0$ Model Fit
 Linear regression is used to fit the component timeseries to each voxel in each echo from the original, echo-specific data.
 This results in echo- and voxel-specific betas for each of the components.
-TE-dependence ($R_2$) and TE-independence ($S_0$) models can then be fit to these betas.
+TE-dependence ($R_2^*$) and TE-independence ($S_0$) models can then be fit to these betas.
 
-These models allow calculation of F-statistics for the $R_2$ and $S_0$ models (referred to as $\kappa$ and $\rho$, respectively).
+These models allow calculation of F-statistics for the $R_2^*$ and $S_0$ models (referred to as $\kappa$ and $\rho$, respectively).
 
 Note that the values here are for a single voxel (the highest-weighted one for the component),
 but $\kappa$ and $\rho$ are averaged across voxels.
@@ -712,7 +712,7 @@ for i_comp, comp in enumerate(comps_to_plot):
         echo_times, s0_pred_weights, c="red", label="Predicted S0 model values"
     )
 
-    # Set yticklabels
+    # Set y-axis limits
     temp = np.hstack((comp_weights, s0_pred_weights, r2_pred_weights))
     lim = np.mean(temp) * 0.05
     axes[i_comp].set_ylim(np.floor(np.min(temp)) - lim, np.ceil(np.max(temp)) + lim)

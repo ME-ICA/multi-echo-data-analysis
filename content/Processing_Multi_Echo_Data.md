@@ -56,7 +56,7 @@ Therefore, we suggest using the same slice timing for all echoes in an ME-EPI se
 
 Any step that will alter the relationship of signal magnitudes between echoes should occur after denoising and combining
 of the echoes.
-For example, if echo is separately scaled by its mean signal over time,
+For example, if each echo is separately scaled by its mean signal over time,
 then resulting intensity gradients and the subsequent calculation of voxelwise T2* values will be distorted or incorrect.
 An aggressive temporal filter (e.g., a 0.1Hz low pass filter)
 or spatial smoothing could similarly distort the relationship between the echoes at each time point.
@@ -65,7 +65,7 @@ or spatial smoothing could similarly distort the relationship between the echoes
 We are assuming that spatial normalization and distortion correction,
 particularly non-linear normalization methods with higher order interpolation functions,
 are likely to distort the relationship between echoes while rigid body motion correction would linearly alter each echo in a similar manner.
-This assumption has not yet been empirically tested and an affine normalzation with bilinear interpolation may not distort the relationship between echoes.
+This assumption has not yet been empirically tested and an affine normalization with bilinear interpolation may not distort the relationship between echoes.
 Additionally, there are benefits to applying only one spatial transform to data rather than applying one spatial
 transform for motion correction and a later transform for normalization and distortion correction.
 Our advice against doing normalization and distortion correction is a conservative choice and we encourage additional
