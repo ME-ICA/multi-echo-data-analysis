@@ -12,27 +12,6 @@ kernelspec:
 
 # BOLD, non-BOLD, and TE-dependence with tedana
 
-```{important}
-This chapter should differentiate itself from Signal_Decay by focusing on the application of {eq}`monoexponential_decay`
-to decompositions, rather than raw signal compared between active and inactive states.
-```
-
-```{important}
-The general flow of this chapter should be:
-
-1.  Explain the monoexponential decay equation, but primarily reference back to Signal_Decay.
-2.  Walk through optimal combination and adaptive masking somewhere around here.
-3.  Describe why multi-echo denoising can't be done directly to the raw signal and why ICA is necessary.
-    1.  This means talking about noise, really, and why the FIT method (volume-wise T2*/S0 estimation)
-        is generally considered too noisy for practical application.
-    2.  Walk through TEDPCA as well.
-4.  The TE-(in)dependence models.
-5.  Apply the models to a simulated component, as well as multiple real components.
-    1.  Show model fit for different components.
-6.  Compare optimally combined, denoised, and high-kappa data.
-7.  Describe post-processing methods, like minimum image regression and tedana's version of global signal regression.
-```
-
 In [](Signal_Decay.md), we saw that changes in $S_{0}$ and changes in $T_{2}^{*}$ affect multi-echo data in different ways,
 and that this is what lets multi-echo data tell them apart.
 This chapter turns that observation into a test.
@@ -960,7 +939,19 @@ One of several post-processing strategies may be applied to the MEDN or MEHK dat
 Methods that have been used in the past include global signal regression (GSR),
 {prf:ref}`minimum image regression <minimum-image-regression>` (MIR), anatomical CompCor,
 Go Decomposition (GODEC), and robust PCA.
-`tedana` implements GSR and MIR.
+`tedana` implements GSR and MIR (the `gscontrol` option), and they work at different stages of the pipeline.
+
+`tedana`'s version of GSR is applied *before* the decomposition,
+to the optimally combined data and to each echo.
+Rather than averaging the signal across the brain, as standard GSR does,
+it removes slow drifts from the optimally combined data and takes the minimum of each voxel's time series,
+which gives a spatial map of the global signal.
+It then estimates the time course of that map by regression
+and regresses the time course out of the optimally combined data and each echo.
+
+MIR is applied *after* the decomposition, to the MEDN and MEHK data,
+and it estimates the global signal from the BOLD-like (accepted) components only.
+`tedana`'s documentation notes that the benefits and drawbacks of both options are not yet clear.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
