@@ -38,16 +38,19 @@ def load_pafin(data_path):
     }
 
 
-def load_diva(data_path):
-    """Collect the files of the DIVA localizer run used in the task and external regressor pages.
+def load_diva(data_path, task="localizerDetection"):
+    """Collect the files of a DIVA localizer run.
 
-    The run is ``sub-Blossom/ses-02``'s ``localizerDetection`` run from the Dense Investigation
+    The runs are ``sub-Blossom/ses-02``'s localizer runs from the Dense Investigation
     of Variability of Affect dataset (ds002278).
+    ``localizerDetection`` (the default) is the block-design run used in the task and
+    external regressor pages, and ``localizerEstimation`` is the event-related run used
+    in the deconvolution page.
     The raw dataset supplies the events, the physiological recording and the echo times.
     The fMRIPrep derivatives supply the preprocessed echoes (in the space of the run's
     BOLD reference), the brain mask, the confounds and the transforms.
     """
-    prefix = "sub-Blossom_ses-02_task-localizerDetection_run-1"
+    prefix = f"sub-Blossom_ses-02_task-{task}_run-1"
     raw_dir = os.path.join(data_path, "ds002278/sub-Blossom/ses-02/func")
     func_dir = os.path.join(data_path, "ds002278-fmriprep/sub-Blossom/ses-02/func")
     anat_dir = os.path.join(data_path, "ds002278-fmriprep/sub-Blossom/ses-02/anat")
@@ -103,21 +106,31 @@ def sphere_mask(reference_img, center, radius):
     return image.new_img_like(reference_img, inside.reshape(reference_img.shape[:3]).astype(np.uint8))
 
 
-def warp_mni_roi_to_run(roi_img, data):
-    """Warp a binary ROI from MNI152NLin2009cAsym space to the space of a run's BOLD reference.
+def warp_mni_to_run(img, data):
+    """Warp a mask or atlas from MNI152NLin2009cAsym space to the space of a run's BOLD reference.
 
     ``data`` is the dictionary returned by :func:`load_diva`.
-    NiTransforms maps each voxel of the reference (the BOLD reference) to the moving image
-    (the ROI), so the chain goes from the BOLD reference to the T1w image
+    NiTransforms maps each voxel of the reference (the BOLD reference) to the moving image,
+    so the chain goes from the BOLD reference to the T1w image
     (the inverse of fMRIPrep's coregistration) and then from the T1w image to the template.
-    The warped ROI is limited to the brain mask.
+    Nearest-neighbor interpolation keeps the values of a mask or an atlas intact.
     """
     import nitransforms as nit
 
     run_to_t1w = nit.linear.load(data["run_to_t1w"], fmt="itk")
     mni_to_t1w = nit.manip.load(data["mni_to_t1w"], fmt="itk")
     run_to_mni = nit.manip.TransformChain([~run_to_t1w, *mni_to_t1w.transforms])
-    roi_run = nit.resampling.apply(run_to_mni, roi_img, reference=data["boldref"], order=0)
+    return nit.resampling.apply(run_to_mni, img, reference=data["boldref"], order=0)
+
+
+def warp_mni_roi_to_run(roi_img, data):
+    """Warp a binary ROI from MNI152NLin2009cAsym space to the space of a run's BOLD reference.
+
+    ``data`` is the dictionary returned by :func:`load_diva`.
+    See :func:`warp_mni_to_run` for the transforms.
+    The warped ROI is limited to the brain mask.
+    """
+    roi_run = warp_mni_to_run(roi_img, data)
     return image.math_img("(roi > 0.5) & (mask > 0)", roi=roi_run, mask=data["mask"])
 
 
