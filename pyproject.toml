@@ -19,7 +19,7 @@ dependencies = [
     "numpy>=2.3; python_version >= '3.11'",
     "pyspfm==2.0.2",
     "peakdet==0.6.1",
-    "phys2cvr==0.28.4",
+    "phys2cvr==0.35.0",
     "seaborn",
     "sphinx>=4",
     "sphinx-inline-tabs",
