@@ -66,7 +66,7 @@ jobs:
         run: rm -rf _build/html/reports _build/html/.buildinfo _build/html/_sphinx_design_static
 
       - name: Upload the site
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _build/html
 
