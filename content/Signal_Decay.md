@@ -47,7 +47,22 @@ The general flow of this chapter should be:
 
 In this chapter, we illustrate how BOLD signal decays and how we can glean useful information from that decay rate.
 
-To do this, we will use a combination of simulated and real multi-echo data.
+Throughout the chapter, we describe the signal with the monoexponential decay model:
+
+```{math}
+:label: monoexponential_decay_signal
+S(TE) = S_{0} e^{-TE / T_{2}^{*}} = S_{0} e^{-TE \cdot R_{2}^{*}}
+```
+
+$S_{0}$ is the signal we would measure at $TE = 0$, before any decay has happened.
+$T_{2}^{*}$ is the time constant of the decay: the longer $T_{2}^{*}$ is, the more slowly the signal fades.
+$R_{2}^{*} = 1 / T_{2}^{*}$ is the same quantity expressed as a decay *rate*.
+The BOLD effect works through $T_{2}^{*}$:
+when local blood oxygenation increases, there is less deoxygenated hemoglobin to disturb the magnetic field,
+so $T_{2}^{*}$ gets longer and the signal decays more slowly.
+Many sources of noise, such as head motion and inflow, instead change $S_{0}$.
+
+To illustrate this, we will use a combination of simulated and real multi-echo data.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -82,6 +97,9 @@ os.makedirs(out_dir, exist_ok=True)
 data = load_pafin(data_path)
 ted_dir = os.path.join(data_path, "tedana")
 n_echoes = len(data['echo_times'])
+# Exact echo times in milliseconds, for model fitting
+tes_ms = np.array(data['echo_times']) * 1000
+# Echo times rounded to whole milliseconds, for indexing the simulated curves below
 data['echo_times'] = [int(np.round(te * 1000)) for te in data['echo_times']]
 
 pal = sns.color_palette("cubehelix", n_echoes)
@@ -236,6 +254,145 @@ glue_figure("fig_echo_timeseries", fig, display=False)
 
 Time series from a voxel for each echo.
 ```
+
+## Estimating $S_{0}$ and $T_{2}^{*}$ from the decay
+
+With several echoes, we can estimate the two parameters of {eq}`monoexponential_decay_signal` for each voxel.
+Fitting an exponential curve directly is possible, but there is a simpler way.
+Taking the natural logarithm of both sides of {eq}`monoexponential_decay_signal` turns the curve into a straight line:
+
+```{math}
+:label: log_linear_model
+\ln S(TE) = \ln S_{0} - R_{2}^{*} \cdot TE
+```
+
+So if we plot $\ln S$ against $TE$, the intercept of the line is $\ln S_{0}$ and its slope is $-R_{2}^{*}$,
+and both can be estimated with ordinary least squares.
+This "log-linear" fit is fast, and it is the default in `tedana` (`fittype="loglin"`).
+`tedana` also offers a nonlinear fit of the exponential curve (`fittype="curvefit"`), which is slower.
+
+Below, we fit the model to the voxel from {numref}`fig_echo_scatter`.
+We fit all of the volumes at once, so we get a single $S_{0}$ and $T_{2}^{*}$ that describe the voxel's average decay.
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+# Log-transform the data. Like tedana, we add 1 to avoid taking the log of zero.
+# With signal values in the thousands, this makes no practical difference.
+log_ts = np.log(np.abs(ts_1d) + 1)
+
+# One row per volume per echo: an intercept and the negative echo time
+design = np.column_stack([np.ones(n_echoes), -tes_ms])
+design = np.repeat(design, n_trs, axis=0)
+intercept, r2s_fit = np.linalg.lstsq(design, log_ts, rcond=None)[0]
+s0_fit = np.exp(intercept)
+t2s_fit = 1 / r2s_fit
+
+glue("s0_fit", float(s0_fit), display=False)
+glue("t2s_fit", float(t2s_fit), display=False)
+
+fit_tes = np.linspace(0, 120, 241)
+fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+
+# Panel A: log-transformed data and the fitted line
+for i_echo in range(n_echoes):
+    axes[0].scatter(
+        np.full(n_trs, tes_ms[i_echo]),
+        np.log(np.abs(ts[i_echo]) + 1),
+        alpha=0.05,
+        color=pal[i_echo],
+    )
+
+axes[0].plot(fit_tes, intercept - r2s_fit * fit_tes, color="black", linewidth=2)
+axes[0].annotate(
+    (
+        f"intercept = $\\ln S_0$ = {intercept:.2f}\n"
+        f"slope = $-R_2^*$ = {-r2s_fit:.4f} ms$^{{-1}}$"
+    ),
+    xy=(0.04, 0.06),
+    xycoords="axes fraction",
+    fontsize=14,
+    bbox=dict(fc="white", ec="gray", lw=1),
+)
+axes[0].set_title("A. Log-transformed signal is linear in TE", fontsize=18, loc="left")
+axes[0].set_ylabel("ln(signal)", fontsize=16)
+
+# Panel B: original data and the fitted exponential curve
+for i_echo in range(n_echoes):
+    axes[1].scatter(
+        np.full(n_trs, tes_ms[i_echo]),
+        ts[i_echo],
+        alpha=0.05,
+        color=pal[i_echo],
+    )
+
+axes[1].plot(fit_tes, s0_fit * np.exp(-fit_tes / t2s_fit), color="black", linewidth=2)
+axes[1].scatter(0, s0_fit, marker="*", s=400, color="red", clip_on=False, zorder=3)
+axes[1].annotate(
+    f"$S_0$ = {s0_fit:.0f}",
+    xy=(0, s0_fit),
+    xytext=(8, s0_fit),
+    fontsize=14,
+    va="center",
+)
+axes[1].plot(
+    [t2s_fit, t2s_fit, 0],
+    [0, s0_fit / np.e, s0_fit / np.e],
+    color="blue",
+    linestyle="--",
+)
+axes[1].annotate(
+    (
+        f"At TE = $T_2^*$ = {t2s_fit:.1f} ms,\n"
+        "the signal has decayed to\n"
+        f"1/e (37%) of $S_0$"
+    ),
+    xy=(t2s_fit, s0_fit / np.e),
+    xytext=(15, s0_fit * 0.12),
+    fontsize=14,
+    arrowprops=dict(arrowstyle="->", color="blue"),
+)
+axes[1].set_title("B. The same fit as an exponential curve", fontsize=18, loc="left")
+axes[1].set_ylabel("Signal", fontsize=16)
+axes[1].set_ylim(0, np.ceil(s0_fit / 1000) * 1000 + 1000)
+
+for ax in axes:
+    ax.set_xlabel("Echo Time (ms)", fontsize=16)
+    ax.set_xlim(0, 120)
+    ax.set_xticks(np.round(tes_ms, 1))
+    ax.tick_params(axis="both", which="major", labelsize=12)
+
+fig.tight_layout()
+glue_figure("fig_decay_fit", fig, display=False)
+```
+
+```{figure} figures/fig_decay_fit.png
+:name: fig_decay_fit
+:align: center
+
+The monoexponential model fit to one voxel.
+(A) After a log transform, the signal falls on a straight line,
+whose intercept and slope give $S_{0}$ and $R_{2}^{*}$.
+(B) The same fit, shown on the original scale.
+The red star marks $S_{0}$, and the dashed blue lines mark $T_{2}^{*}$,
+the echo time at which the signal has decayed to 37% of $S_{0}$.
+```
+
+For this voxel, the fit gives $S_{0}$ ≈ {glue:text}`s0_fit:.0f` and $T_{2}^{*}$ ≈ {glue:text}`t2s_fit:.1f` ms.
+$T_{2}^{*}$ has a simple interpretation:
+it is the echo time at which the signal has decayed to $1/e$, or about 37%, of $S_{0}$.
+This voxel's $T_{2}^{*}$ is longer than is typical for gray matter at 3T (roughly 40-55 ms).
+We chose the voxel because it has strong BOLD fluctuations, not because its decay is typical,
+and [](T2star_S0_Variability.md) describes why $T_{2}^{*}$ varies so much from voxel to voxel.
+
+There are two things to keep in mind.
+First, the fit is only as good as the echoes that go into it.
+In regions with strong signal dropout, such as orbitofrontal cortex,
+the later echoes contain almost nothing but noise,
+so `tedana` builds an *adaptive mask* that limits the fit in each voxel to the echoes with good signal
+(see [](TE_Dependence.md)).
+Second, the values we estimated here describe the voxel's *average* decay.
+In the next section, we look at how $S_{0}$ and $T_{2}^{*}$ change from one volume to the next,
+and why we need multiple echoes to tell those changes apart.
 
 ## The impact of $T_{2}^{*}$ and $S_{0}$ fluctuations on BOLD signal
 

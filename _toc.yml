@@ -21,7 +21,6 @@ parts:
     - file: content/Signal_Decay
     - file: content/T2star_S0_Variability
     - file: content/TE_Dependence
-    - file: content/plot_approach_figures.md
   - caption: Practical Resources
     chapters:
     - file: content/Multi_Echo_Datasets
