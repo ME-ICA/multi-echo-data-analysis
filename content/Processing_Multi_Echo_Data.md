@@ -61,7 +61,7 @@ then resulting intensity gradients and the subsequent calculation of voxelwise T
 An aggressive temporal filter (e.g., a 0.1Hz low pass filter)
 or spatial smoothing could similarly distort the relationship between the echoes at each time point.
 
-## Pipeline-specific recommendations
+## 4. Pipeline-specific recommendations
 
 When using automated pipelines like `fMRIPrep`, it is important to carefully verify the status of the output, minimally 
 preprocessed data to ensure that it is in the correct format for multi-echo denoising in `tedana`.
