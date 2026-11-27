@@ -19,8 +19,8 @@ parts:
     - file: content/MR_Physics
     - file: content/fMRI_Sequences
     - file: content/Signal_Decay
-    - file: content/T2star_S0_Variability
     - file: content/TE_Dependence
+    - file: content/plot_approach_figures.md
   - caption: Practical Resources
     chapters:
     - file: content/Multi_Echo_Datasets
@@ -37,8 +37,6 @@ parts:
     - url: https://me-ica.github.io/rica/
       title: Manual Classification with rica
     - file: content/08_ICA_Based_Denoising.md
-    - file: content/09_External_Regressors.md
-    - file: content/10_Task_Analysis.md
   - caption: Final Thoughts
     chapters:
     - file: content/bibliography.md

@@ -14,11 +14,11 @@ kernelspec:
 
 ## The first two decades of multi-echo fMRI
 
-{cite:p}`POSSE2012665` includes a historical overview of multi-echo acquisition and research.
+{cite:p}`POSSE2012665` includes an historical overview of multi-echo acquisition and research.
 Multi-echo fMRI is sometimes discussed as a newer method, but it's as old as fMRI.
 Much of this work set up the theory and empirical measurements that drive continued innovation in multi-echo methods.
 Early work trying to understand BOLD responses to neural activity used multi-echo sequences {cite:p}`menon19934-e70`.
-Multi-echo fMRI is effectively sampling the same free induction decay curve
+Multi-echo fMRI is effectively sampling the same frequency induced decay curve
 as in NMR spectroscopy, and some of the early work in this area called itself functional spectroscopy {cite:p}`hennig1994detection-075,speck1998functional-366`.
 
 {cite:p}`posse1999enhancement-176` built on much of this work to show how taking the weighted sum of multiple echoes can improve fMRI results over single-echo fMRI.
@@ -50,7 +50,7 @@ The appendix of {cite:p}`dipasquale2017comparing` includes some recommendations 
 While multi-echo fMRI is old, through the 2000s it was mostly used by MRI physicists and methodology researchers.
 There are several reasons for this.
 MRI hardware and pulse sequences were too slow to collect a whole-brain fMRI volume in 2 seconds.
-Much of the earlier work used slabs of the brain or even just a few slices.
+Much of the earlier work used slabs of the brain or even a just a few slices.
 One could get most of cortex in 2 seconds using in-slice acceleration, but even then there was an additional challenge.
 Even though collecting multi-echo data is a relatively minor tweak in standard fMRI pulse sequences,
 most pulse sequences that could be used to collect multi-echo fMRI data were research sequences that were
@@ -58,8 +58,8 @@ passed researcher-to-researcher by request.
 None of the mainstream vendors distributed a multi-echo fMRI sequence that users who weren't MRI experts could just run.
 In the mid-2010s several things came together to address the above challenges.
 Simultaneous multi-slice acceleration {cite:p}`setsompop2012blipped-controlled-1a0` and improvements in hardware meant that it was possible to collect whole-brain multi-echo fMRI data with minimal compromises.
-Research sequences that included multi-echo acquisition started to get shared more widely.
-Of particular note, the CMRR Multi-band sequence that was used for the Human Connectome Project on Siemens scanners added multi-echo acquisition in 2014.
+Research sequences that included multi-echo acqusition started to get shared more widely.
+Of particular note, the CMRR Multi-band sequence that was used for the Human Connectome Project on Siemens scanners added multi-echo acqusition in 2014.
 While this was a research sequence, since it was widely accessible and used,
 it greatly expanded the number of researchers who could easily acquire multi-echo data.
 
@@ -67,7 +67,7 @@ The growth in users was paralleled with a growth in community.
 Researchers from multiple sites came together to build [tedana](https://tedana.readthedocs.io)
 which is both a platform to run a range of methods that build on the MEICA approach,
 and community resources that make it easier for researchers to learn about and use
-multi-echo fMRI. This book is one product of this community work.
+multi-echo fMRI. The book is one product of this community work.
 
 
 

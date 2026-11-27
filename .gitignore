@@ -2,8 +2,7 @@
 data/
 _build/
 
-# Generated figures (written while notebooks execute; shipped to CI in the
-# execution bundle, see scripts/execution_bundle.py)
+# Generated figures (copied to docs/_images/ by Sphinx during build)
 content/figures/
 content/ds006185/
 ds006185/

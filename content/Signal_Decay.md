@@ -12,35 +12,42 @@ kernelspec:
 
 # Signal Decay
 
-In this chapter, we illustrate how BOLD signal decays and how we can glean useful information from that decay rate.
-
-Throughout the chapter, we describe the signal with the monoexponential decay model:
-
-```{math}
-:label: monoexponential_decay_signal
-S(TE) = S_{0} e^{-TE / T_{2}^{*}} = S_{0} e^{-TE \cdot R_{2}^{*}}
+```{important}
+This chapter should differentiate itself from TE_Dependence by focusing on the application of {eq}`monoexponential_decay`
+to raw signal, rather than decompositions.
 ```
 
-$S_{0}$ is the signal we would measure at $TE = 0$, before any decay has happened.
-$T_{2}^{*}$ is the time constant of the decay: the longer $T_{2}^{*}$ is, the more slowly the signal fades.
-$R_{2}^{*} = 1 / T_{2}^{*}$ is the same quantity expressed as a decay *rate*.
-The BOLD effect works through $T_{2}^{*}$:
-when local blood oxygenation increases, there is less deoxygenated hemoglobin to disturb the magnetic field,
-so $T_{2}^{*}$ gets longer and the signal decays more slowly.
-Many sources of noise, such as head motion and inflow, instead change $S_{0}$.
+```{important}
+The general flow of this chapter should be:
 
-The monoexponential model is an approximation.
-A voxel contains several pools of water, such as water in tissue, in blood, in cerebrospinal fluid, and trapped between layers of myelin,
-and each pool decays at its own rate.
-The decay of the whole voxel is therefore better described by a sum of exponentials,
-such as a biexponential model with two pools.
-However, each extra pool adds parameters to estimate,
-and multi-echo fMRI usually has only three to five echoes per volume, each with its own noise,
-which is not enough to estimate those extra parameters reliably.
-For that reason, multi-echo fMRI methods, including all of the ones in this book, use the monoexponential model.
-[](T2star_S0_Variability.md) shows what happens when a monoexponential model is fit to decay that is not monoexponential.
+1.  Explain the monoexponential decay equation.
+    1.  Mention other models of signal decay, including biexponential models,
+        and why they generally aren't used on multi-echo fMRI data.
+2.  Show signal decay in real data.
+    1.  Start with single-volume brain images across increasing echo times.
+    2.  Next, show a scatter plot of the values for a single voxel over time, separated by echo time,
+        to give a better sense of the scale of the decay.
+    3.  Line plots of the different echo times for a single voxel to show that decay is not a simple scalar.
+3.  Show a simulated, static decay curve.
+4.  Show the difference in decay curves for "active" and "inactive" states in the same voxel (i.e., different T2* values).
+5.  Show how single-echo data fluctuate over time, given an underlying signal.
+6.  Add a changing decay curve underneath the single-echo data point.
+7.  Overlay points for the changing T2* and S0 values as well.
+8.  Plot the decay curves of the same relative fluctuations, but dependent solely on S0 or T2* changes.
+9.  Overlay single-echo data points on the fluctuating decay curves,
+    to show how the two types of fluctuations cannot be dissociated using single-echo data.
+    1.  Plot scaled T2* against the single-echo data in a line plot. The time series will be very similar, but slightly different.
+    2.  Plot scaled S0 against the single-echo data. The time series will effectively be the same.
+    3.  Point out that we don't know the underlying T2* or S0 fluctuations,
+        so this just shows how very similar signal can come from T2* _or_ S0.
+10. Overlay multi-echo data points on the fluctuating decay curves, to show how the differences in the patterns are much clearer.
+11. Discuss the effect of noise on the multi-echo signal. Perhaps plot a single voxel's real values?
+12. Point to the TE Dependence chapter.
+```
 
-To illustrate this, we will use a combination of simulated and real multi-echo data.
+In this chapter, we illustrate how BOLD signal decays and how we can glean useful information from that decay rate.
+
+To do this, we will use a combination of simulated and real multi-echo data.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -48,7 +55,6 @@ import json
 import os
 from glob import glob
 
-import matplotlib
 import matplotlib.pyplot as plt
 import nibabel as nb
 import numpy as np
@@ -76,13 +82,9 @@ os.makedirs(out_dir, exist_ok=True)
 data = load_pafin(data_path)
 ted_dir = os.path.join(data_path, "tedana")
 n_echoes = len(data['echo_times'])
-# Exact echo times in milliseconds, for model fitting
-tes_ms = np.array(data['echo_times']) * 1000
-# Echo times rounded to whole milliseconds, for indexing the simulated curves below
 data['echo_times'] = [int(np.round(te * 1000)) for te in data['echo_times']]
 
-# Drop the last cubehelix color, which is too light to see on a white background
-pal = sns.color_palette("cubehelix", n_echoes + 1)[:n_echoes]
+pal = sns.color_palette("cubehelix", n_echoes)
 
 img = image.index_img(data['echo_files'][0], 0)
 arr = img.get_fdata()
@@ -124,7 +126,7 @@ voxel_idx = np.where(
 
 # Extract the time series for the high-kappa voxel
 # ts is rounded to make it more likely the figures are consistent when generated on different computers
-#  This hopefully avoids unnecessary new files in the git history.
+#  This hopefully avoids unncessary new files in the git history.
 arr = [masking.apply_mask(f, mask) for f in data['echo_files']]
 ts = np.round([d[:, voxel_idx] for d in arr], decimals=5)
 ts_1d = np.hstack(ts)
@@ -141,34 +143,25 @@ The data we use is a single resting-state run, with five echo times.
 :tags: [hide-cell, hide-output]
 plt.style.use("dark_background")
 
-fig, axes = plt.subplots(figsize=(16, 15), nrows=len(data['echo_files']))
-fig.subplots_adjust(left=0, right=0.92, top=0.97, bottom=0.01, hspace=0.15)
-# Use the same intensity range for every echo, so that the decay is visible
-vmax = np.max(imgs[0].get_fdata())
+fig, axes = plt.subplots(figsize=(26, 16), nrows=len(data['echo_files']))
 for i_echo, img in enumerate(imgs):
+    te = data['echo_times'][i_echo]
+    if i_echo == 0:
+        arr = img.get_fdata()
+        vmax = np.max(arr)
+
     plotting.plot_epi(
         img,
         cut_coords=[-15, 0, 15, 30, 45],
         display_mode="z",
         annotate=False,
         draw_cross=False,
-        colorbar=False,
         axes=axes[i_echo],
         figure=fig,
-        vmin=0,
         vmax=vmax,
         cmap="gray",
     )
-    axes[i_echo].set_title(f"TE = {tes_ms[i_echo]:.1f} ms", fontsize=18, pad=0)
-
-# One colorbar for all of the echoes
-cax = fig.add_axes([0.93, 0.25, 0.012, 0.5])
-cbar = fig.colorbar(
-    matplotlib.cm.ScalarMappable(norm=matplotlib.colors.Normalize(0, vmax), cmap="gray"),
-    cax=cax,
-)
-cbar.set_label("Signal", fontsize=16)
-cbar.ax.tick_params(labelsize=12)
+    axes[i_echo].set_title("TE={}ms".format(te), fontsize=20, pad=0)
 
 glue_figure("fig_brain_decay", fig, display=False)
 
@@ -180,33 +173,26 @@ plt.style.use("default")
 :name: fig_brain_decay
 :align: center
 
-The first volume of each echo, shown as axial slices from the bottom (left) to the top (right) of the brain,
-with the same intensity scale for every echo.
+Signal decay in the brain.
 ```
 
-As the echo time increases, the whole brain gets darker, because the signal has had more time to decay.
-This means that later echoes have a lower signal-to-noise ratio (SNR) than earlier ones.
-The decay is not the same everywhere, though.
-Near the sinuses and ear canals (left two columns), the signal is almost gone by the third echo,
-because $T_{2}^{*}$ is very short there.
-The ventricles, on the other hand, become *brighter* than the surrounding tissue at later echoes,
-because the cerebrospinal fluid that fills them has a long $T_{2}^{*}$ and decays slowly.
-This difference in brightness between tissues is $T_{2}^{*}$-weighted contrast,
-which reflects differences in the *average* $T_{2}^{*}$ of each tissue.
-It is not the same thing as BOLD contrast, which comes from small *changes* in $T_{2}^{*}$ over time.
-[](T2star_S0_Variability.md) describes why the average $T_{2}^{*}$ varies across the brain.
+The nature of multi-echo (ME) acquisition leads to signal decay, with high signal-to-noise ratio (SNR) at short echo times (TE) and lower SNR at longer TEs.
+You may notice that the images appear darker as the signal decays with increasing TE.
+Additionally, image contrast tends to increase with longer echo times.
 
 ### Echo-specific data and echo time
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
 fig, ax = plt.subplots(figsize=(14, 6))
+values = [i[0] for i in ts]
 for i_echo in range(n_echoes):
-    ax.scatter(np.full(n_trs, tes_ms[i_echo]), ts[i_echo], alpha=0.05, color=pal[i_echo])
+    rep_echo_times = np.round(np.ones(n_trs) * data['echo_times'][i_echo], decimals=5)
+    ax.scatter(rep_echo_times, ts[i_echo], alpha=0.05, color=pal[i_echo])
 
-ax.set_ylabel("Signal", fontsize=16)
+ax.set_ylabel("BOLD signal", fontsize=16)
 ax.set_xlabel("Echo Time (ms)", fontsize=16)
-ax.set_xticks(np.round(tes_ms, 1))
+ax.set_xticks(data['echo_times'])
 ax.tick_params(axis="both", which="major", labelsize=14)
 ax.set_xlim(0, 120)
 ax.set_ylim(0, 25000)
@@ -218,22 +204,14 @@ glue_figure("fig_echo_scatter", fig, display=False)
 :name: fig_echo_scatter
 :align: center
 
-The signal of a single voxel at each echo time.
-Each point is one volume of the run.
+Scatter plot of voxel's values by echo time.
 ```
 
-Here, we plot the signal of a single voxel in every volume of the run, at each of the five echo times.
-As expected, the signal decreases as the echo time increases.
-Notice also that the spread of the points, which reflects how much the signal fluctuates over time,
-is smallest at the first echo, even though the signal is largest there.
-This voxel was chosen because it has strong BOLD fluctuations,
-and BOLD fluctuations have little effect at short echo times.
-We will see why later in this chapter.
+Here, we visualize the temporal variation of a single voxel’s signal (y-axis) across four different echo times (TE) on the x-axis. As expected, the signal magnitude decreases with increasing TE.
 
 ### The signal itself changes with echo time as well
 
-Let us visualize the time series of the same voxel at each echo time.
-While the overall scale of the signal decreases with echo time, the pattern of the signal changes as well.
+Let us visualize the time series of one voxel acquired at different echo times. While the overall scale of the signal decreases with echo time, the actual pattern of the signal changes as well.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -241,16 +219,13 @@ fig, axes = plt.subplots(n_echoes, sharex=True, sharey=False, figsize=(14, 6))
 for i_echo in range(n_echoes):
     axes[i_echo].plot(ts[i_echo], color=pal[i_echo])
     axes[i_echo].set_ylabel(
-        f"{tes_ms[i_echo]:.1f} ms",
-        rotation=0,
-        va="center",
-        ha="right",
-        fontsize=14,
+        f"{data['echo_times'][i_echo]}ms", rotation=0, va="center", ha="right", fontsize=14
     )
     axes[i_echo].set_yticks([])
+    axes[i_echo].set_xticks([])
 
-axes[-1].set_xlabel("Volume", fontsize=16)
-axes[-1].set_xlim(0, n_trs - 1)
+axes[-1].set_xlabel("Time", fontsize=16)
+axes[-1].set_xlim(0, len(ts[i_echo]) - 1)
 fig.tight_layout()
 glue_figure("fig_echo_timeseries", fig, display=False)
 ```
@@ -259,207 +234,42 @@ glue_figure("fig_echo_timeseries", fig, display=False)
 :name: fig_echo_timeseries
 :align: center
 
-The time series of a single voxel at each echo time.
-Each time series is scaled separately, so the y-axes are not comparable.
+Time series from a voxel for each echo.
 ```
-
-The later echoes share a slow, wave-like pattern, which is the BOLD signal in this voxel.
-The same pattern is much weaker at the first echo, which is dominated by small, fast fluctuations,
-along with a spike in the very first volume.
-Early in a run, before the magnetization has reached a steady state, the signal is brighter at every echo.
-That change affects $S_{0}$ rather than $T_{2}^{*}$, so it stands out most at the first echo,
-where the BOLD fluctuations are weakest.
-
-## Estimating $S_{0}$ and $T_{2}^{*}$ from the decay
-
-With several echoes, we can estimate the two parameters of {eq}`monoexponential_decay_signal` for each voxel.
-Fitting an exponential curve directly is possible, but there is a simpler way.
-Taking the natural logarithm of both sides of {eq}`monoexponential_decay_signal` turns the curve into a straight line:
-
-```{math}
-:label: log_linear_model
-\ln S(TE) = \ln S_{0} - R_{2}^{*} \cdot TE
-```
-
-So if we plot $\ln S$ against $TE$, the intercept of the line is $\ln S_{0}$ and its slope is $-R_{2}^{*}$,
-and both can be estimated with ordinary least squares.
-This "log-linear" fit is fast, and it is the default in `tedana` (`fittype="loglin"`).
-`tedana` also offers a nonlinear fit of the exponential curve (`fittype="curvefit"`), which is slower.
-
-Below, we fit the model to the voxel from {numref}`fig_echo_scatter`.
-We fit all of the volumes at once, so we get a single $S_{0}$ and $T_{2}^{*}$ that describe the voxel's average decay.
-
-```{code-cell} ipython3
-:tags: [hide-cell]
-# Log-transform the data. Like tedana, we add 1 to avoid taking the log of zero.
-# With signal values in the thousands, this makes no practical difference.
-log_ts = np.log(np.abs(ts_1d) + 1)
-
-# One row per volume per echo: an intercept and the negative echo time
-design = np.column_stack([np.ones(n_echoes), -tes_ms])
-design = np.repeat(design, n_trs, axis=0)
-intercept, r2s_fit = np.linalg.lstsq(design, log_ts, rcond=None)[0]
-s0_fit = np.exp(intercept)
-t2s_fit = 1 / r2s_fit
-
-glue("s0_fit", float(s0_fit), display=False)
-glue("t2s_fit", float(t2s_fit), display=False)
-
-fit_tes = np.linspace(0, 120, 241)
-fig, axes = plt.subplots(1, 2, figsize=(16, 6))
-
-# Panel A: log-transformed data and the fitted line
-for i_echo in range(n_echoes):
-    axes[0].scatter(
-        np.full(n_trs, tes_ms[i_echo]),
-        np.log(np.abs(ts[i_echo]) + 1),
-        alpha=0.05,
-        color=pal[i_echo],
-    )
-
-axes[0].plot(fit_tes, intercept - r2s_fit * fit_tes, color="black", linewidth=2)
-axes[0].annotate(
-    (
-        f"intercept = $\\ln S_0$ = {intercept:.2f}\n"
-        f"slope = $-R_2^*$ = {-r2s_fit:.4f} ms$^{{-1}}$"
-    ),
-    xy=(0.04, 0.06),
-    xycoords="axes fraction",
-    fontsize=14,
-    bbox=dict(fc="white", ec="gray", lw=1),
-)
-axes[0].set_title("A. Log-transformed signal is linear in TE", fontsize=18, loc="left")
-axes[0].set_ylabel("ln(signal)", fontsize=16)
-
-# Panel B: original data and the fitted exponential curve
-for i_echo in range(n_echoes):
-    axes[1].scatter(
-        np.full(n_trs, tes_ms[i_echo]),
-        ts[i_echo],
-        alpha=0.05,
-        color=pal[i_echo],
-    )
-
-axes[1].plot(fit_tes, s0_fit * np.exp(-fit_tes / t2s_fit), color="black", linewidth=2)
-axes[1].scatter(0, s0_fit, marker="*", s=400, color="red", clip_on=False, zorder=3)
-axes[1].annotate(
-    f"$S_0$ = {s0_fit:.0f}",
-    xy=(0, s0_fit),
-    xytext=(8, s0_fit),
-    fontsize=14,
-    va="center",
-)
-axes[1].plot(
-    [t2s_fit, t2s_fit, 0],
-    [0, s0_fit / np.e, s0_fit / np.e],
-    color="blue",
-    linestyle="--",
-)
-axes[1].annotate(
-    (
-        f"At TE = $T_2^*$ = {t2s_fit:.1f} ms,\n"
-        "the signal has decayed to\n"
-        f"1/e (37%) of $S_0$"
-    ),
-    xy=(t2s_fit, s0_fit / np.e),
-    xytext=(15, s0_fit * 0.12),
-    fontsize=14,
-    arrowprops=dict(arrowstyle="->", color="blue"),
-)
-axes[1].set_title("B. The same fit as an exponential curve", fontsize=18, loc="left")
-axes[1].set_ylabel("Signal", fontsize=16)
-axes[1].set_ylim(0, np.ceil(s0_fit / 1000) * 1000 + 1000)
-
-for ax in axes:
-    ax.set_xlabel("Echo Time (ms)", fontsize=16)
-    ax.set_xlim(0, 120)
-    ax.set_xticks(np.round(tes_ms, 1))
-    ax.tick_params(axis="both", which="major", labelsize=12)
-
-fig.tight_layout()
-glue_figure("fig_decay_fit", fig, display=False)
-```
-
-```{figure} figures/fig_decay_fit.png
-:name: fig_decay_fit
-:align: center
-
-The monoexponential model fit to one voxel.
-(A) After a log transform, the signal falls on a straight line,
-whose intercept and slope give $S_{0}$ and $R_{2}^{*}$.
-(B) The same fit, shown on the original scale.
-The red star marks $S_{0}$, and the dashed blue lines mark $T_{2}^{*}$,
-the echo time at which the signal has decayed to 37% of $S_{0}$.
-```
-
-For this voxel, the fit gives $S_{0}$ ≈ {glue:text}`s0_fit:.0f` and $T_{2}^{*}$ ≈ {glue:text}`t2s_fit:.1f` ms.
-$T_{2}^{*}$ has a simple interpretation:
-it is the echo time at which the signal has decayed to $1/e$, or about 37%, of $S_{0}$.
-This voxel's $T_{2}^{*}$ is longer than is typical for gray matter at 3T (roughly 40-55 ms).
-We chose the voxel because it has strong BOLD fluctuations, not because its decay is typical,
-and [](T2star_S0_Variability.md) describes why $T_{2}^{*}$ varies so much from voxel to voxel.
-
-### Noise across echoes
-
-Every measurement also contains thermal noise, whose amplitude is roughly the same at every echo time.
-Because the signal decays, the same amount of noise is a larger fraction of the signal at later echoes,
-so later echoes have a lower signal-to-noise ratio.
-This has a few consequences:
-
-- In panel A of {numref}`fig_decay_fit`, the log-transformed points spread out more at later echoes.
-  Part of that spread is BOLD fluctuation, which also grows with echo time as a fraction of the signal (as we will see below),
-  but part of it is noise.
-- MRI magnitude images cannot be negative, so once the signal has decayed to the level of the noise,
-  the measured values level off instead of continuing to fall.
-  Echoes at this "noise floor" make the decay look slower than it really is.
-- Fitting the decay to a single volume, with only a handful of noisy measurements,
-  gives much noisier estimates than fitting all of the volumes at once, as we did here.
-
-There are two more things to keep in mind.
-First, the fit is only as good as the echoes that go into it.
-In regions with strong signal dropout, such as orbitofrontal cortex,
-the later echoes contain almost nothing but noise,
-so `tedana` builds an *adaptive mask* that limits the fit in each voxel to the echoes with good signal
-(see [](TE_Dependence.md)).
-Second, the values we estimated here describe the voxel's *average* decay.
-In the next section, we look at how $S_{0}$ and $T_{2}^{*}$ change from one volume to the next,
-and why we need multiple echoes to tell those changes apart.
 
 ## The impact of $T_{2}^{*}$ and $S_{0}$ fluctuations on BOLD signal
 
-In this section, we use simulations to investigate the two factors that drive changes in the signal decay pattern:
-$T_{2}^{*}$ and $S_{0}$.
-We simulate a voxel with an average $S_{0}$ of 16000 and an average $T_{2}^{*}$ of 45 ms,
-a typical value for gray matter at 3T,
-and a single-echo acquisition with an echo time of 30 ms, which is common for single-echo fMRI at 3T.
+In this section, we investigate the two factors driving changes in the signal decay pattern: $T_{2}^{*}$ and $S_{0}$.
+
+Firstly, let us run some code to simulate the signal decay curve.
 
 ```{code-cell} ipython3
-# The echo time of a typical single-echo scan at 3T
+# Simulate data
 SINGLEECHO_TE = np.array([30])
 
-# Echo times for a nice, smooth curve
+# For a nice, smooth curve
 FULLCURVE_TES = np.round(np.arange(0, 121, 1), decimals=5)
 
-MEAN_T2S = 45
-MEAN_S0 = 16000
+n_echoes = len(FULLCURVE_TES)
+pal = sns.color_palette("cubehelix", 8)
 ```
 
 ### Simulate $T_{2}^{*}$ and $S_{0}$ fluctuations
 
-Next, we simulate a short run of 21 volumes, in which $T_{2}^{*}$ and $S_{0}$ fluctuate over time.
-To make the fluctuations easy to see, they are much larger (10%) than real fluctuations, which are a few percent or less.
-
 ```{code-cell} ipython3
+# Simulate data
 # We'll convolve with HRF just for smoothness
 hrf = first_level.spm_hrf(1, oversampling=1)
 
 N_VOLS = 21
 
 SCALING_FRACTION = 0.1  # used to scale standard deviation
+MEAN_T2S = 35
+MEAN_S0 = 16000
 
-# Simulate the relative T2*/S0 fluctuations.
-# The original time series is random noise from a normal distribution,
-# convolved with the HRF.
+# simulate the T2*/S0 time series
+# The original time series will be a random time series from a normal distribution,
+# convolved with the HRF
 rng = np.random.default_rng(42)
 ts = rng.normal(loc=0, scale=1, size=(N_VOLS + 20,))
 ts = signal.convolve(ts, hrf)[20 : N_VOLS + 20]
@@ -470,11 +280,11 @@ t2s_ts = (ts * MEAN_T2S) + MEAN_T2S
 s0_ts = (ts * MEAN_S0) + MEAN_S0
 ```
 
-#### BOLD signal decay for a standard single-echo scan
+#### Plot BOLD signal decay for a standard single-echo scan
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-fullcurve_signal = predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [MEAN_T2S])
+fullcurve_signal = predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [30])
 
 fig, ax = plt.subplots(figsize=(14, 7.5))
 ax.plot(
@@ -484,13 +294,13 @@ ax.plot(
     color="black",
 )
 # Example for TE=30ms
-x_cross = SINGLEECHO_TE[0]
-y_cross = float(np.squeeze(predict_bold_signal(np.array([x_cross]), [MEAN_S0], [MEAN_T2S])))
-glue("singleecho_value", y_cross, display=False)
-ax.plot(x_cross, y_cross, marker="x", color="red", markersize=10, label="TE = 30 ms")
-ax.plot([x_cross, x_cross, 0], [0, y_cross, y_cross], color="red", linestyle="--", alpha=0.5)
+x_cross = 30
+y_cross = predict_bold_signal(np.array([x_cross]), [MEAN_S0], [30])[0, 0]
+ax.plot(x_cross, y_cross, marker='x', color='red', markersize=10, label='TE=30 ms')
+ax.axvline(x=x_cross, ymax=y_cross[0], color='red', linestyle='--', alpha=0.3)
+ax.axhline(y=y_cross, xmax=x_cross, color='red', linestyle='--', alpha=0.3)
 
-ax.set_ylabel("Signal", fontsize=24)
+ax.set_ylabel("Recorded BOLD signal", fontsize=24)
 ax.set_xlabel("Echo Time (ms)", fontsize=24)
 ax.set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 ax.set_xlim(0, np.max(FULLCURVE_TES))
@@ -503,64 +313,52 @@ glue_figure("fig_signal_decay_single-echo", fig, display=False)
 :name: fig_signal_decay_single-echo
 :align: center
 
-The signal decay curve for a voxel with $T_{2}^{*}$ = 45 ms (black), and the single value a single-echo scan with TE = 30 ms measures (red cross).
+BOLD signal decay for a standard single-echo scan
 ```
 
-In every volume of an fMRI scan, each voxel's signal follows a decay curve like the black one,
-but a single-echo scan only measures one point on that curve.
-For example, if a single-echo scan is acquired at TE = 30 ms,
-the signal is approximately {glue:text}`singleecho_value:.0f` (red cross and dashed lines).
+At a given time point in an fMRI scan, the signal magnitude of a voxel varies depending on the echo time at which the signal is acquired.
+Here, we observe how the signal decays as TE increases (black curve).
+For example, if a single-echo scan is acquired at TE = 30 ms, the signal magnitude is approximately 5886 (red cross and dashed lines).
 
-#### BOLD signal decay and BOLD contrast
+### Plot BOLD signal decay and BOLD contrast
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
-# T2* is exaggerated in both directions, so that the difference is easy to see
-T2S_LOW_ACTIVITY = 40
-T2S_HIGH_ACTIVITY = 50
-curve_active = np.squeeze(predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [T2S_HIGH_ACTIVITY]))
-curve_inactive = np.squeeze(predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [T2S_LOW_ACTIVITY]))
-
-# The echo time at which the difference between the curves is largest
-max_contrast_te = (
-    np.log(T2S_HIGH_ACTIVITY / T2S_LOW_ACTIVITY)
-    / (1 / T2S_LOW_ACTIVITY - 1 / T2S_HIGH_ACTIVITY)
-)
-glue("max_contrast_te", float(max_contrast_te), display=False)
+fullcurve_signal_active = predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [40])
+fullcurve_signal_inactive = predict_bold_signal(FULLCURVE_TES, [MEAN_S0], [20])
 
 fig, ax = plt.subplots(figsize=(14, 7.5))
 ax.plot(
     FULLCURVE_TES,
-    curve_active,
+    fullcurve_signal_active[:, 0],
+    alpha=0.7,
     color="red",
-    label=f"High activity ($T_2^*$ = {T2S_HIGH_ACTIVITY} ms)",
+    label="High Activity",
 )
 ax.plot(
     FULLCURVE_TES,
-    curve_inactive,
+    fullcurve_signal_inactive[:, 0],
+    alpha=0.7,
     color="blue",
-    label=f"Low activity ($T_2^*$ = {T2S_LOW_ACTIVITY} ms)",
+    label="Low Activity",
 )
 
-# Vertical lines show the difference between the curves at a few echo times
-for te in [15, int(np.round(max_contrast_te)), 90]:
-    ax.plot(
-        [te, te],
-        [curve_inactive[te], curve_active[te]],
-        color="green",
-        linewidth=3,
-    )
-    ax.annotate(
-        f"{te} ms",
-        xy=(te, curve_active[te]),
-        xytext=(0, 10),
-        textcoords="offset points",
-        ha="center",
-        fontsize=14,
-        color="green",
-    )
+# vertical lines to explain how the contrast evolves
+max_plot = np.ceil(np.max(fullcurve_signal) / 1000) * 1000
+# 10ms
+ymin = np.round(fullcurve_signal_inactive[:, 0][10][0]/max_plot, decimals=5)
+ymax = np.round(fullcurve_signal_active[:, 0][10][0]/max_plot, decimals=5)
+ax.axvline(x=FULLCURVE_TES[10], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
+# 30ms
+ymin = np.round(fullcurve_signal_inactive[:, 0][30][0]/max_plot, decimals=5)
+ymax = np.round(fullcurve_signal_active[:, 0][30][0]/max_plot, decimals=5)
+ax.axvline(x=FULLCURVE_TES[30], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
+# 50ms
+ymin = np.round(fullcurve_signal_inactive[:, 0][50][0]/max_plot, decimals=5)
+ymax = np.round(fullcurve_signal_active[:, 0][50][0]/max_plot, decimals=5)
+ax.axvline(x=FULLCURVE_TES[50], ymin=ymin, ymax=ymax, color='green', linestyle='--', alpha=0.4)
 
-ax.set_ylabel("Signal", fontsize=24)
+ax.set_ylabel("Recorded BOLD signal", fontsize=24)
 ax.set_xlabel("Echo Time (ms)", fontsize=24)
 ax.set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 ax.set_xlim(0, np.max(FULLCURVE_TES))
@@ -574,30 +372,20 @@ glue_figure("fig_signal_decay_contrast", fig, display=False)
 :name: fig_signal_decay_contrast
 :align: center
 
-Signal decay curves for a voxel at low activity (blue) and high activity (red).
-The green lines show the difference between the curves at three echo times.
+BOLD signal decay and BOLD contrast
 ```
 
-This plot shows the signal decay for two levels of activity.
-When activity increases, blood oxygenation increases, so $T_{2}^{*}$ gets longer and the signal decays more slowly.
-The difference in $T_{2}^{*}$ here (40 vs. 50 ms) is exaggerated to make it visible;
-real BOLD changes in $T_{2}^{*}$ are a few percent.
+This plot shows the signal decay for two different activity levels: one with high activity and one with low activity.
+Due to differences in activity and the associated T2 effects, the decay curve for low activity is steeper than that for high activity.
+The contrast — represented by the distance between the two curves (see green dashed lines in the figure) — increases with TE, reaching a peak around TE = 30 ms, and then begins to decrease at longer echo times (e.g., >50 ms).
+In practice, this means that for a given voxel, the contrast (i.e., the color difference) between low and high activity will be more visible at TE = 30 ms than at TE = 15 ms.
 
-The BOLD contrast is the difference between the two curves (green lines).
-It is zero at TE = 0, grows as the echo time increases,
-peaks at an echo time of about {glue:text}`max_contrast_te:.0f` ms, close to $T_{2}^{*}$,
-and then shrinks again as both signals decay toward zero.
-This is why single-echo fMRI uses an echo time that is close to the typical $T_{2}^{*}$ of gray matter.
-Note that this is the *absolute* difference between the curves.
-As a *fraction* of the signal, the difference keeps growing with echo time,
-which becomes important in [](TE_Dependence.md).
 
-### Single-echo data over time
+### Plot single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-Now let us add the fluctuations, starting with a single-echo acquisition at TE = 30 ms.
-In the animation below, the bottom panel shows the signal measured at TE = 30 ms in each volume,
-and the top panel shows the resulting time series.
-This is what a single-echo fMRI time series is: one measurement per volume, at a single echo time.
+Let us visualize the case of a single echo fMRI acquisition with TE = 30ms.
+The top panel shows the time series of an example voxel , while the lower panel shows the associated signal magnitude fluctuation at the specific echo time (TE = 30 ms).
+This shows how fMRI data fluctuates over time.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -616,7 +404,7 @@ axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks([0, 30, 60, 90, 120])
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -672,14 +460,13 @@ glue("fig_single-echo", html, display=False)
 :name: fig_single-echo
 :align: center
 
-Single-echo data from a simulated voxel whose $S_{0}$ and $T_{2}^{*}$ fluctuate. Top: the time series measured at TE = 30 ms. Bottom: the measurement in the current volume.
+Single-echo data resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 ```
 
-### Each single-echo measurement comes from a decay curve
+### Plot single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-Next, we add the full decay curve for each volume.
-Each single-echo measurement is just one point on that volume's decay curve,
-and the curve itself changes from volume to volume as $S_{0}$ and $T_{2}^{*}$ fluctuate.
+Building on the previous figure, we visualize here how the signal of a voxel at each time point of a single-echo fMRI scan (TE=30ms) is part of a decay curve.
+In other words, this shows how single-echo data is a sample from a signal decay curve.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -698,7 +485,7 @@ axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks([0, 30, 60, 90, 120])
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -767,24 +554,21 @@ glue("fig_signal_decay", html, display=False)
 :name: fig_signal_decay
 :align: center
 
-The same single-echo data, with the full decay curve of the current volume (gray). The single-echo measurement is one point on that curve.
+Single-echo data and the curve resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 ```
 
-### Where $S_{0}$ and $T_{2}^{*}$ sit on the curve
+### Plot single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-We are still looking at a single-echo acquisition with TE = 30 ms.
-The decay model from the start of this chapter, written for volume $t$ and with noise added, is:
+We are still in the case of a single-echo fMRI acquisition with TE=30ms.
+For a given voxel, the signal magnitude $S$ is linked with $S_0$ and $T_2^{*}$ over time $t$ through the formula:
 
 ```{math}
 :label: monoexponential_decay_undeveloped_single_echo
 S(t, TE) = S_0(t) \times e^{\frac{-TE}{T_2^{*}(t)}} + noise
 ```
 
-Both $S_{0}$ and $T_{2}^{*}$ can change from volume to volume, for different reasons,
-and a change in either one changes the measured signal.
-In the animation below, the red star marks $S_{0}$, where the curve meets $TE = 0$,
-and the blue star marks the point on the curve at $TE = T_{2}^{*}$.
-Both move as the fluctuations change the curve.
+Both factors of the product - $S_0$ and the exponential with $T_2^{*}$ - capture local fluctuations happening during MRI acquisition, but from different origins.
+The figure represents how the signal of a voxel is associated to $S_0$ and $T_2^{*}$, showing how changes in fMRI data can be driven by both factors.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -854,7 +638,7 @@ axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks([0, 30, 60, 90, 120])
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -917,17 +701,17 @@ glue("fig_signal_decay2", html, display=False)
 :name: fig_signal_decay2
 :align: center
 
-The same data, with $S_{0}$ (red star) and the point on the curve at $TE = T_{2}^{*}$ (blue star) marked in each volume.
+Single-echo data, the curve, and the $S_{0}$ and $T_{2}^{*}$ values resulting from $S_{0}$ and $T_{2}^{*}$ fluctuations
 ```
 
-### $S_{0}$ and $T_{2}^{*}$ fluctuations change the curve differently
+### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations
 
-To see the two effects separately, we now let only one of them fluctuate at a time, using the same relative fluctuations for both.
-The top panel shows the relative fluctuations over time.
-In the bottom panel, the red curve is the decay curve when only $S_{0}$ fluctuates (with $T_{2}^{*}$ fixed),
-and the blue curve is the decay curve when only $T_{2}^{*}$ fluctuates (with $S_{0}$ fixed).
-A change in $S_{0}$ scales the whole curve up or down, including its starting point at $TE = 0$.
-A change in $T_{2}^{*}$ leaves the starting point alone and changes how quickly the curve falls.
+Let us visualize $S_0$ and $T_2^{*}$ effects more closely.
+The bottom figure shows how the $S_0$ and $T_2^{*}$ curves changes compared to the original average signal decay curve.
+In red, the decay curve is shown when only the $S_0$ values fluctuate (for a fixed $T_2^{*}$ for any t).
+In blue the decay curve is shown when the $T_2^{*}$ values fluctuate (for a fixed $S_0$ for any t).
+The top panel represents the fluctuations of the ratio $\frac{S_0}{T_2^{*}}$.
+This shows how fluctuations in $S_0$ and $T_2^{*}$ produce different patterns in the full signal decay curves.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -983,14 +767,14 @@ ax1_t2s_line_plot = axes[1].plot(
 )[0]
 
 # Set constant params for figure
-axes[0].set_ylabel("Relative change\nin $S_0$ or $T_2^*$", fontsize=18)
+axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
 axes[0].set_xlabel("Volume", fontsize=24)
 axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks([0, 30, 60, 90, 120])
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -1031,16 +815,14 @@ glue("fig_signal_decay3", html, display=False)
 :name: fig_signal_decay3
 :align: center
 
-Decay curves when only $S_{0}$ fluctuates (red) or only $T_{2}^{*}$ fluctuates (blue), with the same relative fluctuations (top). The black curve is the average decay curve.
+$S_{0}$ and $T_{2}^{*}$ fluctuations
 ```
 
-### Single-echo data cannot tell the two apart
+### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 
-Now let us measure both curves with a single-echo acquisition at TE = 30 ms (red and blue points).
-The two points move up and down with the same timing,
-even though they come from very different changes in the decay curve.
-With only one echo, we see that the signal went up or down,
-but we cannot tell whether $S_{0}$ or $T_{2}^{*}$ changed.
+Let us visualize again the case of a single echo acquisition.
+Because the signal is acquired for only one TE (see the red and blue dot points in the figure), it is impossible to model the $S_0$- and $T_2^{*}$- driven curves !
+This shows how single-echo data, on its own, cannot distinguish between $S_0$ and $T_2^{*}$ fluctuations.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -1101,14 +883,14 @@ ax1_t2s_scatter_plot = axes[1].scatter(
 )
 
 # Set constant params for figure
-axes[0].set_ylabel("Relative change\nin $S_0$ or $T_2^*$", fontsize=18)
+axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
 axes[0].set_xlabel("Volume", fontsize=24)
 axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
 axes[1].legend(loc="upper right", fontsize=20)
 axes[1].set_ylabel("Signal", fontsize=24)
 axes[1].set_xlabel("Echo Time (ms)", fontsize=24)
-axes[1].set_xticks([0, 30, 60, 90, 120])
+axes[1].set_xticks(data['echo_times'])
 axes[1].set_ylim(0, np.ceil(np.max(s0based_fullcurve_signal) / 1000) * 1000)
 axes[1].set_xlim(0, np.max(FULLCURVE_TES))
 axes[1].tick_params(axis="both", which="major", labelsize=14)
@@ -1165,76 +947,13 @@ glue("fig_signal_decay4", html, display=False)
 :name: fig_signal_decay4
 :align: center
 
-The $S_{0}$-driven (red) and $T_{2}^{*}$-driven (blue) decay curves, measured at a single echo time (TE = 30 ms).
+$S_{0}$ and $T_{2}^{*}$ fluctuations and resulting single-echo data
 ```
 
-The same point can be made with time series.
-In the figure below, the measured single-echo signal is plotted against the $T_{2}^{*}$ or $S_{0}$ fluctuations that produced it,
-after scaling them to the same units.
-When only $S_{0}$ fluctuates, the signal is exactly a scaled copy of $S_{0}$,
-because $S$ is proportional to $S_{0}$ in {eq}`monoexponential_decay_undeveloped_single_echo`.
-When only $T_{2}^{*}$ fluctuates, the signal is *almost* a scaled copy of $T_{2}^{*}$;
-the small differences come from the exponential, which is not linear in $T_{2}^{*}$.
-Since we never observe the underlying fluctuations in real data,
-the single-echo time series alone does not tell us which of the two produced it.
+### Plot $S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 
-```{code-cell} ipython3
-:tags: [hide-cell]
-fig, axes = plt.subplots(1, 2, figsize=(16, 4.5), sharey=True)
-volumes = np.arange(N_VOLS)
-for ax, (label, param_ts, signal_ts, color) in zip(
-    axes,
-    [
-        ("$T_2^*$", t2s_ts, t2sbased_fullcurve_signal[SINGLEECHO_TE[0], :], "blue"),
-        ("$S_0$", s0_ts, s0based_fullcurve_signal[SINGLEECHO_TE[0], :], "red"),
-    ],
-):
-    # Scale the parameter's fluctuations to the units of the signal
-    centered = param_ts - param_ts.mean()
-    scalar = np.linalg.lstsq(centered[:, None], signal_ts - signal_ts.mean(), rcond=None)[0]
-    ax.plot(
-        volumes,
-        signal_ts,
-        color="black",
-        linewidth=4,
-        alpha=0.4,
-        label=f"Signal at TE = {SINGLEECHO_TE[0]} ms",
-    )
-    ax.plot(
-        volumes,
-        np.round(centered * scalar + signal_ts.mean(), decimals=5),
-        color=color,
-        linestyle="--",
-        label=f"{label} (scaled to the signal)",
-    )
-    ax.set_title(f"Only {label} fluctuates", fontsize=16)
-    ax.set_xlabel("Volume", fontsize=14)
-    ax.set_xlim(0, N_VOLS - 1)
-    ax.set_xticks(np.arange(0, N_VOLS, 5))
-    ax.legend(fontsize=12)
-
-axes[0].set_ylabel("Signal", fontsize=14)
-fig.tight_layout()
-glue_figure("fig_t2s_s0_bold_single-echo", fig, display=False)
-```
-
-```{figure} figures/fig_t2s_s0_bold_single-echo.png
-:name: fig_t2s_s0_bold_single-echo
-:align: center
-
-Single-echo signal (gray) when only $T_{2}^{*}$ (left) or only $S_{0}$ (right) fluctuates,
-compared with those fluctuations scaled to the units of the signal (dashed).
-```
-
-### Multi-echo data can tell the two apart
-
-Finally, let us measure the same curves at the five echo times of our real data.
-Now the two kinds of fluctuation produce clearly different patterns across echoes.
-When $S_{0}$ changes, the red points all move by the same *fraction* of their value,
-so the change is largest at the first echo.
-When $T_{2}^{*}$ changes, the blue points barely move at the first echo and move much more at later echoes.
-With several echoes, we could, in principle, fit the decay curve in each volume, as we did for the real voxel above,
-and tell which parameter changed.
+Let us now visualize again the case of a multi-echo acquisition.
+Because the signal is acquired at four echo times here, we can see how S0 and T2* fluctuations produce different patterns in multi-echo data. It is now possible to model the $S_0$- and $T_2^{*}$- driven curves from the signal !
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -1298,7 +1017,7 @@ ax1_t2s_scatter_plot = axes[1].scatter(
     zorder=3,
 )
 
-axes[0].set_ylabel("Relative change\nin $S_0$ or $T_2^*$", fontsize=18)
+axes[0].set_ylabel("$S_0$/$T_{2}^{*}$", fontsize=24)
 axes[0].set_xlabel("Volume", fontsize=24)
 axes[0].set_xlim(0, N_VOLS - 1)
 axes[0].tick_params(axis="both", which="major", labelsize=14)
@@ -1362,22 +1081,73 @@ glue("fig_signal_decay5", html, display=False)
 :name: fig_signal_decay5
 :align: center
 
-The $S_{0}$-driven (red) and $T_{2}^{*}$-driven (blue) decay curves, measured at five echo times.
+$S_{0}$ and $T_{2}^{*}$ fluctuations and resulting multi-echo data
 ```
 
+#### Plot $T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
 
-## Summary
+When the BOLD signal is driven entirely by $T_2^{*}$ fluctuations, the BOLD signal is very similar to a scaled version of those $T_2^{*}$ fluctuations, but there are small differences.
+You may understand this intuitively by looking back to the equation {eq}`monoexponential_decay_undeveloped_single_echo`. You can see that if $S_0$ is fixed, the relationship between $S$ and $T_2^{*}$ is not purely linear over time.
 
-- MR signal decays with echo time following, approximately, $S(TE) = S_{0} e^{-TE / T_{2}^{*}}$.
-  With several echoes, we can estimate $S_{0}$ and $T_{2}^{*}$ by fitting a straight line to the log of the signal.
-- The BOLD effect changes $T_{2}^{*}$, while many sources of noise change $S_{0}$.
-- A single-echo scan measures one point on the decay curve in each volume,
-  so it cannot tell a change in $S_{0}$ from a change in $T_{2}^{*}$.
-- With multiple echoes, the two kinds of change leave different fingerprints:
-  an $S_{0}$ change is the same fraction of the signal at every echo time,
-  while a $T_{2}^{*}$ change grows, as a fraction of the signal, with echo time.
+```{code-cell} ipython3
+:tags: [hide-cell]
+fig, ax = plt.subplots(figsize=(16, 4))
 
-In practice, the signal in a single volume is too noisy to fit the decay curve reliably.
-[](TE_Dependence.md) shows how `tedana` uses these fingerprints on components of the data instead,
-to separate BOLD from non-BOLD signal.
-Before that, [](T2star_S0_Variability.md) looks at why the *average* $T_{2}^{*}$ and $S_{0}$ vary so much across the brain.
+scalar = np.linalg.lstsq(
+    t2s_ts[:, None], t2sbased_fullcurve_signal[SINGLEECHO_TE[0], :], rcond=None
+)[0]
+ax.plot(
+    t2sbased_fullcurve_signal[SINGLEECHO_TE[0], :],
+    color="orange",
+    label=f"BOLD signal (TE={SINGLEECHO_TE[0]}ms)",
+)
+ax.plot(
+    np.round(t2s_ts * scalar, decimals=5),
+    label="$T_{2}^{*}$ (scaled to signal)",
+    linestyle="--",
+)
+ax.set_xlim(0, N_VOLS - 1)
+leg = ax.legend()
+glue_figure("fig_t2s_bold_single-echo", fig, display=False)
+```
+
+```{figure} figures/fig_t2s_bold_single-echo.png
+:name: fig_t2s_bold_single-echo
+:align: center
+
+$T_{2}^{*}$ against BOLD signal from single-echo data (TE=30ms)
+```
+
+#### Plot $S_{0}$ against BOLD signal from single-echo data (TE=30ms)
+
+When the BOLD signal is driven entirely by $S_0$ fluctuations, the BOLD signal ends up being a scaled version of the $S_0$ fluctuations.
+You may understand this intuitively by looking back to the equation {eq}`monoexponential_decay_undeveloped_single_echo`. You can see that if $T_2^{*}$ is fixed, the relationship between $S$ and $S_0$ is linear over time.
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+fig, ax = plt.subplots(figsize=(16, 4))
+
+scalar = np.linalg.lstsq(
+    s0_ts[:, None], s0based_fullcurve_signal[SINGLEECHO_TE[0], :], rcond=None
+)[0]
+ax.plot(
+    s0based_fullcurve_signal[SINGLEECHO_TE[0], :],
+    color="orange",
+    label=f"BOLD signal (TE={SINGLEECHO_TE[0]}ms)",
+)
+ax.plot(
+    np.round(s0_ts * scalar, decimals=5),
+    label="S0 (scaled to signal)",
+    linestyle="--",
+)
+ax.set_xlim(0, N_VOLS - 1)
+leg = ax.legend()
+glue_figure("fig_s0_bold_single-echo", fig, display=False)
+```
+
+```{figure} figures/fig_s0_bold_single-echo.png
+:name: fig_s0_bold_single-echo
+:align: center
+
+$S_{0}$ against BOLD signal from single-echo data (TE=30ms)
+```

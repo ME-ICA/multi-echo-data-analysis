@@ -7,7 +7,7 @@ MEDN
   thus retaining (1) accepted components, (2) low-variance ("ignored") components, and (3) unmodeled signal.
 
 MEHK
-  Stands for "multi-echo high-Kappa".
+  Stands of "multi-echo high-Kappa".
   Refers to an output of the ``tedana`` workflow, constructed by scaling and combining accepted components only.
-  Thus, this output does not contain (1) low-variance ("ignored") components, (2) rejected components, or (3) unmodeled signal.
+  Thus, this output does not contain (1) low-variance ("ignore") components, (2) rejected components, or (3) unmodeled signal.
 ```

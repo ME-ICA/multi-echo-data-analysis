@@ -17,7 +17,7 @@ A running list of openly accessible multi-echo fMRI datasets is at:
 [me-ica.github.io/open-multi-echo-data/](https://me-ica.github.io/open-multi-echo-data/).
 If you know of other datasets that should be added,
 submit an issue at [github.com/ME-ICA/open-multi-echo-data/issues](https://github.com/ME-ICA/open-multi-echo-data/issues)
-or reach out to a [tedana developer](https://github.com/ME-ICA/tedana/graphs/contributors).
+or each out to a [tedana developer](https://github.com/ME-ICA/tedana/graphs/contributors)
 
 ```{important}
 The datasets below were added before the above spreadsheet was created. They do have some additional context.
@@ -122,7 +122,7 @@ The multi-echo fMRI data have three echoes, with some participants having TEs of
 and others having 10, 25, and 38 ms.
 Additional data include T1-weighted anatomical scans.
 
-The auditory narrative task involves listening to Le Petit Prince in nine 10-minute runs, totaling around 90 minutes.
+The auditory narrative task involves listening to Le Petit Prince in nine 10-minute runs, totally around 90 minutes.
 Given the naturalistic nature of this task, it is a good target for functional alignment analyses.
 
 Additionally, the language in which the task was presented differed across participants.

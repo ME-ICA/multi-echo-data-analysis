@@ -19,27 +19,21 @@ Specifically, we will use {py:func}`tedana.workflows.tedana_workflow`.
 ```{code-cell} ipython3
 import json
 import os
-import shutil
 from glob import glob
 from pprint import pprint
 
 import nibabel as nb
 import pandas as pd
 from IPython.display import HTML, display
-from book_utils import export_html_report, load_pafin
+from book_utils import load_pafin
 from tedana import workflows
 
 data_path = os.path.abspath('../data')
 ```
 
-`tedana` keeps the logs and reports of earlier runs in its output folder,
-so we start from an empty folder to list only the files from this run.
-
 ```{code-cell} ipython3
 data = load_pafin(data_path)
 out_dir = os.path.join(data_path, "tedana")
-if os.path.isdir(out_dir):
-    shutil.rmtree(out_dir)
 ```
 
 ```{code-cell} ipython3
@@ -105,20 +99,13 @@ df = df.fillna("n/a")
 display(HTML(df.to_html()))
 ```
 
-## The tedana report
-
-The workflow also writes an interactive HTML report, `*_tedana_report.html`,
-which loads its images from the `figures` folder next to it.
-On your own computer you would simply open that file in a browser.
-Here, we copy the report and its figures into the book so that it can be shown below.
-
 ```{code-cell} ipython3
 report = os.path.join(out_dir, "sub-24053_ses-1_task-rat_dir-PA_run-01_tedana_report.html")
-export_html_report(report, "tedana_report")
+with open(report, "r") as fo:
+    report_data = fo.read()
+
+figures_dir = os.path.relpath(os.path.join(out_dir, "figures"), os.getcwd())
+report_data = report_data.replace("./figures", figures_dir)
+
+display(HTML(report_data))
 ```
-
-<p><a href="../tedana_report/index.html" target="_blank" rel="noopener">Open the report in its own tab</a> to see it at full size.</p>
-
-````{div} full-width
-<iframe src="../tedana_report/index.html" title="tedana report" style="width: 100%; height: 90vh; min-height: 600px; border: 1px solid #ccc; border-radius: 4px;"></iframe>
-````
